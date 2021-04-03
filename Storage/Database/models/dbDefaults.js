@@ -1,6 +1,6 @@
 module.exports = {
 	defaultSettings: {
-		prefix: '!',
+		prefix: '?',
 		guildColor: '#c93a3a',
 	},
 };

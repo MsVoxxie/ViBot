@@ -12,12 +12,12 @@ module.exports = {
 			family: 4,
 		};
 
-		//Login to Database
+		// Login to Database
 		mongoose.connect(Database, dbOptions);
 		mongoose.set('useFindAndModify', false);
 		mongoose.Promise = global.Promise;
 
-		//Logging!
+		// Logging!
 		mongoose.connection.on('connected', () => {
 			console.log('Connected To Database');
 		});
