@@ -15,7 +15,7 @@ bot.on('message', async message => {
 	}
 
 	const prefixMention = new RegExp(`^<@!?${bot.user.id}> `);
-	const prefixes = [message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : settings.prefix, 'chi,'];
+	const prefixes = ['?', message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : settings.prefix];
 	// const prefix = message.content.match(prefixMention) ? message.content.match(prefixMention)[0] : settings.prefix;
 	const prefix = prefixes.find(p => message.content.startsWith(p.toLowerCase()));
 
