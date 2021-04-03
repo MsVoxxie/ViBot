@@ -4,7 +4,7 @@ const { createBar } = require('../../Storage/Functions/util');
 
 module.exports = {
 	name: 'eval',
-	aliases: [],
+	aliases: ['e', 'ev'],
 	description: 'Evaluate Code',
 	category: 'Owner Only',
 	ownerOnly: true,
