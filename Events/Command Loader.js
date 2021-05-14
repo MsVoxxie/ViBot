@@ -23,6 +23,5 @@ module.exports = bot => {
 			}
 		}
 	});
-
 	console.log(table.toString());
 };

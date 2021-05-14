@@ -1,16 +1,17 @@
-const fs = require('fs');
-const ascii = require('ascii-table');
-const table = new ascii().setHeading('Events', 'Load Status');
-
+const { readdirSync } = require('fs');
 module.exports.setup = bot => {
-	fs.readdir('./Events/', (err, files) => {
-		if (err) console.error(err);
-		const event_files = files.filter(f => f.split('.').pop() === 'js');
-		if (event_files.length <= 0) return console.log('No Events to load.');
-		event_files.forEach((f, i) => {
-			require(`../../Events/${f}`);
-			table.addRow(`${f}`, '✔ -> Loaded');
-		});
-		console.log(table.toString());
-	});
+	// Read Events folder
+	const eventFiles = readdirSync('./Events').filter(file => file.endsWith('.js'));
+	// Iterate over each file
+	for(const file of eventFiles) {
+		const event = require(`../../Events/${file}`);
+		// If the event is disabled return
+		if(event.disabled === true) { return; }
+		if(event.once) {
+			bot.once(event.name, (...args) => event.execute(...args, bot));
+		}
+		else{
+			bot.on(event.name, (...args) => event.execute(...args, bot));
+		}
+	}
 };

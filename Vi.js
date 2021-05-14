@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+require('discord-reply');
 const { Token } = require('./Storage/Config/Config.json');
 const ascii = require('ascii-table');
 const table = new ascii().setHeading('Servers', 'Connection Status');
@@ -13,7 +14,7 @@ module.exports = { bot: bot };
 // Command Info
 bot.commands = new Discord.Collection();
 bot.aliases = new Discord.Collection();
-bot.cooldowns = new Discord.Collection();
+bot.cooldowns = [];
 
 bot.mongoose = require('./Storage/Database/mongoose');
 bot.defaults = require('./Storage/Database/models/dbDefaults');
@@ -26,6 +27,10 @@ bot.Owners = ['101789503634554880', '101790332437405696'];
 ['Command Loader'].forEach(handler => {
 	require(`./Events/${handler}`)(bot);
 });
+
+// ['SlashCommands'].forEach(slash => {
+// 	require(`./SlashCommands/${slash}`);
+// });
 
 bot.once('ready', () => {
 	bot.guilds.cache.forEach((f) => {

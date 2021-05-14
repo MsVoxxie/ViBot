@@ -27,4 +27,10 @@ module.exports = bot => {
 		const newGuild = await new Guild(merged);
 		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildName}`));
 	};
+
+	// Random Hex Color
+	bot.randHex = async () => {
+		const color = `#${ Math.floor(Math.random() * 16777215).toString(16) }`;
+		return color;
+	};
 };

@@ -12,6 +12,10 @@ const guildSchema = mongoose.Schema({
 	},
 	guildID: Number,
 	guildName: String,
+	prune: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 module.exports = mongoose.model('Guild', guildSchema);
