@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { Database } = require('../Config/Config.json');
+const ascii = require('ascii-table');
+const table = new ascii().setHeading('Database', 'Status');
 
 module.exports = {
 	init: () => {
@@ -19,7 +21,8 @@ module.exports = {
 
 		// Logging!
 		mongoose.connection.on('connected', () => {
-			console.log('Connected To Database');
+			table.addRow('Mongoose', '✔ » Connected');
+			console.log(table.toString());
 		});
 
 		mongoose.connection.on('err', err => {
@@ -27,7 +30,8 @@ module.exports = {
 		});
 
 		mongoose.connection.on('disconnect', () => {
-			console.log('Database Disconnected');
+			table.addRow('Mongoose', '❌ » Disconnected');
+			console.log(table.toString());
 		});
 	},
 };

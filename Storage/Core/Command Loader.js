@@ -10,10 +10,10 @@ module.exports = bot => {
 
 			if (pull.name) {
 				bot.commands.set(pull.name, pull);
-				table.addRow(`${dir} | ${file}`, '✔ -> Loaded');
+				table.addRow(`${dir} | ${file}`, '✔ » Loaded');
 			}
 			else {
-				table.addRow(`${dir} | ${file}`, '❌ -> Failed to Load!');
+				table.addRow(`${dir} | ${file}`, '❌ » Failed to Load!');
 				continue;
 			}
 			if (pull.aliases) {

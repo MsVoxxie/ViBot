@@ -16,11 +16,11 @@ module.exports = bot => {
 					else{
 						bot.on(pull.name, (...args) => pull.execute(...args, bot));
 					}
-					table.addRow(`${dir} | ${file}`, '✔ -> Loaded');
+					table.addRow(`${dir} | ${file}`, '✔ » Loaded');
 				}
 			}
 			else {
-				table.addRow(`${dir} | ${file}`, '❌ -> Failed to Load!');
+				table.addRow(`${dir} | ${file}`, '❌ » Failed to Load!');
 				continue;
 			}
 		}
