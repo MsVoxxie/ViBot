@@ -11,6 +11,7 @@ module.exports = {
 		if(settings.audit === false) return;
 		if(oldMessage.author.bot) return;
 		if(oldMessage.channel.type !== 'text') return;
+		if (oldMessage.content === newMessage.content) return;
 		const logChannel = await oldMessage.guild.channels.cache.get(settings.auditchannel);
 
 		// Setup Embed
