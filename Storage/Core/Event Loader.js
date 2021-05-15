@@ -1,6 +1,6 @@
 const { readdirSync } = require('fs');
 const ascii = require('ascii-table');
-const table = new ascii().setHeading('Events', 'Load Status');
+const table = new ascii().setHeading('Events', 'Load Status', 'Run Type');
 
 module.exports = bot => {
 	readdirSync('./Events/').forEach(dir => {
@@ -12,11 +12,12 @@ module.exports = bot => {
 				if(!pull.disabled) {
 					if(pull.once) {
 						bot.once(pull.name, (...args) => pull.execute(...args, bot));
+						table.addRow(`${dir} | ${file}`, '✔ » Loaded', '«  Once  »');
 					}
 					else{
 						bot.on(pull.name, (...args) => pull.execute(...args, bot));
+						table.addRow(`${dir} | ${file}`, '✔ » Loaded', '«Infinite»');
 					}
-					table.addRow(`${dir} | ${file}`, '✔ » Loaded');
 				}
 			}
 			else {

@@ -17,15 +17,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Message Updated')
-			.setDescription(`**Author› ** <@${oldMessage.author.id}> | **${oldMessage.author.tag}**
-            **Channel› ** <#${oldMessage.channel.id}> | **${oldMessage.channel.name}**
-            **Message Link› ** [Jump To Message](${newMessage.url})
-            
-            **Original Message› **
-            \`\`\`${oldMessage.content.replace(/`/g, '\'')}\`\`\`
-
-            **Updated Message› **
-            \`\`\`${newMessage.content.replace(/`/g, '\'')}\`\`\``)
+			.setDescription(`**Author›** <@${oldMessage.author.id}> | **${oldMessage.author.tag}**\n**Channel›** <#${oldMessage.channel.id}> | **${oldMessage.channel.name}**\n**Message Link›** [Jump To Message](${newMessage.url})\n\n**Original Message›**\`\`\`${oldMessage.content.replace(/`/g, '\'')}\`\`\`\n\n**Updated Message›**\`\`\`${newMessage.content.replace(/`/g, '\'')}\`\`\``)
 			.setColor(settings.guildColor)
 			.setFooter(`Updated› ${bot.Timestamp(newMessage.createdAt)}`);
 

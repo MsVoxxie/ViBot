@@ -52,7 +52,7 @@ module.exports = {
 				helpEmbed
 					.setTitle('Invalid Command!')
 					.setDescription(`Use \`${settings.prefix}help\` for the command list.`);
-				return message.channel.send({ embed: helpEmbed }).then(s => s.delete({ timeout: 300 * 1000 }));
+				return message.channel.send({ embed: helpEmbed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 			}
 			helpEmbed.setDescription(`
             This guilds prefix is \`${settings.prefix}\`
@@ -106,7 +106,7 @@ module.exports = {
 				}
 				catch (error) {
 					console.error(error);
-					return message.channel.send(error.message).then(s => s.delete({ timeout: 600 * 1000 }));
+					return message.channel.send(error.message).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 				}
 			});
 		}

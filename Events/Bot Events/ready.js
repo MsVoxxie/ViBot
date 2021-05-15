@@ -4,7 +4,7 @@ const table = new ascii().setHeading('Servers', 'Connection Status');
 module.exports = {
 	name: 'ready',
 	disabled: false,
-	once: false,
+	once: true,
 	async execute(bot) {
 		bot.guilds.cache.forEach((f) => {
 			table.addRow(`${f.name}`, '✔ » Connected');

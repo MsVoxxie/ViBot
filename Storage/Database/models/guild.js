@@ -14,13 +14,16 @@ const guildSchema = mongoose.Schema({
 	guildName: String,
 	prune: {
 		type: Boolean,
-		default: false,
+		default: defaults.prune,
 	},
 	audit: {
 		type: Boolean,
-		default: false,
+		default: defaults.audit,
 	},
-	auditchannel: String,
+	auditchannel: {
+		type: String,
+		default: defaults.auditchannel,
+	},
 });
 
 module.exports = mongoose.model('Guild', guildSchema);
