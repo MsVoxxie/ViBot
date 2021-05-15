@@ -16,6 +16,11 @@ const guildSchema = mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	audit: {
+		type: Boolean,
+		default: false,
+	},
+	auditchannel: String,
 });
 
 module.exports = mongoose.model('Guild', guildSchema);

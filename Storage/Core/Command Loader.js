@@ -4,11 +4,9 @@ const table = new ascii().setHeading('Commands', 'Load Status');
 
 module.exports = bot => {
 	readdirSync('./Commands/').forEach(dir => {
-		const commands = readdirSync(`./Commands/${dir}/`).filter(
-			f => f.split('.').pop() === 'js',
-		);
+		const commands = readdirSync(`./Commands/${dir}/`).filter(file => file.endsWith('.js'));
 		for (const file of commands) {
-			const pull = require(`../Commands/${dir}/${file}`);
+			const pull = require(`../../Commands/${dir}/${file}`);
 
 			if (pull.name) {
 				bot.commands.set(pull.name, pull);

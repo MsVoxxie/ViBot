@@ -1,4 +1,4 @@
-const { permissions } = require('../Storage/Functions/util');
+const { permissions } = require('../../Storage/Functions/util');
 
 module.exports = {
 	name: 'message',
@@ -15,7 +15,7 @@ module.exports = {
 		// Setup Prefix
 		const prefixMention = new RegExp(`^<@!?${bot.user.id}> `);
 		const prefixes = ['?', message.content.match(prefixMention) ? message.content.match(prefixMention[0]) : settings.prefix];
-		const prefix = await prefixes.find(p => message.content.startsWith(p.toLowerCase()));
+		const prefix = await prefixes.find(p => message.content.startsWith(p));
 
 		// Setup Conditionals
 		if (!message.content.startsWith(prefix)) return;

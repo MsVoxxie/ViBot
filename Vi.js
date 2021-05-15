@@ -5,16 +5,19 @@ const ascii = require('ascii-table');
 const table = new ascii().setHeading('Servers', 'Connection Status');
 
 // Setup Core and Bot.
-const lib = require('./Storage/Core/EventLoader');
+// const lib = require('./Storage/Core/EventLoader');
 const bot = new Discord.Client();
-lib.setup(bot);
+// lib.setup(bot);
 // Export it.
-module.exports = { bot: bot };
+// module.exports = { bot: bot };
 
 // Command Info
 bot.commands = new Discord.Collection();
 bot.aliases = new Discord.Collection();
 bot.cooldowns = [];
+
+// Event Info
+bot.events = new Discord.Collection();
 
 bot.mongoose = require('./Storage/Database/mongoose');
 bot.defaults = require('./Storage/Database/models/dbDefaults');
@@ -23,14 +26,10 @@ require('./Storage/Functions/functions')(bot);
 // Declare myself as Owner of bot.
 bot.Owners = ['101789503634554880', '101790332437405696'];
 
-// Init Command Loader
-['Command Loader'].forEach(handler => {
-	require(`./Events/${handler}`)(bot);
-});
+// Init Loaders
+require('./Storage/Core/Command Loader')(bot);
+require('./Storage/Core/Event Loader')(bot);
 
-// ['SlashCommands'].forEach(slash => {
-// 	require(`./SlashCommands/${slash}`);
-// });
 
 bot.once('ready', () => {
 	bot.guilds.cache.forEach((f) => {

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const Discord = require('discord.js');
-const { createBar } = require('../../Storage/Functions/util');
+const { createBar, Vimotes, permissions } = require('../../Storage/Functions/util');
 
 module.exports = {
 	name: 'eval',

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const { Guild } = require('../Database/models');
 
 module.exports = bot => {
@@ -28,9 +29,8 @@ module.exports = bot => {
 		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildName}`));
 	};
 
-	// Random Hex Color
-	bot.randHex = async () => {
-		const color = `#${ Math.floor(Math.random() * 16777215).toString(16) }`;
-		return color;
+	// Timestamp
+	bot.Timestamp = date => {
+		return moment(date).format('MMMM Do YYYY, h:mm A');
 	};
 };

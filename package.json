@@ -22,6 +22,7 @@
     "discord-reply": "^0.1.2",
     "discord.js": "^12.5.3",
     "eslint": "^7.26.0",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.9",
     "ms": "^2.1.3"
   }
