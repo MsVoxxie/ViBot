@@ -10,7 +10,7 @@ module.exports = {
 			useUnifiedTopology: true,
 			autoIndex: false,
 			poolSize: 5,
-			connectTimeoutMS: 10000,
+			connectTimeoutMS: 10 * 1000,
 			family: 4,
 		};
 
