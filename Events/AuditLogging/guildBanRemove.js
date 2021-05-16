@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { Vimotes } = require('../../Storage/Functions/util');
+const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'guildBanRemove',

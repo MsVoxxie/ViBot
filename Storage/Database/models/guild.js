@@ -1,28 +1,50 @@
 const mongoose = require('mongoose');
-const { defaultSettings: defaults } = require('./dbDefaults');
+const { defaultSettings: def } = require('./dbDefaults');
 
 const guildSchema = mongoose.Schema({
 	prefix: {
 		type: String,
-		default: defaults.prefix,
+		default: def.prefix,
 	},
 	guildColor: {
 		type: String,
-		default: defaults.guildColor,
+		default: def.guildColor,
 	},
-	guildID: Number,
-	guildName: String,
+	guildID: {
+		type: Number,
+		default: def.guildID,
+	},
+	guildName: {
+		type: String,
+		default: def.guildName,
+	},
 	prune: {
 		type: Boolean,
-		default: defaults.prune,
+		default: def.prune,
 	},
 	audit: {
 		type: Boolean,
-		default: defaults.audit,
+		default: def.audit,
 	},
 	auditchannel: {
 		type: String,
-		default: defaults.auditchannel,
+		default: def.auditchannel,
+	},
+	welcome: {
+		type: Boolean,
+		default: def.welcome,
+	},
+	welcomechannel: {
+		type: String,
+		default: def.welcomechannel,
+	},
+	ruleschannel: {
+		type: String,
+		default: def.ruleschannel,
+	},
+	disabledModules:{
+		type: Array,
+		default: def.disabledModules,
 	},
 });
 

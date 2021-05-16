@@ -1,4 +1,4 @@
-const { permissions } = require('../../Storage/Functions/util');
+const { permissions } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'message',
@@ -14,7 +14,7 @@ module.exports = {
 
 		// Setup Prefix
 		const prefixMention = new RegExp(`^<@!?${bot.user.id}> `);
-		const prefixes = ['?', message.content.match(prefixMention) ? message.content.match(prefixMention[0]) : settings.prefix];
+		const prefixes = [settings ? settings.prefix : '?', message.content.match(prefixMention) ? message.content.match(prefixMention[0]) : '?'];
 		const prefix = await prefixes.find(p => message.content.startsWith(p));
 
 		// Setup Conditionals
@@ -30,29 +30,34 @@ module.exports = {
 
 		// Check if Owner Only
 		if(command.ownerOnly && !bot.Owners.includes(member.id)) {
-			return message.lineReply(`Sorry, The command \`${command.name}\` is locked.`);
+			return message.lineReply(`Sorry, The command \`${command.name}\` is locked.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
-		// Check if Disabled
+		// Check if Disabled Globally
 		if(command.disabled && command.disabled === true) {
-			return message.lineReply(`Sorry, The command \`${command.name}\` is disabled.`);
+			return message.lineReply(`Sorry, The command \`${command.name}\` is disabled.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+		}
+
+		// Check if Disabled in Guild
+		if(settings.disabledModules.includes(command.category)) {
+			return message.lineReply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
 		// Check if args required
 		if(command.args && !args.length) {
-			return message.lineReply(`The command \`${command.name}\` requires arguments, you did not provide any!`);
+			return message.lineReply(`The command \`${command.name}\` requires arguments, you did not provide any!`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
 		// Check NSFW
 		if(!message.channel.nsfw && command.nsfw) {
-			return message.lineReply('Sorry, this command can only be used in channels marked as NSFW');
+			return message.lineReply('Sorry, this command can only be used in channels marked as NSFW').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
 		// Check for permissions of user
 		if (command.userPerms) {
 			const usermissing = message.channel.permissionsFor(message.author).missing(command.userPerms);
 			if (usermissing.length > 0) {
-				return message.lineReply(`Sorry, The command \`${command.name}\` requires the following permissions:\n\`${usermissing.map(perm => permissions[perm]).join(', ')}\``).then(s => s.delete({ timeout: 30 * 1000 }));
+				return message.lineReply(`Sorry, The command \`${command.name}\` requires the following permissions:\n\`${usermissing.map(perm => permissions[perm]).join(', ')}\``).then(s => s.delete({ timeout: 30 * 1000 })).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 			}
 		}
 
@@ -60,7 +65,7 @@ module.exports = {
 		if (command.botPerms) {
 			const botmissing = message.channel.permissionsFor(message.guild.me).missing(command.botPerms);
 			if (botmissing.length > 0) {
-				return message.lineReply(`I cannot execute the command \`${command.name}\`, I'm missing the the following permissions:\n\`${botmissing.map(perm => permissions[perm]).join(', ')}\``).then(s => s.delete({ timeout: 30 * 1000 }));
+				return message.lineReply(`I cannot execute the command \`${command.name}\`, I'm missing the the following permissions:\n\`${botmissing.map(perm => permissions[perm]).join(', ')}\``).then(s => s.delete({ timeout: 30 * 1000 })).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 			}
 		}
 

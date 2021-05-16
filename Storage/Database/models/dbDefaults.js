@@ -1,9 +1,15 @@
 module.exports = {
 	defaultSettings: {
 		prefix: '?',
-		guildColor: '#c93a3a',
+		guildColor: '',
+		guildID: '',
+		guildName: '',
 		prune: false,
 		audit: false,
 		auditchannel: '',
+		welcome: false,
+		welcomechannel: '',
+		ruleschannel: '',
+		disabledModules: [],
 	},
 };

@@ -16,7 +16,8 @@ bot.mongoose = require('./Storage/Database/mongoose');
 bot.defaults = require('./Storage/Database/models/dbDefaults');
 
 // Load Functions
-require('./Storage/Functions/functions')(bot);
+require('./Storage/Functions/dbFunctions')(bot);
+require('./Storage/Functions/utilFunctions')(bot);
 
 // Declare myself as Owner of bot.
 bot.Owners = ['101789503634554880', '101790332437405696'];

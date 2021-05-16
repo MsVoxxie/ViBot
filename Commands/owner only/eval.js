@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 const Discord = require('discord.js');
-const { createBar, Vimotes, permissions } = require('../../Storage/Functions/util');
+const { createBar, Vimotes, permissions } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'eval',
 	aliases: ['e', 'ev'],
 	description: 'Evaluate Code',
-	category: 'Owner Only',
+	category: 'owner only',
 	ownerOnly: true,
 	args: true,
 	botPerms: ['MANAGE_MESSAGES'],

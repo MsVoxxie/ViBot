@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['h'],
 	description: 'View command info or this list!',
 	example: 'help',
-	category: 'Utility',
+	category: 'utility',
 	usage: '<command>',
 	hidden: false,
 	userPerms: ['SEND_MESSAGES'],
