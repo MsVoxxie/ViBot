@@ -1,9 +1,9 @@
 module.exports = {
 	defaultSettings: {
 		prefix: '?',
-		guildColor: '',
-		guildID: '',
-		guildName: '',
+		guildcolor: '',
+		guildid: '',
+		guildname: '',
 		prune: false,
 		audit: false,
 		auditchannel: '',

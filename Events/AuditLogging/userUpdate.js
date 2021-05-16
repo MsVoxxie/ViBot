@@ -24,7 +24,7 @@ module.exports = {
 							.setTitle('User Changed Username')
 							.setAuthor(`${member.nickname ? `${member.nickname} | ${newUser.tag}` : newUser.tag}`, oldUser.displayAvatarURL({ dynamic: true }))
 							.setDescription(`**Old Username›** ${oldUser.username}\n**New Username›** ${newUser.username}`)
-							.setColor(settings.guildColor)
+							.setColor(settings.guildcolor)
 							.setFooter(bot.Timestamp(new Date()));
 
 						logChannel.send({ embed: usernameEmbed });
@@ -38,7 +38,7 @@ module.exports = {
 							.setTitle('User Changed Discriminator')
 							.setAuthor(`${member.nickname ? `${member.nickname} | ${newUser.tag}` : newUser.tag}`, oldUser.displayAvatarURL({ dynamic: true }))
 							.setDescription(`**Old Discriminator›** ${oldUser.username}#${oldUser.discriminator}\n**New Discriminator›** ${newUser.username}#${newUser.discriminator}`)
-							.setColor(settings.guildColor)
+							.setColor(settings.guildcolor)
 							.setFooter(bot.Timestamp(new Date()));
 
 						logChannel.send({ embed: discriminatorEmbed });
@@ -53,7 +53,7 @@ module.exports = {
 							.setAuthor(`${member.nickname ? `${member.nickname} | ${newUser.tag}` : newUser.tag}`, oldUser.displayAvatarURL({ dynamic: true }))
 							.setThumbnail(newUser.displayAvatarURL({ dynamic: true }))
 							.setImage(oldUser.displayAvatarURL({ dynamic: true }))
-							.setColor(settings.guildColor)
+							.setColor(settings.guildcolor)
 							.setFooter(bot.Timestamp(new Date()));
 
 						logChannel.send({ embed: avatarEmbed });

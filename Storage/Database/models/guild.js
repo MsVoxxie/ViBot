@@ -6,17 +6,17 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.prefix,
 	},
-	guildColor: {
+	guildcolor: {
 		type: String,
-		default: def.guildColor,
+		default: def.guildgolor,
 	},
-	guildID: {
+	guildid: {
 		type: Number,
-		default: def.guildID,
+		default: def.guildid,
 	},
-	guildName: {
+	guildname: {
 		type: String,
-		default: def.guildName,
+		default: def.guildname,
 	},
 	prune: {
 		type: Boolean,

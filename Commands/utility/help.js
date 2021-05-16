@@ -38,7 +38,7 @@ module.exports = {
 				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
 				.setDescription(`Command Prefix› ${settings.prefix}\nTo view a commands details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
 				.addField(`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`, dir.map(command => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n'))
-				.setColor(settings.guildColor);
+				.setColor(settings.guildcolor);
 
 			embeds.push(embed);
 			embeds.sort();
@@ -54,7 +54,7 @@ module.exports = {
 			// Init Embed
 			const helpEmbed = new MessageEmbed()
 				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
-				.setColor(settings.guildColor);
+				.setColor(settings.guildcolor);
 
 			// Check if its valid
 			if (!command) {

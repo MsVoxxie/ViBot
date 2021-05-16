@@ -16,7 +16,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setAuthor(`${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, member.user.displayAvatarURL({ dynamic: true }))
 			.setDescription(`${Vimotes['LEAVE_ARROW']} <@${member.user.id}> Left the server.`)
-			.setColor(settings.guildColor)
+			.setColor(settings.guildcolor)
 			.setFooter(bot.Timestamp(new Date()));
 
 		logChannel.send({ embed: embed });

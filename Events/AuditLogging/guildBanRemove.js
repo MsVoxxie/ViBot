@@ -17,7 +17,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setAuthor(`${member.nickname ? `${member.nickname} | ${user.tag}` : user.tag}`, user.displayAvatarURL({ dynamic: true }))
 			.setDescription(`${Vimotes['UP_ARROW']} <@${user.id}> was Unbanned.`)
-			.setColor(settings.guildColor)
+			.setColor(settings.guildcolor)
 			.setFooter(bot.Timestamp(member.joinedAt));
 
 		logChannel.send({ embed: embed });

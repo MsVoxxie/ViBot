@@ -5,7 +5,7 @@ module.exports = bot => {
 
 	// Get Guild Settings
 	bot.getGuild = async (guild) => {
-		const data = await Guild.findOne({ guildID: guild.id });
+		const data = await Guild.findOne({ guildid: guild.id });
 		if (data) return data;
 		else return bot.defaults.dbDefaults;
 	};
@@ -32,7 +32,7 @@ module.exports = bot => {
 
 	// Add Module to List
 	bot.disableModule = async (guild, module) => {
-		const data = await Guild.findOne({ guildID: guild.id });
+		const data = await Guild.findOne({ guildid: guild.id });
 		const Modules = await data.disabledModules;
 		const cats = await bot.commands.map(c => c.category);
 
@@ -47,7 +47,7 @@ module.exports = bot => {
 
 	// Remove Module from List
 	bot.enableModule = async (guild, module) => {
-		const data = await Guild.findOne({ guildID: guild.id });
+		const data = await Guild.findOne({ guildid: guild.id });
 		const Modules = await data.disabledModules;
 		const cats = await bot.commands.map(c => c.category);
 

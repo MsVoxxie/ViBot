@@ -40,7 +40,7 @@ module.exports = {
 				.setTitle('Members Roles Changed')
 				.setAuthor(`${newMember.nickname ? `${newMember.nickname} | ${newMember.user.tag}` : newMember.user.tag}`, newMember.user.displayAvatarURL({ dynamic: true }))
 				.setDescription(`**Member›** <@${newMember.user.id}> | **${newMember.user.tag}**\n${rolesAdded.length > 0 ? `\n**Roles Added›**\n\`\`\`${rolesAdded.map(r => r.name).join(' | ')}\`\`\`` : ''}\n${rolesRemoved.length > 0 ? `**Roles Removed›**\n${rolesRemoved.map(r => r.name).join(' | ')}` : ''}`)
-				.setColor(settings.guildColor)
+				.setColor(settings.guildcolor)
 				.setFooter(bot.Timestamp(new Date()));
 
 			logChannel.send({ embed: embed });
