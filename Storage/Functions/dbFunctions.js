@@ -18,7 +18,7 @@ module.exports = bot => {
 			if (data[key] !== settings[key]) data[key] = settings[key];
 			else return;
 		}
-		console.log(`Guild '${data.guildName}' updated its settings: ${Object.keys(settings)}`);
+		console.log(`Guild '${data.guildname}' updated its settings: ${Object.keys(settings)}`);
 		return await data.updateOne(settings);
 	};
 
@@ -27,7 +27,7 @@ module.exports = bot => {
 		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.defaults.dbDefaults);
 		const merged = Object.assign(defaults, settings);
 		const newGuild = await new Guild(merged);
-		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildName}`));
+		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildname}`));
 	};
 
 	// Add Module to List

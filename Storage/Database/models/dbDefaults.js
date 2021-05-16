@@ -6,10 +6,10 @@ module.exports = {
 		guildname: '',
 		prune: false,
 		audit: false,
-		auditchannel: '',
+		auditchannel: 'Not Set',
 		welcome: false,
-		welcomechannel: '',
-		ruleschannel: '',
+		welcomechannel: 'Not Set',
+		ruleschannel: 'Not Set',
 		disabledModules: [],
 	},
 };

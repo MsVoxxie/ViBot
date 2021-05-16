@@ -5,9 +5,9 @@ module.exports = {
 	async execute(guild, bot) {
 		try {
 			const newGuild = {
-				guildColor: `#${ Math.floor(Math.random() * 16777215).toString(16) }`,
-				guildID: guild.id,
-				guildName: guild.name,
+				guildcolor: `#${ Math.floor(Math.random() * 16777215).toString(16) }`,
+				guildid: guild.id,
+				guildname: guild.name,
 			};
 			await bot.createGuild(newGuild);
 		}
