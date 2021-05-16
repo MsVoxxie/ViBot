@@ -26,7 +26,6 @@ module.exports = bot => {
 	bot.createGuild = async (settings) => {
 		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.defaults.dbDefaults);
 		const merged = Object.assign(defaults, settings);
-
 		const newGuild = await new Guild(merged);
 		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildName}`));
 	};

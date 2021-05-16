@@ -4,7 +4,6 @@ module.exports = {
 	example: 'disable Utility',
 	category: 'config',
 	args: true,
-	usage: '',
 	hidden: false,
 	ownerOnly: false,
 	userPerms: ['ADMINISTRATOR'],

@@ -1,16 +1,18 @@
-const { MessageEmbed, escapeMarkdown } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { readdirSync } = require('fs');
-const ms = require('ms');
+const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'help',
 	aliases: ['h'],
-	description: 'View command info or this list!',
-	example: 'help',
+	description: 'Displays my commands list and their details!',
+	example: 'help help',
 	category: 'utility',
-	usage: '<command>',
+	args: false,
+	cooldown: 2,
 	hidden: false,
-	userPerms: ['SEND_MESSAGES'],
+	ownerOnly: false,
+	requiredRoles: [],
 	botPerms: ['MANAGE_MESSAGES'],
 	async execute(bot, message, args, settings) {
 
@@ -27,88 +29,89 @@ module.exports = {
 					return c.category === Cat;
 				}
 			});
-			const capitalize = Cat.slice(0, 1).toUpperCase() + Cat.slice(1);
 
+			// Slice first letter and make it uppercase
+			const Cap = Cat.slice(0, 1).toUpperCase() + Cat.slice(1);
+
+			// Setup Embed pages
 			const embed = new MessageEmbed()
-				.setAuthor(`${bot.user.username}'s Command List`, bot.user.displayAvatarURL({ dynamic: true }))
-				.setDescription(`Command prefix is: ${settings.prefix}\nTo view more information on a command, use \`${settings.prefix}help <command>\`\nTo view the full list use \`${settings.prefix}help all\`\n🔞 Represents an NSFW Command.\n🔒 Represents a Locked Command.\n<:xmark:753802620682109019> Represents a Disabled Command.\n`)
-				.addField(`${capitalize} [${dir.size}] ›`, dir.map(command => `**${command.name}**${command.nsfw ? '🔞' : ''}${command.ownerOnly ? '🔒' : ''} › ${command.description ? command.description : ''}`).join('\n'))
+				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
+				.setDescription(`Command Prefix› ${settings.prefix}\nTo view a commands details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
+				.addField(`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`, dir.map(command => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n'))
 				.setColor(settings.guildColor);
 
 			embeds.push(embed);
-
+			embeds.sort();
 			return embeds;
 		});
 
-		// Command Info
+		// Is the user requesting details?
 		if(cmd) {
+
+			// Define what a 'Command' is.
+			const command = bot.commands.get(bot.aliases.get(cmd.toLowerCase()) || cmd.toLowerCase());
+
 			// Init Embed
 			const helpEmbed = new MessageEmbed()
-				.setAuthor(`${bot.user.username}'s Command List`, bot.user.displayAvatarURL({ dynamic: true }))
-				.setColor(settings.color);
+				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
+				.setColor(settings.guildColor);
 
-			const command = bot.commands.get(bot.aliases.get(cmd.toLowerCase()) || cmd.toLowerCase());
+			// Check if its valid
 			if(!command) {
-				helpEmbed
-					.setTitle('Invalid Command!')
-					.setDescription(`Use \`${settings.prefix}help\` for the command list.`);
-				return message.channel.send({ embed: helpEmbed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+				helpEmbed.setTitle('Invalid Command');
+				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for the command list.`);
+				return message.lineReply({ embed: helpEmbed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 			}
-			helpEmbed.setDescription(`
-            This guilds prefix is \`${settings.prefix}\`
-            **Command›** ${command.name.slice(0, 1).toUpperCase() + command.name.slice(1)}
-            **Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : 'None.'}
-            **Usage›** ${command.usage ? `${settings.prefix}${command.name} ${command.usage}` : `${settings.prefix}${command.name}`}
-            **Example›** ${escapeMarkdown(command.example ? `${settings.prefix}${command.name} ${command.example}` : 'None Provided.')}
-            **Description›** ${escapeMarkdown(command.description)}
-            **Cooldown›** ${command.cooldown ? ms(command.cooldown * 1000) : ms(2 * 1000)}
-            `);
-			message.channel.send({ embed: helpEmbed });
+
+			// If Valid, Generate information sheet
+			helpEmbed.setDescription(`This guilds prefix is› \`${settings.prefix}\`\n**Command›**  ${command.name.slice(0, 1).toUpperCase()}${command.name.slice(1)}\n**Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : ''}\n**Example›** ${command.example ? `${settings.prefix}${command.example}` : ''}\n**Cooldown›** ${command.cooldown ? command.cooldown : '2s'}\n**Description›** ${command.description ? command.description : ''}`);
+			message.lineReply({ embed: helpEmbed });
 		}
 		else{
-			// Sort
-			embeds.sort();
 
-			// Send Pagination
-			const embedList = await message.channel.send(`**Current Page - ${currentPage + 1}/${embeds.length}**`, embeds[currentPage]);
+			// Send pagination
+			const embedList = await message.lineReply(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 
+			// Apply Reactions
 			try {
-				await embedList.react('⬅');
+				await embedList.react('◀');
 				await embedList.react('⏹');
-				await embedList.react('➡');
+				await embedList.react('▶');
 			}
 			catch (error) {
 				console.error(error);
 			}
 
-			const filter = (reaction, user) => ['⬅', '⏹', '➡'].includes(reaction.emoji.name) && message.author.id === user.id;
+			// Filter Reactions, setup Collector and try each reaction
+			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
 			const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
 			collector.on('collect', async (reaction) => {
 				try {
-					if (reaction.emoji.name === '➡') {
-						if (currentPage < embeds.length - 1) {
+					if(reaction.emoji.name === '▶') {
+						if(currentPage < embeds.length - 1) {
 							currentPage++;
-							embedList.edit(`**Current Page - ${currentPage + 1}/${embeds.length}**`, embeds[currentPage]);
+							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 						}
 					}
-					else if (reaction.emoji.name === '⬅') {
-						if (currentPage !== 0) {
-							--currentPage;
-							embedList.edit(`**Current Page - ${currentPage + 1}/${embeds.length}**`, embeds[currentPage]);
+					else if(reaction.emoji.name === '◀') {
+						if(currentPage !== 0) {
+							currentPage--;
+							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 						}
 					}
-					else {
+					else{
 						collector.stop();
 						reaction.message.reactions.removeAll();
-						embedList.delete({ timeout: 600 * 1000 });
+						embedList.edit('**«Collection Stopped»**');
 					}
 					await reaction.users.remove(message.author.id);
 				}
 				catch (error) {
 					console.error(error);
-					return message.channel.send(error.message).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+					message.lineReply('An error occurred, Aborting Reaction Handler...').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 				}
 			});
+
 		}
 	},
 };

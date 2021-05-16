@@ -4,11 +4,15 @@ const { createBar, Vimotes, permissions } = require('../../Storage/Functions/mis
 
 module.exports = {
 	name: 'eval',
-	aliases: ['e', 'ev'],
-	description: 'Evaluate Code',
+	aliases: [],
+	description: 'Evaluates Code',
+	example: '',
 	category: 'owner only',
-	ownerOnly: true,
 	args: true,
+	cooldown: 0,
+	hidden: false,
+	ownerOnly: true,
+	requiredRoles: [],
 	botPerms: ['MANAGE_MESSAGES'],
 	async execute(bot, message, args, settings) {
 		function clean(text) {
