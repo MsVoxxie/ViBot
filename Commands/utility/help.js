@@ -25,7 +25,7 @@ module.exports = {
 		// Generate Pagination
 		Categories.forEach(Cat => {
 			const dir = bot.commands.filter(c => {
-				if(!c.hidden) {
+				if (!c.hidden) {
 					return c.category === Cat;
 				}
 			});
@@ -46,7 +46,7 @@ module.exports = {
 		});
 
 		// Is the user requesting details?
-		if(cmd) {
+		if (cmd) {
 
 			// Define what a 'Command' is.
 			const command = bot.commands.get(bot.aliases.get(cmd.toLowerCase()) || cmd.toLowerCase());
@@ -57,17 +57,17 @@ module.exports = {
 				.setColor(settings.guildColor);
 
 			// Check if its valid
-			if(!command) {
+			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for the command list.`);
-				return message.lineReply({ embed: helpEmbed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+				return message.lineReply({ embed: helpEmbed }).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
 			}
 
 			// If Valid, Generate information sheet
 			helpEmbed.setDescription(`This guilds prefix is› \`${settings.prefix}\`\n**Command›**  ${command.name.slice(0, 1).toUpperCase()}${command.name.slice(1)}\n**Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : ''}\n**Example›** ${command.example ? `${settings.prefix}${command.example}` : ''}\n**Cooldown›** ${command.cooldown ? command.cooldown : '2s'}\n**Description›** ${command.description ? command.description : ''}`);
 			message.lineReply({ embed: helpEmbed });
 		}
-		else{
+		else {
 
 			// Send pagination
 			const embedList = await message.lineReply(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
@@ -86,32 +86,40 @@ module.exports = {
 			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
 			const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
 			collector.on('collect', async (reaction) => {
-				try {
-					if(reaction.emoji.name === '▶') {
-						if(currentPage < embeds.length - 1) {
-							currentPage++;
-							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
-						}
-					}
-					else if(reaction.emoji.name === '◀') {
-						if(currentPage !== 0) {
-							currentPage--;
-							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
-						}
-					}
-					else{
-						collector.stop();
-						reaction.message.reactions.removeAll();
-						embedList.edit('**«Collection Stopped»**');
-					}
+
+				// Switch Case
+				switch (reaction.emoji.name) {
+
+				// Backwards
+				case '◀': {
 					await reaction.users.remove(message.author.id);
+					if (currentPage !== 0) {
+						currentPage--;
+						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+					}
+					break;
 				}
-				catch (error) {
-					console.error(error);
-					message.lineReply('An error occurred, Aborting Reaction Handler...').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+
+				// Forwards
+				case '▶': {
+					await reaction.users.remove(message.author.id);
+					console.log('forward');
+					if(currentPage < embeds.length - 1) {
+						currentPage++;
+						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+					}
+					break;
+				}
+
+				// Stop
+				case '⏹': {
+					collector.stop();
+					reaction.message.reactions.removeAll();
+					embedList.edit('**«Collection Stopped»**');
+				}
+					break;
 				}
 			});
-
 		}
 	},
 };
