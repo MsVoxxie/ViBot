@@ -100,24 +100,24 @@ module.exports = {
 					break;
 				}
 
+				// Stop
+				case '⏹': {
+					collector.stop();
+					reaction.message.reactions.removeAll();
+					embedList.edit('**«Collection Stopped»**');
+					break;
+				}
+
 				// Forwards
 				case '▶': {
 					await reaction.users.remove(message.author.id);
-					console.log('forward');
-					if(currentPage < embeds.length - 1) {
+					if (currentPage < embeds.length - 1) {
 						currentPage++;
 						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 					}
 					break;
 				}
 
-				// Stop
-				case '⏹': {
-					collector.stop();
-					reaction.message.reactions.removeAll();
-					embedList.edit('**«Collection Stopped»**');
-				}
-					break;
 				}
 			});
 		}
