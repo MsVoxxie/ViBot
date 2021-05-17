@@ -43,6 +43,16 @@ module.exports = {
 			return message.lineReply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
+		// Check if Mod required
+		if((message.guild.ownerID !== message.author.id) || command.modRequired && !message.member.roles.cache.has(settings.modrole)) {
+			return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.modrole).name}\` only.`);
+		}
+
+		// Check if Admin required
+		if((message.guild.ownerID !== message.author.id) || command.adminRequired && !message.member.roles.cache.has(settings.adminrole)) {
+			return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.adminrole).name}\` only.`);
+		}
+
 		// Check if args required
 		if(command.args && !args.length) {
 			return message.lineReply(`The command \`${command.name}\` requires arguments, you did not provide any!`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
@@ -53,7 +63,7 @@ module.exports = {
 			return message.lineReply('Sorry, this command can only be used in channels marked as NSFW').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
-		// Check for permissions of user
+		// Check for permissions of user || TO BE DEPRICATED ||
 		if (command.userPerms) {
 			const usermissing = message.channel.permissionsFor(message.author).missing(command.userPerms);
 			if (usermissing.length > 0) {

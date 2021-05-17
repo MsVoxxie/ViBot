@@ -46,6 +46,14 @@ const guildSchema = mongoose.Schema({
 		type: Array,
 		default: def.disabledModules,
 	},
+	modrole: {
+		type: String,
+		default: def.modrole,
+	},
+	adminrole: {
+		type: String,
+		default: def.adminrole,
+	},
 });
 
 module.exports = mongoose.model('Guild', guildSchema);

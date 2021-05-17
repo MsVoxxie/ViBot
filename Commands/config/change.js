@@ -10,6 +10,8 @@ module.exports = {
 	cooldown: 2,
 	hidden: false,
 	ownerOnly: false,
+	modRequired: false,
+	adminRequired: true,
 	requiredRoles: [],
 	userPerms: ['ADMINISTRATOR'],
 	botPerms: [],
@@ -132,6 +134,35 @@ module.exports = {
 			break;
 		}
 
+		// Mod Role
+		case 'modrole': {
+			if(!newSetting) return message.lineReply(`**Modrole is currently set to ${settings.modrole}**`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			try {
+				const role = await message.mentions.roles.first();
+				await bot.updateGuild(guild, { modrole: role });
+				return message.lineReply(`**ModRole Update›** ${role}`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			}
+			catch (error) {
+				message.lineReply('**Failed to update modrole, Please try again').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			}
+			break;
+		}
+
+		// Admin Role
+		case 'adminrole': {
+			if(!newSetting) return message.lineReply(`**Adminrole is currently set to ${settings.adminrole}**`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			try {
+				const role = await message.mentions.roles.first();
+				await bot.updateGuild(guild, { adminrole: role });
+				return message.lineReply(`**AdminRole Update›** ${role}`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			}
+			catch (error) {
+				message.lineReply('**Failed to update adminrole, Please try again').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			}
+			break;
+		}
+
+		// Default Embed
 		default: {
 			try {
 				const embed = new MessageEmbed()

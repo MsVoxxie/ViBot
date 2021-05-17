@@ -6,6 +6,8 @@ module.exports = {
 	args: true,
 	hidden: false,
 	ownerOnly: false,
+	modRequired: false,
+	adminRequired: true,
 	userPerms: ['ADMINISTRATOR'],
 	async execute(bot, message, args, settings) {
 
