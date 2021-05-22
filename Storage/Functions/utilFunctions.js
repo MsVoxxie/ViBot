@@ -14,4 +14,10 @@ module.exports = bot => {
 		return (a.toString(16) === h.toLowerCase());
 	};
 
+	// Date Difference
+	bot.dateDiff = async (date) => {
+		const difference = Math.abs(new Date() - date);
+		return difference;
+	};
+
 };

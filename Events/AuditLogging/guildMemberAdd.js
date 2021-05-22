@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const moment = require('moment');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
@@ -15,7 +16,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setAuthor(`${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, member.user.displayAvatarURL({ dynamic: true }))
-			.setDescription(`${Vimotes['JOIN_ARROW']} <@${member.user.id}> Joined the server.`)
+			.setDescription(`${Vimotes['JOIN_ARROW']} <@${member.user.id}> Joined the server.\n**Account Created›** ${moment(member.user.createdAt, 'YYYMMDD h mm ss').fromNow()}`)
 			.setColor(settings.guildcolor)
 			.setFooter(bot.Timestamp(member.joinedAt));
 
