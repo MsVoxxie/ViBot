@@ -21,7 +21,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setImage(`${cat.file}`)
 			.setTitle('Random Cat!')
-			.setURL(cat.image)
+			.setURL(cat.file)
 			.setColor(settings.guildcolor)
 			.setFooter(`A cat for ${message.author.username}!`);
 
