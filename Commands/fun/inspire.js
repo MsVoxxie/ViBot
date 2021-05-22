@@ -5,7 +5,7 @@ module.exports = {
 	name: 'inspire',
 	aliases: [],
 	description: 'Generate an "Inspirational" quote!',
-	example: '',
+	example: 'inspire',
 	category: 'fun',
 	args: false,
 	cooldown: 2,

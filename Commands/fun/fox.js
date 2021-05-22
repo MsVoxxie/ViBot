@@ -5,7 +5,7 @@ module.exports = {
 	name: 'fox',
 	aliases: [],
 	description: 'Get a random fox picture!',
-	example: '',
+	example: 'fox',
 	category: 'fun',
 	args: false,
 	cooldown: 2,

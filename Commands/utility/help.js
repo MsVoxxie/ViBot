@@ -36,6 +36,7 @@ module.exports = {
 			// Setup Embed pages
 			const embed = new MessageEmbed()
 				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
+				.setThumbnail(message.guild.iconURL({ dynamic: true, size: 64 }))
 				.setDescription(`Command Prefix› ${settings.prefix}\nTo view a commands details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
 				.addField(`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`, dir.map(command => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n'))
 				.setColor(settings.guildcolor);
@@ -54,17 +55,18 @@ module.exports = {
 			// Init Embed
 			const helpEmbed = new MessageEmbed()
 				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
+				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 
 			// Check if its valid
 			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
-				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for the command list.`);
+				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
 				return message.lineReply({ embed: helpEmbed }).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
 			}
 
 			// If Valid, Generate information sheet
-			helpEmbed.setDescription(`This guilds prefix is› \`${settings.prefix}\`\n**Command›**  ${command.name.slice(0, 1).toUpperCase()}${command.name.slice(1)}\n**Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : ''}\n**Example›** ${command.example ? `${settings.prefix}${command.example}` : ''}\n**Cooldown›** ${command.cooldown ? command.cooldown : '2s'}\n**Description›** ${command.description ? command.description : ''}`);
+			helpEmbed.setDescription(`**This guilds prefix is›** ${settings.prefix}\n**Command›**  ${command.name.slice(0, 1).toUpperCase()}${command.name.slice(1)}\n**Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : ''}\n**Example›** ${command.example ? `${settings.prefix}${command.example}` : ''}\n**Status›** ${settings.disabledModules.includes(command.category) ? `${Vimotes['XMARK']}Disabled.` : `${Vimotes['AUTHORIZED']}Enabled`}\n**Cooldown›** ${command.cooldown ? command.cooldown : '2s'}\n**Description›** ${command.description ? command.description : ''}`);
 			message.lineReply({ embed: helpEmbed });
 		}
 		else {
