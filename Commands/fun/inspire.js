@@ -15,16 +15,6 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 
-		// Define number for loop
-		let num;
-
-		if (args[0] && !isNaN(args[0]) && args[0] > 0) {
-			num = Math.floor(args[0]);
-		}
-		else {
-			num = 1;
-		}
-
 		const randomQuip = [
 			'*Getcha Head In The Game*',
 			'*Believe In The You That Believes In Chi*',
@@ -54,13 +44,6 @@ module.exports = {
 			});
 		}
 
-		// Sanity Check
-		if (num > 5) {
-			return message.lineReply('Maximum of 5 please!');
-		}
-
-		for (let step = 0; step < num; step++) {
-			await generateInspirationalQuote(step, loading);
-		}
+		await generateInspirationalQuote(1, loading);
 	},
 };
