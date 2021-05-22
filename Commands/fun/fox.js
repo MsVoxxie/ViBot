@@ -15,13 +15,15 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings) {
 
-		let cat;
-		await fetch('https://randomfox.ca/floof/').then(r => r.json()).then(j => cat = j);
+		let fox;
+		await fetch('https://randomfox.ca/floof/').then(r => r.json()).then(j => fox = j);
 
 		const embed = new MessageEmbed()
-			.setImage(`${cat.file}`)
+			.setImage(`${fox.image}`)
+			.setTitle('Random Fox!')
+			.setURL(fox.image)
 			.setColor(settings.guildcolor)
-			.setFooter(`A cat for ${message.author.username}!`);
+			.setFooter(`A fox for ${message.author.username}!`);
 
 		message.channel.send({ embed: embed });
 
