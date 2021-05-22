@@ -43,15 +43,15 @@ module.exports = {
 			return message.lineReply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
-		// Check if Mod required
-		if((message.guild.ownerID !== message.author.id) || command.modRequired && !message.member.roles.cache.has(settings.modrole)) {
-			return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.modrole).name}\` only.`);
-		}
+		// // Check if Mod required
+		// if((message.guild.ownerID !== message.author.id) || command.modRequired == true && !message.member.roles.cache.has(settings.modrole)) {
+		// 	return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.modrole) ? message.guild.roles.cache.get(settings.modrole).name : 'Role not set...'}\` only.`);
+		// }
 
-		// Check if Admin required
-		if((message.guild.ownerID !== message.author.id) || command.adminRequired && !message.member.roles.cache.has(settings.adminrole)) {
-			return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.adminrole).name}\` only.`);
-		}
+		// // Check if Admin required
+		// if((message.guild.ownerID !== message.author.id) || command.adminRequired == true && !message.member.roles.cache.has(settings.adminrole)) {
+		// 	return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.adminrole) ? message.guild.roles.cache.get(settings.adminrole).name : 'Role not set...'}\` only.`);
+		// }
 
 		// Check if args required
 		if(command.args && !args.length) {

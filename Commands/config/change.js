@@ -10,9 +10,6 @@ module.exports = {
 	cooldown: 2,
 	hidden: false,
 	ownerOnly: false,
-	modRequired: false,
-	adminRequired: true,
-	requiredRoles: [],
 	userPerms: ['ADMINISTRATOR'],
 	botPerms: [],
 	async execute(bot, message, args, settings) {

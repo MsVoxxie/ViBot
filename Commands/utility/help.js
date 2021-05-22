@@ -12,9 +12,7 @@ module.exports = {
 	cooldown: 2,
 	hidden: false,
 	ownerOnly: false,
-	modRequired: false,
-	adminRequired: false,
-	requiredRoles: [],
+	userPerms: [],
 	botPerms: ['MANAGE_MESSAGES'],
 	async execute(bot, message, args, settings) {
 
