@@ -13,7 +13,7 @@ module.exports = {
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 
 		// Define number for loop
 		let num;
@@ -35,11 +35,14 @@ module.exports = {
 			'*Where am I?*',
 			'*Please get me out of here...*',
 			'*How did I get here...?*',
-			'*Funfact: Vi Six in roman numerals*',
+			'*Funfact: Vi means Six in roman numerals*',
 		];
 
+		// Send loading message...
+		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Generating Inspirational Quotes...`);
+
 		// Promise based function to get an image from inspirobot's api.
-		async function generateInspirationalQuote(number) {
+		async function generateInspirationalQuote(number, loadingMessage) {
 			request('http://inspirobot.me/api?generate=true', async (error, response, body) => {
 				const QuoteEmbed = new MessageEmbed()
 					.setAuthor(`${message.member.displayName}'s Quote`, `${message.member.user.displayAvatarURL({ dynamic: true })}`)
@@ -47,7 +50,7 @@ module.exports = {
 					.setImage(body)
 					.setColor(settings.guildcolor)
 					.setFooter(bot.Timestamp(new Date()));
-				await message.channel.send({ embed: QuoteEmbed });
+				await loadingMessage.edit('', { embed: QuoteEmbed });
 			});
 		}
 
@@ -57,7 +60,7 @@ module.exports = {
 		}
 
 		for (let step = 0; step < num; step++) {
-			await generateInspirationalQuote(step);
+			await generateInspirationalQuote(step, loading);
 		}
 	},
 };

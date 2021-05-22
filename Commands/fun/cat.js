@@ -13,9 +13,10 @@ module.exports = {
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 
 		let cat;
+		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Finding a Kitty for you...`);
 		await fetch('http://aws.random.cat/meow').then(r => r.json()).then(j => cat = j);
 
 		const embed = new MessageEmbed()
@@ -25,7 +26,7 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setFooter(`A cat for ${message.author.username}!`);
 
-		message.channel.send({ embed: embed });
+		await loading.edit('', { embed: embed });
 
 	},
 };

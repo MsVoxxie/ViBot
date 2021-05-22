@@ -13,9 +13,10 @@ module.exports = {
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 
 		let fox;
+		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Finding a Fox for you...`);
 		await fetch('https://randomfox.ca/floof/').then(r => r.json()).then(j => fox = j);
 
 		const embed = new MessageEmbed()
@@ -25,7 +26,7 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setFooter(`A fox for ${message.author.username}!`);
 
-		message.channel.send({ embed: embed });
+		await loading.edit('', { embed: embed });
 
 	},
 };

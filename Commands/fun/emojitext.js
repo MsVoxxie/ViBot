@@ -13,7 +13,7 @@ module.exports = {
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 
 		// Convert text
 		const emoji = function(text) {
@@ -22,12 +22,14 @@ module.exports = {
 			}).join(' ');
 		};
 
+		// Loading Message.
+		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Swapping Characters...`);
 		// Set up embed
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
 			.setAuthor(message.member.displayName, message.author.displayAvatarURL())
 			.setDescription(emoji(args.join(' ').toLowerCase()));
-		return message.channel.send({ embed: embed });
+		return loading.edit({ embed: embed });
 	},
 
 };

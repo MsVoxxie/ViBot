@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'urban',
-	aliases: [],
+	aliases: ['define'],
 	description: 'Ask Urban Dictionary for a definition',
 	example: 'Boop',
 	category: 'fun',
@@ -14,12 +14,13 @@ module.exports = {
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 
 		const query = querystring.stringify({ term: args.join(' ') });
+		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Finding a Definition...`);
 		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
 		if (!list) return message.channel.send(`No results found for **${args.join(' ')}**.`).then(s => s.delete({ timeout: 10 * 1000 }));
-		const trim = (str, max) => ((str.length > max) ? `${string.slice(0, max - 3)}...` : str);
+		const trim = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);
 		const [answer] = list;
 
 		const embed = new MessageEmbed()
@@ -33,7 +34,7 @@ module.exports = {
 			)
 			.setFooter(`Searched by › ${message.member.displayName}`);
 
-		message.channel.send({ embed: embed });
+		loading.edit('', { embed: embed });
 
 	},
 };

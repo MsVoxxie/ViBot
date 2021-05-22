@@ -1,4 +1,5 @@
 const { permissions } = require('../../Storage/Functions/miscFunctions');
+const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'message',
@@ -83,7 +84,7 @@ module.exports = {
 
 		// Execute command
 		try {
-			command.execute(bot, message, args, settings);
+			command.execute(bot, message, args, settings, Vimotes);
 		}
 		catch (e) {
 			console.error(e);

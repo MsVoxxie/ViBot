@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { readdirSync } = require('fs');
-const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'help',
@@ -14,7 +13,7 @@ module.exports = {
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: ['MANAGE_MESSAGES'],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 
 		// Setup
 		const cmd = args[0];
@@ -62,17 +61,20 @@ module.exports = {
 			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
-				return message.lineReply({ embed: helpEmbed }).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+				const loading = await message.lineReply(`${Vimotes['A_LOADING']} Generating Embed`);
+				return await loading.edit('', { embed: helpEmbed }).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
 			}
 
 			// If Valid, Generate information sheet
 			helpEmbed.setDescription(`**This guilds prefix is›** ${settings.prefix}\n**Command›**  ${command.name.slice(0, 1).toUpperCase()}${command.name.slice(1)}\n**Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : ''}\n**Example›** ${command.example ? `${settings.prefix}${command.example}` : ''}\n**Status›** ${settings.disabledModules.includes(command.category) ? `${Vimotes['XMARK']}Disabled.` : `${Vimotes['AUTHORIZED']}Enabled`}\n**Cooldown›** ${command.cooldown ? command.cooldown : '2s'}\n**Description›** ${command.description ? command.description : ''}`);
-			message.lineReply({ embed: helpEmbed });
+			const loading = await message.lineReply(`${Vimotes['A_LOADING']} Generating Embed`);
+			await loading.edit('', { embed: helpEmbed });
 		}
 		else {
 
 			// Send pagination
-			const embedList = await message.lineReply(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+			const loading = await message.lineReply(`${Vimotes['A_LOADING']} Generating Embed`);
+			const embedList = await await loading.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 
 			// Apply Reactions
 			try {
