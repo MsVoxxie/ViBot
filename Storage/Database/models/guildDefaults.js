@@ -11,6 +11,7 @@ module.exports = {
 		welcomechannel: 'Not Set',
 		ruleschannel: 'Not Set',
 		disabledModules: [],
+		roleConfiguration: [],
 		modrole: 'Not Set',
 		adminrole: 'Not Set',
 	},

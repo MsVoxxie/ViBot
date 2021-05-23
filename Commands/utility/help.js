@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { readdirSync } = require('fs');
 
 module.exports = {
@@ -23,6 +24,7 @@ module.exports = {
 
 		// Generate Pagination
 		Categories.forEach(Cat => {
+			if(Cat === 'owner only') return;
 			const dir = bot.commands.filter(c => {
 				if (!c.hidden) {
 					return c.category === Cat;
@@ -35,8 +37,8 @@ module.exports = {
 			// Setup Embed pages
 			const embed = new MessageEmbed()
 				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
-				.setThumbnail(message.guild.iconURL({ dynamic: true, size: 64 }))
-				.setDescription(`Command Prefix› ${settings.prefix}\nTo view a commands details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
+				.setThumbnail(message.guild.iconURL({ dynamic: true }))
+				.setDescription(`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
 				.addField(`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`, dir.map(command => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n'))
 				.setColor(settings.guildcolor);
 
@@ -61,20 +63,17 @@ module.exports = {
 			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
-				const loading = await message.lineReply(`${Vimotes['A_LOADING']} Generating Embed`);
-				return await loading.edit('', { embed: helpEmbed }).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+				return await message.lineReply({ embed: helpEmbed }).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
 			}
 
 			// If Valid, Generate information sheet
-			helpEmbed.setDescription(`**This guilds prefix is›** ${settings.prefix}\n**Command›**  ${command.name.slice(0, 1).toUpperCase()}${command.name.slice(1)}\n**Aliases›** ${command.aliases.length ? command.aliases.join(' | ') : ''}\n**Example›** ${command.example ? `${settings.prefix}${command.example}` : ''}\n**Status›** ${settings.disabledModules.includes(command.category) ? `${Vimotes['XMARK']}Disabled.` : `${Vimotes['AUTHORIZED']}Enabled`}\n**Cooldown›** ${command.cooldown ? command.cooldown : '2s'}\n**Description›** ${command.description ? command.description : ''}`);
-			const loading = await message.lineReply(`${Vimotes['A_LOADING']} Generating Embed`);
-			await loading.edit('', { embed: helpEmbed });
+			helpEmbed.setDescription(`**This guilds prefix is›** ${settings.prefix}\n${command.name ? `**Command›**  ${command.name}\n` : ''}${command.aliases.length ? `**Aliases›** ${command.aliases.join(' | ')}\n` : ''}${command.example ? `**Example›** ${settings.prefix}${command.example}\n` : ''}${settings.disabledModules.includes(command.category) ? `**Status›** ${Vimotes['XMARK']}Disabled.\n` : `**Status›** ${Vimotes['AUTHORIZED']}Enabled\n`}${command.cooldown ? `**Cooldown›** ${command.cooldown}\n` : ''}${command.description ? `**Description›** ${command.description}\n` : ''}${command.userPerms.length ? `**Required User Permissions›** ${command.userPerms.map(perm => permissions[perm]).join(' | ')}\n` : ''}${command.botPerms.length ? `**Required Bot Permissions›** ${command.botPerms.map(perm => permissions[perm]).join(' | ')}\n` : ''}`);
+			await message.lineReply({ embed: helpEmbed });
 		}
 		else {
 
 			// Send pagination
-			const loading = await message.lineReply(`${Vimotes['A_LOADING']} Generating Embed`);
-			const embedList = await await loading.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+			const embedList = await message.lineReply(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 
 			// Apply Reactions
 			try {

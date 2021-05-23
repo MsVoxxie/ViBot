@@ -9,6 +9,7 @@ module.exports = {
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(guild);
+		if(!settings) return;
 		if (settings.audit === false) return;
 		const logChannel = await guild.channels.cache.get(settings.auditchannel);
 		const member = await guild.members.cache.get(user.id);

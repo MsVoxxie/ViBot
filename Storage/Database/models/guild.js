@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { defaultSettings: def } = require('./dbDefaults');
+const { defaultSettings: def } = require('./guildDefaults');
 
 const guildSchema = mongoose.Schema({
 	prefix: {
@@ -45,6 +45,10 @@ const guildSchema = mongoose.Schema({
 	disabledModules:{
 		type: Array,
 		default: def.disabledModules,
+	},
+	roleConfiguration:{
+		type:Array,
+		default: def.roleConfiguration,
 	},
 	modrole: {
 		type: String,

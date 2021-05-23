@@ -6,10 +6,22 @@ module.exports = {
 	disabled: false,
 	once: true,
 	async execute(bot) {
-		bot.guilds.cache.forEach((f) => {
-			table.addRow(`${f.name}`, '✔ » Connected');
+		bot.guilds.cache.map(guild => {
+			table.addRow(`${guild.name}`, '✔ » Connected');
 		});
 		console.log(table.toString());
 		bot.StartedAt = Date.now();
+		cacheReactionData(bot);
 	},
 };
+
+async function cacheReactionData(bot) {
+	bot.guilds.cache.forEach(async guild => {
+		const data = await bot.getReactions(guild);
+		const roles = await data.reactionRoles;
+		roles.forEach(async gdata => {
+			const channel = await guild.channels.cache.get(gdata.channel);
+			await channel.messages.fetch(gdata.message);
+		});
+	});
+}

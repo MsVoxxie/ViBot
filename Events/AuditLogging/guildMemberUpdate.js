@@ -2,12 +2,13 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'guildMemberUpdate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(oldMember, newMember, bot) {
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(newMember.guild);
+		if(!settings) return;
 		if(settings.audit === false) return;
 		const logChannel = await newMember.guild.channels.cache.get(settings.auditchannel);
 

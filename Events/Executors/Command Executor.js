@@ -8,8 +8,10 @@ module.exports = {
 	async execute(message, bot) {
 
 		// Get Guild Settings
-		const settings = await bot.getGuild(message.guild);
-
+		let settings;
+		if(message.channel.type !== 'dm') {
+			settings = await bot.getGuild(message.guild);
+		}
 		// Member declaration
 		const member = await message.member;
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Guild } = require('../Database/models');
+const { Guild, Reaction } = require('../Database/models');
 
 module.exports = bot => {
 
@@ -7,7 +7,7 @@ module.exports = bot => {
 	bot.getGuild = async (guild) => {
 		const data = await Guild.findOne({ guildid: guild.id });
 		if (data) return data;
-		else return bot.defaults.dbDefaults;
+		else return bot.guildDefaults.defaultSettings;
 	};
 
 	// Update Guild Settings
@@ -24,10 +24,45 @@ module.exports = bot => {
 
 	// Create Guild from MODEL
 	bot.createGuild = async (settings) => {
-		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.defaults.dbDefaults);
+		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.guildDefaults.defaultSettings);
 		const merged = Object.assign(defaults, settings);
 		const newGuild = await new Guild(merged);
 		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildname}`));
+	};
+
+	// Reaction Roles Create
+	bot.createReactions = async (settings) =>{
+		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.reactionDefaults.defaultSettings);
+		const merged = Object.assign(defaults, settings);
+		const newReaction = await new Reaction(merged);
+		return newReaction.save().then(console.log(`Created new Reaction Model for \`${merged.guildname}\``));
+	};
+
+	// Get guild Reaction Roles
+	bot.getReactions = async (guild) => {
+		const data = await Reaction.findOne({ guildid : guild.id });
+		if(data) return data;
+		else return bot.reactionDefaults.defaultSettings;
+	};
+
+	// Add Reaction to Guild
+	bot.addReaction = async (guild, settings) => {
+		const data = await Reaction.findOne({ guildid: guild.id });
+		const reactionRoles = await data.reactionRoles;
+		if(typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+
+		reactionRoles.push(settings);
+		data.save();
+	};
+
+	// Remove Reaction to Guild
+	bot.removeReaction = async (guild, settings) => {
+		const data = await Reaction.findOne({ guildid: guild.id });
+		const reactionRoles = await data.reactionRoles;
+		if(typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+
+		reactionRoles.pull(settings);
+		data.save();
 	};
 
 	// Add Module to List

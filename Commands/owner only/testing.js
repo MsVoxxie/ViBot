@@ -11,6 +11,8 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		console.log('Empty');
+		const test = [{ channel: '391444222668177411', messageid:'845881414376226816', roles: [{ role: '750924113387847702', reaction: '✅' }] }];
+
+		console.log(test.find(chan => chan['channel'] === '391444222668177411').roles.find(r => r['role'] === '750924113387847702'));
 	},
 };

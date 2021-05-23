@@ -8,6 +8,7 @@ module.exports = {
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(oldMessage.guild);
+		if(!settings) return;
 		if(settings.audit === false) return;
 		if(oldMessage.author.bot) return;
 		if(oldMessage.channel.type !== 'text') return;
