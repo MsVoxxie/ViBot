@@ -11,8 +11,28 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		const test = [{ channel: '391444222668177411', messageid:'845881414376226816', roles: [{ role: '750924113387847702', reaction: '✅' }] }];
-
-		console.log(test.find(chan => chan['channel'] === '391444222668177411').roles.find(r => r['role'] === '750924113387847702'));
+		// Assume staff roles are not assignable.
+		const ignoredRoles = [
+			'ADMINISTRATOR',
+			'KICK_MEMBERS',
+			'BAN_MEMBERS',
+			'MANAGE_CHANNELS',
+			'VIEW_AUDIT_LOG',
+			'MANAGE_GUILD',
+		];
+		const Roles = message.guild.roles.cache
+			.sort((a, b) => b.position - a.position)
+			.map(r => {
+				if (
+					!r.permissions.any(ignoredRoles) &&
+				!r.managed &&
+				r.id !== message.guild.id &&
+				!r.name.includes('Muted') &&
+				!r.name.includes('Trusted') &&
+				!r.name.includes('Nitro')
+				) {return `${r.name} -> ${r.id}`;}
+			})
+			.filter(x => x !== undefined).join('\n');
+		message.channel.send(Roles, { split: true });
 	},
 };

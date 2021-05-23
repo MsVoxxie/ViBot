@@ -13,7 +13,12 @@ module.exports = {
 		if(msg.emoji.name === valid.reaction && msg.message.id === valid.message) {
 			if(member.roles.cache.some(r => r.name === Role.name)) return;
 			await member.roles.add(Role);
-			await member.send(`**Assigned Role›** ${Role.name}`);
+			try {
+				await member.send(`**Assigned Role›** ${Role.name}`);
+			}
+			catch (error) {
+				return;
+			}
 		}
 		else if(msg.message.id === valid.message && msg.emoji.name !== valid.reaction) {
 			msg.users.remove(member.id);

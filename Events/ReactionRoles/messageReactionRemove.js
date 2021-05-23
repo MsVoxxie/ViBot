@@ -13,7 +13,12 @@ module.exports = {
 		if(msg.emoji.name === valid.reaction && msg.message.id === valid.message) {
 			if(!member.roles.cache.some(r => r.name === Role.name)) return;
 			await member.roles.remove(Role);
-			await member.send(`**Removed Role›** ${Role.name}`);
+			try {
+				await member.send(`**Removed Role›** ${Role.name}`);
+			}
+			catch (error) {
+				return;
+			}
 		}
 	},
 };
