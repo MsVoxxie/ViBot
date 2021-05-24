@@ -4,6 +4,7 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(msg, user, bot, Vimotes) {
+		if(msg.message.partial) { await msg.message.fetch(); }
 		if(user.bot) return;
 		const data = await bot.getReactions(msg.message.guild);
 		const roles = await data.reactionRoles;

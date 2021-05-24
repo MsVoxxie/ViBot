@@ -11,17 +11,17 @@ module.exports = {
 		});
 		console.log(table.toString());
 		bot.StartedAt = Date.now();
-		cacheReactionData(bot);
+		// cacheReactionData(bot);
 	},
 };
 
-async function cacheReactionData(bot) {
-	bot.guilds.cache.forEach(async guild => {
-		const data = await bot.getReactions(guild);
-		const roles = await data.reactionRoles;
-		roles.forEach(async gdata => {
-			const channel = await guild.channels.cache.get(gdata.channel);
-			const msg = await channel.messages.fetch(gdata.message);
-		});
-	});
-}
+// async function cacheReactionData(bot) {
+// 	bot.guilds.cache.forEach(async guild => {
+// 		const data = await bot.getReactions(guild);
+// 		const roles = await data.reactionRoles;
+// 		roles.forEach(async gdata => {
+// 			const channel = await guild.channels.cache.get(gdata.channel);
+// 			const msg = await channel.messages.fetch(gdata.message);
+// 		});
+// 	});
+// }

@@ -6,6 +6,9 @@ module.exports = {
 	once: false,
 	async execute(guild, user, bot, Vimotes) {
 
+		// If Partial, Fetch
+		if(guild.partial) { await guild.fetch(); }
+
 		// Declarations / Checks
 		const settings = await bot.getGuild(guild);
 		if(!settings) return;

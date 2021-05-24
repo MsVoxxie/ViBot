@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 require('discord-reply');
 const { Token } = require('./Storage/Config/Config.json');
-const bot = new Discord.Client();
+const bot = new Discord.Client({ partials: ['REACTION'] });
 
 // Command Info
 bot.commands = new Discord.Collection();

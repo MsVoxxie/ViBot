@@ -6,6 +6,9 @@ module.exports = {
 	once: false,
 	async execute(message, bot) {
 
+		// If Partial, Fetch
+		if(message.partial) { return; }
+
 		// Declarations / Checks
 		const settings = await bot.getGuild(message.guild);
 		if(!settings) return;

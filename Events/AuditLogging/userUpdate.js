@@ -6,6 +6,9 @@ module.exports = {
 	once: false,
 	async execute(oldUser, newUser, bot) {
 
+		// If Partial, Fetch
+		if(oldUser.partial) { await oldUser.fetch(); }
+
 		// Search for the Member
 		bot.guilds.cache.forEach(async guild => {
 			await guild.members.cache.forEach(async (member, memberid) => {
