@@ -1,6 +1,7 @@
 const { readdirSync } = require('fs');
 const ascii = require('ascii-table');
 const table = new ascii().setHeading('Events', 'Load Status', 'Run Type');
+const { Vimotes } = require('../Functions/miscFunctions');
 
 module.exports = bot => {
 	readdirSync('./Events/').forEach(dir => {
@@ -11,11 +12,11 @@ module.exports = bot => {
 				bot.events.set(pull.name, pull);
 				if(!pull.disabled) {
 					if(pull.once) {
-						bot.once(pull.name, (...args) => pull.execute(...args, bot));
+						bot.once(pull.name, (...args) => pull.execute(...args, bot, Vimotes));
 						table.addRow(`${dir} | ${file}`, '✔ » Loaded', '«  Once  »');
 					}
 					else{
-						bot.on(pull.name, (...args) => pull.execute(...args, bot));
+						bot.on(pull.name, (...args) => pull.execute(...args, bot, Vimotes));
 						table.addRow(`${dir} | ${file}`, '✔ » Loaded', '«Infinite»');
 					}
 				}

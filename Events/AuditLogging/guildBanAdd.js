@@ -1,11 +1,10 @@
 const { MessageEmbed } = require('discord.js');
-const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'guildBanAdd',
 	disabled: false,
 	once: false,
-	async execute(guild, user, bot) {
+	async execute(guild, user, bot, Vimotes) {
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(guild);

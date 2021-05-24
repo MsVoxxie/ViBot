@@ -1,12 +1,11 @@
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
-const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'guildMemberAdd',
 	disabled: false,
 	once: false,
-	async execute(member, bot) {
+	async execute(member, bot, Vimotes) {
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(member.guild);

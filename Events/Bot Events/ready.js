@@ -21,7 +21,7 @@ async function cacheReactionData(bot) {
 		const roles = await data.reactionRoles;
 		roles.forEach(async gdata => {
 			const channel = await guild.channels.cache.get(gdata.channel);
-			await channel.messages.fetch(gdata.message);
+			const msg = await channel.messages.fetch(gdata.message);
 		});
 	});
 }

@@ -1,11 +1,10 @@
 const { MessageEmbed } = require('discord.js');
-const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'guildMemberRemove',
 	disabled: false,
 	once: false,
-	async execute(member, bot) {
+	async execute(member, bot, Vimotes) {
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(member.guild);
