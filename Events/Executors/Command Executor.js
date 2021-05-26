@@ -75,25 +75,27 @@ module.exports = {
 		}
 
 		// Command Cooldowns
-		if (!bot.cooldowns.has(command.name)) {
-			bot.cooldowns.set(command.name, new Discord.Collection());
-		}
-
-		const now = Date.now();
-		const timestamps = bot.cooldowns.get(command.name);
-		const cooldownAmount = (command.cooldown || 3) * 1000;
-
-		if (timestamps.has(message.author.id)) {
-			const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-			if (now < expirationTime) {
-				const timeLeft = (expirationTime - now);
-				return message.lineReply(`Please wait, You have \`${ms(timeLeft, { long: true })}\` left until you can reuse \`${command.name}\`.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+		if(command.cooldown) {
+			if (!bot.cooldowns.has(command.name)) {
+				bot.cooldowns.set(command.name, new Discord.Collection());
 			}
-		}
 
-		timestamps.set(message.author.id, now);
-		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+			const now = Date.now();
+			const timestamps = bot.cooldowns.get(command.name);
+			const cooldownAmount = (command.cooldown || 3) * 1000;
+
+			if (timestamps.has(message.author.id)) {
+				const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+				if (now < expirationTime) {
+					const timeLeft = (expirationTime - now);
+					return message.lineReply(`Please wait, You have \`${ms(timeLeft, { long: true })}\` left until you can reuse \`${command.name}\`.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+				}
+			}
+
+			timestamps.set(message.author.id, now);
+			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+		}
 
 		// Execute command
 		try {

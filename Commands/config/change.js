@@ -7,7 +7,6 @@ module.exports = {
 	example: '',
 	category: 'config',
 	args: false,
-	cooldown: 2,
 	hidden: false,
 	ownerOnly: false,
 	userPerms: ['ADMINISTRATOR'],
