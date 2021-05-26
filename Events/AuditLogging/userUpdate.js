@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'userUpdate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(oldUser, newUser, bot) {
 

@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+const ms = require('ms');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
@@ -46,16 +48,6 @@ module.exports = {
 			return message.lineReply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
-		// // Check if Mod required
-		// if((message.guild.ownerID !== message.author.id) || command.modRequired == true && !message.member.roles.cache.has(settings.modrole)) {
-		// 	return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.modrole) ? message.guild.roles.cache.get(settings.modrole).name : 'Role not set...'}\` only.`);
-		// }
-
-		// // Check if Admin required
-		// if((message.guild.ownerID !== message.author.id) || command.adminRequired == true && !message.member.roles.cache.has(settings.adminrole)) {
-		// 	return message.lineReply(`This command is locked to \`${message.guild.roles.cache.get(settings.adminrole) ? message.guild.roles.cache.get(settings.adminrole).name : 'Role not set...'}\` only.`);
-		// }
-
 		// Check if args required
 		if(command.args && !args.length) {
 			return message.lineReply(`The command \`${command.name}\` requires arguments, you did not provide any!`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
@@ -66,7 +58,7 @@ module.exports = {
 			return message.lineReply('Sorry, this command can only be used in channels marked as NSFW').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		}
 
-		// Check for permissions of user || TO BE DEPRICATED ||
+		// Check for permissions of user
 		if (command.userPerms) {
 			const usermissing = message.channel.permissionsFor(message.author).missing(command.userPerms);
 			if (usermissing.length > 0) {
@@ -82,7 +74,26 @@ module.exports = {
 			}
 		}
 
-		// Add cooldown later
+		// Command Cooldowns
+		if (!bot.cooldowns.has(command.name)) {
+			bot.cooldowns.set(command.name, new Discord.Collection());
+		}
+
+		const now = Date.now();
+		const timestamps = bot.cooldowns.get(command.name);
+		const cooldownAmount = (command.cooldown || 3) * 1000;
+
+		if (timestamps.has(message.author.id)) {
+			const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+			if (now < expirationTime) {
+				const timeLeft = (expirationTime - now);
+				return message.lineReply(`Please wait, You have \`${ms(timeLeft, { long: true })}\` left until you can reuse \`${command.name}\`.`).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			}
+		}
+
+		timestamps.set(message.author.id, now);
+		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 		// Execute command
 		try {
@@ -90,6 +101,7 @@ module.exports = {
 		}
 		catch (e) {
 			console.error(e);
+			message.lineReply(`Uh Oh, There was an error trying to execute \`${command.name}\``);
 		}
 	},
 };

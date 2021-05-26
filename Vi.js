@@ -6,7 +6,7 @@ const bot = new Discord.Client({ partials: ['REACTION'] });
 // Command Info
 bot.commands = new Discord.Collection();
 bot.aliases = new Discord.Collection();
-bot.cooldowns = [];
+bot.cooldowns = new Discord.Collection();
 
 // Event Info
 bot.events = new Discord.Collection();
