@@ -13,7 +13,6 @@ module.exports = {
 		const settings = await bot.getGuild(member.guild);
 		if(!settings) return;
 		if(settings.audit === false) return;
-		if(member.user.bot) return;
 		const logChannel = await member.guild.channels.cache.get(settings.auditchannel);
 
 		const embed = new MessageEmbed()

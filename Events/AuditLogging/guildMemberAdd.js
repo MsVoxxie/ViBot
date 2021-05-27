@@ -16,7 +16,6 @@ module.exports = {
 		// Declarations / Checks
 		const settings = await bot.getGuild(member.guild);
 		if(!settings) return;
-		if(getMember.user.bot) return;
 		const logChannel = await getMember.guild.channels.cache.get(settings.auditchannel);
 		const welChannel = await getMember.guild.channels.cache.get(settings.welcomechannel);
 		const ruleChannel = await getMember.guild.channels.cache.get(settings.ruleschannel);
