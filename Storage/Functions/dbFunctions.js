@@ -27,7 +27,13 @@ module.exports = bot => {
 		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.guildDefaults.defaultSettings);
 		const merged = Object.assign(defaults, settings);
 		const newGuild = await new Guild(merged);
-		return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildname}`));
+		const check = await Guild.findOne({ guildid: merged.guildid });
+		if(check) {
+			return;
+		}
+		else{
+			return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildname}`));
+		}
 	};
 
 	// Reaction Roles Create

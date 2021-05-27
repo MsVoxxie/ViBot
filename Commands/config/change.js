@@ -2,14 +2,14 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'change',
-	aliases: [],
+	aliases: ['set', 'update'],
 	description: 'Update this guilds database settings',
 	example: '',
 	category: 'config',
 	args: false,
 	hidden: false,
 	ownerOnly: false,
-	userPerms: ['ADMINISTRATOR'],
+	userPerms: ['MANAGE_GUILD'],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
 

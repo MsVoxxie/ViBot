@@ -9,16 +9,19 @@ module.exports = {
 		// If Partial, Fetch
 		if(member.partial) { await member.fetch(); }
 
+		// Fetch the member, just in case.
+		const getMember = await member.guild.members.fetch(member.id);
+
 		// Declarations / Checks
-		const settings = await bot.getGuild(member.guild);
+		const settings = await bot.getGuild(getMember.guild);
 		if(!settings) return;
 		if(settings.audit === false) return;
-		if(member.user.bot) return;
-		const logChannel = await member.guild.channels.cache.get(settings.auditchannel);
+		if(getMember.user.bot) return;
+		const logChannel = await getMember.guild.channels.cache.get(settings.auditchannel);
 
 		const embed = new MessageEmbed()
-			.setAuthor(`${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, member.user.displayAvatarURL({ dynamic: true }))
-			.setDescription(`${Vimotes['LEAVE_ARROW']} <@${member.user.id}> Left the server.`)
+			.setAuthor(`${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, getMember.user.displayAvatarURL({ dynamic: true }))
+			.setDescription(`${Vimotes['LEAVE_ARROW']} <@${getMember.user.id}> Left the server.`)
 			.setColor(settings.guildcolor)
 			.setFooter(bot.Timestamp(new Date()));
 

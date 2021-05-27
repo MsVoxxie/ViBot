@@ -6,7 +6,7 @@ module.exports = {
 	args: true,
 	hidden: false,
 	ownerOnly: false,
-	userPerms: ['ADMINISTRATOR'],
+	userPerms: ['MANAGE_GUILD'],
 	async execute(bot, message, args, settings) {
 
 		const category = args[0].toLowerCase();
