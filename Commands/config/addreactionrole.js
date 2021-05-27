@@ -22,42 +22,48 @@ module.exports = {
 		let embDesc;
 		const MessagesToClean = [];
 
+		// Setup embed template.
+		const qembed = new MessageEmbed()
+			.setColor(settings.guildcolor);
+
 		// First Question
-		const questionone = await message.lineReply('Would you like to Edit an existing embed? If yes, provide that messages `ID`, Else say `no`');
+		qembed.setDescription('Send an embed message ID (That I Created), Or say continue for me to make a new one.');
+		const questionone = await message.lineReply({ embed: qembed });
 		const filter = m => m.author.id === message.author.id;
 		await questionone.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
-				if (collected.first().cleanContent !== 'no') {
+				if (collected.first().cleanContent !== 'continue') {
 					messageid = await collected.first().cleanContent;
 					createNew = false;
 					MessagesToClean.push(collected.first());
 				}
 			});
-		MessagesToClean.push(questionone);
 
 		// Second Question
-		const questiontwo = await message.lineReply('What role would you like this ReactionRole to assign? Please Provide the Role ID.');
+		qembed.setDescription('Please provide a Role ID for me to use.');
+		const questiontwo = await message.lineReply({ embed: qembed });
 		await questiontwo.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
 				roleid = await collected.first().cleanContent;
 				MessagesToClean.push(collected.first());
 			});
-		await questiontwo.delete();
 
 		// Third Question
-		const questionthree = await message.lineReply('Which emoji would you like to use for this ReactionRole? Simply say the emoji.');
+		qembed.setDescription('Which Emoji would you like to use?');
+		const questionthree = await message.lineReply({ embed: qembed });
 		await questionthree.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
 				reaction = await collected.first().cleanContent;
 				MessagesToClean.push(collected.first());
 			});
-		await questionthree.delete();
+
 
 		// Delete questions
 		await message.channel.bulkDelete(MessagesToClean);
 
 		// Let the user know that the bot is working on their request.
-		const Final = await message.lineReply('Wonderful, Setting up your ReactionRole.');
+		qembed.setDescription('Wonderful, Finishing up...');
+		const Final = await message.lineReply({ embed: qembed });
 
 		// Get Role
 		const Role = await message.guild.roles.cache.get(roleid);
@@ -66,14 +72,14 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor);
 
-		if(createNew === false) {
+		if (createNew === false) {
 			Message = await message.channel.messages.fetch(messageid);
 			embDesc = Message.embeds[0].description += `\n${reaction} ${Role.name}`;
 			embed.setDescription(embDesc);
 			await Message.edit({ embed: embed });
 
 		}
-		else{
+		else {
 			embed.setDescription(`${reaction} ${Role.name}`);
 			Message = await message.channel.send({ embed: embed });
 			messageid = await Message.id;
