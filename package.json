@@ -29,7 +29,5 @@
     "node-fetch": "^2.6.1",
     "request": "^2.88.2"
   },
-  "devDependencies": {
-    "auto-changelog": "^2.3.0"
-  }
+  "devDependencies": {}
 }
