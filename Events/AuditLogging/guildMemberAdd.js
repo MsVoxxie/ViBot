@@ -35,7 +35,7 @@ module.exports = {
 		if(settings.welcome) {
 			const welcome = new MessageEmbed()
 				.setAuthor(`${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, getMember.user.displayAvatarURL({ dynamic: true }))
-				.setDescription(`Welcome to ${getMember.guild.name}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
+				.setDescription(`Welcome to ${getMember.guild.name}, ${getMember}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
 				.setFooter(`Joined› ${bot.Timestamp(getMember.joinedAt)}`)
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
