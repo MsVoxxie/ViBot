@@ -8,6 +8,8 @@ module.exports = {
 		if(user.bot) return;
 		const data = await bot.getReactions(msg.message.guild);
 		const roles = await data.reactionRoles;
+		const ch = await roles.map(reaction => reaction['channel']);
+		if(!ch.includes(msg.message.channel)) return;
 		const valid = await roles.find(reaction => reaction['reaction'] === msg.emoji.name);
 		const Role = await msg.message.guild.roles.cache.get(valid.role);
 		const member = await msg.message.guild.members.cache.get(user.id);

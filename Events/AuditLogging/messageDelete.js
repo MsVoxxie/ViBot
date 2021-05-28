@@ -10,8 +10,13 @@ module.exports = {
 		if(message.partial) { return; }
 
 		// Declarations / Checks
-		const settings = await bot.getGuild(message.guild);
-		if(!settings) return;
+		let settings;
+		try {
+			settings = await bot.getGuild(message.guild);
+		}
+		catch (error) {
+			return;
+		}
 		if(settings.audit === false) return;
 		if(message.author.bot) return;
 		if(message.channel.type !== 'text') return;

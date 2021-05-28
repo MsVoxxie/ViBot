@@ -11,28 +11,11 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		// Assume staff roles are not assignable.
-		const ignoredRoles = [
-			'ADMINISTRATOR',
-			'KICK_MEMBERS',
-			'BAN_MEMBERS',
-			'MANAGE_CHANNELS',
-			'VIEW_AUDIT_LOG',
-			'MANAGE_GUILD',
-		];
-		const Roles = message.guild.roles.cache
-			.sort((a, b) => b.position - a.position)
-			.map(r => {
-				if (
-					!r.permissions.any(ignoredRoles) &&
-				!r.managed &&
-				r.id !== message.guild.id &&
-				!r.name.includes('Muted') &&
-				!r.name.includes('Trusted') &&
-				!r.name.includes('Nitro')
-				) {return `${r.name} -> ${r.id}`;}
-			})
-			.filter(x => x !== undefined).join('\n');
-		message.channel.send(Roles, { split: true });
+		const data = await bot.getReactions(message.guild);
+		const roles = await data.reactionRoles;
+		const ch = await roles.map(reaction => reaction['channel']);
+		const val = await roles.map(reaction => reaction['reaction']);
+		console.log(ch);
+		console.log(val);
 	},
 };
