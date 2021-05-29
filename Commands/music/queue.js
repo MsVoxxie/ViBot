@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const ms = require('ms');
 
 module.exports = {
 	name: 'queue',
@@ -21,7 +22,8 @@ module.exports = {
 		// Declarations
 		const queue = await bot.Music.getQueue(message);
 		let currentPage = 0;
-		const embeds = generateQueueEmbed(message, queue.tracks, settings);
+		const totalTime = ms(queue.totalTime, { long: true });
+		const embeds = generateQueueEmbed(message, queue.tracks, settings, totalTime);
 
 		// Generate Embed Message
 		const queueEmbed = await message.channel.send(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
@@ -70,7 +72,7 @@ module.exports = {
 	},
 };
 
-function generateQueueEmbed(message, queue, settings) {
+function generateQueueEmbed(message, queue, settings, totalTime) {
 	const embeds = [];
 	let k = 10;
 
@@ -86,7 +88,7 @@ function generateQueueEmbed(message, queue, settings) {
 			.setThumbnail(message.guild.iconURL({ dynamic: true }))
 			.setColor(settings.guildcolor)
 			.setDescription(`**Current Song - [${queue[0].title}](${queue[0].url})**\n\n${info}`)
-			.setTimestamp();
+			.setFooter(`Playlist Duration› ${totalTime}`);
 		embeds.push(embed);
 	}
 
