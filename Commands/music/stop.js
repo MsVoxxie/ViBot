@@ -26,6 +26,6 @@ module.exports = {
 
 		// Stop
 		const success = await bot.Music.stop(message);
-		if(success) return await message.channel.send({ embed: embed });
+		if(success) return await message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 	},
 };

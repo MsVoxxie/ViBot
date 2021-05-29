@@ -24,6 +24,6 @@ module.exports = {
 			.setDescription(`${message.member} skipped the song.`);
 
 		const success = await bot.Music.skip(message);
-		if(success) return await message.channel.send({ embed: embed });
+		if(success) return await message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 	},
 };
