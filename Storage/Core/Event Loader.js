@@ -1,9 +1,12 @@
 const { readdirSync } = require('fs');
+const path = require('path');
 const ascii = require('ascii-table');
-const table = new ascii().setHeading('Events', 'Load Status', 'Run Type');
+const eventTable = new ascii().setHeading('Events', 'Load Status', 'Run Type');
+const musicTable = new ascii().setHeading('Music Events', 'Load Status');
 const { Vimotes } = require('../Functions/miscFunctions');
 
 module.exports = bot => {
+	// Load Events
 	readdirSync('./Events/').forEach(dir => {
 		const events = readdirSync(`./Events/${dir}/`).filter(file => file.endsWith('.js'));
 		for(const file of events) {
@@ -13,19 +16,34 @@ module.exports = bot => {
 				if(!pull.disabled) {
 					if(pull.once) {
 						bot.once(pull.name, (...args) => pull.execute(...args, bot, Vimotes));
-						table.addRow(`${dir} | ${file}`, '✔ » Loaded', '«  Once  »');
+						eventTable.addRow(`${dir} | ${file}`, '✔ » Loaded', '«  Once  »');
 					}
 					else{
 						bot.on(pull.name, (...args) => pull.execute(...args, bot, Vimotes));
-						table.addRow(`${dir} | ${file}`, '✔ » Loaded', '«Infinite»');
+						eventTable.addRow(`${dir} | ${file}`, '✔» Loaded', '«Infinite»');
 					}
 				}
 			}
 			else {
-				table.addRow(`${dir} | ${file}`, '❌ » Failed to Load!');
+				eventTable.addRow(`${dir} | ${file}`, '❌» Failed to Load!');
 				continue;
 			}
 		}
 	});
-	console.log(table.toString());
+
+	// Load Music Bot Triggers
+	const player = readdirSync(path.join(__dirname, '../Functions/MusicBot/Events/')).filter(file => file.endsWith('.js'));
+
+	for(const file of player) {
+		try {
+			const play = require(path.join(__dirname, '../Functions/MusicBot/Events/', file));
+			bot.Music.on(file.split('.')[0], play.bind(null, bot));
+			musicTable.addRow(`${file.split('.')[0]}`, '✔ » Loaded');
+		}
+		catch (error) {
+			musicTable.addRow(`${file.split('.')[0]}`, '❌ » Failed to Load!');
+		}
+	}
+	console.log(eventTable.toString());
+	console.log(musicTable.toString());
 };

@@ -1,7 +1,12 @@
 const Discord = require('discord.js');
 require('discord-reply');
 const { Token } = require('./Storage/Config/Config.json');
+const { Player } = require('discord-player');
 const bot = new Discord.Client({ partials: ['REACTION', 'MESSAGE'] });
+const Music = new Player(bot, { enableLive: true });
+
+// Music Setup
+bot.Music = Music;
 
 // Command Info
 bot.commands = new Discord.Collection();
