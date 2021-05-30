@@ -1,6 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = async (bot, message, track) => {
+
+	// Get Settings
 	const settings = await bot.getGuild(message.guild);
 
 	// Setup Embed
@@ -12,6 +14,7 @@ module.exports = async (bot, message, track) => {
 		.setFooter(bot.Timestamp(Date.now()));
 
 	const playing = await message.channel.send({ embed: embed });// .then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
+	track.embed = playing;
 
 	// Reaction Controls
 	try {
