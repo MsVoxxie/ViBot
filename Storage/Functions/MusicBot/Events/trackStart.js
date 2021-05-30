@@ -30,7 +30,7 @@ module.exports = async (bot, message, track, queue) => {
 
 	// Setup Filter and Collector
 	const filter = (reaction, user) => user.id !== message.client.user.id;
-	const collector = await playing.createReactionCollector(filter, { time: track.durationMS > 0 ? track.durationMS : 600 * 1000 });
+	const collector = await playing.createReactionCollector(filter, { time: track.durationMS > 0 ? track.durationMS : 60 * 60 * 1000 });
 
 	collector.on('collect', async (reaction, user) => {
 		const args = ['', ''];
@@ -58,6 +58,10 @@ module.exports = async (bot, message, track, queue) => {
 			bot.commands.get('skip').execute(bot, message, args, settings);
 			break;
 		}
+	});
+
+	collector.on('end', async () => {
+		if(queue.currentEmbed && !queue.currentEmbed.deleted) return await playing.reactions.removeAll();
 	});
 
 };
