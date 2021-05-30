@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
-module.exports = async (bot, message, track) => {
+module.exports = async (bot, message, track, queue) => {
 
 	// Get Settings
 	const settings = await bot.getGuild(message.guild);
@@ -13,8 +13,9 @@ module.exports = async (bot, message, track) => {
 		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
 		.setFooter(bot.Timestamp(Date.now()));
 
-	const playing = await message.channel.send({ embed: embed });// .then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
-	track.embed = playing;
+	if(queue.currentEmbed && !queue.currentEmbed.deleted) return queue.currentEmbed.edit({ embed: embed });
+	const playing = await message.channel.send({ embed:embed }).then(m => queue.currentEmbed = m);
+	// .then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
 
 	// Reaction Controls
 	try {
