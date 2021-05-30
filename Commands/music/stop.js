@@ -19,6 +19,9 @@ module.exports = {
 		if(message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.lineReply('You are not in the same voice channel as me.').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 		if(!bot.Music.getQueue(message)) return message.lineReply('No music is currently playing.').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 
+		// Get Queue
+		const queue = await bot.Music.getQueue(message);
+
 		// Embed
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
@@ -26,6 +29,9 @@ module.exports = {
 
 		// Stop
 		const success = await bot.Music.stop(message);
-		if(success) return await message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+		if(success) {
+			await message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+			return queue.currentEmbed.delete();
+		}
 	},
 };

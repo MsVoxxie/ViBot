@@ -13,7 +13,7 @@ module.exports = async (bot, message, track, queue) => {
 		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
 		.setFooter(bot.Timestamp(Date.now()));
 
-	if(queue.currentEmbed && !queue.currentEmbed.deleted) return queue.currentEmbed.edit({ embed: embed });
+	if(queue.currentEmbed && !queue.currentEmbed.deleted) await queue.currentEmbed.delete();// return queue.currentEmbed.edit({ embed: embed });
 	const playing = await message.channel.send({ embed:embed }).then(m => queue.currentEmbed = m);
 	// .then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
 
@@ -30,7 +30,7 @@ module.exports = async (bot, message, track, queue) => {
 
 	// Setup Filter and Collector
 	const filter = (reaction, user) => user.id !== message.client.user.id;
-	const collector = await playing.createReactionCollector(filter, { time: track.durationMS > 0 ? track.durationMS : 60 * 1000 });
+	const collector = await playing.createReactionCollector(filter, { time: track.durationMS > 0 ? track.durationMS : 600 * 1000 });
 
 	collector.on('collect', async (reaction, user) => {
 		const args = ['', ''];
@@ -38,6 +38,7 @@ module.exports = async (bot, message, track, queue) => {
 		switch (reaction.emoji.name) {
 		case '⏹':
 			bot.commands.get('stop').execute(bot, message, args, settings);
+			collector.stop();
 			break;
 
 		case '⏯':
