@@ -17,9 +17,7 @@ module.exports = {
 
 		await roles.forEach(async role => {
 			const re = role.members.map(mem => mem).length;
-			if(re <= 3) {
-				mems.push(`${role.name} => ${re}`);
-			}
+			mems.push(`${role.name} => ${re}`);
 		});
 
 		await mems.sort();
