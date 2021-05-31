@@ -11,6 +11,7 @@ module.exports = {
 		const ch = await roles.map(reaction => reaction['channel']);
 		if(!ch.includes(msg.message.channel)) return;
 		const valid = await roles.find(reaction => reaction['reaction'] === msg.emoji.name);
+		if(valid.reaction !== msg.emoji.name) return;
 		const Role = await msg.message.guild.roles.cache.get(valid.role);
 		const member = await msg.message.guild.members.cache.get(user.id);
 

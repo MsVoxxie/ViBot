@@ -11,11 +11,20 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		const data = await bot.getReactions(message.guild);
-		const roles = await data.reactionRoles;
-		const ch = await roles.map(reaction => reaction['channel']);
-		const val = await roles.map(reaction => reaction['reaction']);
-		console.log(ch);
-		console.log(val);
+
+		const roles = await message.guild.roles.cache;
+		const mems = [];
+
+		await roles.forEach(async role => {
+			const re = role.members.map(mem => mem).length;
+			if(re <= 3) {
+				mems.push(`${role.name} => ${re}`);
+			}
+		});
+
+		await mems.sort();
+
+		message.channel.send(mems.join('\n'), { split:true });
+
 	},
 };
