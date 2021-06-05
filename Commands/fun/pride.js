@@ -1,4 +1,6 @@
 const { MessageAttachment } = require('discord.js');
+const { MIME_PNG } = require('jimp');
+const { MIME_GIF } = require('jimp');
 const jimp = require('jimp');
 
 module.exports = {
@@ -34,16 +36,12 @@ module.exports = {
 			hamburger: [ '#E69138', '#8FCE00', '#F44336', '#FFD966', '#744700', '#E69138' ],
 		};
 
-		// console.log(flagOptions);
-
 		// Check if args
-
 		if(!args.some((val) => flagOptions.indexOf(val) !== -1)) return message.lineReply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
 
-
 		// Create Functions
-		// Base Texture
 
+		// Base Texture
 		function createBaseTexture(colors) {
 			return new Promise((resolve, reject) => {
 				new jimp(1, colors.length, (error, image) => {
@@ -109,11 +107,13 @@ module.exports = {
 			flags.push(o);
 		});
 
-		const avatar = await createPrideAvatar(message.member.user.displayAvatarURL({ format: 'png', size: 512 }), flags);
-		const buffer = await avatar.getBufferAsync(jimp.MIME_PNG);
-		const attachment = new MessageAttachment(buffer, 'pride-avatar.png');
+		const avatarURL = await message.member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 512 });
+		const avatarType = await avatarURL.includes('.gif') ? { mime: jimp.MIME_GIF, format: '.gif' } : { mime: jimp.MIME_PNG, format: '.png' };
+		const avatar = await createPrideAvatar(avatarURL, flags);
+		const buffer = await avatar.getBufferAsync(avatarType.mime);
+		const attachment = new MessageAttachment(buffer, `pride-avatar${avatarType.format}`);
 
 		await message.lineReply('Here you go!', attachment).then(s => {if(settings.audit) s.delete({ timeout: 360 * 1000 });});
-
+		await message.delete({ timeout: 360 * 1000 });
 	},
 };
