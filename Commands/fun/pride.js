@@ -5,7 +5,7 @@ module.exports = {
 	name: 'pride',
 	aliases: [],
 	description: 'Pride-ify your avatar! (For multi flags just say each flag name with a space!)',
-	example: 'pride 4 gay',
+	example: 'pride gay',
 	category: 'fun',
 	args: false,
 	cooldown: 2,
@@ -16,12 +16,10 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 
 		// Declarations
-		const borderSize = `${!isNaN(args[0]) ? parseInt(args[0]) : 4}`;
-		if(!borderSize) return message.lineReply('You didn\'t provide a border size!').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
-		if(borderSize > 8) return message.lineReply('Please keep the border size to 8 or below!').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
-		const flagArgs = args.join(' ').split(' ').slice(1);
-		const flagOptions = ['gay', 'bisexual', 'trans', 'nonbinary', 'lesbian', 'asexual', 'aromantic', 'agender', 'pansexual', 'genderfluid', 'poly', 'hamburger'];
-		flagOptions.sort();
+		const borderSize = 0.04;
+		const flagArgs = args;
+
+		// Define flags
 		const prideFlags = {
 			gay: [ '#FF000E', '#FF5000', '#FAD220', '#138F3E', '#3558A0', '#880082' ],
 			bisexual: [ '#D60270', '#9B4F96', '#0038A8' ],
@@ -36,6 +34,8 @@ module.exports = {
 			poly: [ '#0000F7', '#F70000', '#000000' ],
 			hamburger: [ '#E69138', '#8FCE00', '#F44336', '#FFD966', '#744700', '#E69138' ],
 		};
+		const flagOptions = ['gay', 'bisexual', 'trans', 'nonbinary', 'lesbian', 'asexual', 'aromantic', 'agender', 'pansexual', 'genderfluid', 'poly', 'hamburger'];
+		flagOptions.sort();
 
 		// Check if args
 		if(!flagArgs.some((val) => flagOptions.indexOf(val) !== -1)) return message.lineReply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
