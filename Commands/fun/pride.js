@@ -91,8 +91,8 @@ module.exports = {
 			const avatar = await jimp.read(avatarImage);
 			const texture = await createBackgroundTexture(avatar.bitmap.width, flags);
 
-			const borderOffset = avatar.bitmap.width * borderSize / 100;
-			const targetAvatarSize = avatar.bitmap.width * (1 - borderSize / 100 * 2);
+			const borderOffset = avatar.bitmap.width * borderSize;
+			const targetAvatarSize = avatar.bitmap.width * (1 - borderSize * 2);
 
 			avatar.resize(targetAvatarSize, targetAvatarSize);
 			avatar.circle();
@@ -107,7 +107,7 @@ module.exports = {
 			flags.push(o);
 		});
 
-		if(flags.length > 6 && message.member.id !== '239062365931307008') return message.lineReply('Please use a maximum of 4 flags!');
+		if(flags.length > 6 && message.member.id !== '239062365931307008') return message.lineReply('Please use a maximum of 6 flags!');
 
 		const avatarURL = await message.member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 512 });
 		const avatarType = await avatarURL.includes('.gif') ? { mime: jimp.MIME_GIF, format: '.gif' } : { mime: jimp.MIME_PNG, format: '.png' };

@@ -20,6 +20,9 @@ module.exports = {
 		const embeds = [];
 		let currentPage = 0;
 
+		// Let the user know i;m working...
+		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Gathering image results...`);
+
 		// Search and save results
 		await googleSearch(args.join(' '), Results);
 		async function Results(error, results) {
@@ -42,7 +45,7 @@ module.exports = {
 			});
 
 			// Send pagination
-			const embedList = await message.lineReply(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+			const embedList = await loading.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
 
 			// Apply Reactions
 			try {
