@@ -12,17 +12,20 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings) {
 
-		const roles = await message.guild.roles.cache;
-		const mems = [];
+		const data = [];
+		await message.guild.channels.cache.filter(ch => ch.type === 'category').filter(x => x !== undefined).sort((a, b)=> a.position - b.position).map(categories => {
+			const children = categories.children.filter(ch => ch.type === 'text').filter(x => x !== undefined);
 
-		await roles.forEach(async role => {
-			const re = role.members.map(mem => mem).length;
-			mems.push(`${role.name} => ${re}`);
+			data.push(
+				{ category: categories.name, channels: [children.map(child => {
+					if(child.type === 'text') {
+						return { name: child.name, id: child.id } ;
+					}
+				})] },
+			);
+
 		});
-
-		await mems.sort();
-
-		message.channel.send(mems.join('\n'), { split:true });
-
+		const final = [...new Set(data)];
+		console.log(final.map(m => m.category));
 	},
 };

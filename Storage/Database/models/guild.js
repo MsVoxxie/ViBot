@@ -46,9 +46,9 @@ const guildSchema = mongoose.Schema({
 		type: Array,
 		default: def.disabledModules,
 	},
-	roleConfiguration:{
-		type:Array,
-		default: def.roleConfiguration,
+	channels:{
+		type: Array,
+		default: def.channels,
 	},
 	modrole: {
 		type: String,
