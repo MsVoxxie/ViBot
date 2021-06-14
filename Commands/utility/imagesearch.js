@@ -79,7 +79,7 @@ module.exports = {
 				case '⏹': {
 					collector.stop();
 					reaction.message.reactions.removeAll();
-					embedList.edit('**«Collection Stopped»**');
+					embedList.edit('**«Collection Stopped»**', { embed: embeds[currentPage] });
 					break;
 				}
 
