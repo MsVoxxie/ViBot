@@ -56,6 +56,9 @@ module.exports = {
 			Results.splice(0, 1);
 		});
 
+		console.log(Results.length);
+		if (Results.length >= 0) return message.lineReply(`Sorry, No results found!`);
+ 
 		//Setup Embeds
 		Results.forEach((Res) => {
 			const embed = new MessageEmbed()
