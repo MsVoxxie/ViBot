@@ -3,7 +3,14 @@ require('discord-reply');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
 const bot = new Discord.Client({ disableMentions: 'everyone', partials: ['REACTION', 'MESSAGE'] });
-const Music = new Player(bot, { leaveOnEnd: true, leaveOnEmpty: true, leaveOnStop: true, enableLive: true, leaveOnEndCooldown: 15 * 1000, leaveOnEmptyCooldown: 60 * 1000 });
+const Music = new Player(bot, {
+	leaveOnEnd: true,
+	leaveOnEmpty: true,
+	leaveOnStop: true,
+	enableLive: true,
+	leaveOnEndCooldown: 15 * 1000,
+	leaveOnEmptyCooldown: 60 * 1000,
+});
 
 // Music Setup
 bot.Music = Music;

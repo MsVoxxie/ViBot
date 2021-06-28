@@ -10,7 +10,7 @@ module.exports = async (bot, message, queue) => {
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
 		.setDescription('Queue is now Empty!');
-	message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+	message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 
 	if(trackEmbed && !trackEmbed.deleted) return trackEmbed.delete();
 

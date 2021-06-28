@@ -17,7 +17,7 @@ module.exports = {
 		// Checks
 		if (!message.member.voice.channel) return message.lineReply('Please join a voice channel to play music.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.lineReply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
-		if(!bot.Music.getQueue(message)) return message.lineReply('No music is currently playing.').then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+		if(!bot.Music.getQueue(message)) return message.lineReply('No music is currently playing.').then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 
 		// Declarations
 		const queue = await bot.Music.getQueue(message);

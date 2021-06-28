@@ -6,5 +6,5 @@ module.exports = async (bot, message, queue) => {
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
 		.setDescription('Disconnecting from voice and clearing queue.');
-	message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+	message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 };

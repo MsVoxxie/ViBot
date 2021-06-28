@@ -6,5 +6,5 @@ module.exports = async (bot, message, query) => {
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
 		.setDescription(`No Results found for \`${query}\`!`);
-	message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: 30 * 1000 });});
+	message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 };
