@@ -42,21 +42,17 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.ruleschannel,
 	},
-	disabledModules:{
+	starchannel: {
+		type: String,
+		default: def.starchannel,
+	},
+	disabledModules: {
 		type: Array,
 		default: def.disabledModules,
 	},
-	channels:{
+	channels: {
 		type: Array,
 		default: def.channels,
-	},
-	modrole: {
-		type: String,
-		default: def.modrole,
-	},
-	adminrole: {
-		type: String,
-		default: def.adminrole,
 	},
 });
 

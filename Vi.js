@@ -26,6 +26,7 @@ bot.events = new Discord.Collection();
 // Load Database
 bot.mongoose = require('./Storage/Database/mongoose');
 bot.guildDefaults = require('./Storage/Database/models/guildDefaults');
+bot.guildModerationDefaults = require('./Storage/Database/models/guildModerationDefaults');
 bot.reactionDefaults = require('./Storage/Database/models/reactionDefaults');
 
 // Load Functions

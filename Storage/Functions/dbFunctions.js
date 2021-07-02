@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const { Guild, Reaction } = require('../Database/models');
+const { Guild, GuildModeration, Reaction } = require('../Database/models');
 
-module.exports = bot => {
-
+module.exports = (bot) => {
 	// Get Guild Settings
 	bot.getGuild = async (guild) => {
 		const data = await Guild.findOne({ guildid: guild.id });
@@ -24,30 +23,60 @@ module.exports = bot => {
 
 	// Create Guild from MODEL
 	bot.createGuild = async (settings) => {
-		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.guildDefaults.defaultSettings);
+		const defaults = Object.assign(
+			{ _id: mongoose.Types.ObjectId() },
+			bot.guildDefaults.defaultSettings
+		);
 		const merged = Object.assign(defaults, settings);
 		const newGuild = await new Guild(merged);
 		const check = await Guild.findOne({ guildid: merged.guildid });
-		if(check) {
+		if (check) {
 			return;
-		}
-		else{
+		} else {
 			return newGuild.save().then(console.log(`Created new Guild from MODEL: ${merged.guildname}`));
 		}
 	};
 
+	// Create Guild Moderation
+	bot.createGuildModeration = async (settings) => {
+		const defaults = Object.assign(
+			{ _id: mongoose.Types.ObjectId() },
+			bot.guildModerationDefaults.defaultSettings
+		);
+		merged = Object.assign(defaults, settings);
+		const newGuild = await new GuildModeration(merged);
+		const check = await GuildModeration.findOne({ guildid: merged.guildid });
+		if (check) {
+			return;
+		} else {
+			return newGuild.save().then(
+				console.log(`Created new GuildModeration for ${merged.guildname}`)
+			);
+		}
+	};
+
 	// Reaction Roles Create
-	bot.createReactions = async (settings) =>{
-		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.reactionDefaults.defaultSettings);
+	bot.createReactions = async (settings) => {
+		const defaults = Object.assign(
+			{ _id: mongoose.Types.ObjectId() },
+			bot.reactionDefaults.defaultSettings
+		);
 		const merged = Object.assign(defaults, settings);
 		const newReaction = await new Reaction(merged);
-		return newReaction.save().then(console.log(`Created new Reaction Model for \`${merged.guildname}\``));
+		const check = await Reaction.findOne({ guildid: merged.guildid });
+		if (check) {
+			return;
+		} else {
+			return newReaction
+				.save()
+				.then(console.log(`Created new Reaction Model for \`${merged.guildname}\``));
+		}
 	};
 
 	// Get guild Reaction Roles
 	bot.getReactions = async (guild) => {
-		const data = await Reaction.findOne({ guildid : guild.id });
-		if(data) return data;
+		const data = await Reaction.findOne({ guildid: guild.id });
+		if (data) return data;
 		else return bot.reactionDefaults.defaultSettings;
 	};
 
@@ -55,7 +84,8 @@ module.exports = bot => {
 	bot.addReaction = async (guild, settings) => {
 		const data = await Reaction.findOne({ guildid: guild.id });
 		const reactionRoles = await data.reactionRoles;
-		if(typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+		if (typeof settings !== 'object')
+			return console.log('User did not provide an object, Returning.');
 
 		reactionRoles.push(settings);
 		data.save();
@@ -65,7 +95,8 @@ module.exports = bot => {
 	bot.removeReaction = async (guild, settings) => {
 		const data = await Reaction.findOne({ guildid: guild.id });
 		const reactionRoles = await data.reactionRoles;
-		if(typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+		if (typeof settings !== 'object')
+			return console.log('User did not provide an object, Returning.');
 
 		reactionRoles.pull(settings);
 		data.save();
@@ -75,7 +106,7 @@ module.exports = bot => {
 	bot.disableModule = async (guild, module) => {
 		const data = await Guild.findOne({ guildid: guild.id });
 		const Modules = await data.disabledModules;
-		const cats = await bot.commands.map(c => c.category);
+		const cats = await bot.commands.map((c) => c.category);
 
 		// Check for valid
 		if (!cats.includes(module)) return;
@@ -90,7 +121,7 @@ module.exports = bot => {
 	bot.enableModule = async (guild, module) => {
 		const data = await Guild.findOne({ guildid: guild.id });
 		const Modules = await data.disabledModules;
-		const cats = await bot.commands.map(c => c.category);
+		const cats = await bot.commands.map((c) => c.category);
 
 		// Check for valid
 		if (!cats.includes(module)) return;
@@ -100,5 +131,4 @@ module.exports = bot => {
 		Modules.pull(module);
 		data.save();
 	};
-
 };
