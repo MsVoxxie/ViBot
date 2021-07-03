@@ -9,8 +9,9 @@ module.exports = {
 		if (reaction.message.partial) {
 			await reaction.message.fetch();
 		}
-		//Define Message for sanity, Get settings.
+		//Defininitions
 		const message = await reaction.message;
+		const ReactLimit = 3;
 		const settings = await bot.getGuild(message.guild);
 
 		//Checks
@@ -51,22 +52,25 @@ module.exports = {
 			await starMsg.edit({ embed });
 		}
 
-		if (!stars) {
+		if (!stars && reaction.emoji.name === '⭐' && reaction.count >= ReactLimit) {
 			// Check for attachments
 			const image =
 				message.attachments.size > 0
 					? await this.extension(reaction, message.attachments.first().url)
 					: '';
+
 			// Check if the messages is empty.
 			if (image === '' && message.cleanContent.length < 1)
 				return message.channel.send(`${user}, you cannot star an empty message.`);
+
 			const embed = new MessageEmbed()
 				.setColor(15844367)
 				.setDescription(message.cleanContent)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTimestamp(new Date())
-				.setFooter(`⭐ 1 | ${message.id}`)
+				.setFooter(`⭐ ${ReactLimit} | ${message.id}`)
 				.setImage(image);
+
 			await starChannel.send({ embed });
 		}
 	},
