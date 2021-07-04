@@ -36,16 +36,19 @@ module.exports = {
 				message.attachments.size > 0
 					? await this.extension(reaction, message.attachments.first().url)
 					: '';
+
 			const embed = new MessageEmbed()
 				.setColor(foundStar.color)
-				.setDescription(foundStar.description ? foundStar.description : '')
+				.setDescription(
+					foundStar.description != 'null' || foundStar != null ? foundStar.description : ''
+				)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL())
 				.setTimestamp()
 				.setFooter(`⭐ ${parseInt(star[1]) - 1} | ${message.id}`)
 				.setImage(image);
 			const starMsg = await starChannel.messages.fetch(stars.id);
 			await starMsg.edit({ embed });
-			if (parseInt(star[1]) - 1 == 0) return bot.setTimeout(() => starMsg.delete(), 30 * 1000);
+			if (parseInt(star[1]) - 1 == 0) return bot.setTimeout(() => starMsg.delete(), 1 * 1000);
 		}
 	},
 
