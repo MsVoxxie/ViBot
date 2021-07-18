@@ -18,8 +18,7 @@ const Twitter = new Twit({
 module.exports = {
 	name: 'watchtwitter',
 	aliases: ['tw'],
-	description:
-		'Subscribe/Unsubscribe to a twitter page for notifications.\n(Stream Event Updates Every Hour.)',
+	description: 'Subscribe/Unsubscribe to a twitter page for notifications.',
 	example: 'tw HourlyCats',
 	category: 'config',
 	args: false,
