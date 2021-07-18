@@ -6,7 +6,7 @@ module.exports = {
 	aliases: [],
 	description: 'Warn a user.',
 	example: '',
-	category: '',
+	category: 'moderation',
 	args: false, //Set to true later
 	cooldown: 1,
 	hidden: false,

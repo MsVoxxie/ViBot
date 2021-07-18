@@ -34,6 +34,7 @@
     "puppeteer": "^10.0.0",
     "request": "^2.88.2",
     "saucenao": "0.0.2",
+    "twit": "^2.2.11",
     "ytdl-core": "^4.8.2"
   },
   "devDependencies": {}

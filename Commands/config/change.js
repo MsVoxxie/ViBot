@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'change',
+	aliases: [],
 	aliases: ['set', 'update'],
 	description: 'Update this guilds database settings',
 	example: '',

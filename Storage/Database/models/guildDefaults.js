@@ -11,7 +11,9 @@ module.exports = {
 		welcomechannel: 'Not Set',
 		ruleschannel: 'Not Set',
 		starchannel: 'Not Set',
+		twitterchannel: 'Not Set',
 		disabledModules: ['legacy'],
 		channels: [],
+		twitterwatch: [],
 	},
 };

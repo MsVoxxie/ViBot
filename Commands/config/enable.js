@@ -1,5 +1,6 @@
 module.exports = {
 	name: 'enable',
+	aliases: [],
 	description: 'Enables a command Module for this guild.',
 	example: 'enable Utility',
 	category: 'config',

@@ -46,13 +46,23 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.starchannel,
 	},
+	twitterchannel: {
+		type: String,
+		default: def.twitterchannel,
+	},
 	disabledModules: {
 		type: Array,
+		unique: true,
 		default: def.disabledModules,
 	},
 	channels: {
 		type: Array,
 		default: def.channels,
+	},
+	twitterwatch: {
+		type: Array,
+		unique: true,
+		default: def.twitterwatch,
 	},
 });
 

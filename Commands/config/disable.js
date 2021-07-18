@@ -1,5 +1,6 @@
 module.exports = {
 	name: 'disable',
+	aliases: [],
 	description: 'Disable a command Module for this guild.',
 	example: 'disable Utility',
 	category: 'config',

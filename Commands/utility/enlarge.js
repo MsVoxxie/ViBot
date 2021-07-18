@@ -5,7 +5,7 @@ module.exports = {
 	aliases: ['en'],
 	description: 'Get the full size of an emoji',
 	example: 'en 😄',
-	category: 'utilit',
+	category: 'utility',
 	args: true,
 	cooldown: 2,
 	hidden: false,
@@ -31,7 +31,7 @@ module.exports = {
 		if (Emoji) {
 			try {
 				const embed = new MessageEmbed()
-					.setColor(settings.color)
+					.setColor(settings.guildcolor)
 					.setImage(Emoji)
 					.setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
 					.setFooter(`Emoji Enlarged› ${args.join(' ')}`);
