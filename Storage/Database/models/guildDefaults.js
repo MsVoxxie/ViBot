@@ -5,6 +5,7 @@ module.exports = {
 		guildid: '',
 		guildname: '',
 		prune: false,
+		allownsfw: false,
 		audit: false,
 		auditchannel: 'Not Set',
 		welcome: false,
@@ -15,5 +16,6 @@ module.exports = {
 		disabledModules: ['legacy'],
 		channels: [],
 		twitterwatch: [],
+		nsfwblacklist: [],
 	},
 };

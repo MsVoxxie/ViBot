@@ -16,8 +16,6 @@ const Twitter = new Twit({
 
 module.exports = (bot) => {
 	bot.updateStreams = async () => {
-		console.log('Updating All Twitter Streams.');
-
 		bot.guilds.cache.map(async (guild) => {
 			const settings = await bot.getGuild(guild);
 			const twitterchannel = await guild.channels.cache.get(settings.twitterchannel);

@@ -9,7 +9,7 @@ module.exports = {
 	args: false,
 	hidden: false,
 	ownerOnly: false,
-	userPerms: ['MANAGE_ROLES'],
+	userPerms: ['MANAGE_ROLES', 'MANAGE_ROLES'],
 	botPerms: ['MANAGE_ROLES'],
 	async execute(bot, message, args, settings, Vimotes) {
 

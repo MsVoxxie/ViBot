@@ -12,6 +12,29 @@ const Music = new Player(bot, {
 	leaveOnEmptyCooldown: 60 * 1000,
 });
 
+//Global NSFW Blacklist
+bot.GlobalNSFWBlacklist = [
+	'cub',
+	'loli',
+	'lolicon',
+	'shota',
+	'young',
+	'child',
+	'boy',
+	'girl',
+	'infant',
+	'youth',
+	'baby',
+	'youngling',
+	'underage',
+	'immature',
+	'ped0',
+	'ped0philia',
+	'rape',
+	'noncon',
+	'bestiality',
+];
+
 // Music Setup
 bot.Music = Music;
 
@@ -26,7 +49,6 @@ bot.events = new Discord.Collection();
 // Load Database
 bot.mongoose = require('./Storage/Database/mongoose');
 bot.guildDefaults = require('./Storage/Database/models/guildDefaults');
-bot.guildModerationDefaults = require('./Storage/Database/models/guildModerationDefaults');
 bot.reactionDefaults = require('./Storage/Database/models/reactionDefaults');
 
 // Load Functions

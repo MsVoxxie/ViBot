@@ -26,6 +26,10 @@ const guildSchema = mongoose.Schema({
 		type: Boolean,
 		default: def.audit,
 	},
+	allownsfw: {
+		type: Boolean,
+		default: def.allownsfw,
+	},
 	auditchannel: {
 		type: String,
 		default: def.auditchannel,
@@ -63,6 +67,11 @@ const guildSchema = mongoose.Schema({
 		type: Array,
 		unique: true,
 		default: def.twitterwatch,
+	},
+	nsfwblacklist: {
+		type: Array,
+		unique: true,
+		default: def.nsfwblacklist,
 	},
 });
 

@@ -24,7 +24,7 @@ module.exports = {
 	args: false,
 	cooldown: 5,
 	hidden: false,
-	ownerOnly: true,
+	ownerOnly: false,
 	userPerms: ['MANAGE_GUILD'],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
@@ -38,7 +38,7 @@ module.exports = {
 			foundUserID = data[0].id_str;
 
 			//Add to WatchList
-			const getGuild = await Guild.findOne({ guildid: message.guild.id });
+			const getGuild = await settings;
 			const twitterwatch = getGuild.twitterwatch;
 			if (twitterwatch.includes(foundUserID)) {
 				twitterwatch.pull(foundUserID);

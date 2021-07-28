@@ -67,6 +67,13 @@ module.exports = {
 				});
 		}
 
+		//Check if Guild Allows Nsfw
+		if (settings.allownsfw === false && command.nsfw) {
+			return message.lineReply('Sorry, This guild has disable NSFW Commands.').then((s) => {
+				if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+			});
+		}
+
 		// Check NSFW
 		if (!message.channel.nsfw && command.nsfw) {
 			return message

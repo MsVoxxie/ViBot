@@ -11,7 +11,7 @@ module.exports = {
 	args: false,
 	cooldown: 2,
 	hidden: false,
-	ownerOnly: true,
+	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
