@@ -83,7 +83,7 @@ module.exports = {
 			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
-				return await message.lineReply({ embed: helpEmbed }).then((s) => {
+				return await message.reply({ embed: helpEmbed }).then((s) => {
 					if (settings.audit) s.delete({ timeout: 30 * 1000 });
 				});
 			}
@@ -114,12 +114,12 @@ module.exports = {
 						: ''
 				}`
 			);
-			await message.lineReply({ embed: helpEmbed });
+			await message.reply({ embeds: helpEmbed });
 		} else {
 			// Send pagination
-			const embedList = await message.lineReply(
+			const embedList = await message.reply(
 				`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
-				{ embed: embeds[currentPage] }
+				{ embeds: embeds[currentPage] }
 			);
 
 			// Apply Reactions

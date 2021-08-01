@@ -15,9 +15,9 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		// Checks
-		if (!message.member.voice.channel) return message.lineReply('Please join a voice channel to play music.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.lineReply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
-		if(!bot.Music.getQueue(message)) return message.lineReply('No music is currently playing.').then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+		if (!message.member.voice.channel) return message.reply('Please join a voice channel to play music.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.reply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+		if(!bot.Music.getQueue(message)) return message.reply('No music is currently playing.').then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 
 		// Declarations
 		const queue = await bot.Music.getQueue(message);
@@ -35,7 +35,7 @@ module.exports = {
 			await queueEmbed.react('➡️');
 		}
 		catch (error) {
-			return message.lineReply('An error occurred!');
+			return message.reply('An error occurred!');
 		}
 
 		// Create filter and Collector

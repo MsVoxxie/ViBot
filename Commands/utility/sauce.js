@@ -41,12 +41,12 @@ module.exports = {
 			},
 			(error) => {
 				console.dir(error.request);
-				return lineReply(`An error occurred while fetching your request.`);
+				return reply(`An error occurred while fetching your request.`);
 			}
 		);
 
 		//Make sure results has results
-		if (!Results.length) return message.lineReply('Sorry, No relevant results found!');
+		if (!Results.length) return message.reply('Sorry, No relevant results found!');
 
 		//Setup Embeds
 		Results.forEach((Res) => {
@@ -71,7 +71,7 @@ module.exports = {
 		});
 
 		// Send pagination
-		const embedList = await message.lineReply(
+		const embedList = await message.reply(
 			`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`,
 			{ embed: Embeds[currentPage] }
 		);

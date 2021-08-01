@@ -29,9 +29,9 @@ module.exports = {
 					.setTitle('NSFW Blacklist')
 					.setDescription(blacklisted.join(', '));
 
-				return message.lineReply({ embed });
+				return message.reply({ embed });
 			} else {
-				return message.lineReply('No tags are blacklisted.').then((s) => {
+				return message.reply('No tags are blacklisted.').then((s) => {
 					if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 				});
 			}
@@ -41,11 +41,11 @@ module.exports = {
 		if (blacklist.includes(args[0])) {
 			blacklist.pull(args[0]);
 			await getGuild.save();
-			message.lineReply(`Tag ${args[0]} has been removed from the NSFW Blacklist.`);
+			message.reply(`Tag ${args[0]} has been removed from the NSFW Blacklist.`);
 		} else {
 			blacklist.push(args[0]);
 			await getGuild.save();
-			message.lineReply(`Tag ${args[0]} has been added to the NSFW Blacklist.`);
+			message.reply(`Tag ${args[0]} has been added to the NSFW Blacklist.`);
 		}
 	},
 };

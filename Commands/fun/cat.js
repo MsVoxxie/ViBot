@@ -16,7 +16,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 
 		let cat;
-		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Finding a Kitty for you...`);
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Kitty for you...`);
 		await fetch('http://aws.random.cat/meow').then(r => r.json()).then(j => cat = j);
 
 		const embed = new MessageEmbed()

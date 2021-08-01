@@ -20,12 +20,12 @@ module.exports = {
 		let currentPage = 0;
 
 		// Let the user know i;m working...
-		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Gathering image results...`);
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Gathering image results...`);
 
 		// Search and save results
 		await googleSearch(args.join(' '), Results);
 		async function Results(error, results) {
-			if (error) return message.lineReply('Search Query failed.');
+			if (error) return message.reply('Search Query failed.');
 			for (let i = 0; i < results.length; i++) {
 				imgResults.push(results[i].url);
 			}

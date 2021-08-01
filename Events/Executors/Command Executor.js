@@ -4,7 +4,7 @@ const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
-	name: 'message',
+	name: 'messageCreate',
 	disabled: false,
 	once: false,
 	async execute(message, bot) {
@@ -37,14 +37,14 @@ module.exports = {
 
 		// Check if Owner Only
 		if (command.ownerOnly && !bot.Owners.includes(member.id)) {
-			return message.lineReply(`Sorry, The command \`${command.name}\` is locked.`).then((s) => {
+			return message.reply(`Sorry, The command \`${command.name}\` is locked.`).then((s) => {
 				if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
 
 		// Check if Disabled Globally
 		if (command.disabled && command.disabled === true) {
-			return message.lineReply(`Sorry, The command \`${command.name}\` is disabled.`).then((s) => {
+			return message.reply(`Sorry, The command \`${command.name}\` is disabled.`).then((s) => {
 				if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
@@ -52,7 +52,7 @@ module.exports = {
 		// Check if Disabled in Guild
 		if (settings.disabledModules.includes(command.category)) {
 			return message
-				.lineReply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`)
+				.reply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`)
 				.then((s) => {
 					if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 				});
@@ -61,7 +61,7 @@ module.exports = {
 		// Check if args required
 		if (command.args && !args.length) {
 			return message
-				.lineReply(`The command \`${command.name}\` requires arguments, you did not provide any!`)
+				.reply(`The command \`${command.name}\` requires arguments, you did not provide any!`)
 				.then((s) => {
 					if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 				});
@@ -69,7 +69,7 @@ module.exports = {
 
 		//Check if Guild Allows Nsfw
 		if (settings.allownsfw === false && command.nsfw) {
-			return message.lineReply('Sorry, This guild has disable NSFW Commands.').then((s) => {
+			return message.reply('Sorry, This guild has disable NSFW Commands.').then((s) => {
 				if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
@@ -77,7 +77,7 @@ module.exports = {
 		// Check NSFW
 		if (!message.channel.nsfw && command.nsfw) {
 			return message
-				.lineReply('Sorry, this command can only be used in channels marked as NSFW')
+				.reply('Sorry, this command can only be used in channels marked as NSFW')
 				.then((s) => {
 					if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 				});
@@ -88,7 +88,7 @@ module.exports = {
 			const usermissing = message.channel.permissionsFor(message.author).missing(command.userPerms);
 			if (usermissing.length > 0) {
 				return message
-					.lineReply(
+					.reply(
 						`Sorry, The command \`${
 							command.name
 						}\` requires the following permissions:\n\`${usermissing
@@ -106,7 +106,7 @@ module.exports = {
 			const botmissing = message.channel.permissionsFor(message.guild.me).missing(command.botPerms);
 			if (botmissing.length > 0) {
 				return message
-					.lineReply(
+					.reply(
 						`I cannot execute the command \`${
 							command.name
 						}\`, I'm missing the the following permissions:\n\`${botmissing
@@ -135,7 +135,7 @@ module.exports = {
 				if (now < expirationTime) {
 					const timeLeft = expirationTime - now;
 					return message
-						.lineReply(
+						.reply(
 							`Please wait, You have \`${ms(timeLeft, {
 								long: true,
 							})}\` left until you can reuse \`${command.name}\`.`
@@ -155,7 +155,7 @@ module.exports = {
 			command.execute(bot, message, args, settings, Vimotes);
 		} catch (e) {
 			console.error(e);
-			message.lineReply(`Uh Oh, There was an error trying to execute \`${command.name}\``);
+			message.reply(`Uh Oh, There was an error trying to execute \`${command.name}\``);
 		}
 	},
 };

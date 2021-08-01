@@ -38,7 +38,7 @@ module.exports = {
 		flagOptions.sort();
 
 		// Check if args
-		if(!flagArgs.some((val) => flagOptions.indexOf(val) !== -1)) return message.lineReply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+		if(!flagArgs.some((val) => flagOptions.indexOf(val) !== -1)) return message.reply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 
 		// Create Functions
 		// Base Texture
@@ -107,7 +107,7 @@ module.exports = {
 			flags.push(o);
 		});
 
-		if(flags.length > 6 && message.member.id !== '239062365931307008') return message.lineReply('Please use a maximum of 6 flags!');
+		if(flags.length > 6 && message.member.id !== '239062365931307008') return message.reply('Please use a maximum of 6 flags!');
 
 		const avatarURL = await message.member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 512 });
 		const avatarType = await avatarURL.includes('.gif') ? { mime: jimp.MIME_GIF, format: '.gif' } : { mime: jimp.MIME_PNG, format: '.png' };
@@ -115,7 +115,7 @@ module.exports = {
 		const buffer = await avatar.getBufferAsync(avatarType.mime);
 		const attachment = new MessageAttachment(buffer, `pride-avatar${avatarType.format}`);
 
-		await message.lineReply('Here you go!', attachment).then(s => {if(settings.audit) s.delete({ timeout: 360 * 1000 });});
+		await message.reply('Here you go!', attachment).then(s => {if(settings.audit) s.delete({ timeout: 360 * 1000 });});
 		await message.delete({ timeout: 360 * 1000 });
 	},
 };

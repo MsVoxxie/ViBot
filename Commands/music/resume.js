@@ -14,10 +14,10 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		// Checks
-		if (!message.member.voice.channel) return message.lineReply('You cannot stop the music when not in a voice channel.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.lineReply('You are not in the same voice channel as me.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
-		if (!bot.Music.getQueue(message)) return message.lineReply('No music is currently playing.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
-		if (!bot.Music.getQueue(message).paused) return message.lineReply('Music is already playing.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+		if (!message.member.voice.channel) return message.reply('You cannot stop the music when not in a voice channel.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.reply('You are not in the same voice channel as me.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+		if (!bot.Music.getQueue(message)) return message.reply('No music is currently playing.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
+		if (!bot.Music.getQueue(message).paused) return message.reply('Music is already playing.').then(s => { if (settings.audit) s.delete({ timeout: 30 * 1000 }); });
 
 		// Embed
 		const embed = new MessageEmbed()

@@ -34,7 +34,7 @@ module.exports = {
 
 		//DisplayNameToID
 		Twitter.get('users/lookup', { screen_name: LookupName }, async function (err, data, response) {
-			if (err) return message.lineReply(`Failed to find \`${LookupName}\``);
+			if (err) return message.reply(`Failed to find \`${LookupName}\``);
 			foundUserID = data[0].id_str;
 
 			//Add to WatchList
@@ -43,11 +43,11 @@ module.exports = {
 			if (twitterwatch.includes(foundUserID)) {
 				twitterwatch.pull(foundUserID);
 				getGuild.save();
-				message.lineReply(`\`${LookupName}\` is already in the watchlist, Removing.`);
+				message.reply(`\`${LookupName}\` is already in the watchlist, Removing.`);
 			} else {
 				twitterwatch.push(foundUserID);
 				getGuild.save();
-				message.lineReply(`\`${LookupName}\` added to watchlist.`);
+				message.reply(`\`${LookupName}\` added to watchlist.`);
 			}
 			return await bot.updateStreams();
 		});

@@ -17,7 +17,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 
 		const query = querystring.stringify({ term: args.join(' ') });
-		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Finding a Definition...`);
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Definition...`);
 		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
 		if (!list) return message.channel.send(`No results found for **${args.join(' ')}**.`).then(s => s.delete({ timeout: 10 * 1000 }));
 		const trim = (str, max) => ((str.length > max) ? `${str.slice(0, max - 3)}...` : str);

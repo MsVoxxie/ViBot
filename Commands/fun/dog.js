@@ -16,7 +16,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 
 		let dog;
-		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Finding a Dog for you...`);
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Dog for you...`);
 		await fetch('https://dog.ceo/api/breeds/image/random').then(r => r.json()).then(j => dog = j);
 
 		const embed = new MessageEmbed()

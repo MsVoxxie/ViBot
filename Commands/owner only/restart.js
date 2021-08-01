@@ -12,7 +12,7 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		try {
-			await message.lineReply('Restarting.');
+			await message.reply('Restarting.');
 			process.exit(1);
 		}
 		catch (error) {

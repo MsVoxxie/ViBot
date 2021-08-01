@@ -24,23 +24,23 @@ module.exports = {
 
 		// Check Blacklist against Searched Tags
 		if (bot.GlobalNSFWBlacklist.some((tag) => Tags.includes(tag)))
-			return message.lineReply(
+			return message.reply(
 				`One or more of the tags you have searched are on the Global blacklist.`
 			);
 		if (settings.nsfwblacklist > 0) {
 			if (settings.nsfwblacklist.some((tag) => Tags.includes(tag)))
-				return message.lineReply(
+				return message.reply(
 					`One or more of the tags you have searched are on this guilds blacklist.`
 				);
 		}
 
 		// Let the user know i'm working...
-		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Gathering image results...`);
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Gathering image results...`);
 
 		//Search
 		await Booru.search(SiteToSearch, Tags, { limit: 10, random: true }).then(async (results) => {
 			if (results.length === 0) {
-				return message.lineReply('No results found.').then((s) => {
+				return message.reply('No results found.').then((s) => {
 					if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 				});
 			} else {

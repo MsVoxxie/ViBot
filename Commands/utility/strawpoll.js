@@ -31,7 +31,7 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setDescription('What is the title of your poll?');
 
-		const embMessage = await message.lineReply({ embed: embed });
+		const embMessage = await message.reply({ embed: embed });
 
 		await embMessage.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] }).then(async col => {
 			Title = col.first().cleanContent;

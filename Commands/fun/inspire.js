@@ -29,7 +29,7 @@ module.exports = {
 		];
 
 		// Send loading message...
-		const loading = await message.lineReply(`${Vimotes['A_LOADING']}Generating Inspirational Quotes...`);
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Generating Inspirational Quotes...`);
 
 		// Promise based function to get an image from inspirobot's api.
 		async function generateInspirationalQuote(number, loadingMessage) {

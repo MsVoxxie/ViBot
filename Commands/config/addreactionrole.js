@@ -32,7 +32,7 @@ module.exports = {
 
 		// First Question
 		qembed.setDescription('Send an embed message ID (That I Created), Or say continue for me to make a new one.');
-		const questionone = await message.lineReply({ embed: qembed });
+		const questionone = await message.reply({ embed: qembed });
 		const filter = m => m.author.id === message.author.id;
 		await questionone.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
@@ -46,7 +46,7 @@ module.exports = {
 
 		// Second Question
 		qembed.setDescription('Please provide a Role ID for me to use.');
-		const questiontwo = await message.lineReply({ embed: qembed });
+		const questiontwo = await message.reply({ embed: qembed });
 		await questiontwo.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
 				roleid = await collected.first().cleanContent;
@@ -56,7 +56,7 @@ module.exports = {
 
 		// Third Question
 		qembed.setDescription('Which Emoji would you like to use?');
-		const questionthree = await message.lineReply({ embed: qembed });
+		const questionthree = await message.reply({ embed: qembed });
 		await questionthree.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
 				reaction = await collected.first().cleanContent;
@@ -66,7 +66,7 @@ module.exports = {
 
 		// Fourth Question
 		qembed.setDescription('Would you like this embed to have a title? Say No for no title.');
-		const questionfour = await message.lineReply({ embed: qembed });
+		const questionfour = await message.reply({ embed: qembed });
 		await questionfour.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
 			.then(async collected => {
 				if (collected.first().cleanContent !== 'no') {
@@ -79,7 +79,7 @@ module.exports = {
 
 		// Let the user know that the bot is working on their request.
 		qembed.setDescription('Wonderful, Finishing up...');
-		const Final = await message.lineReply({ embed: qembed });
+		const Final = await message.reply({ embed: qembed });
 		await Final.delete();
 
 		// Get Role

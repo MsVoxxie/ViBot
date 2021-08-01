@@ -42,7 +42,7 @@ module.exports = {
 			}
 		}
 		else {
-			return message.lineReply('Please provide a valid Emoji to enlarge.').then(s => s.delete({ timeout: 10 * 1000 }));
+			return message.reply('Please provide a valid Emoji to enlarge.').then(s => s.delete({ timeout: 10 * 1000 }));
 		}
 	},
 };

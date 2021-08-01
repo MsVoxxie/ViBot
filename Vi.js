@@ -1,8 +1,7 @@
-const Discord = require('discord.js');
-require('discord-reply');
+const {Client, Intents, Collection} = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
-const bot = new Discord.Client({ disableMentions: 'everyone', partials: ['REACTION', 'MESSAGE'] });
+const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const Music = new Player(bot, {
 	leaveOnEnd: true,
 	leaveOnEmpty: true,
@@ -39,12 +38,12 @@ bot.GlobalNSFWBlacklist = [
 bot.Music = Music;
 
 // Command Info
-bot.commands = new Discord.Collection();
-bot.aliases = new Discord.Collection();
-bot.cooldowns = new Discord.Collection();
+bot.commands = new Collection();
+bot.aliases = new Collection();
+bot.cooldowns = new Collection();
 
 // Event Info
-bot.events = new Discord.Collection();
+bot.events = new Collection();
 
 // Load Database
 bot.mongoose = require('./Storage/Database/mongoose');
