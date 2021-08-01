@@ -1,0 +1,42 @@
+{
+  "name": "vibot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Vi.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MsVoxxie/ViBot.git"
+  },
+  "author": "👑 Ms.Voxxie#0001",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MsVoxxie/ViBot/issues"
+  },
+  "homepage": "https://github.com/MsVoxxie/ViBot#readme",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "ascii-table": "0.0.9",
+    "axios": "^0.21.1",
+    "booru": "^2.4.0",
+    "discord-player": "^4.1.4",
+    "discord-reply": "^0.1.2",
+    "discord.js": "^12.5.3",
+    "eslint": "^7.31.0",
+    "ffmpeg-static": "^4.4.0",
+    "g-i-s": "^2.1.6",
+    "jimp": "^0.16.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.13.3",
+    "ms": "^2.1.3",
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^10.1.0",
+    "request": "^2.88.2",
+    "saucenao": "0.0.2",
+    "twit": "^2.2.11",
+    "ytdl-core": "^4.9.0"
+  },
+  "devDependencies": {}
+}
