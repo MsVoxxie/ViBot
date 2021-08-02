@@ -30,12 +30,12 @@ module.exports = {
 			if(bot.Music.getQueue(message).loopMode) {
 				bot.Music.setLoopMode(message, false);
 				embed.setDescription(`${message.author} Disabled Queue Repeat Mode.`);
-				await message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+				await message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 			}
 			else{
 				bot.Music.setLoopMode(message, true);
 				embed.setDescription(`${message.author} Enabled Queue Repeat Mode.`);
-				await message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+				await message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 			}
 			break;
 
@@ -43,12 +43,12 @@ module.exports = {
 			if(bot.Music.getQueue(message).repeatMode) {
 				bot.Music.setRepeatMode(message, false);
 				embed.setDescription(`${message.author} Disabled Song Repeat Mode.`);
-				await message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+				await message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 			}
 			else{
 				bot.Music.setRepeatMode(message, true);
 				embed.setDescription(`${message.author} Enabled Song Repeat Mode.`);
-				await message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+				await message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 			}
 			break;
 		}

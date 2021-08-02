@@ -27,7 +27,7 @@ module.exports = {
 					.setAuthor(msg.message.guild.name, msg.message.guild.iconURL({ dynamic: true }))
 					.setColor(Role.color)
 					.setDescription(`${Vimotes['XMARK']}${Role.name} Removed.`);
-				await member.send({ embed: embed }).then((s) => {
+				await member.send({ embeds: embed }).then((s) => {
 					if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
 				});
 			} catch (error) {

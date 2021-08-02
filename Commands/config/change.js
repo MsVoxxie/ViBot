@@ -168,7 +168,7 @@ module.exports = {
 					.setColor(settings.guildcolor)
 					.setFooter(`To update a setting - ${settings.prefix}change <setting> <desired setting>`);
 
-				message.reply({ embed: embed });
+				message.reply({ embeds: [embed] });
 			}
 			catch(error) {
 				console.error(error);

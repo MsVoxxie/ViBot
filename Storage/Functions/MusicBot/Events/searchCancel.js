@@ -6,5 +6,5 @@ module.exports = async (bot, message, queue) => {
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
 		.setDescription('You did not provide a valid response, Please try again.');
-	message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+	message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 };

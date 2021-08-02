@@ -9,10 +9,10 @@ module.exports = async (bot, message, query, tracks, content, collector) => {
 	if(content === 'cancel') {
 		collector.stop();
 		embed.setDescription('Search Cancelled.');
-		return message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+		return message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 	}
 	else{
 		embed.setDescription(`Invalid Query, You must send a number between (1 - ${tracks.length})!`);
-		return message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+		return message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 	}
 };

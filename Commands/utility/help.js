@@ -83,7 +83,7 @@ module.exports = {
 			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
-				return await message.reply({ embed: helpEmbed }).then((s) => {
+				return await message.reply({ embeds: helpEmbed }).then((s) => {
 					if (settings.audit) s.delete({ timeout: 30 * 1000 });
 				});
 			}
@@ -117,10 +117,10 @@ module.exports = {
 			await message.reply({ embeds: helpEmbed });
 		} else {
 			// Send pagination
-			const embedList = await message.reply(
-				`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
-				{ embeds: embeds[currentPage] }
-			);
+			const embedList = await message.reply({
+				content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+				embeds: [embeds[currentPage]],
+			});
 
 			// Apply Reactions
 			try {
@@ -134,8 +134,9 @@ module.exports = {
 			// Filter Reactions, setup Collector and try each reaction
 			const filter = (reaction, user) =>
 				['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
-			const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
+			const collector = await embedList.createReactionCollector({ filter, time: 300 * 1000 });
 			collector.on('collect', async (reaction) => {
+				console.log(`Reaction: ${reaction.emoji.name}`);
 				// Switch Case
 				switch (reaction.emoji.name) {
 					// Backwards
@@ -143,8 +144,9 @@ module.exports = {
 						await reaction.users.remove(message.author.id);
 						if (currentPage !== 0) {
 							currentPage--;
-							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, {
-								embed: embeds[currentPage],
+							embedList.edit({
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								embeds: [embeds[currentPage]],
 							});
 						}
 						break;
@@ -163,8 +165,9 @@ module.exports = {
 						await reaction.users.remove(message.author.id);
 						if (currentPage < embeds.length - 1) {
 							currentPage++;
-							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, {
-								embed: embeds[currentPage],
+							embedList.edit({
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								embeds: [embeds[currentPage]],
 							});
 						}
 						break;

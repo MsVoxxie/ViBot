@@ -23,6 +23,6 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setFooter(bot.Timestamp(member.joinedAt));
 
-		logChannel.send({ embed: embed });
+		logChannel.send({ embeds: [embed] });
 	},
 };

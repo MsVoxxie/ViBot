@@ -14,10 +14,11 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-
 		let fox;
 		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Fox for you...`);
-		await fetch('https://randomfox.ca/floof/').then(r => r.json()).then(j => fox = j);
+		await fetch('https://randomfox.ca/floof/')
+			.then((r) => r.json())
+			.then((j) => (fox = j));
 
 		const embed = new MessageEmbed()
 			.setImage(`${fox.image}`)
@@ -26,7 +27,6 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setFooter(`A fox for ${message.author.username}!`);
 
-		await loading.edit('', { embed: embed });
-
+		await await loading.edit({ content: null, embeds: [embed] });
 	},
 };

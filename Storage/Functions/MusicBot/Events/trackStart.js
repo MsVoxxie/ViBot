@@ -13,8 +13,8 @@ module.exports = async (bot, message, track, queue) => {
 		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
 		.setFooter(bot.Timestamp(Date.now()));
 
-	if(queue.currentEmbed && !queue.currentEmbed.deleted) await queue.currentEmbed.delete();// return queue.currentEmbed.edit({ embed: embed });
-	const playing = await message.channel.send({ embed:embed }).then(m => queue.currentEmbed = m);
+	if(queue.currentEmbed && !queue.currentEmbed.deleted) await queue.currentEmbed.delete();// return queue.currentEmbed.edit({ embeds: [embed] });
+	const playing = await message.channel.send({ embeds:embed }).then(m => queue.currentEmbed = m);
 	// .then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
 
 	// Reaction Controls

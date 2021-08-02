@@ -1,7 +1,16 @@
-const {Client, Intents, Collection} = require('discord.js');
+const { Client, Intents, Collection } = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
-const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const bot = new Client({
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+		Intents.FLAGS.GUILD_MEMBERS,
+		Intents.FLAGS.GUILD_PRESENCES,
+	],
+	partials: ['MESSAGE', 'REACTION'],
+});
 const Music = new Player(bot, {
 	leaveOnEnd: true,
 	leaveOnEmpty: true,

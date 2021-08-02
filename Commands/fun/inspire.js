@@ -40,7 +40,7 @@ module.exports = {
 					.setImage(body)
 					.setColor(settings.guildcolor)
 					.setFooter(bot.Timestamp(new Date()));
-				await loadingMessage.edit('', { embed: QuoteEmbed });
+				await loadingMessage.edit('', { embeds: QuoteEmbed });
 			});
 		}
 

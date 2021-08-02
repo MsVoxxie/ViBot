@@ -32,6 +32,6 @@ module.exports = {
 			embed.setFooter(`Progress›\n${bot.Music.createProgressBar(message, { timecodes: true })}`);
 		}
 
-		message.channel.send({ embed: embed }).then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
+		message.channel.send({ embeds: embed }).then(s => {if(settings.audit) s.delete({ timeout: track.durationMS > 10 ? track.durationMS : 360 * 1000 });});
 	},
 };

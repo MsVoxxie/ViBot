@@ -27,7 +27,7 @@ module.exports = {
 				.setDescription(`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server.\n**Account Created›** ${moment(getMember.user.createdAt, 'YYYMMDD h mm ss').fromNow()}`)
 				.setColor(settings.guildcolor)
 				.setFooter(bot.Timestamp(getMember.joinedAt));
-			logChannel.send({ embed: embed });
+			logChannel.send({ embeds: [embed] });
 		}
 
 		// Send Welcome Message
@@ -38,7 +38,7 @@ module.exports = {
 				.setFooter(`Joined› ${bot.Timestamp(getMember.joinedAt)}`)
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
-			welChannel.send({ embed: welcome });
+			welChannel.send({ embeds: welcome });
 		}
 	},
 };

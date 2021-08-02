@@ -11,5 +11,5 @@ module.exports = async (bot, message, queue, playlist) => {
 		.setDescription(`**Playlist Title›** [${playlist.title}](${playlist.url})\n**Total Duration›** \`${ms(playlist.duration, { long: true })}\`\n**Total Songs›** \`${playlist.tracks.length}\``)
 		.setFooter(bot.Timestamp(Date.now()));
 
-	message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+	message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 };

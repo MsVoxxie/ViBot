@@ -73,7 +73,7 @@ module.exports = {
 		// Send pagination
 		const embedList = await message.reply(
 			`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`,
-			{ embed: Embeds[currentPage] }
+			{ embeds: Embeds[currentPage] }
 		);
 
 		// Apply Reactions
@@ -98,7 +98,7 @@ module.exports = {
 					if (currentPage !== 0) {
 						currentPage--;
 						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, {
-							embed: Embeds[currentPage],
+							embeds: Embeds[currentPage],
 						});
 					}
 					break;
@@ -108,7 +108,7 @@ module.exports = {
 				case '⏹': {
 					collector.stop();
 					reaction.message.reactions.removeAll();
-					embedList.edit('**«Collection Stopped»**', { embed: Embeds[currentPage] });
+					embedList.edit('**«Collection Stopped»**', { embeds: Embeds[currentPage] });
 					break;
 				}
 
@@ -118,7 +118,7 @@ module.exports = {
 					if (currentPage < Embeds.length - 1) {
 						currentPage++;
 						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, {
-							embed: Embeds[currentPage],
+							embeds: Embeds[currentPage],
 						});
 					}
 					break;

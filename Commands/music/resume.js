@@ -25,6 +25,6 @@ module.exports = {
 			.setDescription(`${message.member} resumed the song.`);
 
 		const success = await bot.Music.resume(message);
-		if (success) return message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+		if (success) return message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 	},
 };

@@ -11,21 +11,14 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
+		const msg = await message.channel.send('testing');
+		await msg.react('💩');
 
-		const data = [];
-		await message.guild.channels.cache.filter(ch => ch.type === 'category').filter(x => x !== undefined).sort((a, b)=> a.position - b.position).map(categories => {
-			const children = categories.children.filter(ch => ch.type === 'text').filter(x => x !== undefined);
-
-			data.push(
-				{ category: categories.name, channels: [children.map(child => {
-					if(child.type === 'text') {
-						return { name: child.name, id: child.id } ;
-					}
-				})] },
-			);
-
+		const filter = (reaction, user) =>
+			['💩'].includes(reaction.emoji.name) && user.id === message.author.id;
+		const collector = await msg.createReactionCollector({ filter, time: 5000 });
+		collector.on('collect', (reaction, user) => {
+			console.log(reaction.emoji.name);
 		});
-		const final = [...new Set(data)];
-		console.log(final.map(m => m.category));
 	},
 };

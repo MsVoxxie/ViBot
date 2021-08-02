@@ -14,10 +14,11 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-
 		let cat;
 		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Kitty for you...`);
-		await fetch('http://aws.random.cat/meow').then(r => r.json()).then(j => cat = j);
+		await fetch('http://aws.random.cat/meow')
+			.then((r) => r.json())
+			.then((j) => (cat = j));
 
 		const embed = new MessageEmbed()
 			.setImage(`${cat.file}`)
@@ -26,7 +27,6 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setFooter(`A cat for ${message.author.username}!`);
 
-		await loading.edit('', { embed: embed });
-
+		await loading.edit({ content: null, embeds: [embed] });
 	},
 };

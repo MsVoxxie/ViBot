@@ -20,6 +20,6 @@ module.exports = {
 			.setThumbnail('https://share.voxxie.me/images/VoxelIco.png')
 			.setDescription('Source Code can be found [Here on Github](https://github.com/MsVoxxie/ViBot)\nMy Creator is 👑 Ms.Voxxie#0001\nCreate an Issue if anything comes up!');
 
-		message.channel.send({ embed: embed });
+		message.channel.send({ embeds: [embed] });
 	},
 };

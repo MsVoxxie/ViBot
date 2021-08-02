@@ -14,19 +14,19 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-
 		let dog;
 		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Dog for you...`);
-		await fetch('https://dog.ceo/api/breeds/image/random').then(r => r.json()).then(j => dog = j);
+		await fetch('https://dog.ceo/api/breeds/image/random')
+			.then((r) => r.json())
+			.then((j) => (dog = j));
 
 		const embed = new MessageEmbed()
-			.setImage(`${dog.message}`)
+			.setImage(`${dog.message.toString()}`)
 			.setTitle('Random Dog!')
-			.setURL(dog.message)
+			.setURL(dog.message.toString())
 			.setColor(settings.guildcolor)
 			.setFooter(`A dog for ${message.author.username}!`);
 
-		await loading.edit('', { embed: embed });
-
+		await loading.edit({ content: null, embeds: [embed] });
 	},
 };

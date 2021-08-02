@@ -35,7 +35,7 @@ module.exports = {
 					.setImage(Emoji)
 					.setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
 					.setFooter(`Emoji Enlarged› ${args.join(' ')}`);
-				message.channel.send({ embed: embed });
+				message.channel.send({ embeds: [embed] });
 			}
 			catch (e) {
 				console.log(e);

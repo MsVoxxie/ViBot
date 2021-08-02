@@ -28,7 +28,7 @@ module.exports = {
 
 		const success = await bot.Music.skip(message);
 		if(success) {
-			await message.channel.send({ embed: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+			await message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
 			return queue.currentEmbed.delete();
 		}
 	},

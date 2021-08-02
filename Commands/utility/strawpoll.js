@@ -31,17 +31,17 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setDescription('What is the title of your poll?');
 
-		const embMessage = await message.reply({ embed: embed });
+		const embMessage = await message.reply({ embeds: [embed] });
 
 		await embMessage.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] }).then(async col => {
 			Title = col.first().cleanContent;
 			embed.addField('**Title›**', Title, true);
-			await embMessage.edit({ embed: embed });
+			await embMessage.edit({ embeds: [embed] });
 			MsgsToDelete.push(col.first());
 		});
 
 		embed.setDescription('Please type the options you would like the poll to have one line at a time.\nPlease say `Done` when you\'re finished.');
-		await embMessage.edit({ embed: embed });
+		await embMessage.edit({ embeds: [embed] });
 
 		const getOptions = await embMessage.channel.createMessageCollector(filter, { time: 700 * 1000 });
 		getOptions.on('collect', async msg => {
@@ -52,14 +52,14 @@ module.exports = {
 			else {
 				Options.push(msg.cleanContent);
 				embed.addField('**Options›**', msg.cleanContent, false);
-				await embMessage.edit({ embed: embed });
+				await embMessage.edit({ embeds: [embed] });
 				MsgsToDelete.push(msg);
 			}
 		});
 
 		getOptions.on('end', async msg => {
 			embed.setDescription('Wonderful, Creating your poll now, Please wait.');
-			await embMessage.edit({ embed: embed });
+			await embMessage.edit({ embeds: [embed] });
 
 			// Send the poll data
 			await axios.post('https://strawpoll.com/api/poll',
@@ -92,7 +92,7 @@ module.exports = {
 				await embMessage.delete();
 				await message.delete();
 			}
-			await message.channel.send({ embed: finalEmbed });
+			await message.channel.send({ embeds: finalEmbed });
 		});
 	},
 };

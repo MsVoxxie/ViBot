@@ -26,7 +26,7 @@ module.exports = {
 		const embeds = generateQueueEmbed(message, queue.tracks, settings, totalTime);
 
 		// Generate Embed Message
-		const queueEmbed = await message.channel.send(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+		const queueEmbed = await message.channel.send(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embeds: embeds[currentPage] });
 
 		// Add reactions to embed message
 		try {
@@ -49,7 +49,7 @@ module.exports = {
 				await reaction.users.remove(message.author.id);
 				if(currentPage < embeds.length - 1) {
 					currentPage++;
-					queueEmbed.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+					queueEmbed.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embeds: embeds[currentPage] });
 				}
 				break;
 
@@ -63,7 +63,7 @@ module.exports = {
 				await reaction.users.remove(message.author.id);
 				if(currentPage !== 0) {
 					currentPage--;
-					queueEmbed.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embed: embeds[currentPage] });
+					queueEmbed.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, { embeds: embeds[currentPage] });
 				}
 				break;
 			}

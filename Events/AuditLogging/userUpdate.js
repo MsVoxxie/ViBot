@@ -31,7 +31,7 @@ module.exports = {
 							.setColor(settings.guildcolor)
 							.setFooter(bot.Timestamp(new Date()));
 
-						logChannel.send({ embed: usernameEmbed });
+						logChannel.send({ embeds: usernameEmbed });
 					}
 
 					// Discriminator Changed
@@ -45,7 +45,7 @@ module.exports = {
 							.setColor(settings.guildcolor)
 							.setFooter(bot.Timestamp(new Date()));
 
-						logChannel.send({ embed: discriminatorEmbed });
+						logChannel.send({ embeds: discriminatorEmbed });
 					}
 
 					// Avatar Changed
@@ -60,7 +60,7 @@ module.exports = {
 							.setColor(settings.guildcolor)
 							.setFooter(bot.Timestamp(new Date()));
 
-						logChannel.send({ embed: avatarEmbed });
+						logChannel.send({ embeds: avatarEmbed });
 					}
 				}
 			});

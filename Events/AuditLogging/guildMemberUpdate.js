@@ -47,7 +47,7 @@ module.exports = {
 				.setColor(settings.guildcolor)
 				.setFooter(bot.Timestamp(new Date()));
 
-			logChannel.send({ embed: embed });
+			logChannel.send({ embeds: [embed] });
 		}
 	},
 };
