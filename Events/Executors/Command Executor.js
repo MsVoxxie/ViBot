@@ -10,7 +10,7 @@ module.exports = {
 	async execute(message, bot) {
 		// Get Guild Settings
 		let settings;
-		if (message.channel.type !== 'dm') {
+		if (message.channel.type !== 'DM') {
 			settings = await bot.getGuild(message.guild);
 		}
 		// Member declaration

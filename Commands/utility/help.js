@@ -23,8 +23,15 @@ module.exports = {
 
 		// Generate Pagination
 		Categories.forEach((Cat) => {
-			if (Cat === 'owner only') return;
+			//Category Checks
 			if (settings.allownsfw === false && Cat === 'nsfw') return;
+			if (Cat === 'owner only') return;
+
+			//Check for permissions of user
+			if (Cat === 'config' && !message.member.permissions.has(['MANAGE_GUILD', 'MANAGE_ROLES']))
+				return;
+
+			//Command Checks
 			const dir = bot.commands.filter((c) => {
 				if (settings.allownsfw === false && c.nsfw) return;
 				if (!c.hidden) {
