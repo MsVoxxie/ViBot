@@ -14,7 +14,6 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-
 		const randomQuip = [
 			'*Getcha Head In The Game*',
 			'*Believe In The You That Believes In Chi*',
@@ -40,7 +39,7 @@ module.exports = {
 					.setImage(body)
 					.setColor(settings.guildcolor)
 					.setFooter(bot.Timestamp(new Date()));
-				await loadingMessage.edit('', { embeds: QuoteEmbed });
+				await loadingMessage.edit({content: null, embeds: [QuoteEmbed] });
 			});
 		}
 
