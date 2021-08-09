@@ -24,7 +24,7 @@ module.exports = {
 
 		//Send Message
 		message.channel.send({ embed }).then((s) => {
-			if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+			if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 		});
 	},
 };

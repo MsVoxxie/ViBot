@@ -38,7 +38,7 @@ module.exports = {
 				.setFooter(`Joined› ${bot.Timestamp(getMember.joinedAt)}`)
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
-			welChannel.send({ embeds: welcome });
+			welChannel.send({ embeds: [welcome] });
 		}
 	},
 };

@@ -51,7 +51,7 @@ module.exports = {
 					return message
 						.reply(`\`${newSetting}\` is not a valid hexadecimal color code, Aborting.`)
 						.then((s) => {
-							if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				if (!newSetting.split('').includes('#')) {
 					newSetting = `#${newSetting}`;
@@ -73,16 +73,16 @@ module.exports = {
 			case 'prune': {
 				if (!newSetting)
 					return message.reply(`**Prune is currently set to \`${settings.prune}\`**`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				try {
 					await bot.updateGuild(guild, { prune: newSetting });
 					return message.reply(`**Prune Updated›** \`${newSetting}\``).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update prune, Please try again.').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -92,16 +92,16 @@ module.exports = {
 			case 'audit': {
 				if (!newSetting)
 					return message.reply(`**Audit is currently set to \`${settings.audit}\`**`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				try {
 					await bot.updateGuild(guild, { audit: newSetting });
 					return message.reply(`**Audit Updated›** \`${newSetting}\``).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update audit, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -113,17 +113,17 @@ module.exports = {
 					return message
 						.reply(`**AuditChannel is currently set to \`${settings.auditchannel}\`**`)
 						.then((s) => {
-							if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				try {
 					const chan = await message.mentions.channels.first();
 					await bot.updateGuild(guild, { auditchannel: chan });
 					return message.reply(`**AuditChannel Updated›** ${chan}`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update auditchannel, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -135,16 +135,16 @@ module.exports = {
 					return message
 						.reply(`**Welcome is currently set to \`${settings.welcome}\`**`)
 						.then((s) => {
-							if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				try {
 					await bot.updateGuild(guild, { welcome: newSetting });
 					return message.reply(`**Welcome Update›** \`${settings.newSetting}\``).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update welcome, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -156,17 +156,17 @@ module.exports = {
 					return message
 						.reply(`**Welcomechannel is currently set to ${settings.welcomechannel}**`)
 						.then((s) => {
-							if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				try {
 					const chan = await message.mentions.channels.first();
 					await bot.updateGuild(guild, { welcomechannel: chan });
 					return message.reply(`**WelcomeChannel Updated›** ${chan}`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update welcomechannel, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -178,17 +178,17 @@ module.exports = {
 					return message
 						.reply(`**Ruleschannel is currently set to ${settings.ruleschannel}**`)
 						.then((s) => {
-							if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				try {
 					const chan = await message.mentions.channels.first();
 					await bot.updateGuild(guild, { ruleschannel: chan });
 					return message.reply(`**RulesChannel Updated›** ${chan}`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update ruleschannel, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -198,17 +198,17 @@ module.exports = {
 			case 'modrole': {
 				if (!newSetting)
 					return message.reply(`**Modrole is currently set to ${settings.modrole}**`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				try {
 					const role = await message.mentions.roles.first();
 					await bot.updateGuild(guild, { modrole: role });
 					return message.reply(`**ModRole Update›** ${role}`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update modrole, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;
@@ -220,17 +220,17 @@ module.exports = {
 					return message
 						.reply(`**Adminrole is currently set to ${settings.adminrole}**`)
 						.then((s) => {
-							if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				try {
 					const role = await message.mentions.roles.first();
 					await bot.updateGuild(guild, { adminrole: role });
 					return message.reply(`**AdminRole Update›** ${role}`).then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
 					message.reply('**Failed to update adminrole, Please try again').then((s) => {
-						if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				}
 				break;

@@ -38,7 +38,7 @@ module.exports = {
 		flagOptions.sort();
 
 		// Check if args
-		if(!flagArgs.some((val) => flagOptions.indexOf(val) !== -1)) return message.reply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+		if(!flagArgs.some((val) => flagOptions.indexOf(val) !== -1)) return message.reply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then((s) => {if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);});
 
 		// Create Functions
 		// Base Texture

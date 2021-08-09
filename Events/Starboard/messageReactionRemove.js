@@ -48,7 +48,7 @@ module.exports = {
 				.setImage(image);
 			const starMsg = await starChannel.messages.fetch(stars.id);
 			await starMsg.edit({ embed });
-			if (parseInt(star[1]) - 1 == 0) return bot.setTimeout(() => starMsg.delete(), 1 * 1000);
+			if (parseInt(star[1]) - 1 == 0) return setTimeout(() => starMsg.delete(), 1 * 1000);
 		}
 	},
 

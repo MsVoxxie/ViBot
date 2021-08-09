@@ -30,7 +30,7 @@ module.exports = {
 		const code = args.join(' ');
 		if (code.includes('token')) {
 			message.reply('\nI will not share my token.').then((s) => {
-				if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 			});
 			return;
 		}

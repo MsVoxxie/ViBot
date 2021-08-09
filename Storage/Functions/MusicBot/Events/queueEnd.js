@@ -1,17 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 
-module.exports = async (bot, message, queue) => {
-
+module.exports = async (bot, queue) => {
 	// Define
+	const message = queue.metadata;
 	const settings = await bot.getGuild(message.guild);
-	const trackEmbed = await queue.currentEmbed;
 
 	// Setup Embed
-	const embed = new MessageEmbed()
-		.setColor(settings.guildcolor)
-		.setDescription('Queue is now Empty!');
-	message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
-
-	if(trackEmbed && !trackEmbed.deleted) return trackEmbed.delete();
-
+	const embed = new MessageEmbed().setColor(settings.guildcolor).setDescription('Queue is now Empty!');
+	message.channel.send({ embeds: [embed] }).then((s) => {
+		if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+	});
 };

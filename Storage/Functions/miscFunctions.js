@@ -4,6 +4,10 @@ const permissions = {
 	MANAGE_GUILD: 'Manage Server',
 	MANAGE_ROLES: 'Manage Roles',
 	MANAGE_CHANNELS: 'Manage Channels',
+	MANAGE_THREADS: 'Manage Threads',
+	USE_PUBLIC_THREADS: 'Use Public Threads',
+	USE_PRIVATE_THREADS: 'Use Private Threads',
+	USE_SLASH_COMMANDS: 'Use Slash Commands',
 	KICK_MEMBERS: 'Kick Members',
 	BAN_MEMBERS: 'Ban Members',
 	CREATE_INSTANT_INVITE: 'Create Instant Invite',
@@ -98,10 +102,9 @@ const createBar = (total, current, size = 40, line = '▬', slider = '🔘') => 
 		const bar = line.repeat(size + 2);
 		const percentage = (current / total) * 100;
 		return [bar, percentage];
-	}
-	else {
+	} else {
 		const percentage = current / total;
-		const progress = Math.round((size * percentage));
+		const progress = Math.round(size * percentage);
 		const emptyProgress = size - progress;
 		const progressText = line.repeat(progress).replace(/.$/, slider);
 		const emptyProgressText = line.repeat(emptyProgress);
@@ -112,31 +115,30 @@ const createBar = (total, current, size = 40, line = '▬', slider = '🔘') => 
 };
 
 const DateDiff = {
-
-	inDays: function(d1, d2) {
+	inDays: function (d1, d2) {
 		const t2 = d2.getTime();
 		const t1 = d1.getTime();
 
 		return parseInt((t2 - t1) / (24 * 3600 * 1000));
 	},
 
-	inWeeks: function(d1, d2) {
+	inWeeks: function (d1, d2) {
 		const t2 = d2.getTime();
 		const t1 = d1.getTime();
 
 		return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
 	},
 
-	inMonths: function(d1, d2) {
+	inMonths: function (d1, d2) {
 		const d1Y = d1.getFullYear();
 		const d2Y = d2.getFullYear();
 		const d1M = d1.getMonth();
 		const d2M = d2.getMonth();
 
-		return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+		return d2M + 12 * d2Y - (d1M + 12 * d1Y);
 	},
 
-	inYears: function(d1, d2) {
+	inYears: function (d1, d2) {
 		return d2.getFullYear() - d1.getFullYear();
 	},
 };

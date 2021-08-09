@@ -8,17 +8,11 @@ const bot = new Client({
 		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
 		Intents.FLAGS.GUILD_MEMBERS,
 		Intents.FLAGS.GUILD_PRESENCES,
+		Intents.FLAGS.GUILD_VOICE_STATES,
 	],
 	partials: ['MESSAGE', 'REACTION'],
 });
-const Music = new Player(bot, {
-	leaveOnEnd: true,
-	leaveOnEmpty: true,
-	leaveOnStop: true,
-	enableLive: true,
-	leaveOnEndCooldown: 15 * 1000,
-	leaveOnEmptyCooldown: 60 * 1000,
-});
+const Music = new Player(bot);
 
 //Global NSFW Blacklist
 bot.GlobalNSFWBlacklist = [
@@ -70,6 +64,13 @@ bot.Owners = ['101789503634554880', '101790332437405696'];
 // Init Loaders
 require('./Storage/Core/Command Loader')(bot);
 require('./Storage/Core/Event Loader')(bot);
+
+//Music
+bot.Music.on('error', (queue, error) => {
+	console.log(error);
+});
+
+// bot.Music.on('trackStart', (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`));
 
 // Init Bot / Database
 bot.mongoose.init();

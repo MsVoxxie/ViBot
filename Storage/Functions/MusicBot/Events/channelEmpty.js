@@ -6,5 +6,5 @@ module.exports = async (bot, message, queue) => {
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
 		.setDescription('Stopping Music, Voice channel is empty.');
-	message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) bot.setTimeout(() => s.delete(), 30 * 1000);});
+	message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);});
 };
