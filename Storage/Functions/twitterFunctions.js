@@ -1,11 +1,6 @@
 const Twit = require('twit');
 
-const {
-	twit_consumer,
-	twit_consumer_secret,
-	twit_access_token,
-	twit_access_token_secret,
-} = require('../Config/Config.json');
+const { twit_consumer, twit_consumer_secret, twit_access_token, twit_access_token_secret } = require('../Config/Config.json');
 
 const Twitter = new Twit({
 	consumer_key: twit_consumer,
@@ -28,11 +23,11 @@ module.exports = (bot) => {
 			stream.on('tweet', async (tweet) => {
 				if (isReply(tweet)) return;
 
-				await twitterchannel.send(
-					`**${tweet.user.screen_name}** Posted a new Tweet!\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
-				);
+				await twitterchannel.send(`**${tweet.user.screen_name}** Posted a new Tweet!\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
 			});
 		});
+
+		//Function to check if a tweet is a reply
 		function isReply(tweet) {
 			if (
 				tweet.retweeted_status ||
