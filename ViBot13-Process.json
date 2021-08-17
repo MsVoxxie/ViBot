@@ -1,0 +1,8 @@
+{
+	"script": "Vi.js",
+	"watch": ["Vi.js", "Events/", "Commands/"],
+	"ignore_watch": ["/home/bots/ViBotRoot/ViBot13/Storage/Giveaways/Giveaways.json"],
+	"watch_options": {
+		"followSymlinks": false
+	}
+}
