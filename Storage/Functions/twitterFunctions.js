@@ -22,7 +22,7 @@ module.exports = (bot) => {
 			stream.stop();
 			stream.on('tweet', async (tweet) => {
 				if (isReply(tweet)) return;
-
+				console.log(`Sending Tweet from ${tweet.user.screen_name} in ${guild.name}`);
 				await twitterchannel.send(`**${tweet.user.screen_name}** Posted a new Tweet!\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
 			});
 		});
