@@ -14,7 +14,7 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Declarations
-		let user = message.mentions.users.first() || message.author;
+		let user = (await message.mentions.users.first()) || (await message.author);
 
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
@@ -23,7 +23,7 @@ module.exports = {
 			.setFooter(`Requested by ${message.author.username}`);
 
 		//Send Message
-		message.channel.send({ embed }).then((s) => {
+		message.channel.send({ embeds: [embed] }).then((s) => {
 			if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
 		});
 	},
