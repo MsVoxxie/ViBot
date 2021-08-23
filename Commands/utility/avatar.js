@@ -23,8 +23,6 @@ module.exports = {
 			.setFooter(`Requested by ${message.author.username}`);
 
 		//Send Message
-		message.channel.send({ embeds: [embed] }).then((s) => {
-			if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
-		});
+		message.channel.send({ embeds: [embed] });
 	},
 };
