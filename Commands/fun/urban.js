@@ -16,16 +16,15 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		const query = querystring.stringify({ term: args.join(' ') });
-		const loading = await message.reply(`${Vimotes['A_LOADING']}Finding a Definition...`);
-		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(
-			(response) => response.json()
-		);
-		if (!list)
-			return message.channel
-				.send(`No results found for **${args.join(' ')}**.`)
-				.then((s) => s.delete({ timeout: 10 * 1000 }));
+		const loading = await message.reply(`${Vimotes['A_LOADING']} Finding a Definition...`);
+		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then((response) => response.json());
 		const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 		const [answer] = list;
+
+		if (!answer)
+			return await loading.edit(`${Vimotes['XMARK']} Failed to find a result.`).then((s) => {
+				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+			});
 
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
