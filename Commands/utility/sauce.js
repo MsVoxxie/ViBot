@@ -41,7 +41,7 @@ module.exports = {
 			},
 			(error) => {
 				console.dir(error.request);
-				return reply(`An error occurred while fetching your request.`);
+				return message.reply(`An error occurred while fetching your request.`);
 			}
 		);
 
@@ -50,15 +50,14 @@ module.exports = {
 
 		//Setup Embeds
 		Results.forEach((Res) => {
+			if (!Res.data['ext_urls'][0]) return;
 			const embed = new MessageEmbed()
 				.setThumbnail(Res.header['thumbnail'])
 				.setColor(settings.guildcolor)
 				// .setDescription(`[${Res['title']}](${Res['url']})`)
 				.addField(
 					'Author›',
-					`[${Res.data['author_name'] ? Res.data['author_name'] : 'Unknown'}](${
-						Res.data['author_url'] ? Res.data['author_url'] : ''
-					})`,
+					`[${Res.data['author_name'] ? Res.data['author_name'] : 'Unknown'}](${Res.data['author_url'] ? Res.data['author_url'] : ''})`,
 					false
 				)
 				.addField('Post URL›', `[Click Here](${Res.data['ext_urls'][0]})`, false)
@@ -71,10 +70,7 @@ module.exports = {
 		});
 
 		// Send pagination
-		const embedList = await message.reply(
-			`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`,
-			{ embeds: Embeds[currentPage] }
-		);
+		const embedList = await message.reply(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, { embeds: [Embeds[currentPage]] });
 
 		// Apply Reactions
 		try {
@@ -86,8 +82,7 @@ module.exports = {
 		}
 
 		// Filter Reactions, setup Collector and try each reaction
-		const filter = (reaction, user) =>
-			['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
+		const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
 		const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
 		collector.on('collect', async (reaction) => {
 			// Switch Case
@@ -98,7 +93,7 @@ module.exports = {
 					if (currentPage !== 0) {
 						currentPage--;
 						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, {
-							embeds: Embeds[currentPage],
+							embeds: [Embeds[currentPage]],
 						});
 					}
 					break;
@@ -108,7 +103,7 @@ module.exports = {
 				case '⏹': {
 					collector.stop();
 					reaction.message.reactions.removeAll();
-					embedList.edit('**«Collection Stopped»**', { embeds: Embeds[currentPage] });
+					embedList.edit('**«Collection Stopped»**', { embeds: [Embeds[currentPage]] });
 					break;
 				}
 
@@ -118,7 +113,7 @@ module.exports = {
 					if (currentPage < Embeds.length - 1) {
 						currentPage++;
 						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, {
-							embeds: Embeds[currentPage],
+							embeds: [Embeds[currentPage]],
 						});
 					}
 					break;
