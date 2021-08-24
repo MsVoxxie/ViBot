@@ -24,14 +24,10 @@ module.exports = {
 
 		// Check Blacklist against Searched Tags
 		if (bot.GlobalNSFWBlacklist.some((tag) => Tags.includes(tag)))
-			return message.reply(
-				`One or more of the tags you have searched are on the Global blacklist.`
-			);
+			return message.reply(`One or more of the tags you have searched are on the Global blacklist.`);
 		if (settings.nsfwblacklist > 0) {
 			if (settings.nsfwblacklist.some((tag) => Tags.includes(tag)))
-				return message.reply(
-					`One or more of the tags you have searched are on this guilds blacklist.`
-				);
+				return message.reply(`One or more of the tags you have searched are on this guilds blacklist.`);
 		}
 
 		// Let the user know i'm working...
@@ -48,7 +44,7 @@ module.exports = {
 			}
 		});
 
-        return console.log(SearchResults[0])
+		return console.log(SearchResults[0]);
 
 		//Setup Pagination
 		SearchResults.forEach((res) => {
@@ -60,9 +56,7 @@ module.exports = {
 
 			const embed = new MessageEmbed()
 				.setColor(settings.guildcolor)
-				.setDescription(
-					`**Score** ${res.score} | **Resolution** ${res.data.file['width']} x ${res.data.file['height']} | **[Link](${res.postView})**`
-				)
+				.setDescription(`**Score** ${res.score} | **Resolution** ${res.data.file['width']} x ${res.data.file['height']} | **[Link](${res.postView})**`)
 				.setImage(res.fileUrl);
 
 			embeds.push(embed);
@@ -71,10 +65,7 @@ module.exports = {
 		});
 
 		// Send pagination
-		const embedList = await loading.edit(
-			`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
-			{ embeds: embeds[currentPage] }
-		);
+		const embedList = await loading.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
 
 		// Apply Reactions
 		try {
@@ -87,8 +78,7 @@ module.exports = {
 		}
 
 		// Filter Reactions, setup Collector and try each reaction
-		const filter = (reaction, user) =>
-			['◀', '✅', '▶', '❌'].includes(reaction.emoji.name) && message.author.id === user.id;
+		const filter = (reaction, user) => ['◀', '✅', '▶', '❌'].includes(reaction.emoji.name) && message.author.id === user.id;
 		const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
 		collector.on('collect', async (reaction) => {
 			// Switch Case
@@ -98,9 +88,7 @@ module.exports = {
 					await reaction.users.remove(message.author.id);
 					if (currentPage !== 0) {
 						currentPage--;
-						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, {
-							embeds: embeds[currentPage],
-						});
+						embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
 					}
 					break;
 				}
@@ -109,7 +97,7 @@ module.exports = {
 				case '✅': {
 					collector.stop();
 					reaction.message.reactions.removeAll();
-					embedList.edit('**«Collection Stopped»**', { embeds: embeds[currentPage] });
+					embedList.edit({ content: '**«Collection Stopped»**', embeds: [embeds[currentPage]] });
 					break;
 				}
 
@@ -118,9 +106,7 @@ module.exports = {
 					await reaction.users.remove(message.author.id);
 					if (currentPage < embeds.length - 1) {
 						currentPage++;
-						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, {
-							embeds: embeds[currentPage],
-						});
+						embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
 					}
 					break;
 				}

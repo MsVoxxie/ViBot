@@ -70,7 +70,7 @@ module.exports = {
 		});
 
 		// Send pagination
-		const embedList = await message.reply(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, { embeds: [Embeds[currentPage]] });
+		const embedList = await message.reply({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
 
 		// Apply Reactions
 		try {
@@ -92,9 +92,7 @@ module.exports = {
 					await reaction.users.remove(message.author.id);
 					if (currentPage !== 0) {
 						currentPage--;
-						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, {
-							embeds: [Embeds[currentPage]],
-						});
+						embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
 					}
 					break;
 				}
@@ -103,7 +101,7 @@ module.exports = {
 				case '⏹': {
 					collector.stop();
 					reaction.message.reactions.removeAll();
-					embedList.edit('**«Collection Stopped»**', { embeds: [Embeds[currentPage]] });
+					embedList.edit({ content: '**«Collection Stopped»**', embeds: [Embeds[currentPage]] });
 					break;
 				}
 
@@ -112,9 +110,7 @@ module.exports = {
 					await reaction.users.remove(message.author.id);
 					if (currentPage < Embeds.length - 1) {
 						currentPage++;
-						embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, {
-							embeds: [Embeds[currentPage]],
-						});
+						embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
 					}
 					break;
 				}

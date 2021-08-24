@@ -47,10 +47,7 @@ module.exports = {
 			});
 
 			// Send pagination
-			const embedList = await loading.edit(
-				`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
-				{ embeds: embeds[currentPage] }
-			);
+			const embedList = await loading.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
 
 			// Apply Reactions
 			try {
@@ -62,8 +59,7 @@ module.exports = {
 			}
 
 			// Filter Reactions, setup Collector and try each reaction
-			const filter = (reaction, user) =>
-				['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
+			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
 			const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
 			collector.on('collect', async (reaction) => {
 				// Switch Case
@@ -73,9 +69,7 @@ module.exports = {
 						await reaction.users.remove(message.author.id);
 						if (currentPage !== 0) {
 							currentPage--;
-							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, {
-								embeds: embeds[currentPage],
-							});
+							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
 						}
 						break;
 					}
@@ -84,7 +78,7 @@ module.exports = {
 					case '⏹': {
 						collector.stop();
 						reaction.message.reactions.removeAll();
-						embedList.edit('**«Collection Stopped»**', { embeds: embeds[currentPage] });
+						embedList.edit({ content: '**«Collection Stopped»**', embeds: [embeds[currentPage]] });
 						break;
 					}
 
@@ -93,9 +87,7 @@ module.exports = {
 						await reaction.users.remove(message.author.id);
 						if (currentPage < embeds.length - 1) {
 							currentPage++;
-							embedList.edit(`**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, {
-								embeds: embeds[currentPage],
-							});
+							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
 						}
 						break;
 					}
