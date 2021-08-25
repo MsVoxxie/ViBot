@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { readdirSync } = require('fs');
 
-module.exports = {
+module.exports = { 
 	name: 'help',
 	aliases: ['h'],
 	description: 'Displays my commands list and their details!',
@@ -90,7 +90,7 @@ module.exports = {
 			if (!command) {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
-				return await message.reply({ embeds: helpEmbed }).then((s) => {
+				return await message.reply({ embeds: [helpEmbed] }).then((s) => {
 					if (settings.audit) s.delete({ timeout: 30 * 1000 });
 				});
 			}
@@ -121,7 +121,7 @@ module.exports = {
 						: ''
 				}`
 			);
-			await message.reply({ embeds: helpEmbed });
+			await message.reply({ embeds: [helpEmbed] });
 		} else {
 			// Send pagination
 			const embedList = await message.reply({
