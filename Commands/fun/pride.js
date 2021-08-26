@@ -14,38 +14,53 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-
 		// Declarations
 		const borderSize = 0.04;
 		const flagArgs = args;
 
 		// Define flags
 		const prideFlags = {
-			gay: [ '#FF000E', '#FF5000', '#FAD220', '#138F3E', '#3558A0', '#880082' ],
-			bisexual: [ '#D60270', '#9B4F96', '#0038A8' ],
-			trans: [ '#5BCEFA', '#F5A9B8', '#EEEEEE', '#F5A9B8', '#5BCEFA' ],
-			nonbinary: [ '#FFF433', '#FFFFFF', '#9B59D0', '#2D2D2D' ],
-			lesbian: [ '#D52D00', '#FF9A56', '#FFFFFF', '#D362A4', '#A30262' ],
-			asexual: [ '#000000', '#A3A3A3', '#FFFFFF', '#800080' ],
-			aromantic: [ '#3DA542', '#A8D379', '#FFFFFF', '#A9A9A9', '#000000' ],
-			agender: [ '#000000', '#BABABA', '#FFFFFF', '#B9F484', '#FFFFFF', '#BABABA', '#000000' ],
-			pansexual: [ '#FF218C', '#FFD800', '#21B1FF' ],
-			genderfluid: [ '#FF75A2', '#EFEFEF', '#BE18D6', '#000000', '#333EBD' ],
-			poly: [ '#0000F7', '#F70000', '#000000' ],
-			hamburger: [ '#E69138', '#8FCE00', '#F44336', '#FFD966', '#744700', '#E69138' ],
+			gay: ['#FF000E', '#FF5000', '#FAD220', '#138F3E', '#3558A0', '#880082'],
+			bisexual: ['#D60270', '#9B4F96', '#0038A8'],
+			trans: ['#5BCEFA', '#F5A9B8', '#EEEEEE', '#F5A9B8', '#5BCEFA'],
+			nonbinary: ['#FFF433', '#FFFFFF', '#9B59D0', '#2D2D2D'],
+			lesbian: ['#D52D00', '#FF9A56', '#FFFFFF', '#D362A4', '#A30262'],
+			asexual: ['#000000', '#A3A3A3', '#FFFFFF', '#800080'],
+			aromantic: ['#3DA542', '#A8D379', '#FFFFFF', '#A9A9A9', '#000000'],
+			agender: ['#000000', '#BABABA', '#FFFFFF', '#B9F484', '#FFFFFF', '#BABABA', '#000000'],
+			pansexual: ['#FF218C', '#FFD800', '#21B1FF'],
+			genderfluid: ['#FF75A2', '#EFEFEF', '#BE18D6', '#000000', '#333EBD'],
+			poly: ['#0000F7', '#F70000', '#000000'],
+			hamburger: ['#E69138', '#8FCE00', '#F44336', '#FFD966', '#744700', '#E69138'],
 		};
-		const flagOptions = ['gay', 'bisexual', 'trans', 'nonbinary', 'lesbian', 'asexual', 'aromantic', 'agender', 'pansexual', 'genderfluid', 'poly', 'hamburger'];
+		const flagOptions = [
+			'gay',
+			'bisexual',
+			'trans',
+			'nonbinary',
+			'lesbian',
+			'asexual',
+			'aromantic',
+			'agender',
+			'pansexual',
+			'genderfluid',
+			'poly',
+			'hamburger',
+		];
 		flagOptions.sort();
 
 		// Check if args
-		if(!flagArgs.some((val) => flagOptions.indexOf(val) !== -1)) return message.reply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map(o => o).join('\n')}\`\`\``).then((s) => {if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);});
+		if (!flagArgs.some((val) => flagOptions.indexOf(val) !== -1))
+			return message.reply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map((o) => o).join('\n')}\`\`\``).then((s) => {
+				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+			});
 
 		// Create Functions
 		// Base Texture
 		function createBaseTexture(colors) {
 			return new Promise((resolve, reject) => {
 				new jimp(1, colors.length, (error, image) => {
-					if(error) return reject(error);
+					if (error) return reject(error);
 
 					image.scan(0, 0, image.bitmap.width, image.bitmap.height, (_, y, index) => {
 						const colorHex = jimp.cssColorToHex(colors[y]);
@@ -61,12 +76,13 @@ module.exports = {
 			});
 		}
 
-
 		// Background Texture
 		async function createBackgroundTexture(size, flags) {
-			const textures = await Promise.all(flags.map((flagName) => {
-				return createBaseTexture(prideFlags[flagName]);
-			}));
+			const textures = await Promise.all(
+				flags.map((flagName) => {
+					return createBaseTexture(prideFlags[flagName]);
+				})
+			);
 
 			textures.forEach((texture, index) => {
 				const width = size * ((index + 1) / flags.length);
@@ -75,9 +91,9 @@ module.exports = {
 
 			return new Promise((resolve, reject) => {
 				new jimp(size, size, (error, image) => {
-					if(error) return reject(error);
+					if (error) return reject(error);
 
-					for(let index = flags.length; index--; index >= 0) {
+					for (let index = flags.length; index--; index >= 0) {
 						image.blit(textures[index], 0, 0);
 					}
 					image.circle();
@@ -103,19 +119,21 @@ module.exports = {
 
 		// Create the actual avatar of the user!
 		const flags = [];
-		flagArgs.forEach(o => {
+		flagArgs.forEach((o) => {
 			flags.push(o);
 		});
 
-		if(flags.length > 6 && message.member.id !== '239062365931307008') return message.reply('Please use a maximum of 6 flags!');
+		if (flags.length > 6 && message.member.id !== '239062365931307008') return message.reply('Please use a maximum of 6 flags!');
 
 		const avatarURL = await message.member.user.displayAvatarURL({ format: 'png', dynamic: true, size: 512 });
-		const avatarType = await avatarURL.includes('.gif') ? { mime: jimp.MIME_GIF, format: '.gif' } : { mime: jimp.MIME_PNG, format: '.png' };
+		const avatarType = (await avatarURL.includes('.gif')) ? { mime: jimp.MIME_GIF, format: '.gif' } : { mime: jimp.MIME_PNG, format: '.png' };
 		const avatar = await createPrideAvatar(avatarURL, flags);
 		const buffer = await avatar.getBufferAsync(avatarType.mime);
 		const attachment = new MessageAttachment(buffer, `pride-avatar${avatarType.format}`);
 
-		await message.reply('Here you go!', attachment).then(s => {if(settings.audit) s.delete({ timeout: 360 * 1000 });});
-		await message.delete({ timeout: 360 * 1000 });
+		await message.reply({ content: 'Here you go!', files: [attachment] }).then((s) => {
+			if (settings.audit) setTimeout(() => s.delete(), 360 * 1000);
+		});
+		if (settings.audit) setTimeout(() => message.delete(), 360 * 1000);
 	},
 };
