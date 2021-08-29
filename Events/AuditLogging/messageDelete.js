@@ -30,7 +30,7 @@ module.exports = {
 		if (target.id === message.author.id) {
 			LogTarget = executor.tag;
 		} else {
-			LogTarget = null;
+			LogTarget = `${message.author.tag} || A Bot`;
 		}
 
 		// Setup Embed
