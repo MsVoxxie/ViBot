@@ -7,6 +7,7 @@ module.exports = {
 	async execute(message, bot) {
 		// check if partial
 		if (message.partial) return;
+		if (!message.guild) return;
 
 		// Declarations / Checks
 		const settings = await bot.getGuild(message.guild);
@@ -15,14 +16,32 @@ module.exports = {
 		if (message.author.bot) return;
 		if (message.channel.type !== 'GUILD_TEXT') return;
 		const logChannel = await message.guild.channels.cache.get(settings.auditchannel);
+		let LogTarget;
+
+		//Fetch Audit Log
+		const fetchedLogs = await message.guild.fetchAuditLogs({
+			limit: 1,
+			type: 'MESSAGE_DELETE',
+		});
+
+		const Log = fetchedLogs.entries.first();
+		const { executor, target } = Log;
+
+		if (target.id === message.author.id) {
+			LogTarget = executor.tag;
+		} else {
+			LogTarget = null;
+		}
 
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Message Deleted')
 			.setDescription(
-				`**Author›** <@${message.author.id}> | **${message.author.tag}**\n**Channel›** <#${message.channel.id}> | **${message.channel.name}**\n${
-					message.content.length > 0 ? `\n**Deleted Message›**\n\`\`\`${message.content.replace(/`/g, "'")}\`\`\`` : ''
-				}\n${message.attachments.size > 0 ? `**Attachment URL› **\n[Link Here](${message.attachments.map((a) => a.proxyURL)})` : ''}`
+				`**Author›** <@${message.author.id}> | **${message.author.tag}**\n${LogTarget ? `**Deleted By›** **${LogTarget}**` : ''}\n**Channel›** <#${
+					message.channel.id
+				}> | **${message.channel.name}**\n${message.content.length > 0 ? `\n**Deleted Message›**\n\`\`\`${message.content.replace(/`/g, "'")}\`\`\`` : ''}\n${
+					message.attachments.size > 0 ? `**Attachment URL› **\n[Link Here](${message.attachments.map((a) => a.proxyURL)})` : ''
+				}`
 			)
 			.setColor(settings.guildcolor)
 			.setImage(message.attachments.map((a) => a.proxyURL)[0], { dynamic: true })

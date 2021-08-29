@@ -23,11 +23,9 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setTitle('Message Updated')
 			.setDescription(
-				`**Author›** <@${newMessage.author.id}> | **${newMessage.author.tag}**\n**Channel›** <#${
-					newMessage.channel.id
-				}> | **${newMessage.channel.name}**\n**Message Link›** [Jump To Message](${
-					newMessage.url
-				})\n\n**Original Message›**\`\`\`${oldMessage.content.replace(
+				`**Author›** <@${newMessage.author.id}> | **${newMessage.author.tag}**\n**Channel›** <#${newMessage.channel.id}> | **${
+					newMessage.channel.name
+				}**\n**Message Link›** [Jump To Message](${newMessage.url})\n\n**Original Message›**\`\`\`${oldMessage.content.replace(
 					/`/g,
 					"'"
 				)}\`\`\`\n\n**Updated Message›**\`\`\`${newMessage.content.replace(/`/g, "'")}\`\`\``
