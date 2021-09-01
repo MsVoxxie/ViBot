@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'voiceStateUpdate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(oldState, newState, bot, Vimotes) {
 		//Declarations / checks

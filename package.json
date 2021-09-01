@@ -22,6 +22,7 @@
     "ascii-table": "0.0.9",
     "axios": "^0.21.1",
     "booru": "^2.4.0",
+    "discord-backup": "^3.0.1",
     "discord-giveaways": "github:Androz2091/discord-giveaways#discord.js-v13",
     "discord-player": "^5.0.1",
     "discord.js": "^13.0.1",
