@@ -29,61 +29,51 @@ module.exports = {
 		const qembed = new MessageEmbed().setColor(settings.guildcolor);
 
 		// First Question
-		qembed.setDescription(
-			'Send an embed message ID (That I Created), Or say continue for me to make a new one.'
-		);
-		const questionone = await message.reply({ embeds: qembed });
+		qembed.setDescription('Send an embed message ID (That I Created), Or say continue for me to make a new one.');
+		const questionone = await message.reply({ embeds: [qembed] });
 		const filter = (m) => m.author.id === message.author.id;
-		await questionone.channel
-			.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
-			.then(async (collected) => {
-				if (collected.first().cleanContent !== 'continue') {
-					messageid = await collected.first().cleanContent;
-					createNew = false;
-					await collected.first().delete();
-				}
-			});
+		await questionone.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, errors: ['time'] }).then(async (collected) => {
+			if (collected.first().cleanContent !== 'continue') {
+				messageid = await collected.first().cleanContent;
+				createNew = false;
+				await collected.first().delete();
+			}
+		});
 		await questionone.delete();
 
 		// Second Question
 		qembed.setDescription('Please provide a Role ID for me to use.');
-		const questiontwo = await message.reply({ embeds: qembed });
-		await questiontwo.channel
-			.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
-			.then(async (collected) => {
-				roleid = await collected.first().cleanContent;
-				await collected.first().delete();
-			});
+		const questiontwo = await message.reply({ embeds: [qembed] });
+		await questiontwo.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, errors: ['time'] }).then(async (collected) => {
+			roleid = await collected.first().cleanContent;
+			await collected.first().delete();
+		});
 		await questiontwo.delete();
 
 		// Third Question
 		qembed.setDescription('Which Emoji would you like to use?');
-		const questionthree = await message.reply({ embeds: qembed });
-		await questionthree.channel
-			.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
-			.then(async (collected) => {
-				reaction = await collected.first().cleanContent;
-				await collected.first().delete();
-			});
+		const questionthree = await message.reply({ embeds: [qembed] });
+		await questionthree.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, errors: ['time'] }).then(async (collected) => {
+			reaction = await collected.first().cleanContent;
+			await collected.first().delete();
+		});
 		await questionthree.delete();
 
 		// Fourth Question
 		qembed.setDescription('Would you like this embed to have a title? Say No for no title.');
-		const questionfour = await message.reply({ embeds: qembed });
-		await questionfour.channel
-			.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] })
-			.then(async (collected) => {
-				if (collected.first().cleanContent !== 'no') {
-					createTitle = true;
-					embTitle = await collected.first().cleanContent;
-					await collected.first().delete();
-				}
-			});
+		const questionfour = await message.reply({ embeds: [qembed] });
+		await questionfour.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, errors: ['time'] }).then(async (collected) => {
+			if (collected.first().cleanContent !== 'no') {
+				createTitle = true;
+				embTitle = await collected.first().cleanContent;
+				await collected.first().delete();
+			}
+		});
 		await questionfour.delete();
 
 		// Let the user know that the bot is working on their request.
 		qembed.setDescription('Wonderful, Finishing up...');
-		const Final = await message.reply({ embeds: qembed });
+		const Final = await message.reply({ embeds: [qembed] });
 		await Final.delete();
 
 		// Get Role

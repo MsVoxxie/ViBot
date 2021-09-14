@@ -18,6 +18,8 @@ module.exports = (bot) => {
 			if (!twitterchannel) return;
 			if (!settings.twitterwatch.length) return;
 
+			console.log(`updating streams for ${guild.name}`);
+
 			const stream = Twitter.stream('statuses/filter', { follow: settings.twitterwatch });
 			stream.stop();
 			stream.on('tweet', async (tweet) => {
