@@ -30,6 +30,7 @@
     "ffmpeg-static": "^4.4.0",
     "g-i-s": "^2.1.6",
     "jimp": "^0.16.1",
+    "minecraft-server-util": "^3.6.0",
     "moment": "^2.29.1",
     "mongoose": "^5.13.5",
     "ms": "^2.1.3",
