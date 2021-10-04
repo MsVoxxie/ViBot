@@ -25,7 +25,7 @@
     "discord-backup": "^3.0.1",
     "discord-giveaways": "github:Androz2091/discord-giveaways#discord.js-v13",
     "discord-player": "^5.0.1",
-    "discord.js": "^13.0.1",
+    "discord.js": "^13.2.0-dev.1633262585.b76bb8a",
     "eslint": "^7.32.0",
     "ffmpeg-static": "^4.4.0",
     "g-i-s": "^2.1.6",

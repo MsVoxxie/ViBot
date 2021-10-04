@@ -11,7 +11,7 @@ module.exports = {
 		}
 		//Defininitions
 		const message = await reaction.message;
-		const ReactLimit = 3;
+		const ReactLimit = 5;
 		const settings = await bot.getGuild(message.guild);
 
 		//Checks
@@ -49,7 +49,7 @@ module.exports = {
 				.setImage(image);
 
 			const starMsg = await starChannel.messages.fetch(stars.id);
-			await starMsg.edit({ embed });
+			await starMsg.edit({ embeds: [embed] });
 		}
 
 		if (!stars && reaction.emoji.name === '⭐' && reaction.count >= ReactLimit) {
@@ -71,7 +71,7 @@ module.exports = {
 				.setFooter(`⭐ ${ReactLimit} | ${message.id}`)
 				.setImage(image);
 
-			await starChannel.send({ embed });
+			await starChannel.send({ embeds: [embed] });
 		}
 	},
 

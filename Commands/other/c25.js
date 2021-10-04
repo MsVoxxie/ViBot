@@ -34,7 +34,7 @@ module.exports = {
 					.setColor(settings.guildcolor)
 					.setTitle(`Creation 2.5 Server - Is Online!`)
 					.setDescription(`**Connection Info›** ${host}:${port}\n**Player Count›** ${onlineCount}/${maxPlayers}`)
-					.addField('Connected Players›', players.map((p) => p.name).join('\n'))
+					.addField('Connected Players›', `${players.length ? players.map((p) => p.name).join('\n') : 'No Players Online'}`)
 					.setFooter(`MC Ver - ${version} | Mod Count - ${totalMods}`)
 					.setTimestamp(new Date());
 
@@ -45,7 +45,7 @@ module.exports = {
 			.catch((err) => {
 				const embed = new MessageEmbed().setColor(settings.guildcolor).setTitle(`Creation 2.5 Server - Is Offline!`).setTimestamp(new Date());
 				message.channel.send({ embeds: [embed] }).then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 60 * 1000);
+					if (settings.audit) setTimeout(() => s.delete(), 60 * 60 * 1000);
 				});
 			});
 	},

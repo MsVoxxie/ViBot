@@ -14,13 +14,14 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Declarations
-		let user = (await message.mentions.users.first()) || (await message.author);
+		let Getmember = (await message.mentions.members.first()) || (await message.member);
+		const member = await message.guild.members.fetch(Getmember.id);
 
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
-			.setAuthor(`Avatar for ${user.username}`, user.displayAvatarURL({ dynamic: true }))
-			.setImage(user.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
-			.setFooter(`Requested by ${message.author.username}`);
+			.setAuthor(`Avatar for ${member.displayName}`, member.displayAvatarURL({ dynamic: true }))
+			.setImage(member.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
+			.setFooter(`Requested by ${message.member.displayName}`);
 
 		//Send Message
 		message.channel.send({ embeds: [embed] });

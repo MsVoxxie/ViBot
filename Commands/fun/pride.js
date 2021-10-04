@@ -132,8 +132,8 @@ module.exports = {
 		const attachment = new MessageAttachment(buffer, `pride-avatar${avatarType.format}`);
 
 		await message.reply({ content: 'Here you go!', files: [attachment] }).then((s) => {
-			if (settings.audit) setTimeout(() => s.delete(), 360 * 1000);
+			if (settings.audit) setTimeout(() => s.delete(), 60 * 60 * 1000);
 		});
-		if (settings.audit) setTimeout(() => message.delete(), 360 * 1000);
+		if (settings.audit) setTimeout(() => message.delete(), 60 * 1000);
 	},
 };

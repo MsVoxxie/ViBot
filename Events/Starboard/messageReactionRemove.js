@@ -47,7 +47,7 @@ module.exports = {
 				.setFooter(`⭐ ${parseInt(star[1]) - 1} | ${message.id}`)
 				.setImage(image);
 			const starMsg = await starChannel.messages.fetch(stars.id);
-			await starMsg.edit({ embed });
+			await starMsg.edit({ embeds: [embed] });
 			if (parseInt(star[1]) - 1 == 0) return setTimeout(() => starMsg.delete(), 1 * 1000);
 		}
 	},
