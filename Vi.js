@@ -1,5 +1,5 @@
 const { Client, Intents, Collection } = require('discord.js');
-const { GiveawaysManager } = require('discord-giveaways');
+// const { GiveawaysManager } = require('discord-giveaways');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
 
@@ -18,22 +18,22 @@ const bot = new Client({
 const Music = new Player(bot);
 
 //Setup Giveaways
-const Raffles = new GiveawaysManager(bot, {
-	storage: './Storage/Giveaways/Giveaways.json',
-	updateCountdownEvery: 10 * 1000,
-	default: {
-		botsCanWin: false,
-		embedColor: '#FF0000',
-		embedColorEnd: '#000000',
-		reaction: '🗳️',
-		giveaway: '🗳️ ** RAFFLE STARTED ** 🗳️',
-		giveawayEnded: '⚠️ **RAFFLE ENDED ** ⚠️',
-		inviteToParticipate: 'React with 🗳️ to enter!',
-		embedFooter: 'Good luck to everyone!',
-	},
-});
+// const Raffles = new GiveawaysManager(bot, {
+// 	storage: './Storage/Giveaways/Giveaways.json',
+// 	updateCountdownEvery: 10 * 1000,
+// 	default: {
+// 		botsCanWin: false,
+// 		embedColor: '#FF0000',
+// 		embedColorEnd: '#000000',
+// 		reaction: '🗳️',
+// 		giveaway: '🗳️ ** RAFFLE STARTED ** 🗳️',
+// 		giveawayEnded: '⚠️ **RAFFLE ENDED ** ⚠️',
+// 		inviteToParticipate: 'React with 🗳️ to enter!',
+// 		embedFooter: 'Good luck to everyone!',
+// 	},
+// });
 
-bot.RaffleManager = Raffles;
+// bot.RaffleManager = Raffles;
 
 //Global NSFW Blacklist
 bot.GlobalNSFWBlacklist = [
@@ -78,6 +78,7 @@ bot.reactionDefaults = require('./Storage/Database/models/reactionDefaults');
 require('./Storage/Functions/dbFunctions')(bot);
 require('./Storage/Functions/utilFunctions')(bot);
 require('./Storage/Functions/twitterFunctions')(bot);
+require('./Storage/Functions/giveawayDatabase')(bot);
 
 // Declare myself as Owner of bot.
 bot.Owners = ['101789503634554880', '101790332437405696'];
