@@ -19,14 +19,14 @@ module.exports = {
 
         // Checks
         if (!messageID) return message.lineReply('\nPlease provide a valid message ID of a previously ran raffle to reroll.').then((s) => {
-            if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+            if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
         });
 
         // Do the reroll
         try {
             bot.RaffleManager.reroll(messageID);
             message.reply('\nRaffle Rerolled.').then((s) => {
-                if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+                if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
             });
         }
         catch (e) {

@@ -23,7 +23,7 @@ module.exports = {
 
 		if (!answer)
 			return await loading.edit(`${Vimotes['XMARK']} Failed to find a result.`).then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 
 		const embed = new MessageEmbed()

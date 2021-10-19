@@ -37,7 +37,7 @@ module.exports = {
 		await Booru.search(SiteToSearch, Tags, { limit: 10, random: true }).then(async (results) => {
 			if (results.length === 0) {
 				return message.reply('No results found.').then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 			} else {
 				SearchResults = results;

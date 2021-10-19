@@ -27,7 +27,7 @@ module.exports = {
 			});
 		if (!queue)
 			return message.reply('No music is currently playing.').then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 
 		// Declarations

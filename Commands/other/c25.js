@@ -39,13 +39,13 @@ module.exports = {
 					.setTimestamp(new Date());
 
 				message.channel.send({ embeds: [embed] }).then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 60 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 60 * 1000);
 				});
 			})
 			.catch((err) => {
 				const embed = new MessageEmbed().setColor(settings.guildcolor).setTitle(`Creation 2.5 Server - Is Offline!`).setTimestamp(new Date());
 				message.channel.send({ embeds: [embed] }).then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 60 * 60 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 60 * 60 * 1000);
 				});
 			});
 	},

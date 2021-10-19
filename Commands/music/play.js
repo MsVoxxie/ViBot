@@ -18,11 +18,11 @@ module.exports = {
 		if (!Search) return message.reply(`Please enter a search term.`);
 		if (!message.member.voice.channel)
 			return message.reply('Please join a voice channel to play music.').then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
 			return message.reply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 
 		const queue = await bot.Music.createQueue(message.guild, {

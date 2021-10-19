@@ -42,7 +42,7 @@ module.exports = {
 				await loading.edit({ content: null, embeds: [QuoteEmbed] });
 			} catch (e) {
 				await loading.edit({ content: 'Failed to Inspire you.' }).then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 			}
 		});

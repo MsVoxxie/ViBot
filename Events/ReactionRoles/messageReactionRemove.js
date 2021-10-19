@@ -28,7 +28,7 @@ module.exports = {
 					.setColor(Role.color)
 					.setDescription(`${Vimotes['XMARK']}${Role.name} Removed.`);
 				await member.send({ embeds: embed }).then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 			} catch (error) {
 				console.log('failed');

@@ -52,7 +52,7 @@ module.exports = {
 		// Check if args
 		if (!flagArgs.some((val) => flagOptions.indexOf(val) !== -1))
 			return message.reply(`Invalid flag name!\nHere are your options›\n\`\`\`${flagOptions.map((o) => o).join('\n')}\`\`\``).then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 
 		// Create Functions
@@ -132,8 +132,8 @@ module.exports = {
 		const attachment = new MessageAttachment(buffer, `pride-avatar${avatarType.format}`);
 
 		await message.reply({ content: 'Here you go!', files: [attachment] }).then((s) => {
-			if (settings.audit) setTimeout(() => s.delete(), 60 * 60 * 1000);
+			if (settings.prune) setTimeout(() => s.delete(), 60 * 60 * 1000);
 		});
-		if (settings.audit) setTimeout(() => message.delete(), 60 * 1000);
+		if (settings.prune) setTimeout(() => message.delete(), 60 * 1000);
 	},
 };

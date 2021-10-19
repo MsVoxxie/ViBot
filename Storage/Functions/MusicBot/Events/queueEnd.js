@@ -8,6 +8,6 @@ module.exports = async (bot, queue) => {
 	// Setup Embed
 	const embed = new MessageEmbed().setColor(settings.guildcolor).setDescription('Queue is now Empty!');
 	message.channel.send({ embeds: [embed] }).then((s) => {
-		if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 	});
 };

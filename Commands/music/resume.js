@@ -40,7 +40,7 @@ module.exports = {
 		const success = await queue.setPaused(false);
 		if (success)
 			return message.channel.send({ embeds: [embed] }).then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 	},
 };

@@ -32,7 +32,7 @@ module.exports = {
 				return message.reply({ embed });
 			} else {
 				return message.reply('No tags are blacklisted.').then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 			}
 		}

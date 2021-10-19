@@ -38,14 +38,14 @@ module.exports = {
 		// Check if Owner Only
 		if (command.ownerOnly && !bot.Owners.includes(member.id)) {
 			return message.reply(`Sorry, The command \`${command.name}\` is locked.`).then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
 
 		// Check if Disabled Globally
 		if (command.disabled && command.disabled === true) {
 			return message.reply(`Sorry, The command \`${command.name}\` is disabled.`).then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
 
@@ -54,7 +54,7 @@ module.exports = {
 			return message
 				.reply(`Sorry, The category \`${command.category}\` has been disabled for this guild.`)
 				.then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 		}
 
@@ -63,14 +63,14 @@ module.exports = {
 			return message
 				.reply(`The command \`${command.name}\` requires arguments, you did not provide any!`)
 				.then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 		}
 
 		//Check if Guild Allows Nsfw
 		if (settings.allownsfw === false && command.nsfw) {
 			return message.reply('Sorry, This guild has disable NSFW Commands.').then((s) => {
-				if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
 
@@ -79,7 +79,7 @@ module.exports = {
 			return message
 				.reply('Sorry, this command can only be used in channels marked as NSFW')
 				.then((s) => {
-					if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 		}
 
@@ -96,7 +96,7 @@ module.exports = {
 							.join(', ')}\``
 					)
 					.then((s) => {
-						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 			}
 		}
@@ -114,7 +114,7 @@ module.exports = {
 							.join(', ')}\``
 					)
 					.then((s) => {
-						if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 			}
 		}
@@ -141,7 +141,7 @@ module.exports = {
 							})}\` left until you can reuse \`${command.name}\`.`
 						)
 						.then((s) => {
-							if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);
+							if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 						});
 				}
 			}

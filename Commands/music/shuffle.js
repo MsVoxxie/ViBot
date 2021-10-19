@@ -28,6 +28,6 @@ module.exports = {
 			.setDescription(`${message.member} shuffled the queue.`);
 
 		const success = await queue.shuffle();
-		if (success) return message.channel.send({ embeds: embed }).then((s) => {if (settings.audit) setTimeout(() => s.delete(), 30 * 1000);});
+		if (success) return message.channel.send({ embeds: embed }).then((s) => {if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);});
 	},
 };
