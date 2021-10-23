@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { parse } = require('querystring');
 
 module.exports = (bot) => {
 	// Timestamp
@@ -26,5 +27,13 @@ module.exports = (bot) => {
 	// To Thousands
 	bot.toThousands = (x) => {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	};
+
+	//MinMax Number
+	bot.MinMax = (num, min, max) => {
+		const MIN = min || 1;
+		const MAX = max || 10;
+		const parsed = parseInt(num);
+		return Math.min(Math.max(parsed, MIN), MAX);
 	};
 };

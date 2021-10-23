@@ -42,6 +42,14 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.welcomechannel,
 	},
+	allowinvites: {
+		type: Boolean,
+		default: def.allowinvites,
+	},
+	invitelimit: {
+		type: Number,
+		default: def.invitelimit,
+	},
 	ruleschannel: {
 		type: String,
 		default: def.ruleschannel,

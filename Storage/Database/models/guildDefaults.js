@@ -10,6 +10,8 @@ module.exports = {
 		auditchannel: 'Not Set',
 		welcome: false,
 		welcomechannel: 'Not Set',
+		allowinvites: false,
+		invitelimit: 10,
 		ruleschannel: 'Not Set',
 		starchannel: 'Not Set',
 		twitterchannel: 'Not Set',
