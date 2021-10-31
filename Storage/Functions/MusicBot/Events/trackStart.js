@@ -5,18 +5,12 @@ module.exports = async (bot, queue, track) => {
 	const settings = await bot.getGuild(queue.guild);
 	const message = queue.metadata.message;
 
-	console.log(track.durationMS);
-
 	// Setup Embed
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
 		.setAuthor(`Requested By› ${track.requestedBy.username}`, track.requestedBy.displayAvatarURL({ dynamic: true }))
 		.setThumbnail(track.thumbnail)
-		.setDescription(
-			`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${
-				message.guild.me.voice.channel
-			}\n`
-		)
+		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
 		.setFooter(bot.Timestamp(Date.now()));
 
 	if (queue.currentEmbed && !queue.currentEmbed.deleted) await queue.currentEmbed.delete(); // return queue.currentEmbed.edit({ embeds: [embed] });
