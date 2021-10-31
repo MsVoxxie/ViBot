@@ -9,8 +9,8 @@ module.exports = {
 	category: 'utility',
 	args: false,
 	cooldown: 15,
-	hidden: true,
-	ownerOnly: true,
+	hidden: false,
+	ownerOnly: false,
 	userPerms: ['SEND_MESSAGES'],
 	botPerms: ['MANAGE_MESSAGES', 'CREATE_INSTANT_INVITE'],
 	async execute(bot, message, args, settings, Vimotes) {

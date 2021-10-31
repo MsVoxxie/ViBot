@@ -4,18 +4,16 @@ const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
 
 const bot = new Client({
-	intents: [
-		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MESSAGES,
-		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-		Intents.FLAGS.GUILD_MEMBERS,
-		Intents.FLAGS.GUILD_PRESENCES,
-		Intents.FLAGS.GUILD_VOICE_STATES,
-	],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_VOICE_STATES],
 	partials: ['MESSAGE', 'REACTION'],
 });
 
-const Music = new Player(bot);
+const Music = new Player(bot, {
+	ytdlOptions: {
+		quality: 'highestaudio',
+		highWaterMark: 1 << 25,
+	},
+});
 
 //Setup Giveaways
 // const Raffles = new GiveawaysManager(bot, {
@@ -36,27 +34,7 @@ const Music = new Player(bot);
 // bot.RaffleManager = Raffles;
 
 //Global NSFW Blacklist
-bot.GlobalNSFWBlacklist = [
-	'cub',
-	'loli',
-	'lolicon',
-	'shota',
-	'young',
-	'child',
-	'boy',
-	'girl',
-	'infant',
-	'youth',
-	'baby',
-	'youngling',
-	'underage',
-	'immature',
-	'ped0',
-	'ped0philia',
-	'rape',
-	'noncon',
-	'bestiality',
-];
+bot.GlobalNSFWBlacklist = ['cub', 'loli', 'lolicon', 'shota', 'young', 'child', 'boy', 'girl', 'infant', 'youth', 'baby', 'youngling', 'underage', 'immature', 'ped0', 'ped0philia', 'rape', 'noncon', 'bestiality'];
 
 // Music Setup
 bot.Music = Music;

@@ -1,3 +1,6 @@
+const { Player } = require('discord-player');
+const playdl = require('play-dl');
+
 module.exports = {
 	name: 'play',
 	aliases: ['p'],
@@ -36,6 +39,19 @@ module.exports = {
 			metadata: {
 				message: message,
 				channel: message.channel,
+			},
+			async onBeforeCreateStream(track) {
+				if (track.url.includes('youtube')) {
+					return (await playdl.stream(track.url)).stream;
+				} else if (track.url.includes('spotify')) {
+					const songs = await player
+						.search(track.title, {
+							requestedBy: message.member,
+						})
+						.catch()
+						.then((x) => x.tracks[0]);
+					return (await playdl.stream(songs.url)).stream;
+				}
 			},
 		});
 
