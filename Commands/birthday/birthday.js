@@ -15,19 +15,11 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Check if birthday already exists
-		let doesExist;
 		const Bdays = await bot.getBirthdays(message.guild);
 		const Users = Bdays.birthdays;
-		await Users.map(async (ID) => {
-			if (ID.userid === message.author.id) {
-				message.channel.send(`You already have a birthday set!`).then((m) => setTimeout(() => m.delete(), 5 * 1000));
-				doesExist = true;
-			} else {
-				doesExist = false;
-			}
-		});
 
-		if (doesExist === true) return;
+		const BdayCheck = await Users.find((ID) => ID.userid === message.author.id);
+		if (BdayCheck) return message.channel.send(`You already have a birthday set!`).then((m) => setTimeout(() => m.delete(), 5 * 1000));
 
 		//Define Variables
 		let EmbedID = undefined;
