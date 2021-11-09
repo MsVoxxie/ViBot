@@ -18,7 +18,7 @@ module.exports = (bot) => {
 			if (!twitterchannel) return;
 			if (!settings.twitterwatch.length) return;
 
-			console.log(`updating streams for ${guild.name}`);
+			console.log(`Updating Twitter Streams for› ${guild.name}`);
 
 			const stream = Twitter.stream('statuses/filter', { follow: settings.twitterwatch });
 			stream.stop();
@@ -31,15 +31,7 @@ module.exports = (bot) => {
 
 		//Function to check if a tweet is a reply
 		function isReply(tweet) {
-			if (
-				tweet.retweeted_status ||
-				tweet.in_reply_to_status_id ||
-				tweet.in_reply_to_status_id_str ||
-				tweet.in_reply_to_user_id ||
-				tweet.in_reply_to_user_id_str ||
-				tweet.in_reply_to_screen_name
-			)
-				return true;
+			if (tweet.retweeted_status || tweet.in_reply_to_status_id || tweet.in_reply_to_status_id_str || tweet.in_reply_to_user_id || tweet.in_reply_to_user_id_str || tweet.in_reply_to_screen_name) return true;
 		}
 	};
 };

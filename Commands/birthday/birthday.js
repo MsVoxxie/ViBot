@@ -10,7 +10,7 @@ module.exports = {
 	args: false,
 	cooldown: 2,
 	hidden: false,
-	ownerOnly: true,
+	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
@@ -43,11 +43,11 @@ module.exports = {
 			setTimeout(() => collected.first().delete(), 5 * 1000);
 		});
 
-		await bot.addBirthday(message.guild, { userid: message.member.id, username: message.member.user.tag, birthday: BirthDate });
+		await bot.addBirthday(message.guild, { userid: message.member.id, username: message.member.user.tag, birthday: BirthDate, sent: false });
 
 		EmbedID = await GenerateEmbed(settings.guildcolor, message, EmbedID, 'Awesome!', `Added your birthday! 🎂`, true);
 		await message.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, error: ['time'] }).then(async (collected) => {
-			const BirthDate = await Date.parse(collected.first().cleanContent);
+			BirthDate = await Date.parse(collected.first().cleanContent);
 			setTimeout(() => collected.first().delete(), 5 * 1000);
 		});
 	},

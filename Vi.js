@@ -58,6 +58,7 @@ require('./Storage/Functions/dbFunctions')(bot);
 require('./Storage/Functions/utilFunctions')(bot);
 require('./Storage/Functions/twitterFunctions')(bot);
 require('./Storage/Functions/giveawayDatabase')(bot);
+require('./Storage/Functions/birthdayFunctions')(bot);
 
 // Declare myself as Owner of bot.
 bot.Owners = ['101789503634554880', '101790332437405696'];

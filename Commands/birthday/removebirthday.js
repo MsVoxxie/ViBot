@@ -10,7 +10,7 @@ module.exports = {
 	args: false,
 	cooldown: 2,
 	hidden: false,
-	ownerOnly: true,
+	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
@@ -22,7 +22,7 @@ module.exports = {
 				await bot.removeBirthday(message.guild, { userid: message.author.id });
 				await message.reply(`Your birthday has been removed!`).then((m) => setTimeout(() => m.delete(), 5 * 3000));
 			} else {
-				await message.reply(`You don't have a birthday set!`).then((m) => setTimeout(() => m.delete(), 5 * 3000));
+				return;
 			}
 		});
 	},
