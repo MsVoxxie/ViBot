@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/MsVoxxie/ViBot#readme",
   "dependencies": {
+    "@androz2091/discord-invites-tracker": "github:Androz2091/discord-invites-tracker",
     "@discord-player/extractor": "^3.0.2",
     "@discordjs/opus": "^0.5.3",
     "ascii-table": "0.0.9",

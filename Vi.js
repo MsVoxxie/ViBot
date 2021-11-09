@@ -51,6 +51,7 @@ bot.events = new Collection();
 bot.mongoose = require('./Storage/Database/mongoose');
 bot.guildDefaults = require('./Storage/Database/models/guildDefaults');
 bot.reactionDefaults = require('./Storage/Database/models/reactionDefaults');
+bot.birthdayDefaults = require('./Storage/Database/models/birthdayDefaults');
 
 // Load Functions
 require('./Storage/Functions/dbFunctions')(bot);

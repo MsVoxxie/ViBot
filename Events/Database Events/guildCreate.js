@@ -11,9 +11,7 @@ module.exports = {
 				.filter((x) => x !== undefined)
 				.sort((a, b) => a.position - b.position)
 				.map((categories) => {
-					const children = categories.children
-						.filter((ch) => ch.type === 'text')
-						.filter((x) => x !== undefined);
+					const children = categories.children.filter((ch) => ch.type === 'text').filter((x) => x !== undefined);
 
 					data.push({
 						category: categories.name,
@@ -29,30 +27,9 @@ module.exports = {
 			//Save Channels and Categories as a non duplicating array
 			const final = [...new Set(data)];
 
-			//New Guild, Setup Guild.
-			const newGuild = {
-				guildcolor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-				guildid: guild.id,
-				guildname: guild.name,
-				channels: final,
-			};
-
-			//New Guild, Setup Reaction Group.
-			const newReaction = {
-				guildid: guild.id,
-				guildname: guild.name,
-			};
-
-			//New Guild, Setup Moderation Group.
-			const newModeration = {
-				guildid: guild.id,
-				guildname: guild.name,
-			};
-
-			await bot.createGuild(newGuild);
-			await bot.createGuildModeration(newModeration);
-			await bot.createReactions(newReaction);
-			
+			await bot.createGuild({ guildcolor: `#${Math.floor(Math.random() * 16777215).toString(16)}`, guildid: guild.id, guildname: guild.name, channels: final });
+			await bot.createReactions({ guildid: guild.id, guildname: guild.name });
+			await bot.createBirthdays({ guildid: guild.id, guildname: guild.name });
 		} catch (error) {
 			console.error(error);
 		}
