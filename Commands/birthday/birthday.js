@@ -15,6 +15,7 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Check if birthday already exists
+		var date_regex = /^(0?[1-9]|1[0-2]){1}\/(0?[1-9]|1[0-9]|2[0-9]|3[0-1]){1}$/;
 		const Bdays = await bot.getBirthdays(message.guild);
 		const Users = Bdays.birthdays;
 
@@ -24,16 +25,25 @@ module.exports = {
 		//Define Variables
 		let EmbedID = undefined;
 		let BirthDate;
+		let dateValid = true;
 
 		//Setup Filter
 		const filter = (m) => m.author.id === message.author.id;
 
 		// Questions
-		EmbedID = await GenerateEmbed(settings.guildcolor, message, EmbedID, 'Whats your birthday?', 'Please use Numerical Dates EG: MM/DD/YYYY\n Christmas Day would be: 12/25/2021', false);
+		EmbedID = await GenerateEmbed(settings.guildcolor, message, EmbedID, 'Whats your birthday?', 'Please use Numerical Dates EG: MM/DD\n Christmas Day would be: 12/25', false);
 		await message.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, error: ['time'] }).then(async (collected) => {
+			if (!date_regex.test(collected.first().cleanContent)) {
+				await message.reply('Invalid Date, Cancelling!').then((m) => {
+					setTimeout(() => m.delete(), 5 * 1000);
+					dateValid = false;
+				});
+			}
 			BirthDate = await Date.parse(collected.first().cleanContent).toLocaleString('en', { dateStyle: 'short' }).replace(/,/g, '');
 			setTimeout(() => collected.first().delete(), 5 * 1000);
 		});
+
+		if (!dateValid) return;
 
 		await bot.addBirthday(message.guild, { userid: message.member.id, username: message.member.user.tag, birthday: BirthDate, sent: false });
 
