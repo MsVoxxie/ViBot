@@ -62,6 +62,10 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.twitterchannel,
 	},
+	birthdaychannel: {
+		type: String,
+		default: def.birthdaychannel,
+	},
 	disabledModules: {
 		type: Array,
 		unique: true,
