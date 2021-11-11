@@ -30,6 +30,7 @@ module.exports = {
 			await bot.createGuild({ guildcolor: `#${Math.floor(Math.random() * 16777215).toString(16)}`, guildid: guild.id, guildname: guild.name, channels: final });
 			await bot.createReactions({ guildid: guild.id, guildname: guild.name });
 			await bot.createBirthdays({ guildid: guild.id, guildname: guild.name });
+			await bot.createTwitchWatch({ guildid: guild.id, guildname: guild.name });
 		} catch (error) {
 			console.error(error);
 		}

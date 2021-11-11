@@ -20,6 +20,8 @@
     "@androz2091/discord-invites-tracker": "github:Androz2091/discord-invites-tracker",
     "@discord-player/extractor": "^3.0.2",
     "@discordjs/opus": "^0.5.3",
+    "@twurple/api": "^5.0.9",
+    "@twurple/auth": "^5.0.9",
     "ascii-table": "0.0.9",
     "axios": "^0.21.1",
     "booru": "^2.4.0",

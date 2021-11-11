@@ -3,4 +3,5 @@ module.exports = {
 	Reaction: require('./reactions'),
 	Giveaways: require('./giveaways'),
 	Birthdays: require('./birthday'),
+	TwitchWatch: require('./twitchwatch'),
 };

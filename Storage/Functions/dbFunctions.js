@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Guild, GuildModeration, Reaction, Birthdays } = require('../Database/models');
+const { Guild, GuildModeration, Reaction, Birthdays, TwitchWatch } = require('../Database/models');
 
 module.exports = (bot) => {
 	// Get Guild Settings
@@ -124,7 +124,7 @@ module.exports = (bot) => {
 		}
 	};
 
-	// Get guild Reaction Roles
+	// Get guild Birthdays
 	bot.getBirthdays = async (guild) => {
 		if (!guild) throw new Error('No Guild Provided!');
 		const data = await Birthdays.findOne({ guildid: guild.id });
@@ -132,7 +132,7 @@ module.exports = (bot) => {
 		else return bot.birthdayDefaults.defaultSettings;
 	};
 
-	// Add Reaction to Guild
+	// Add Birthday to Guild
 	bot.addBirthday = async (guild, settings) => {
 		if (!guild) throw new Error('No Guild Provided!');
 		const data = await Birthdays.findOne({ guildid: guild.id });
@@ -143,7 +143,7 @@ module.exports = (bot) => {
 		data.save();
 	};
 
-	// Remove Reaction to Guild
+	// Remove Birthday from Guild
 	bot.removeBirthday = async (guild, settings) => {
 		if (!guild) throw new Error('No Guild Provided!');
 		const data = await Birthdays.findOne({ guildid: guild.id });
@@ -153,5 +153,26 @@ module.exports = (bot) => {
 
 		guildBirthdays.pull(removeUser);
 		data.save();
+	};
+
+	// Create Twitch Database
+	bot.createTwitchWatch = async (settings) => {
+		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.twitchwatchDefaults.defaultSettings);
+		const merged = Object.assign(defaults, settings);
+		const newTwitchWatch = await new TwitchWatch(merged);
+		const check = await TwitchWatch.findOne({ guildid: merged.guildid });
+		if (check) {
+			return;
+		} else {
+			return newTwitchWatch.save().then(console.log(`Created new TwitchWatch Model for \`${merged.guildname}\``));
+		}
+	};
+
+	//Get Guild Twitch Channels
+	bot.getTwitchWatch = async (guild) => {
+		if (!guild) throw new Error('No Guild Provided!');
+		const data = await TwitchWatch.findOne({ guildid: guild.id });
+		if (data) return data;
+		else return bot.twitchwatchDefaults.defaultSettings;
 	};
 };

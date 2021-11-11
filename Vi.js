@@ -16,27 +16,6 @@ const Music = new Player(bot, {
 	},
 });
 
-//Setup Giveaways
-// const Raffles = new GiveawaysManager(bot, {
-// 	storage: './Storage/Giveaways/Giveaways.json',
-// 	updateCountdownEvery: 10 * 1000,
-// 	default: {
-// 		botsCanWin: false,
-// 		embedColor: '#FF0000',
-// 		embedColorEnd: '#000000',
-// 		reaction: '🗳️',
-// 		giveaway: '🗳️ ** RAFFLE STARTED ** 🗳️',
-// 		giveawayEnded: '⚠️ **RAFFLE ENDED ** ⚠️',
-// 		inviteToParticipate: 'React with 🗳️ to enter!',
-// 		embedFooter: 'Good luck to everyone!',
-// 	},
-// });
-
-// bot.RaffleManager = Raffles;
-
-//Global NSFW Blacklist
-bot.GlobalNSFWBlacklist = ['cub', 'loli', 'lolicon', 'shota', 'young', 'child', 'boy', 'girl', 'infant', 'youth', 'baby', 'youngling', 'underage', 'immature', 'ped0', 'ped0philia', 'rape', 'noncon', 'bestiality'];
-
 // Music Setup
 bot.Music = Music;
 
@@ -53,6 +32,7 @@ bot.mongoose = require('./Storage/Database/mongoose');
 bot.guildDefaults = require('./Storage/Database/models/guildDefaults');
 bot.reactionDefaults = require('./Storage/Database/models/reactionDefaults');
 bot.birthdayDefaults = require('./Storage/Database/models/birthdayDefaults');
+bot.twitchwatchDefaults = require('./Storage/Database/models/twitchwatchDefaults');
 
 // Load Functions
 require('./Storage/Functions/dbFunctions')(bot);
@@ -60,6 +40,7 @@ require('./Storage/Functions/utilFunctions')(bot);
 require('./Storage/Functions/twitterFunctions')(bot);
 require('./Storage/Functions/giveawayDatabase')(bot);
 require('./Storage/Functions/birthdayFunctions')(bot);
+require('./Storage/Functions/twitchFunctions')(bot);
 
 // Declare myself as Owner of bot.
 bot.Owners = ['101789503634554880', '101790332437405696'];
@@ -73,8 +54,6 @@ bot.Music.on('error', (queue, error) => {
 	console.log(error);
 });
 
-// bot.Music.on('trackStart', (queue, track) => queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`));
-
 // Init Bot / Database
 bot.mongoose.init();
 bot.login(Token);
@@ -82,4 +61,9 @@ bot.login(Token);
 //Birthday Check
 cron.schedule('0 8 * * *', () => {
 	bot.checkBirthdays();
+});
+
+//Twitch Check
+cron.schedule('* * * * *', () => {
+	bot.twitchWatch();
 });
