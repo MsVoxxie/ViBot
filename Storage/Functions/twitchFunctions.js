@@ -16,7 +16,7 @@ module.exports = (bot) => {
 			const data = await TwitchWatch.findOne({ guildid: guild.id });
 			if (!data) return;
 			const TwitchChannels = data.twitchchannels;
-			const streamChannel = await guild.channels.cache.get(settings.twitterchannel);
+			const streamChannel = await guild.channels.cache.get(settings.twitchchannel);
 			if (!streamChannel) return;
 			if (!TwitchChannels) return;
 
