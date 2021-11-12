@@ -17,7 +17,7 @@ module.exports = (bot) => {
 
 			console.log(`Checking for Birthdays in› ${guild.name}`);
 
-			Userbirthdays.map(async (user) => {
+			for await (const user of Userbirthdays) {
 				const userBirthday = new Date(parseInt(user.birthday));
 				const today = new Date();
 				const userBirthdayMonth = userBirthday.getMonth();
@@ -30,7 +30,7 @@ module.exports = (bot) => {
 					let msg = await birthdaychannel.send({ embeds: [embed] });
 					await msg.react('🎉');
 				}
-			});
+			}
 		});
 	};
 };
