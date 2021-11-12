@@ -11,7 +11,7 @@ const TwitchClient = new ApiClient({ authProvider });
 
 module.exports = (bot) => {
 	bot.twitchWatch = async () => {
-		bot.guilds.cache.forEach(async (guild) => {
+		await bot.guilds.cache.map(async (guild) => {
 			const settings = await bot.getGuild(guild);
 			const data = await TwitchWatch.findOne({ guildid: guild.id });
 			if (!data) return;
@@ -21,10 +21,11 @@ module.exports = (bot) => {
 			if (!TwitchChannels) return;
 
 			// Check if the channel is live
-			TwitchChannels.forEach(async (channel) => {
+			// await TwitchChannels.map(async (channel) => {
+			for await (const channel of TwitchChannels) {
 				const Update = TwitchChannels.find((ch) => ch.channelname === channel.channelname);
 				let postMsg;
-				const Stream = await TwitchClient.helix.streams.getStreamByUserName(channel.channelname);
+				const Stream = await TwitchClient.streams.getStreamByUserName(channel.channelname);
 				if (Stream) {
 					try {
 						if (channel.postmessage) {
@@ -54,9 +55,9 @@ module.exports = (bot) => {
 					try {
 						if (channel.offline === false) {
 							const checkMsg = await streamChannel.messages.fetch({ limit: 100 });
-							const streamMsg = await checkMsg.fetch(channel.postmessage);
+							const streamMsg = await checkMsg.get(channel.postmessage);
 							setEmbedOffline(Stream, channel);
-							streamMsg.edit({ embeds: [offembed] });
+							streamMsg.edit({ embeds: [offembed] }); //.then((m) => setTimeout(() => m.delete(), 60 * 60 * 1000));
 							Update.offline = true;
 						}
 						Update.postmessage = '';
@@ -67,7 +68,9 @@ module.exports = (bot) => {
 						console.log(error);
 					}
 				}
-			});
+			}
+			// await data.markModified('twitchchannels');
+			// await data.save();
 		});
 	};
 	let embed;

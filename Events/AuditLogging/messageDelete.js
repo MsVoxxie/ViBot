@@ -24,7 +24,7 @@ module.exports = {
 			type: 'MESSAGE_DELETE',
 		});
 
-		const Log = fetchedLogs.entries.first();
+		const Log = await fetchedLogs.entries.first();
 		const { executor, target } = Log;
 
 		if (target.id === message.author.id) {

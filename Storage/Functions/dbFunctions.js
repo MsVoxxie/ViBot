@@ -175,4 +175,16 @@ module.exports = (bot) => {
 		if (data) return data;
 		else return bot.twitchwatchDefaults.defaultSettings;
 	};
+
+	// Remove TwitchChannel from Guild
+	bot.removeTwitchChannel = async (guild, settings) => {
+		if (!guild) throw new Error('No Guild Provided!');
+		const data = await TwitchWatch.findOne({ guildid: guild.id });
+		const guildTwitchChannels = await data.twitchchannels;
+		const removeChannel = await guildTwitchChannels.find((u) => u.userid === settings.userid);
+		if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+
+		guildTwitchChannels.pull(removeChannel);
+		data.save();
+	};
 };

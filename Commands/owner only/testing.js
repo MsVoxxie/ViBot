@@ -14,14 +14,8 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		//Declare variables
-		// const data = await TwitchWatch.findOne({ guildid: message.guild.id });
-		// const Twitch = data.twitchchannels;
-		// const Update = Twitch.find((ch) => ch.channelname === 'Shinra_');
-
-		// Update.offline = true;
-		// data.markModified('twitchchannels');
-		// await data.save();
-		await bot.twitchWatch();
+		for await (const guild of bot.guilds.cache) {
+			console.log(guild.name);
+		}
 	},
 };
