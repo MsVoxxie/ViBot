@@ -16,6 +16,7 @@ module.exports = {
 		starchannel: 'Not Set',
 		twitterchannel: 'Not Set',
 		twitchchannel: 'Not Set',
+		twitchmention: false,
 		birthdaychannel: 'Not Set',
 		disabledModules: ['legacy'],
 		channels: [],

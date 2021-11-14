@@ -9,6 +9,8 @@ const accesstoken = TwitchAccessToken;
 const authProvider = new ClientCredentialsAuthProvider(clientid, accesstoken);
 const TwitchClient = new ApiClient({ authProvider });
 
+const randomNotif = ['Hey {everyone}! {twname} is now live!', 'Heads up {everyone}, {twname} is going live!', '{twname} is live {everyone}!', "It's that time again {everyone}, Time to watch {twname}!"];
+
 module.exports = (bot) => {
 	bot.twitchWatch = async () => {
 		await bot.guilds.cache.map(async (guild) => {
@@ -21,9 +23,10 @@ module.exports = (bot) => {
 			if (!TwitchChannels) return;
 
 			// Check if the channel is live
-			// await TwitchChannels.map(async (channel) => {
 			for await (const channel of TwitchChannels) {
 				const Update = TwitchChannels.find((ch) => ch.channelname === channel.channelname);
+				const randmsg = await randomNotif[Math.floor(Math.random() * randomNotif.length)];
+				const msg = await randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.channelname);
 				let postMsg;
 				const Stream = await TwitchClient.streams.getStreamByUserName(channel.channelname);
 				if (Stream) {
@@ -37,7 +40,7 @@ module.exports = (bot) => {
 							}
 						} else {
 							await setEmbed(Stream, channel);
-							postMsg = await streamChannel.send({ embeds: [embed] });
+							postMsg = await streamChannel.send({ content: `${settings.twitchmention ? msg : ''}`, embeds: [embed] });
 
 							Update.postmessage = postMsg.id;
 							Update.lastpost = Date.now();
@@ -57,7 +60,11 @@ module.exports = (bot) => {
 							const checkMsg = await streamChannel.messages.fetch({ limit: 100 });
 							const streamMsg = await checkMsg.get(channel.postmessage);
 							setEmbedOffline(Stream, channel);
-							streamMsg.edit({ embeds: [offembed] }); //.then((m) => setTimeout(() => m.delete(), 60 * 60 * 1000));
+							if (streamMsg) {
+								streamMsg.edit({ embeds: [offembed] }).then((s) => {
+									if (settings.prune) setTimeout(() => s.delete(), 60 * 60 * 1000);
+								});
+							}
 							Update.offline = true;
 						}
 						Update.postmessage = '';
@@ -69,8 +76,6 @@ module.exports = (bot) => {
 					}
 				}
 			}
-			// await data.markModified('twitchchannels');
-			// await data.save();
 		});
 	};
 	let embed;

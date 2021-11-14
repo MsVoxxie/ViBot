@@ -15,7 +15,10 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Check if arguments are provided.
-		if (args.length) return message.channel.send('Please do not provide arguments!').then((m) => setTimeout(() => m.delete(), 15 * 1000));
+		if (args.length)
+			return message.channel.send('Please do not provide arguments!').then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 15 * 1000);
+			});
 
 		//Check if birthday already exists
 		var date_regex = /^(0?[1-9]|1[0-2]){1}\/(0?[1-9]|1[0-9]|2[0-9]|3[0-1]){1}$/;
@@ -23,7 +26,10 @@ module.exports = {
 		const Users = Bdays.birthdays;
 
 		const BdayCheck = await Users.find((ID) => ID.userid === message.author.id);
-		if (BdayCheck) return message.channel.send(`You already have a birthday set!`).then((m) => setTimeout(() => m.delete(), 15 * 1000));
+		if (BdayCheck)
+			return message.channel.send(`You already have a birthday set!`).then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 15 * 1000);
+			});
 
 		//Define Variables
 		let EmbedID = undefined;

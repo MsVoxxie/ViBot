@@ -66,6 +66,10 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.twitchchannel,
 	},
+	twitchmention: {
+		type: Boolean,
+		default: def.twitchmention,
+	},
 	birthdaychannel: {
 		type: String,
 		default: def.birthdaychannel,

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { TwitchWatch } = require('../../Storage/Database/models');
 
+const randomNotif = ['Hey {everyone}! {twname} is now live!', 'Heads up {everyone}, {twname} is going live!', '{twname} is live {everyone}!', "It's that time again {everyone}, Time to watch {twname}!"];
+
 module.exports = {
 	name: 'test',
 	aliases: ['t'],
@@ -14,8 +16,10 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		for await (const guild of bot.guilds.cache) {
-			console.log(guild.name);
-		}
+		let randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
+
+		let msg = await randmsg.replace('{everyone}', '@everyone').replace('{twname}', 'Voxxie');
+
+		message.channel.send(msg);
 	},
 };
