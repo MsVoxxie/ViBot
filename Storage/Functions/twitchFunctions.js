@@ -26,7 +26,8 @@ module.exports = (bot) => {
 			for await (const channel of TwitchChannels) {
 				const Update = TwitchChannels.find((ch) => ch.channelname === channel.channelname);
 				const randmsg = await randomNotif[Math.floor(Math.random() * randomNotif.length)];
-				const msg = await randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.channelname);
+				const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.channelname);
+				const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.channelname);
 				let postMsg;
 				const Stream = await TwitchClient.streams.getStreamByUserName(channel.channelname);
 				if (Stream) {
@@ -40,7 +41,7 @@ module.exports = (bot) => {
 							}
 						} else {
 							await setEmbed(Stream, channel);
-							postMsg = await streamChannel.send({ content: `${settings.twitchmention ? msg : ''}`, embeds: [embed] });
+							postMsg = await streamChannel.send({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
 
 							Update.postmessage = postMsg.id;
 							Update.lastpost = Date.now();
@@ -61,7 +62,7 @@ module.exports = (bot) => {
 							const streamMsg = await checkMsg.get(channel.postmessage);
 							setEmbedOffline(Stream, channel);
 							if (streamMsg) {
-								streamMsg.edit({ embeds: [offembed] }).then((s) => {
+								streamMsg.edit({ content: null, embeds: [offembed] }).then((s) => {
 									if (settings.prune) setTimeout(() => s.delete(), 60 * 60 * 1000);
 								});
 							}
