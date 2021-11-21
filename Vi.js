@@ -1,9 +1,9 @@
 const { Client, Intents, Collection } = require('discord.js');
-// const { GiveawaysManager } = require('discord-giveaways');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
 const cron = require('node-cron');
 
+//Setup Client
 const bot = new Client({
 	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_VOICE_STATES],
 	partials: ['MESSAGE', 'REACTION'],
@@ -13,6 +13,7 @@ const bot = new Client({
 	},
 });
 
+//Setup MusicPlayer
 const Music = new Player(bot, {
 	ytdlOptions: {
 		quality: 'highestaudio',
