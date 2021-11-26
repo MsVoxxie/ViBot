@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const request = require('request');
-
+const fetch = require('node-fetch');
 module.exports = {
 	name: 'inspire',
 	aliases: [],
@@ -31,20 +30,20 @@ module.exports = {
 		const loading = await message.reply(`${Vimotes['A_LOADING']}Generating Inspirational Quotes...`);
 
 		// Promise based function to get an image from inspirobot's api.
-		request('http://inspirobot.me/api?generate=true', async (error, response, body) => {
-			try {
-				const QuoteEmbed = new MessageEmbed()
-					.setAuthor(`${message.member.displayName}'s Quote`, `${message.member.user.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(`${randomQuip[Math.floor(Math.random() * randomQuip.length)]}`)
-					.setImage(body)
-					.setColor(settings.guildcolor)
-					.setFooter(bot.Timestamp(new Date()));
-				await loading.edit({ content: null, embeds: [QuoteEmbed] });
-			} catch (e) {
-				await loading.edit({ content: 'Failed to Inspire you.' }).then((s) => {
-					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-				});
-			}
-		});
+		const res = await fetch('http://inspirobot.me/api?generate=true');
+		const body = await res.text();
+		try {
+			const QuoteEmbed = new MessageEmbed()
+				.setAuthor(`${message.member.displayName}'s Quote`, `${message.member.user.displayAvatarURL({ dynamic: true })}`)
+				.setDescription(`${randomQuip[Math.floor(Math.random() * randomQuip.length)]}`)
+				.setImage(body)
+				.setColor(settings.guildcolor)
+				.setFooter(bot.Timestamp(new Date()));
+			await loading.edit({ content: null, embeds: [QuoteEmbed] });
+		} catch (e) {
+			await loading.edit({ content: 'Failed to Inspire you.' }).then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
+		}
 	},
 };
