@@ -1,4 +1,6 @@
 const Twit = require('twit');
+const ascii = require('ascii-table');
+const table = new ascii().setHeading('Twitter', 'Status');
 
 const { twit_consumer, twit_consumer_secret, twit_access_token, twit_access_token_secret } = require('../Config/Config.json');
 
@@ -11,24 +13,23 @@ const Twitter = new Twit({
 
 module.exports = (bot) => {
 	bot.updateStreams = async () => {
-		bot.guilds.cache.map(async (guild) => {
+		await bot.guilds.cache.map(async (guild) => {
 			const settings = await bot.getGuild(guild);
 			const twitterchannel = await guild.channels.cache.get(settings.twitterchannel);
 
 			if (!twitterchannel) return;
 			if (!settings.twitterwatch.length) return;
 
-			console.log(`Updating Twitter Streams for› ${guild.name}`);
-
 			const stream = Twitter.stream('statuses/filter', { follow: settings.twitterwatch });
 			stream.stop();
 			stream.on('tweet', async (tweet) => {
 				if (isReply(tweet)) return;
-				console.log(`Sending Tweet from ${tweet.user.screen_name} in ${guild.name}`);
+				// console.log(`Sending Tweet from ${tweet.user.screen_name} in ${guild.name}`);
 				await twitterchannel.send(`**${tweet.user.screen_name}** Posted a new Tweet!\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
 			});
 		});
-
+		await table.addRow('Twitter›', '✔️ Watching for Updates');
+		console.log(table.toString());
 		//Function to check if a tweet is a reply
 		function isReply(tweet) {
 			if (tweet.retweeted_status || tweet.in_reply_to_status_id || tweet.in_reply_to_status_id_str || tweet.in_reply_to_user_id || tweet.in_reply_to_user_id_str || tweet.in_reply_to_screen_name) return true;

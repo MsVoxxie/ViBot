@@ -38,6 +38,7 @@ module.exports = (bot) => {
 			bot.Music.on(file.split('.')[0], play.bind(null, bot));
 			musicTable.addRow(`${file.split('.')[0]}`, '✔ » Loaded');
 		} catch (error) {
+			console.error(error);
 			musicTable.addRow(`${file.split('.')[0]}`, '❌ » Failed to Load!');
 		}
 	}
