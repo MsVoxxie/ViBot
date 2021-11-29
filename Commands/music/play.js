@@ -8,7 +8,7 @@ module.exports = {
 	example: 'play [name/url]',
 	category: 'music',
 	args: true,
-	cooldown: 2,
+	cooldown: 0,
 	hidden: false,
 	ownerOnly: false,
 	userPerms: [],
@@ -16,6 +16,9 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 		//Declarations
 		const Search = args.join(' ');
+
+		//Let the user know we're searching for content.
+		const loading = await message.reply(`${Vimotes['A_LOADING']}Searching for your query...`);
 
 		// Checks
 		if (!Search) return message.reply(`Please enter a search term.`);
@@ -39,6 +42,7 @@ module.exports = {
 			metadata: {
 				message: message,
 				channel: message.channel,
+				voice_channel: message.member.voice.channel,
 			},
 			async onBeforeCreateStream(track) {
 				if (track.url.includes('youtube')) {
@@ -58,7 +62,9 @@ module.exports = {
 		try {
 			if (!queue.connection) await queue.connect(message.member.voice.channel);
 		} catch (e) {
-			await message.reply(`I am unable to connect to the voice channel.`);
+			await message.reply(`I am unable to connect to the voice channel.`).then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
 			return await queue.destroy();
 		}
 
@@ -68,8 +74,16 @@ module.exports = {
 			return queueList.tracks[0];
 		});
 
-		if (!Song) return message.reply('No results found.');
+		if (!Song) {
+			await message.reply('No results found.').then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
+			await loading.delete();
+			return;
+		}
 
+		await loading.delete();
 		await queue.play(Song);
+		await message.delete();
 	},
 };
