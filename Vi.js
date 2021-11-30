@@ -5,7 +5,14 @@ const cron = require('node-cron');
 
 //Setup Client
 const bot = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_VOICE_STATES],
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+		Intents.FLAGS.GUILD_MEMBERS,
+		Intents.FLAGS.GUILD_PRESENCES,
+		Intents.FLAGS.GUILD_VOICE_STATES,
+	],
 	partials: ['MESSAGE', 'REACTION'],
 	allowedMentions: {
 		repliedUser: true,
@@ -15,6 +22,13 @@ const bot = new Client({
 
 //Setup MusicPlayer
 const Music = new Player(bot, {
+	leaveOnEnd: true,
+	leaveOnEndCooldown: 90 * 1000,
+	leaveOnStopCooldown: 90 * 1000,
+	leaveOnEmptyCooldown: 30 * 1000,
+	autoSelfDeaf: true,
+	fetchBeforeQueued: true,
+	enableLive: true,
 	ytdlOptions: {
 		quality: 'highestaudio',
 		highWaterMark: 1 << 25,

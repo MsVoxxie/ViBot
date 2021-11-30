@@ -33,9 +33,9 @@ module.exports = {
 
 		const queue = await bot.Music.createQueue(message.guild, {
 			leaveOnEnd: true,
-			leaveOnEndCooldown: 30 * 1000,
-			leaveOnStopCooldown: 30 * 1000,
-			leaveOnEmptyCooldown: 20 * 1000,
+			leaveOnEndCooldown: 90 * 1000,
+			leaveOnStopCooldown: 90 * 1000,
+			leaveOnEmptyCooldown: 30 * 1000,
 			autoSelfDeaf: true,
 			fetchBeforeQueued: true,
 			enableLive: true,
