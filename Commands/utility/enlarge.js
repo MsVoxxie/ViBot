@@ -22,8 +22,7 @@ module.exports = {
 		const Slice = CutBack.split(':');
 		if (Slice.includes('a')) {
 			type = '.gif';
-		}
-		else {
+		} else {
 			type = '.png';
 		}
 
@@ -36,13 +35,13 @@ module.exports = {
 					.setAuthor(message.member.displayName, message.author.displayAvatarURL({ dynamic: true }))
 					.setFooter(`Emoji Enlarged› ${args.join(' ')}`);
 				message.channel.send({ embeds: [embed] });
-			}
-			catch (e) {
+			} catch (e) {
 				console.log(e);
 			}
-		}
-		else {
-			return message.reply('Please provide a valid Emoji to enlarge.').then(s => s.delete({ timeout: 10 * 1000 }));
+		} else {
+			return message.reply('Please provide a valid Emoji to enlarge.').then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
 		}
 	},
 };

@@ -19,11 +19,11 @@ module.exports = {
 		// Checks
 		if (!message.member.voice.channel)
 			return message.reply('Please join a voice channel to play music.').then((s) => {
-				if (settings.audit) s.delete({ timeout: 30 * 1000 });
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
 			return message.reply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then((s) => {
-				if (settings.audit) s.delete({ timeout: 30 * 1000 });
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (!queue)
 			return message.reply('No music is currently playing.').then((s) => {
@@ -66,7 +66,7 @@ module.exports = {
 					collector.stop();
 					reaction.message.reactions.removeAll();
 					if (settings.prune) {
-						queueEmbed.delete({ timeout: 30 * 1000 });
+						queueEmbed.delete();
 					}
 					break;
 

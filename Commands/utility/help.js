@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { readdirSync } = require('fs');
 
-module.exports = { 
+module.exports = {
 	name: 'help',
 	aliases: ['h'],
 	description: 'Displays my commands list and their details!',
@@ -28,8 +28,7 @@ module.exports = {
 			if (Cat === 'owner only') return;
 
 			//Check for permissions of user
-			if (Cat === 'config' && !message.member.permissions.has(['MANAGE_GUILD', 'MANAGE_ROLES']))
-				return;
+			if (Cat === 'config' && !message.member.permissions.has(['MANAGE_GUILD', 'MANAGE_ROLES'])) return;
 
 			//Command Checks
 			const dir = bot.commands.filter((c) => {
@@ -44,26 +43,12 @@ module.exports = {
 
 			// Setup Embed pages
 			const embed = new MessageEmbed()
-				.setAuthor(
-					`${bot.user.username}'s Command Sheet`,
-					bot.user.displayAvatarURL({ dynamic: true })
-				)
+				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
-				.setDescription(
-					`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`
-				)
+				.setDescription(`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
 				.addField(
-					`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${
-						dir.size
-					}] ›`,
-					dir
-						.map(
-							(command) =>
-								`${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${
-									command.description ? command.description : ''
-								}`
-						)
-						.join('\n')
+					`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`,
+					dir.map((command) => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n')
 				)
 				.setColor(settings.guildcolor);
 
@@ -79,10 +64,7 @@ module.exports = {
 
 			// Init Embed
 			const helpEmbed = new MessageEmbed()
-				.setAuthor(
-					`${bot.user.username}'s Command Sheet`,
-					bot.user.displayAvatarURL({ dynamic: true })
-				)
+				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 
@@ -91,34 +73,18 @@ module.exports = {
 				helpEmbed.setTitle('Invalid Command');
 				helpEmbed.setDescription(`Use \`${settings.prefix}help\` for my command list.`);
 				return await message.reply({ embeds: [helpEmbed] }).then((s) => {
-					if (settings.audit) s.delete({ timeout: 30 * 1000 });
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 			}
 
 			// If Valid, Generate information sheet
 			helpEmbed.setDescription(
-				`**This guilds prefix is›** ${settings.prefix}\n${
-					command.name ? `**Command›**  ${command.name}\n` : ''
-				}${command.aliases.length ? `**Aliases›** ${command.aliases.join(' | ')}\n` : ''}${
+				`**This guilds prefix is›** ${settings.prefix}\n${command.name ? `**Command›**  ${command.name}\n` : ''}${command.aliases.length ? `**Aliases›** ${command.aliases.join(' | ')}\n` : ''}${
 					command.example ? `**Example›** ${settings.prefix}${command.example}\n` : ''
-				}${
-					settings.disabledModules.includes(command.category)
-						? `**Status›** ${Vimotes['XMARK']}Disabled.\n`
-						: `**Status›** ${Vimotes['AUTHORIZED']}Enabled\n`
-				}${command.cooldown ? `**Cooldown›** ${command.cooldown}\n` : ''}${
-					command.description ? `**Description›** ${command.description}\n` : ''
-				}${
-					command.userPerms.length
-						? `**Required User Permissions›** ${command.userPerms
-								.map((perm) => permissions[perm])
-								.join(' | ')}\n`
-						: ''
-				}${
-					command.botPerms.length
-						? `**Required Bot Permissions›** ${command.botPerms
-								.map((perm) => permissions[perm])
-								.join(' | ')}\n`
-						: ''
+				}${settings.disabledModules.includes(command.category) ? `**Status›** ${Vimotes['XMARK']}Disabled.\n` : `**Status›** ${Vimotes['AUTHORIZED']}Enabled\n`}${
+					command.cooldown ? `**Cooldown›** ${command.cooldown}\n` : ''
+				}${command.description ? `**Description›** ${command.description}\n` : ''}${command.userPerms.length ? `**Required User Permissions›** ${command.userPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''}${
+					command.botPerms.length ? `**Required Bot Permissions›** ${command.botPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''
 				}`
 			);
 			await message.reply({ embeds: [helpEmbed] });
@@ -139,8 +105,7 @@ module.exports = {
 			}
 
 			// Filter Reactions, setup Collector and try each reaction
-			const filter = (reaction, user) =>
-				['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
+			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
 			const collector = await embedList.createReactionCollector({ filter, time: 300 * 1000 });
 			collector.on('collect', async (reaction) => {
 				console.log(`Reaction: ${reaction.emoji.name}`);

@@ -8,7 +8,8 @@
 		"npm": "8.x"
 	},
 	"scripts": {
-		"start": "node Vi.js"
+		"start": "node Vi.js",
+		"update": "git pull https://github.com/MsVoxxie/ViBot/tree/v13"
 	},
 	"repository": {
 		"type": "git",

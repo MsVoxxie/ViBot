@@ -18,15 +18,15 @@ module.exports = {
 		// Checks
 		if (!message.member.voice.channel)
 			return message.reply('You cannot stop the music when not in a voice channel.').then((s) => {
-				if (settings.audit) s.delete({ timeout: 30 * 1000 });
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
 			return message.reply('You are not in the same voice channel as me.').then((s) => {
-				if (settings.audit) s.delete({ timeout: 30 * 1000 });
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (!queue)
 			return message.reply('No music is currently playing.').then((s) => {
-				if (settings.audit) s.delete({ timeout: 30 * 1000 });
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (queue.connection.paused)
 			return message.reply('Music is already paused.').then((s) => {
