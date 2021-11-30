@@ -35,6 +35,7 @@ module.exports = async (bot, queue, track) => {
 		await reaction.users.remove(user.id);
 		switch (reaction.emoji.name) {
 			case '⏹':
+				if(!queue) return;
 				bot.commands.get('stop').execute(bot, message, args, settings);
 				collector.stop();
 				break;
