@@ -48,11 +48,12 @@ module.exports = {
 				if (track.url.includes('youtube')) {
 					return (await playdl.stream(track.url)).stream;
 				} else if (track.url.includes('spotify')) {
-					const songs = await player
-						.search(track.title, {
+					const songs = await Player.search(track.title, {
 							requestedBy: message.member,
 						})
-						.catch()
+						.catch(err => {
+							return console.error(err);
+						})
 						.then((x) => x.tracks[0]);
 					return (await playdl.stream(songs.url)).stream;
 				}
