@@ -39,9 +39,13 @@ module.exports = async (bot, queue, error, message, ...args) => {
 			});
 			break;
 		default:
-			embed.setDescription(`Something went wrong...\n**Error›** ${error}`);
+			embed
+				.setTitle('__**Error!**__')
+				.setColor('#a83232')
+				.addField('⚠️ :', `\`\`\`Javascript\n${clean(error)}\`\`\``, false)
+				.setFooter(bot.Timestamp(Date.now()));
 			msg.channel.send({ embeds: [embed] }).then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+				if (settings.prune) setTimeout(() => s.delete(), 60 * 1000);
 			});
 	}
 };
