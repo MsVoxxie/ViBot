@@ -82,8 +82,10 @@ module.exports = {
 			return;
 		}
 
-		await loading.delete();
+		if (settings.prune) {
+			await loading.delete();
+			await message.delete();
+		}
 		await queue.play(Song);
-		await message.delete();
 	},
 };
