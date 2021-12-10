@@ -22,16 +22,8 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Message Updated')
-			.setDescription(
-				`**Author›** <@${newMessage.author.id}> | **${newMessage.author.tag}**\n**Channel›** <#${newMessage.channel.id}> | **${
-					newMessage.channel.name
-				}**\n**Message Link›** [Jump To Message](${newMessage.url})\n\n**Original Message›**\`\`\`${oldMessage.content.replace(
-					/`/g,
-					"'"
-				)}\`\`\`\n\n**Updated Message›**\`\`\`${newMessage.content.replace(/`/g, "'")}\`\`\``
-			)
-			.setColor(settings.guildcolor)
-			.setFooter(`Updated› ${bot.Timestamp(newMessage.createdAt)}`);
+			.setDescription(`**Author›** <@${newMessage.author.id}> | **${newMessage.author.tag}**\n**Channel›** <#${newMessage.channel.id}> | **${newMessage.channel.name}**\n**Updated›** **<t:${Math.round(Date.now()/1000)}:R>**\n**Message Link›** [Jump To Message](${newMessage.url})\n\n**Original Message›**\`\`\`${oldMessage.content.replace(/`/g,"'")}\`\`\`\n\n**Updated Message›**\`\`\`${newMessage.content.replace(/`/g, "'")}\`\`\``)
+			.setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });
 	},

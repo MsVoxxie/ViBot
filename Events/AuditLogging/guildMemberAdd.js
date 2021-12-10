@@ -51,7 +51,7 @@ module.exports = {
 		if (settings.audit) {
 			const embed = new MessageEmbed()
 				.setAuthor(`${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, getMember.user.displayAvatarURL({ dynamic: true }))
-				.setDescription(`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server.\n**Account Created›** ${moment(getMember.user.createdAt, 'YYYMMDD h mm ss').fromNow()}`)
+				.setDescription(`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(Date.now()/1000)}:R>**.\n**Account Created›** ${moment(getMember.user.createdAt, 'YYYMMDD h mm ss').fromNow()}`)
 				.setColor(settings.guildcolor)
 				.setFooter(bot.Timestamp(getMember.joinedAt));
 			logChannel.send({ embeds: [embed] });
