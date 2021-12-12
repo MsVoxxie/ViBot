@@ -44,7 +44,7 @@ module.exports = {
 
 			//Logging
 			// console.log(response);
-			// console.log(`${wiki_url}${item_name}`, `${api_url}${response.url}`);
+			// console.log(`${wiki_url}${item_name}`, `${api_url}${response.url}`)
 
 			//Create embeds
 			const embed = new MessageEmbed()
@@ -52,8 +52,10 @@ module.exports = {
 				.setURL(`${wiki_url}${item_name}`)
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
-				.setDescription(`${fetched_data.Description ? item_description : ''}`)
-				.setFooter(`• ${fetched_data.ItemUICategory['Name']} • ${fetched_data.GamePatch["ExName"]} • ${fetched_data.GamePatch["Name"]}`);
+				.setDescription(`${fetched_data.Description ? item_description.split('[')[0] : ''}`)
+				.setFooter(
+					`• ${fetched_data.ItemUICategory['Name']} • ${fetched_data.GamePatch['ExName']} • ${fetched_data.GamePatch['Name']}`
+				);
 
 			message.channel.send({ embeds: [embed] });
 		} catch (error) {
