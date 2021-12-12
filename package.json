@@ -27,6 +27,7 @@
 		"@discordjs/opus": "^0.5.3",
 		"@twurple/api": "^5.0.9",
 		"@twurple/auth": "^5.0.9",
+		"@xivapi/js": "^0.3.3",
 		"ascii-table": "0.0.9",
 		"axios": "^0.21.1",
 		"booru": "^2.4.0",
