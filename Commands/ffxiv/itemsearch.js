@@ -53,7 +53,7 @@ module.exports = {
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
 				.setDescription(`${fetched_data.Description ? item_description : ''}`)
-				.setFooter(`• ${fetched_data.ItemUICategory['Name']}`);
+				.setFooter(`• ${fetched_data.ItemUICategory['Name']} • ${fetched_data.GamePatch["ExName"]} • ${fetched_data.GamePatch["Name"]}`);
 
 			message.channel.send({ embeds: [embed] });
 		} catch (error) {
