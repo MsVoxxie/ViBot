@@ -71,7 +71,7 @@ module.exports = {
                 .addField('Total Price', Data.map(i => i.total).join('\n'),true)
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
-				.setFooter(`• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']}`);
+				.setFooter(`• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']} •`);
                 
 			message.channel.send({ embeds: [embed] });
 		} catch (error) {
