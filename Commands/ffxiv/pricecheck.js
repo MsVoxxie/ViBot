@@ -32,13 +32,11 @@ module.exports = {
 			const Props = args.join(' ');
 			const splitProps = Props.split(' ');
 			const Item = splitProps.slice(1).join(' ');
-			const World = splitProps[0];
+			const World = bot.titleCase(splitProps[0]);
             const Data = [];
 
-			// return console.log(`World: ${World}\nItem: ${Item}`)
-
 			//Get Item Search
-			let response = await xiv.search(Item, { indexes: ['Item'] });
+			let response = await xiv.search(Item, { string_algo: 'match', indexes: ['Item'] });
 			response = response.results[0];
 
 			//Get Item Name and Escape spaces
@@ -57,9 +55,11 @@ module.exports = {
 					return data;
 				});
 
+				console.log(item_price.listings)
+
             //Generate Description
 			item_price.listings.forEach((entry) => {
-                Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${bot.toThousands(entry.pricePerUnit)} ${Vimotes['GIL']} x${entry.quantity} [${entry.worldName}]`, total: `${Vimotes['GIL']} ${bot.toThousands(entry.total)}`, sort: entry.pricePerUnit, hq: entry.hq})
+                Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${bot.toThousands(entry.pricePerUnit)} ${Vimotes['GIL']} x${entry.quantity} [${entry.worldName ? entry.worldName : World}]`, total: `${Vimotes['GIL']} ${bot.toThousands(entry.total)}`, sort: entry.pricePerUnit, hq: entry.hq})
             })
             Data.sort((a, b) => a.sort - b.sort)
 

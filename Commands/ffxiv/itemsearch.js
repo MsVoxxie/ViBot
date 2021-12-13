@@ -25,7 +25,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 		try {
 			//Get Item Search
-			let response = await xiv.search(args.join(' '), { indexes: ['Item'] });
+			let response = await xiv.search(args.join(' '), { string_algo: 'match', indexes: ['Item'] });
 			response = response.results[0];
 
 			//Get Item Name and Escape spaces

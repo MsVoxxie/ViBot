@@ -36,4 +36,7 @@ module.exports = (bot) => {
 		const parsed = parseInt(num);
 		return Math.min(Math.max(parsed, MIN), MAX);
 	};
+	bot.titleCase = (string) => {
+		return string[0].toUpperCase() + string.slice(1).toLowerCase();
+	  }
 };
