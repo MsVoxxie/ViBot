@@ -57,11 +57,9 @@ module.exports = {
 					return data;
 				});
 
-			// return console.log(Desc.map(i => i.split('\n')));
-
             //Generate Description
 			item_price.listings.forEach((entry) => {
-                Data.push({price: `${Vimotes['GIL']}${entry.pricePerUnit} x${entry.quantity} [${World}]`, total: `${Vimotes['GIL']}${entry.total}`, sort: entry.pricePerUnit})
+                Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${entry.pricePerUnit} ${Vimotes['GIL']} x${entry.quantity} [${World}]`, total: `${Vimotes['GIL']} ${entry.total}`, sort: entry.pricePerUnit, hq: entry.hq})
             })
             Data.sort((a, b) => a.sort - b.sort)
 
