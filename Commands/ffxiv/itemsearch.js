@@ -59,7 +59,9 @@ module.exports = {
 
 			message.channel.send({ embeds: [embed] });
 		} catch (error) {
-			console.log(error);
+			return message.reply(`Unable to find item, Try again and check usage!`).then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
 		}
 	},
 };

@@ -59,7 +59,7 @@ module.exports = {
 
             //Generate Description
 			item_price.listings.forEach((entry) => {
-                Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${entry.pricePerUnit} ${Vimotes['GIL']} x${entry.quantity} [${World}]`, total: `${Vimotes['GIL']} ${entry.total}`, sort: entry.pricePerUnit, hq: entry.hq})
+                Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${bot.toThousands(entry.pricePerUnit)} ${Vimotes['GIL']} x${entry.quantity} [${World}]`, total: `${Vimotes['GIL']} ${bot.toThousands(entry.total)}`, sort: entry.pricePerUnit, hq: entry.hq})
             })
             Data.sort((a, b) => a.sort - b.sort)
 
@@ -75,7 +75,9 @@ module.exports = {
                 
 			message.channel.send({ embeds: [embed] });
 		} catch (error) {
-			console.log(error);
+			return message.reply(`Unable to find item, Try again and check usage!`).then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
 		}
 	},
 };
