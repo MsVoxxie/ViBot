@@ -55,8 +55,6 @@ module.exports = {
 					return data;
 				});
 
-				console.log(item_price.listings)
-
             //Generate Description
 			item_price.listings.forEach((entry) => {
                 Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${bot.toThousands(entry.pricePerUnit)} ${Vimotes['GIL']} x${entry.quantity} [${entry.worldName ? entry.worldName : World}]`, total: `${Vimotes['GIL']} ${bot.toThousands(entry.total)}`, sort: entry.pricePerUnit, hq: entry.hq})
@@ -73,7 +71,11 @@ module.exports = {
 				.setThumbnail(`${api_url}${response.icon}`)
 				.setFooter(`• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']} •`);
                 
-			message.channel.send({ embeds: [embed] });
+				message.channel.send({ embeds: [embed] });
+				if(settings.prune){
+					await message.delete();
+				}
+
 		} catch (error) {
 			return message.reply(`Unable to find item, Check usage and try again!`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);

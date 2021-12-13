@@ -42,10 +42,6 @@ module.exports = {
 				.replace(/(\r\n|\n|\r)/gm, '')
 				.replace(/(<([^>]+)>)/gi, '')}`;
 
-			//Logging
-			// console.log(response);
-			// console.log(`${wiki_url}${item_name}`, `${api_url}${response.url}`)
-
 			//Create embeds
 			const embed = new MessageEmbed()
 				.setTitle(response.name)
@@ -56,6 +52,10 @@ module.exports = {
 				.setFooter(`• ${fetched_data.ItemUICategory['Name']} • ${fetched_data.GamePatch['ExName']} • ${fetched_data.GamePatch['Name']} •`);
 
 			message.channel.send({ embeds: [embed] });
+			if(settings.prune){
+				await message.delete();
+			}
+			
 		} catch (error) {
 			return message.reply(`Unable to find item, Check usage and try again!`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
