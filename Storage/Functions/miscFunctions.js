@@ -80,6 +80,7 @@ const Vimotes = {
 	A_TYPING: '<a:typing:753802620539502593>',
 	A_TYPINGSTATUS: '<a:typingstatus:753802620744761464>',
 	A_UPDATING: '<a:updating:753802620694429827>',
+	GIL: '<:gil:919738472548433970>',
 };
 
 const canModifyQueue = async (member) => {
