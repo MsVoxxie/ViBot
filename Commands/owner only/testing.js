@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
-const { TwitchWatch } = require('../../Storage/Database/models');
-
-const randomNotif = ['Hey {everyone}! {twname} is now live!', 'Heads up {everyone}, {twname} is going live!', '{twname} is live {everyone}!', "It's that time again {everyone}, Time to watch {twname}!"];
-
+const fetch = require('node-fetch')
+const XIVAPI = require('@xivapi/js');
+const { XIVAPIKEY, XIVCOL } = require('../../Storage/Config/Config.json');
+const xiv = new XIVAPI({
+	private_key: XIVAPIKEY,
+	language: 'en',
+	snake_case: true,
+});
 module.exports = {
 	name: 'test',
 	aliases: ['t'],
@@ -16,10 +19,8 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		let randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
-
-		let msg = await randmsg.replace('{everyone}', '@everyone').replace('{twname}', 'Voxxie');
-
-		message.channel.send(msg);
+		let response = await xiv.search(args.join(' '), { string_algo: 'match', indexes: ['Action'] });
+			response = response.results;
+			console.log(response)
 	},
 };

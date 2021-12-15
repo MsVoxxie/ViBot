@@ -30,9 +30,12 @@ module.exports = {
 			});
 
 		// Embed
-		const embed = new MessageEmbed().setColor(settings.guildcolor).setDescription(`${message.member} skipped the song.`);
+		const embed = new MessageEmbed()
+			.setColor(settings.guildcolor)
+			.setDescription(`${message.member} skipped the song.`);
 
 		const success = await queue.skip();
+		await queue.currentEmbed.delete();
 		if (success) {
 			await message.channel.send({ embeds: [embed] }).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);

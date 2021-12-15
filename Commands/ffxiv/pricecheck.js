@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
 const ascii = require('ascii-table');
-const priceTable = new ascii().setHeading('Quantity / Price', 'Total Price');
 const XIVAPI = require('@xivapi/js');
 const { XIVAPIKEY, XIVCOL } = require('../../Storage/Config/Config.json');
 const xiv = new XIVAPI({
