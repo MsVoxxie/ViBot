@@ -18,6 +18,7 @@ module.exports = {
 		twitchchannel: 'Not Set',
 		twitchmention: false,
 		birthdaychannel: 'Not Set',
+		levelchannel: 'Not Set',
 		disabledModules: ['legacy'],
 		channels: [],
 		twitterwatch: [],

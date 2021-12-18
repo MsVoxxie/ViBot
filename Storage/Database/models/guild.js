@@ -74,6 +74,10 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: def.birthdaychannel,
 	},
+	levelchannel: {
+		type: String,
+		default: def.levelchannel,
+	},
 	disabledModules: {
 		type: Array,
 		unique: true,

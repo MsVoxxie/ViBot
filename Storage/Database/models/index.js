@@ -4,4 +4,5 @@ module.exports = {
 	Giveaways: require('./giveaways'),
 	Birthdays: require('./birthday'),
 	TwitchWatch: require('./twitchwatch'),
+	Xp: require('./xp'),
 };

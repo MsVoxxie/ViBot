@@ -31,6 +31,8 @@
 		"ascii-table": "0.0.9",
 		"axios": "^0.21.1",
 		"booru": "^2.4.0",
+		"canvas": "^2.8.0",
+		"canvas-constructor": "^5.0.1",
 		"discord-backup": "^3.0.1",
 		"discord-giveaways": "^5.0.1",
 		"discord-player": "^5.1.0-dev.1636095464.54bb4b0",
