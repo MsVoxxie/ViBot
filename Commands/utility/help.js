@@ -108,7 +108,6 @@ module.exports = {
 			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
 			const collector = await embedList.createReactionCollector({ filter, time: 300 * 1000 });
 			collector.on('collect', async (reaction) => {
-				console.log(`Reaction: ${reaction.emoji.name}`);
 				// Switch Case
 				switch (reaction.emoji.name) {
 					// Backwards
