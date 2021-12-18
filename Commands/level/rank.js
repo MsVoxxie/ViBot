@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['level'],
 	description: 'Get your current rank placement',
 	example: 'rank',
-	category: 'utility',
+	category: 'level',
 	args: false,
 	cooldown: 2,
 	hidden: false,
@@ -34,7 +34,8 @@ module.exports = {
 		}
 
 		//Get the member who requested their rank
-		let me = await users.find((user) => user.memberid === message.member.user.id);
+		const me = await users.find((user) => user.memberid === message.member.user.id);
+		if (!me.level) return message.delete();
 
 		const embed = new MessageEmbed()
 			.setAuthor(`${message.member.displayName}'s Current Rank`)

@@ -16,11 +16,18 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
+
+
+		const users = await xpSchema.find({}).lean();
+		console.log(users);
+
+
+		return
 		//Calculate needed xp
 		const getNeededXP = (level) => level * level * 100;
 
 		//Get users of guild
-		let users = await xpSchema.find({ guildid: message.guild.id }).lean();
+		// let users = await xpSchema.find({ guildid: message.guild.id }).lean();
 		users.sort((a, b) => b.level - a.level);
 
 		//Sort, Rank, Return
