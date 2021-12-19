@@ -18,6 +18,10 @@ module.exports = {
 		//Calculate needed xp
 		const getNeededXP = (level) => level * level * 100;
 
+		//GetMember
+		let Getmember = (await message.mentions.members.first()) || (await message.member);
+		const member = await message.guild.members.fetch(Getmember.id);
+
 		//Get users of guild
 		const users = await xpSchema.find({ guildid: message.guild.id }).lean();
 		if (!users) return;
@@ -34,13 +38,13 @@ module.exports = {
 		}
 
 		//Get the member who requested their rank
-		const me = await users.find((user) => user.memberid === message.member.user.id);
+		const me = await users.find((user) => user.memberid === member.id);
 		if (!me.level) return message.delete();
 
 		const embed = new MessageEmbed()
-			.setAuthor(`${message.member.displayName}'s Current Rank`)
+			.setAuthor(`${member.displayName}'s Current Rank`)
 			.setColor(settings.guildcolor)
-			.setThumbnail(message.member.displayAvatarURL({ dynamic: true }))
+			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 			.setDescription(`**Guild Rank›** #${me.rank}\n**Current Level›** ${me.level}`)
 			.setFooter(`• Next Level› ${me.xp}/${bot.toThousands(getNeededXP(me.level))} •`);
 		message.channel.send({ embeds: [embed] });
