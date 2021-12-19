@@ -6,6 +6,10 @@ module.exports = (bot) => {
 	bot.Timestamp = (date) => {
 		return moment(date).format('MMMM Do YYYY, h:mm A');
 	};
+	
+	bot.shortTimestamp = (date) => {
+		return moment(date).format('MMMM Do YYYY');
+	};
 
 	bot.relativeTimestamp = (date) => {
 		return `<t:${date / 1000}:R>`;
