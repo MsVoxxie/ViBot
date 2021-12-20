@@ -238,11 +238,11 @@ module.exports = (bot) => {
 		}
 	};
 
-	bot.getVoiceConnectedUsers = async (xpToAdd, guild, bot) => {
+	bot.awardVoiceXP = async (xpToAdd, guild, bot) => {
 		//Declarations
 		const settings = await bot.getGuild(guild);
 		const levelChannel = await guild.channels.cache.get(settings.levelchannel);
-		
+
 		//Checks
 		if (!levelChannel) return;
 		if (!guild.afkChannel) return;
@@ -255,8 +255,6 @@ module.exports = (bot) => {
 			const members = await channel.members;
 			for await (const mem of members) {
 				const member = mem[1];
-				
-				//Add XP
 				await bot.addXP(guild, member, xpToAdd, bot, settings, levelChannel);
 			}
 		}

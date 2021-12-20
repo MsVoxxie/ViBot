@@ -88,12 +88,12 @@ cron.schedule('* * * * *', () => {
 });
 
 //VoiceChatXP
-cron.schedule('*/10 * * * *', async () => {
-	const guilds = bot.guilds.cache;
+cron.schedule('* * * * *', async () => {
+	const guilds = await bot.guilds.cache;
 	for await (const g of guilds) {
 		const guild = g[1];
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 		const xpadd = clamp(Math.round(Math.random() * 10), 1, 100);
-		await bot.getVoiceConnectedUsers(xpadd, guild, bot);
+		await bot.awardVoiceXP(xpadd, guild, bot);
 	}
 });
