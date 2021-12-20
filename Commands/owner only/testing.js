@@ -16,80 +16,31 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
+		//Declarations
+		const levelChannel = await guild.channels.cache.get(settings.levelchannel);
+		//Checks
+		if (!levelChannel) return;
 
-
-		const users = await xpSchema.find({}).lean();
-		console.log(users);
-
-
-		return
-		//Calculate needed xp
-		const getNeededXP = (level) => level * level * 100;
-
-		//Get users of guild
-		// let users = await xpSchema.find({ guildid: message.guild.id }).lean();
-		users.sort((a, b) => b.level - a.level);
-
-		//Sort, Rank, Return
-		for (let i = 0; i < users.length; i++) {
-			let rank = users[i].level;
-			let usersWithRank = users.filter((user) => user.level === rank);
-			for (let user of usersWithRank) {
-				user.rank = i + 1;
-			}
-			i += usersWithRank.length - 1;
-		}
-
-		//Get the member who requested their rank
-		let me = await users.find((user) => user.memberid === message.member.user.id);
-		
-		//Generate Image
-		const canvas = Canvas.createCanvas(800, 200);
-		const context = canvas.getContext('2d');
-		const background = await Canvas.loadImage(path.resolve(__dirname, '../../Storage/Images/background.png'));
-
-		//Add Background
-		context.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-		//Text
-		context.strokeStyle = '#0099ff';
-		context.strokeRect(0, 0, canvas.width, canvas.height);
-
-		context.font = '28px sans-serif';
-		context.fillStyle = '#ffffff';
-		context.fillText('Profile', canvas.width / 2.5, canvas.height / 3.5);
-
-		context.font = applyText(canvas, `${message.member.displayName}!`);
-		context.fillStyle = '#ffffff';
-		context.fillText(`${message.member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
-
-		//Add Avatar
-		const avatar = await Canvas.loadImage(message.member.displayAvatarURL({ format: 'png' }));
-
-		//Make Avatar Circular
-		context.beginPath();
-		context.arc(125, 125, 80, 0, Math.PI * 2, true);
-		context.closePath();
-		context.clip();
-
-		//Draw it
-		context.drawImage(avatar, 25, 25, 200, 200);
-
-
-		//Send
-		const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
-		message.reply({files: [attachment]})
-
+		//Get all users in voice channels currently
+		getVoiceConnectedUsers(message.guild, bot, settings, levelChannel);
 	},
 };
 
-const applyText = (canvas, text) => {
-	const context = canvas.getContext('2d');
-	let fontSize = 70;
+const getVoiceConnectedUsers = async (guild, bot, settings, levelChannel) => {
+	console.log('cmd ran')
+	if (!guild.afkChannel) return;
 
-	do {
-		context.font = `${fontSize -= 10}px sans-serif`;
-	} while (context.measureText(text).width > canvas.width - 300);
-
-	return context.font;
+	//Loops
+	const channels = await guild.channels.cache.filter((ch) => ch.type === 'GUILD_VOICE');
+	for await (const chan of channels) {
+		const channel = chan[1];
+		if (channel.id === guild.afkChannelId) continue;
+		const members = await channel.members;
+		for await (const mem of members) {
+			const member = mem[1];
+			//Add XP
+			await bot.addXP(guild, member, 10, bot, settings, levelChannel);
+			console.log(`Giving 10 XP to ${member.displayName} for being in ${channel.name} for 10 Minutes.`)
+		}
+	}
 };
