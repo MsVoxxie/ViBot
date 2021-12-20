@@ -6,7 +6,7 @@ module.exports = (bot) => {
 	bot.Timestamp = (date) => {
 		return moment(date).format('MMMM Do YYYY, h:mm A');
 	};
-	
+
 	bot.shortTimestamp = (date) => {
 		return moment(date).format('MMMM Do YYYY');
 	};
@@ -40,7 +40,23 @@ module.exports = (bot) => {
 		const parsed = parseInt(num);
 		return Math.min(Math.max(parsed, MIN), MAX);
 	};
+
+	//TitleCase
 	bot.titleCase = (string) => {
 		return string[0].toUpperCase() + string.slice(1).toLowerCase();
-	  }
+	};
+
+	//IsCommandOrAlias
+	bot.isCmdorAlias = (message) => {
+		// Setup Conditionals
+		const cmd = message.content.split(/ +/).shift().toLowerCase().substring(1);
+		// Command Checks
+		let command = bot.commands.get(cmd);
+		if (!command) command = bot.commands.get(bot.aliases.get(cmd));
+		if(command) {
+			return true;
+		}else{
+			return false;
+		}
+	};
 };

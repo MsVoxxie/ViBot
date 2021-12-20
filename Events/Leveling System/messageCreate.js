@@ -15,6 +15,7 @@ module.exports = {
 		const xpadd = clamp(Math.round(Math.random() * message.content.length), 1, 100);
 
 		//Check
+		if(bot.isCmdorAlias(message) === true) return;
 		const levelChannel = await guild.channels.cache.get(settings.levelchannel);
 		if (!levelChannel) return;
 

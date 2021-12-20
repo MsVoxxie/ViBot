@@ -8,11 +8,14 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(message, bot) {
+		if(message.author.bot) return;
+
 		// Get Guild Settings
 		let settings;
 		if (message.channel.type !== 'DM') {
 			settings = await bot.getGuild(message.guild);
 		}
+
 		// Member declaration
 		const member = await message.member;
 
