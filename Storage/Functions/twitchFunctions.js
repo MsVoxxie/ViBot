@@ -83,14 +83,14 @@ module.exports = (bot) => {
 	async function setEmbed(stream, chan) {
 		embed = new MessageEmbed()
 			.setColor('#6441a4')
-			.setTitle(`${(await stream.getUser()).displayName} is now live!`)
-			.setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
+			.setTitle(`${(await stream.getUser()).displayName}`)
+			.setURL(`https://www.twitch.tv/${chan.channelname}`)
+			// .setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
 			.setThumbnail((await stream.getUser()).profilePictureUrl)
 			.setImage(stream.thumbnailUrl.replace('{width}', 960).replace('{height}', 540))
 			.addField('Playing›', `${(await stream.getGame()).name}`, true)
-			.addField('Current Viewers›', `${stream.viewers}`, true)
-			.addField('Live Since›', `${bot.Timestamp(stream.startDate)}`)
-			.setFooter(`Last Updated› ${bot.Timestamp(Date.now())}`);
+			.addField('Current Viewers›', `${bot.toThousands(stream.viewers)}`, true)
+			.addField('Live Since›', `${bot.relativeTimestamp(stream.startDate)}`);
 		return embed;
 	}
 
@@ -100,8 +100,8 @@ module.exports = (bot) => {
 			.setColor('#303c42')
 			.setTitle(`${chan.channelname}'s stream has ended.`)
 			.setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
-			.setThumbnail('https://cdn.iconscout.com/icon/free/png-256/social-190-96705.png')
-			.setFooter(`As of› ${bot.Timestamp(Date.now())}`);
+			.setThumbnail('https://cdn.iconscout.com/icon/free/png-256/social-190-96705.png');
+			// .setFooter(`As of› ${bot.Timestamp(Date.now())}`);
 		return offembed;
 	}
 };

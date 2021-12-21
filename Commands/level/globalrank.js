@@ -37,7 +37,6 @@ module.exports = {
 		}
 
 		//Get the member who requested their rank
-		// const me = await users.find((user) => users.guildid === message.guild.id && user.memberid === message.member.user.id);
         const me = await users.find((u) => u.guildid === message.guild.id && u.memberid === member.id);
 		if (!me.level) return message.delete();
 
