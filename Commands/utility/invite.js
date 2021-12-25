@@ -33,7 +33,7 @@ module.exports = {
 			.then((inv) => {
 				const embed = new MessageEmbed()
 					.setColor(settings.guildcolor)
-					.setAuthor(`Invite for ${message.member.displayName}`, message.member.displayAvatarURL({ dynamic: true }))
+					.setAuthor({ name: `Invite for ${message.member.displayName}`, iconURL: message.member.displayAvatarURL({ dynamic: true })})
 					.setDescription(`Here you go!\nThis invite will expire after ${inv.maxUses} use(s) or ${ms(ms(`${inv.maxAge}s`), { long: true })}.\nhttps://discord.gg/${inv.code}`)
 					.setTimestamp();
 				message.channel.send({ embeds: [embed] }).then((s) => {

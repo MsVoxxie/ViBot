@@ -7,13 +7,9 @@ module.exports = async (bot, queue, playlist) => {
 	// Setup Embed
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
-		.setAuthor(message.member.user.tag, message.member.user.displayAvatarURL({ dynamic: true }))
+		.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true })})
 		.setThumbnail(playlist.setThumbnail)
-		.setDescription(
-			`**Playlist Title›** [${playlist.title}](${playlist.url})\n**Total Duration›** \`${ms(playlist.duration, { long: true })}\`\n**Total Songs›** \`${
-				playlist.tracks.length
-			}\``
-		)
+		.setDescription(`**Playlist Title›** [${playlist.title}](${playlist.url})\n**Total Duration›** \`${ms(playlist.duration, { long: true })}\`\n**Total Songs›** \`${playlist.tracks.length}\``)
 		.setFooter(bot.Timestamp(Date.now()));
 
 	message.channel.send({ embeds: [embed] }).then((s) => {

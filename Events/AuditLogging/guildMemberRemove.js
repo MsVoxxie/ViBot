@@ -16,7 +16,7 @@ module.exports = {
 		const logChannel = await member.guild.channels.cache.get(settings.auditchannel);
 
 		const embed = new MessageEmbed()
-			.setAuthor(`${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, member.user.displayAvatarURL({ dynamic: true }))
+			.setAuthor({ name: `${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true })})
 			.setDescription(`${Vimotes['LEAVE_ARROW']} ${member.user.tag} Left the server **<t:${Math.round(Date.now()/1000)}:R>**.`)
 			.setColor(settings.guildcolor)
 			.setFooter(bot.Timestamp(new Date()));

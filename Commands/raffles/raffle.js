@@ -108,7 +108,7 @@ async function GenerateEmbed(guildColor, msg, EmbedID, Title, Question, Delete) 
 	let m;
 
 	const embed = new MessageEmbed()
-		.setAuthor(`${msg.member.displayName}`, msg.member.displayAvatarURL({ dynamic: true }))
+		.setAuthor({name: msg.member.displayName, iconURL: msg.member.displayAvatarURL({ dynamic: true })})
 		.setColor(guildColor)
 		.setTitle(Title)
 		.setDescription(Question)

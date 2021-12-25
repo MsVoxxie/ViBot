@@ -42,7 +42,7 @@ module.exports = {
 				.setDescription(
 					foundStar.description != 'null' || foundStar != null ? foundStar.description : ''
 				)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true })})
 				.setTimestamp()
 				.setFooter(`⭐ ${parseInt(star[1]) - 1} | ${message.id}`)
 				.setImage(image);

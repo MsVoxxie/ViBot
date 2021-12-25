@@ -24,7 +24,7 @@ module.exports = {
 			try {
 				// Define Embed
 				const embed = new MessageEmbed()
-					.setAuthor(msg.message.guild.name, msg.message.guild.iconURL({ dynamic: true }))
+					.setAuthor({ name: msg.message.guild.name, iconURL: msg.message.guild.iconURL({ dynamic: true })})
 					.setColor(Role.color)
 					.setDescription(`${Vimotes['AUTHORIZED']}${Role.name} Added.`);
 				await member.send({ embeds: [embed] }).then((s) => {

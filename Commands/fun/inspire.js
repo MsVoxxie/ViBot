@@ -34,7 +34,7 @@ module.exports = {
 		const body = await res.text();
 		try {
 			const QuoteEmbed = new MessageEmbed()
-				.setAuthor(`${message.member.displayName}'s Quote`, `${message.member.user.displayAvatarURL({ dynamic: true })}`)
+				.setAuthor({ name: `${message.member.displayName}'s Quote`, iconURL: message.member.user.displayAvatarURL({ dynamic: true })})
 				.setDescription(`${randomQuip[Math.floor(Math.random() * randomQuip.length)]}`)
 				.setImage(body)
 				.setColor(settings.guildcolor)

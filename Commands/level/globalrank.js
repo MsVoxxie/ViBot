@@ -37,11 +37,11 @@ module.exports = {
 		}
 
 		//Get the member who requested their rank
-        const me = await users.find((u) => u.guildid === message.guild.id && u.memberid === member.id);
+		const me = await users.find((u) => u.guildid === message.guild.id && u.memberid === member.id);
 		if (!me.level) return message.delete();
 
 		const embed = new MessageEmbed()
-			.setAuthor(`${member.displayName}'s Global Rank`)
+			.setAuthor({ name: `${member.displayName}'s Global Rank` })
 			.setColor(settings.guildcolor)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 			.setDescription(`**Global Rank›** #${me.rank}\n**Current Guild Level›** ${me.level}`)

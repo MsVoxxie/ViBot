@@ -10,7 +10,7 @@ module.exports = async (bot, queue) => {
 	await message.channel.send({ embeds: [embed] }).then((s) => {
 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 	});
-	if (!queue.currentEmbed.deleted) {
+	if (!queue.currentEmbed) {
 		if (settings.prune) setTimeout(() => queue.currentEmbed.delete(), 5 * 1000);
 	}
 };

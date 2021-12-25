@@ -82,7 +82,7 @@ module.exports = {
 			const finalEmbed = new MessageEmbed()
 				.setColor(settings.guildcolor)
 				.setTitle('Poll Created!')
-				.setAuthor(`${message.member.nickname ? `${message.member.nickname} | ${message.member.user.tag}` : message.member.user.tag}`, message.member.user.displayAvatarURL({ dynamic: true }))
+				.setAuthor({ name: `${message.member.nickname ? `${message.member.nickname} | ${message.member.user.tag}` : message.member.user.tag}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true })})
 				.setThumbnail('https://strawpoll.com/images/strawpoll/strawpoll.png')
 				.setDescription(`The poll can be found at this link› https://strawpoll.com/${content_id}`);
 

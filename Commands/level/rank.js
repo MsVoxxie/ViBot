@@ -42,7 +42,7 @@ module.exports = {
 		if (!me.level) return message.delete();
 
 		const embed = new MessageEmbed()
-			.setAuthor(`${member.displayName}'s Current Rank`)
+			.setAuthor({ name: `${member.displayName}'s Current Rank` })
 			.setColor(settings.guildcolor)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 			.setDescription(`**Guild Rank›** #${me.rank}\n**Current Level›** ${me.level}`)

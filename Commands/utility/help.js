@@ -43,7 +43,7 @@ module.exports = {
 
 			// Setup Embed pages
 			const embed = new MessageEmbed()
-				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
+				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true })})
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setDescription(`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
 				.addField(
@@ -64,7 +64,7 @@ module.exports = {
 
 			// Init Embed
 			const helpEmbed = new MessageEmbed()
-				.setAuthor(`${bot.user.username}'s Command Sheet`, bot.user.displayAvatarURL({ dynamic: true }))
+				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true })})
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 

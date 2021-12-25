@@ -19,7 +19,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
-			.setAuthor(`Avatar for ${member.displayName}`, member.displayAvatarURL({ dynamic: true }))
+			.setAuthor({ name: `Avatar for ${member.displayName}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
 			.setImage(member.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
 			.setFooter(`Requested by ${message.member.displayName}`);
 

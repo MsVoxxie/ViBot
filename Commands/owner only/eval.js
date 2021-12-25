@@ -40,7 +40,7 @@ module.exports = {
 				evaled = require('util').inspect(evaled);
 			}
 			const codeEmbed = new Discord.MessageEmbed()
-				.setAuthor(message.member.displayName)
+				.setAuthor({ name: message.member.displayName})
 				.setTitle('__**Success!**__')
 				.setColor('#32a852')
 				.addField('📥 Input:', `\`\`\`Javascript\n${code}\`\`\`\n`, false)
@@ -49,7 +49,7 @@ module.exports = {
 			message.channel.send({ embeds: [codeEmbed] });
 		} catch (err) {
 			const failedEmbed = new Discord.MessageEmbed()
-				.setAuthor(message.member.displayName)
+				.setAuthor({ name: message.member.displayName})
 				.setTitle('__**Failed!**__')
 				.setColor('#a83232')
 				.addField('📥 Input:', `\`\`\`Javascript\n${code}\`\`\`\n`, false)

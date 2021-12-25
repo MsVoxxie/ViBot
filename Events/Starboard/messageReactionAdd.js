@@ -27,23 +27,19 @@ module.exports = {
 		//Fetch messages
 		const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
 		const stars = fetchedMessages.find(
-			(m) =>
-				m.embeds[0].footer.text.startsWith('⭐') && m.embeds[0].footer.text.endsWith(message.id)
+			(m) => m.embeds[0].footer.text.startsWith('⭐') && m.embeds[0].footer.text.endsWith(message.id)
 		);
 
 		//Setup starboard
 		if (stars) {
 			const star = /^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})/.exec(stars.embeds[0].footer.text);
 			const foundStar = stars.embeds[0];
-			const image =
-				message.attachments.size > 0
-					? await this.extension(reaction, message.attachments.first().url)
-					: '';
+			const image = message.attachments.size > 0 ? await this.extension(reaction, message.attachments.first().url) : '';
 
 			const embed = new MessageEmbed()
 				.setColor(foundStar.color)
 				.setDescription(foundStar.description)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true })})
 				.setTimestamp()
 				.setFooter(`⭐ ${parseInt(star[1]) + 1} | ${message.id}`)
 				.setImage(image);
@@ -54,10 +50,7 @@ module.exports = {
 
 		if (!stars && reaction.emoji.name === '⭐' && reaction.count >= ReactLimit) {
 			// Check for attachments
-			const image =
-				message.attachments.size > 0
-					? await this.extension(reaction, message.attachments.first().url)
-					: '';
+			const image = message.attachments.size > 0 ? await this.extension(reaction, message.attachments.first().url) : '';
 
 			// Check if the messages is empty.
 			if (image === '' && message.cleanContent.length < 1)
@@ -66,7 +59,7 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setColor(15844367)
 				.setDescription(message.cleanContent)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL())
+				.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true })})
 				.setTimestamp(new Date())
 				.setFooter(`⭐ ${ReactLimit} | ${message.id}`)
 				.setImage(image);
