@@ -20,7 +20,7 @@ module.exports = (bot) => {
 			if (data[key] !== settings[key]) data[key] = settings[key];
 			else return;
 		}
-		console.log(`Guild '${data.guildname}' updated its settings: ${Object.keys(settings)}`);
+		// console.log(`Guild '${data.guildname}' updated its settings: ${Object.keys(settings)}`);
 		return await data.updateOne(settings);
 	};
 

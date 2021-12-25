@@ -8,6 +8,7 @@ module.exports = {
 			await msg.message.fetch();
 		}
 		if (user.bot) return;
+		const settings = await bot.getGuild(msg.message.guild);
 		const data = await bot.getReactions(msg.message.guild);
 		const roles = await data.reactionRoles;
 		const ch = await roles.map((reaction) => reaction['channel']);
@@ -26,10 +27,11 @@ module.exports = {
 					.setAuthor(msg.message.guild.name, msg.message.guild.iconURL({ dynamic: true }))
 					.setColor(Role.color)
 					.setDescription(`${Vimotes['AUTHORIZED']}${Role.name} Added.`);
-				await member.send({ embeds: embed }).then((s) => {
+				await member.send({ embeds: [embed] }).then((s) => {
 					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 			} catch (error) {
+				console.log(error);
 				return;
 			}
 		} else if (msg.message.id === valid.message && msg.emoji.name !== valid.reaction) {
