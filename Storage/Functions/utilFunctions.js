@@ -12,7 +12,7 @@ module.exports = (bot) => {
 	};
 
 	bot.relativeTimestamp = (date) => {
-		return `<t:${date / 1000}:R>`;
+		return `<t:${Math.floor(date / 1000)}:R>`;
 	};
 
 	// Is Hex

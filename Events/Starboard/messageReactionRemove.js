@@ -1,62 +1,63 @@
 const { MessageEmbed } = require('discord.js');
 
+const starEmojis = ['💫', '⭐', '🌟', '✨'];
+const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+
 module.exports = {
 	name: 'messageReactionRemove',
 	disabled: false,
 	once: false,
 	async execute(reaction, user, bot, Vimotes) {
+		//Check if message was partial, if so fetch it.
 		if (reaction.message.partial) {
 			await reaction.message.fetch();
 		}
-		//Define Message for sanity, Get settings.
+		//Defininitions
 		const message = await reaction.message;
+		const ReactLimit = 2;
 		const settings = await bot.getGuild(message.guild);
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
 		// if (message.author.id === user.id) return;
 		if (message.author.bot) return;
+		// if (message.author.id !== '101789503634554880') return console.log('DevMode');
 
 		//get starchannel
 		const starChannelID = await settings.starchannel;
 		const starChannel = await message.guild.channels.cache.get(starChannelID);
 		if (!starChannel) return;
 
+		//Fetch messages
 		const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
-		const stars = fetchedMessages.find(
-			(m) =>
-				m.embeds[0].footer.text.startsWith('⭐') &&
-				m.embeds[0].footer.text.endsWith(reaction.message.id)
-		);
+		const stars = fetchedMessages.find((msg) => msg.embeds[0].footer.text.includes(`MessageID: ${message.id}`));
 
 		if (stars) {
-			const star = /^\⭐\s([0-9]{1,3})\s\|\s([0-9]{17,20})/.exec(stars.embeds[0].footer.text);
-			const foundStar = stars.embeds[0];
-			const image =
-				message.attachments.size > 0
-					? await this.extension(reaction, message.attachments.first().url)
-					: '';
-
+			// return console.log(stars.content)
+			const star = /(?!⭐|✨|🌟|💫\s?)\d+/.exec(stars.content);
 			const embed = new MessageEmbed()
-				.setColor(foundStar.color)
-				.setDescription(
-					foundStar.description != 'null' || foundStar != null ? foundStar.description : ''
-				)
-				.setAuthor({name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true })})
-				.setTimestamp()
-				.setFooter(`⭐ ${parseInt(star[1]) - 1} | ${message.id}`)
-				.setImage(image);
+				.setColor('#c2b04e')
+                .setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+                .setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+				.setFooter(`MessageID: ${message.id}`);
+
 			const starMsg = await starChannel.messages.fetch(stars.id);
-			await starMsg.edit({ embeds: [embed] });
-			if (parseInt(star[1]) - 1 == 0) return setTimeout(() => starMsg.delete(), 1 * 1000);
+			await starMsg.edit({ content: `${randStar} ${parseInt(star[0]) - 1} | <#${message.channel.id}>`, embeds: [embed] });
+            if (parseInt(star[0]) - 1 <= ReactLimit) return setTimeout(() => starMsg.delete(), 1 * 3000);
 		}
 	},
 
-	extension(reaction, attachment) {
-		const imageLink = attachment.split('.');
+	//Functions
+	imageAttachment(message) {
+		const imageLink = message.attachments.first().url.split('.')
 		const typeOfImage = imageLink[imageLink.length - 1];
 		const image = /(jpg|jpeg|png|gif)/gi.test(typeOfImage);
 		if (!image) return '';
-		return attachment;
+		return message.attachments.first().url;
 	},
+
+	imageURL(message) {
+		let imgRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|webp)/.exec(message.content);
+		return imgRegex;
+	}
 };
