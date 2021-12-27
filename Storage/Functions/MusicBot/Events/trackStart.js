@@ -13,7 +13,7 @@ module.exports = async (bot, queue, track) => {
 		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
 		.setFooter(bot.Timestamp(Date.now()));
 
-	if (queue.currentEmbed && !queue.currentEmbed) await queue.currentEmbed.delete();
+	if (queue.currentEmbed) await queue.currentEmbed.delete();
 	const playing = await message.channel.send({ embeds: [embed] }).then((m) => (queue.currentEmbed = m));
 
 	// Reaction Controls
@@ -59,6 +59,6 @@ module.exports = async (bot, queue, track) => {
 	});
 
 	collector.on('end', async () => {
-		if (queue.currentEmbed && !queue.currentEmbed) return await playing.reactions.removeAll();
+		if (queue.currentEmbed) return await playing.reactions.removeAll();
 	});
 };
