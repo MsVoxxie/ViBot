@@ -1,8 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 
-const starEmojis = ['💫', '⭐', '🌟', '✨'];
-const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
-
 module.exports = {
 	name: 'messageReactionAdd',
 	disabled: false,
@@ -21,7 +18,10 @@ module.exports = {
 		if (reaction.emoji.name !== '⭐') return;
 		// if (message.author.id === user.id) return;
 		if (message.author.bot) return;
-		// if (message.author.id !== '101789503634554880') return console.log('DevMode');
+		
+		//Random Star!
+		const starEmojis = ['💫', '⭐', '🌟', '✨'];
+		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//get starchannel
 		const starChannelID = await settings.starchannel;
