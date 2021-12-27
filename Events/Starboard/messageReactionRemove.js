@@ -14,7 +14,7 @@ module.exports = {
 		}
 		//Defininitions
 		const message = await reaction.message;
-		const ReactLimit = 2;
+		const ReactLimit = 5;
 		const settings = await bot.getGuild(message.guild);
 
 		//Checks
