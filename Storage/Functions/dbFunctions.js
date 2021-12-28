@@ -216,7 +216,6 @@ module.exports = (bot) => {
 
 			let { xp, level } = result;
 			const needed = getNeededXP(level);
-			// console.log(bot.toThousands(needed));
 			if (xp >= needed) {
 				++level;
 				xp -= needed;
