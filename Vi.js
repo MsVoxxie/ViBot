@@ -1,6 +1,7 @@
 const { Client, Intents, Collection } = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
+const {BotData} = require('./Storage/Database/models');
 const cron = require('node-cron');
 
 //Setup Client
@@ -76,6 +77,11 @@ bot.Music.on('error', (queue, error) => {
 // Init Bot / Database
 bot.mongoose.init();
 bot.login(Token);
+
+//BotData
+cron.schedule('* * * * * ', () => {
+	bot.updateBotData(bot);
+})
 
 //Birthday Check
 cron.schedule('0 8 * * *', () => {

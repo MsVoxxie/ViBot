@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
+require('moment-duration-format');
 const { MessageEmbed } = require('discord.js');
-const { Guild, GuildModeration, Reaction, Birthdays, TwitchWatch, Xp } = require('../Database/models');
+const { BotData, Guild, Reaction, Birthdays, TwitchWatch, Xp } = require('../Database/models');
 
 module.exports = (bot) => {
 	// Get Guild Settings
@@ -224,10 +226,8 @@ module.exports = (bot) => {
 					.setTitle('Level Up!')
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(
-						`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!`
-					)
-					.setFooter(`• Next Level› ${xp}/${bot.toThousands(getNeededXP(level))} •`);
+					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!`)
+					.setFooter(`• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •`);
 
 				levelChannel.send({ embeds: [embed] });
 			}
@@ -254,9 +254,26 @@ module.exports = (bot) => {
 			if (channel.id === guild.afkChannelId) continue;
 			const members = await channel.members;
 			for await (const mem of members) {
+				if (!mem.user.bot) return;
 				const member = mem[1];
 				await bot.addXP(guild, member, xpToAdd, bot, settings, levelChannel);
 			}
 		}
+	};
+
+	//BotData
+	bot.updateBotData = async (bot) => {
+		const data = await BotData.findOneAndUpdate(
+			{},
+			{
+				botuptime: moment.duration(bot.uptime).format('Y[Y] M[M] W[W] D[D] H[h] m[m]'),
+				totalguilds: bot.toThousands(bot.guilds.cache.size),
+				totalusers: bot.toThousands(bot.guilds.cache.reduce((a, g) => a + g.memberCount, 0)),
+			},
+			{
+				upsert: true,
+				new: true,
+			}
+		);
 	};
 };

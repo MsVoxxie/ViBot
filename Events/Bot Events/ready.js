@@ -12,6 +12,7 @@ module.exports = {
 		});
 		console.log(table.toString());
 		bot.StartedAt = Date.now();
+		bot.updateBotData(bot);
 
 		if (DevMode === true) {
 			bot.user.setPresence({ activity: { name: '«Dev Mode Enabled»' }, status: 'online' });

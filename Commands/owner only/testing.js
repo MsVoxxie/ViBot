@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 module.exports = {
 	name: 'test',
 	aliases: ['t'],
@@ -11,8 +13,9 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		await bot.guilds.cache.forEach(async (guild) => {
-			await bot.emit("guildCreate", guild);
-		})
+
+		const res = await fetch('https://api.voxxie.me:3001/api/discord/vibot/stats').then((r) => r.json());
+		console.log(res);
+
 	},
 };

@@ -1,4 +1,5 @@
 module.exports = {
+	BotData: require('./botData'),
 	Guild: require('./guild'),
 	Reaction: require('./reactions'),
 	Giveaways: require('./giveaways'),
