@@ -30,7 +30,7 @@ module.exports = {
 
 		//Fetch messages
 		const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
-		const stars = fetchedMessages.find((msg) => msg.embeds[0].footer.text.includes(`MessageID: ${message.id}`));
+		const stars = await fetchedMessages.find((msg) => msg.emebds != undefined ? msg.embeds[0].footer.text.includes(`MessageID: ${message.id}`) : null);
 
 		if (stars) {
 			// return console.log(stars.content)

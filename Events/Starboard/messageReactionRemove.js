@@ -32,6 +32,8 @@ module.exports = {
 		const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
 		const stars = fetchedMessages.find((msg) => msg.embeds[0].footer.text.includes(`MessageID: ${message.id}`));
 
+		if(!stars) return;
+
 		if (stars) {
 			// return console.log(stars.content)
 			const star = /(?!⭐|✨|🌟|💫\s?)\d+/.exec(stars.content);
