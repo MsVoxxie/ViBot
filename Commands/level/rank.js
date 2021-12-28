@@ -89,10 +89,9 @@ module.exports = {
 
 				//Sort, Rank, Return
 				const sorted = users.sort((a, b) => b.level - a.level);
-				const top5 = sorted.slice(0, 5);
 
 				let i = 0;
-				for await (const user of top5) {
+				for await (const user of sorted) {
 					i++;
 					user.rank = i;
 				}
