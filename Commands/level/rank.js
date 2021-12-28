@@ -26,16 +26,14 @@ module.exports = {
 				//Get users of guild
 				const users = await xpSchema.find({}).lean();
 				if (!users) return;
-				users.sort((a, b) => b.level - a.level);
 
 				//Sort, Rank, Return
-				for (let i = 0; i < users.length; i++) {
-					let rank = users[i].level;
-					let usersWithRank = users.filter((user) => user.level === rank);
-					for (let user of usersWithRank) {
-						user.rank = i + 1;
-					}
-					i += usersWithRank.length - 1;
+				const sorted = users.sort((a, b) => b.level - a.level);
+
+				let i = 0;
+				for await (const user of sorted) {
+					i++;
+					user.rank = i;
 				}
 
 				//Get the member who requested their rank
@@ -56,16 +54,15 @@ module.exports = {
 				//Get users of guild
 				const users = await xpSchema.find({ guildid: message.guild.id }).lean();
 				if (!users) return;
-				users.sort((a, b) => b.level - a.level);
 
 				//Sort, Rank, Return
-				for (let i = 0; i < users.length; i++) {
-					let rank = users[i].level;
-					let usersWithRank = users.filter((user) => user.level === rank);
-					for (let user of usersWithRank) {
-						user.rank = i + 1;
-					}
-					i += usersWithRank.length - 1;
+				const sorted = users.sort((a, b) => b.level - a.level);
+				const top5 = sorted.slice(0, 5);
+
+				let i = 0;
+				for await (const user of top5) {
+					i++;
+					user.rank = i;
 				}
 
 				//Get top 5 of guild
@@ -75,8 +72,8 @@ module.exports = {
 					.setAuthor({ name: `${message.guild.name}'s Top 5 Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
-					.addField('Guild Member', guildTop.map((m) => m.membername).join('\n'), true)
-					.addField('Guild Rank', guildTop.map((m) => m.rank).join('\n'), true);
+					.addField('Guild Member', guildTop.map((m) => `<@${m.memberid}> | Level› ${m.level}`).join('\n'), true)
+					.addField('Guild Rank', guildTop.map((m) => `# ${m.rank}`).join('\n'), true);
 				await message.channel.send({ embeds: [embed] });
 				break;
 			}
@@ -89,16 +86,15 @@ module.exports = {
 				//Get users of guild
 				const users = await xpSchema.find({ guildid: message.guild.id }).lean();
 				if (!users) return;
-				users.sort((a, b) => b.level - a.level);
 
 				//Sort, Rank, Return
-				for (let i = 0; i < users.length; i++) {
-					let rank = users[i].level;
-					let usersWithRank = users.filter((user) => user.level === rank);
-					for (let user of usersWithRank) {
-						user.rank = i + 1;
-					}
-					i += usersWithRank.length - 1;
+				const sorted = users.sort((a, b) => b.level - a.level);
+				const top5 = sorted.slice(0, 5);
+
+				let i = 0;
+				for await (const user of top5) {
+					i++;
+					user.rank = i;
 				}
 
 				//Get the member who requested their rank
