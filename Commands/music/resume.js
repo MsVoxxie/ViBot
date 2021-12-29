@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'resume',
-	aliases: [],
+	aliases: ['r'],
 	description: 'Resume music if it was paused',
 	example: '',
 	category: 'music',

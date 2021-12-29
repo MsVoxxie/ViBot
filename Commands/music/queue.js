@@ -3,7 +3,7 @@ const ms = require('ms');
 
 module.exports = {
 	name: 'queue',
-	aliases: [],
+	aliases: ['q'],
 	description: 'Display the current music queue',
 	example: '',
 	category: 'music',

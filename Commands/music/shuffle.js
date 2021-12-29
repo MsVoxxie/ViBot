@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'shuffle',
-	aliases: [],
+	aliases: ['sh'],
 	description: 'Shuffle the queue',
 	example: '',
 	category: 'music',
