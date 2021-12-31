@@ -24,14 +24,11 @@ module.exports = {
 				const member = await message.guild.members.fetch(Getmember.id);
 
 				//Get users of guild
-				const users = await xpSchema.find({}).lean();
+				const users = await xpSchema.find({}).sort({ level: -1, xp: -1 }).lean();
 				if (!users) return;
 
-				//Sort, Rank, Return
-				const sorted = users.sort((a, b) => b.level - a.level);
-
 				let i = 0;
-				for await (const user of sorted) {
+				for await (const user of users) {
 					i++;
 					user.rank = i;
 				}
@@ -52,15 +49,11 @@ module.exports = {
 
 			case 'top': {
 				//Get users of guild
-				const users = await xpSchema.find({ guildid: message.guild.id }).lean();
+				const users = await xpSchema.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(5).lean();
 				if (!users) return;
 
-				//Sort, Rank, Return
-				const sorted = users.sort((a, b) => b.level - a.level);
-				const top5 = sorted.slice(0, 5);
-
 				let i = 0;
-				for await (const user of top5) {
+				for await (const user of users) {
 					i++;
 					user.rank = i;
 				}
@@ -84,14 +77,11 @@ module.exports = {
 				const member = await message.guild.members.fetch(Getmember.id);
 
 				//Get users of guild
-				const users = await xpSchema.find({ guildid: message.guild.id }).lean();
+				const users = await xpSchema.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).lean();
 				if (!users) return;
 
-				//Sort, Rank, Return
-				const sorted = users.sort((a, b) => b.level - a.level);
-
 				let i = 0;
-				for await (const user of sorted) {
+				for await (const user of users) {
 					i++;
 					user.rank = i;
 				}
