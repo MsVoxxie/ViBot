@@ -14,10 +14,6 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-		message.reply(`🏓Latency is ${Date.now() - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ws.ping)}ms`).then((s) => {
-			if (settings.prune) {
-				setTimeout(() => s.delete(), 30 * 1000);
-			}
-		});
+		message.reply(`🏓Latency is ${Date.now() - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ws.ping)}ms`);
 	},
 };

@@ -16,7 +16,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 		//Check if arguments are provided.
 		if (args.length)
-			return message.channel.send('Please do not provide arguments!').then((s) => {
+			return message.channel.send('Please simply type out the command and answer my prompt.').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 15 * 1000);
 			});
 
@@ -35,29 +35,45 @@ module.exports = {
 		let EmbedID = undefined;
 		let BirthDate;
 		let dateValid = true;
+		let cmdFailed = false;
 
 		//Setup Filter
 		const filter = (m) => m.author.id === message.author.id;
 
 		// Questions
 		EmbedID = await GenerateEmbed(settings.guildcolor, message, EmbedID, 'Whats your birthday?', 'Please use Numerical Dates EG: MM/DD\n Christmas Day would be: 12/25', false);
-		await message.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, error: ['time'] }).then(async (collected) => {
+		await message.channel.awaitMessages({ filter, max: 1, time: 30 * 1000, error: ['time'] }).then(async (collected) => {
 			if (!date_regex.test(collected.first().cleanContent)) {
 				await message.reply('Invalid Date, Cancelling!').then((m) => {
-					setTimeout(() => m.delete(), 15 * 1000);
+					setTimeout(() => m.delete(), 30 * 1000);
 					dateValid = false;
 				});
 			}
 			BirthDate = await Date.parse(collected.first().cleanContent).toLocaleString('en', { dateStyle: 'short' }).replace(/,/g, '');
 			setTimeout(() => collected.first().delete(), 15 * 1000);
-		});
+		}).catch(err => {
+			cmdFailed = true;
+			return message.reply('You took too long to respond! Cancelling!').then((m) => {
+				setTimeout(() => m.delete(), 30 * 1000);
+			});
+		})
 
-		if (!dateValid) return;
+		if(cmdFailed) {
+			const emsg = await message.channel.messages.fetch(EmbedID);
+			await emsg.delete();
+			return;
+		}
+
+		if (!dateValid) {
+			const emsg = await message.channel.messages.fetch(EmbedID);
+			await emsg.delete();
+			return;
+		}
 
 		await bot.addBirthday(message.guild, { userid: message.member.id, username: message.member.user.tag, birthday: BirthDate, sent: false });
 
 		EmbedID = await GenerateEmbed(settings.guildcolor, message, EmbedID, 'Awesome!', `Added your birthday! 🎂`, true);
-		await message.channel.awaitMessages({ filter, max: 1, time: 360 * 1000, error: ['time'] }).then(async (collected) => {
+		await message.channel.awaitMessages({ filter, max: 1, time: 60 * 1000, error: ['time'] }).then(async (collected) => {
 			BirthDate = await Date.parse(collected.first().cleanContent);
 			setTimeout(() => collected.first().delete(), 15 * 1000);
 		});
