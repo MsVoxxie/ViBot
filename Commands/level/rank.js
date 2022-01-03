@@ -15,7 +15,7 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings) {
 		//Calculate needed xp
-		const getNeededXP = (level) => level * level * 100;
+		const getNeededXP = (level) => level * level * 50;
 
 		switch (args[0]) {
 			case 'global': {

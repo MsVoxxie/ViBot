@@ -192,7 +192,7 @@ module.exports = (bot) => {
 	};
 
 	//Calculate needed xp
-	const getNeededXP = (level) => level * level * 100;
+	const getNeededXP = (level) => level * level * 50;
 
 	//Add XP to Member
 	bot.addXP = async (guild, member, xpToAdd, bot, settings, levelChannel) => {
