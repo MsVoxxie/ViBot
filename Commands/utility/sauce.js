@@ -55,14 +55,10 @@ module.exports = {
 				.setThumbnail(Res.header['thumbnail'])
 				.setColor(settings.guildcolor)
 				// .setDescription(`[${Res['title']}](${Res['url']})`)
-				.addField(
-					'Author›',
-					`[${Res.data['author_name'] ? Res.data['author_name'] : 'Unknown'}](${Res.data['author_url'] ? Res.data['author_url'] : ''})`,
-					false
-				)
+				.addField('Author›', `[${Res.data['author_name'] ? Res.data['author_name'] : 'Unknown'}](${Res.data['author_url'] ? Res.data['author_url'] : ''})`, false)
 				.addField('Post URL›', `[Click Here](${Res.data['ext_urls'][0]})`, false)
 				.addField('Likelihood›', `${Res.header['similarity']}%`, false)
-				.setFooter(message.member.user.username)
+				.setFooter({ text: message.member.user.username })
 				.setTimestamp();
 
 			Embeds.push(embed);

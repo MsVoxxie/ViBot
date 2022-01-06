@@ -46,7 +46,7 @@ module.exports = {
 			)
 			.setThumbnail(track.thumbnail);
 		if (track.durationMS > 10) {
-			embed.setFooter(`Progress›\n${queue.createProgressBar({ timecodes: true })}`);
+			embed.setFooter({ text: `Progress›\n${queue.createProgressBar({ timecodes: true })}` });
 		}
 
 		message.channel.send({ embeds: [embed] }).then((s) => {

@@ -8,10 +8,10 @@ module.exports = async (bot, queue, track) => {
 	// Setup Embed
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
-		.setAuthor({ name: `Requested By› ${track.requestedBy.username}`, iconURL: track.requestedBy.displayAvatarURL({ dynamic: true })})
+		.setAuthor({ name: `Requested By› ${track.requestedBy.username}`, iconURL: track.requestedBy.displayAvatarURL({ dynamic: true }) })
 		.setThumbnail(track.thumbnail)
 		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
-		.setFooter(bot.Timestamp(Date.now()));
+		.setFooter({ text: bot.Timestamp(Date.now()) });
 
 	if (queue.currentEmbed) await queue.currentEmbed.delete();
 	const playing = await message.channel.send({ embeds: [embed] }).then((m) => (queue.currentEmbed = m));
@@ -35,7 +35,7 @@ module.exports = async (bot, queue, track) => {
 		await reaction.users.remove(user.id);
 		switch (reaction.emoji.name) {
 			case '⏹':
-				if(!queue) return;
+				if (!queue) return;
 				bot.commands.get('stop').execute(bot, message, args, settings);
 				collector.stop();
 				break;

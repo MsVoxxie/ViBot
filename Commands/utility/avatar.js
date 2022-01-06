@@ -21,7 +21,7 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setAuthor({ name: `Avatar for ${member.displayName}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
 			.setImage(member.displayAvatarURL({ dynamic: true, format: 'png', size: 1024 }))
-			.setFooter(`Requested by ${message.member.displayName}`);
+			.setFooter({ text: `Requested by ${message.member.displayName}` });
 
 		//Send Message
 		message.channel.send({ embeds: [embed] });

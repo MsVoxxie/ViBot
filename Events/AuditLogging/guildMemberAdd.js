@@ -50,19 +50,23 @@ module.exports = {
 		// Send Audit Message
 		if (settings.audit) {
 			const embed = new MessageEmbed()
-				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true })})
-				.setDescription(`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(Date.now()/1000)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp/1000)}:R>`)
+				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }) })
+				.setDescription(
+					`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Account Created›** <t:${Math.round(
+						getMember.user.createdTimestamp / 1000
+					)}:R>`
+				)
 				.setColor(settings.guildcolor)
-				.setFooter(bot.Timestamp(getMember.joinedAt));
+				.setFooter({ text: bot.Timestamp(getMember.joinedAt) });
 			logChannel.send({ embeds: [embed] });
 		}
 
 		// Send Welcome Message
 		if (settings.welcome) {
 			const welcome = new MessageEmbed()
-				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true })})
+				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }) })
 				.setDescription(`Welcome to ${getMember.guild.name}, ${getMember}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
-				.setFooter(`Joined› ${bot.Timestamp(getMember.joinedAt)}`)
+				.setFooter({ text: `Joined› ${bot.Timestamp(getMember.joinedAt)}` })
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 			welChannel.send({ embeds: [welcome] });

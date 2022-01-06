@@ -9,7 +9,7 @@ module.exports = async (bot, queue, track) => {
 		.setAuthor(message.member.user.tag, message.member.user.displayAvatarURL({ dynamic: true }))
 		.setThumbnail(track.thumbnail)
 		.setDescription(`Added [${track.title}](${track.url}) to the Queue.`)
-		.setFooter(bot.Timestamp(Date.now()));
+		.setFooter({ text: bot.Timestamp(Date.now()) });
 	message.channel.send({ embeds: [embed] }).then((s) => {
 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 	});

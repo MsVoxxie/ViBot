@@ -22,11 +22,11 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setTitle('Thread Created')
 			.setDescription(
-				`**Author›** <@${threadOwner.id}> | ${threadOwner.user.username}\n**Author ID›** ${threadOwner.id}\n**Thread Parent›** ${
-					threadChannel.parent.name
-				}\n**Thread Name›** ${threadChannel.name}\n**Thread Archive Duration›** ${ms(threadChannel.autoArchiveDuration * 60 * 1000, { long: true })}`
+				`**Author›** <@${threadOwner.id}> | ${threadOwner.user.username}\n**Author ID›** ${threadOwner.id}\n**Thread Parent›** ${threadChannel.parent.name}\n**Thread Name›** ${
+					threadChannel.name
+				}\n**Thread Archive Duration›** ${ms(threadChannel.autoArchiveDuration * 60 * 1000, { long: true })}`
 			)
-			.setFooter(`Created› ${bot.Timestamp(threadChannel.createdAt)}`);
+			.setFooter({ text: `Created› ${bot.Timestamp(threadChannel.createdAt)}` });
 
 		logChannel.send({ embeds: [embed] });
 	},

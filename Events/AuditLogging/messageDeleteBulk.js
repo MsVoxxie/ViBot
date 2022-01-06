@@ -39,12 +39,13 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setTitle('Messages Bulk Deleted')
 			.setDescription(
-				`**Channel›** <#${firstMessage.channel.id}> | **${firstMessage.channel.name}**\n${
-					LogTarget ? `**Deleted By›** **${LogTarget}**` : ''
-				}\n**Deleted Messages›**\n\`\`\`${trim(filteredMessages.join('\n\n'), 3500)}\`\`\``
+				`**Channel›** <#${firstMessage.channel.id}> | **${firstMessage.channel.name}**\n${LogTarget ? `**Deleted By›** **${LogTarget}**` : ''}\n**Deleted Messages›**\n\`\`\`${trim(
+					filteredMessages.join('\n\n'),
+					3500
+				)}\`\`\``
 			)
 			.setColor(settings.guildcolor)
-			.setFooter(`Executed › ${bot.Timestamp(Date.now())}`);
+			.setFooter({ text: `Executed › ${bot.Timestamp(Date.now())}` });
 
 		logChannel.send({ embeds: [embed] });
 	},

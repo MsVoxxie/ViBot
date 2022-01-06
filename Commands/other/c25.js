@@ -35,7 +35,7 @@ module.exports = {
 					.setTitle(`Creation 2.5 Server - Is Online!`)
 					.setDescription(`**Connection Info›** ${host}:${port}\n**Player Count›** ${onlineCount}/${maxPlayers}`)
 					.addField('Connected Players›', `${players.length ? players.map((p) => p.name).join('\n') : 'No Players Online'}`)
-					.setFooter(`MC Ver - ${version} | Mod Count - ${totalMods}`)
+					.setFooter({ text: `MC Ver - ${version} | Mod Count - ${totalMods}` })
 					.setTimestamp(new Date());
 
 				message.channel.send({ embeds: [embed] }).then((s) => {

@@ -28,7 +28,7 @@ module.exports = {
 			let response = await xiv.search(args.join(' '), { string_algo: 'match', indexes: ['Action'] });
 			response = response.results[0];
 
-            console.log(response)
+			console.log(response);
 
 			//Get Item Name and Escape spaces
 			const action_name = response.name.replace(/ /g, '_');
@@ -41,8 +41,8 @@ module.exports = {
 				});
 
 			const action_description = `${fetched_data.Description.split('※')[0]
-                .replace(/\n\s*\n\s*\n/g, '\n\n')
-				.replace(/(<([^>]+)>)/gi, '')}`
+				.replace(/\n\s*\n\s*\n/g, '\n\n')
+				.replace(/(<([^>]+)>)/gi, '')}`;
 
 			//Create embeds
 			const embed = new MessageEmbed()
@@ -51,13 +51,12 @@ module.exports = {
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
 				.setDescription(`${fetched_data.Description ? action_description.split('[')[0] : ''}`)
-				.setFooter(`• ${bot.titleCase(fetched_data.ClassJob['Name'])} • ${fetched_data.GamePatch['ExName']} • ${fetched_data.GamePatch['Name']} •`);
+				.setFooter({ text: `• ${bot.titleCase(fetched_data.ClassJob['Name'])} • ${fetched_data.GamePatch['ExName']} • ${fetched_data.GamePatch['Name']} •` });
 
 			message.channel.send({ embeds: [embed] });
-			if(settings.prune){
+			if (settings.prune) {
 				await message.delete();
 			}
-			
 		} catch (error) {
 			return message.reply(`Unable to find action, Check usage and try again!`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);

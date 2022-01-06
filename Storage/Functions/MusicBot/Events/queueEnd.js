@@ -6,7 +6,10 @@ module.exports = async (bot, queue) => {
 	const message = queue.metadata;
 
 	// Setup Embed
-	const embed = new MessageEmbed().setColor(settings.guildcolor).setDescription(`Queue is now Empty!\nDisconnecting from <#${message.voice_channel.id}>`).setFooter(bot.Timestamp(Date.now()));
+	const embed = new MessageEmbed()
+		.setColor(settings.guildcolor)
+		.setDescription(`Queue is now Empty!\nDisconnecting from <#${message.voice_channel.id}>`)
+		.setFooter({ text: bot.Timestamp(Date.now()) });
 	await message.channel.send({ embeds: [embed] }).then((s) => {
 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 	});

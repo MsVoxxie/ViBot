@@ -38,7 +38,7 @@ module.exports = {
 				.setDescription(`${randomQuip[Math.floor(Math.random() * randomQuip.length)]}`)
 				.setImage(body)
 				.setColor(settings.guildcolor)
-				.setFooter(bot.Timestamp(new Date()));
+				.setFooter({ text: bot.Timestamp(new Date()) });
 			await loading.edit({ content: null, embeds: [QuoteEmbed] });
 		} catch (e) {
 			await loading.edit({ content: 'Failed to Inspire you.' }).then((s) => {

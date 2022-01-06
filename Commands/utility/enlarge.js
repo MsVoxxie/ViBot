@@ -32,8 +32,8 @@ module.exports = {
 				const embed = new MessageEmbed()
 					.setColor(settings.guildcolor)
 					.setImage(Emoji)
-					.setAuthor({name: message.member.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true })})
-					.setFooter(`Emoji Enlarged› ${args.join(' ')}`);
+					.setAuthor({ name: message.member.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+					.setFooter({ text: `Emoji Enlarged› ${args.join(' ')}` });
 				message.channel.send({ embeds: [embed] });
 			} catch (e) {
 				console.log(e);

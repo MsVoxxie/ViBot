@@ -42,7 +42,7 @@ module.exports = {
 					.setColor(settings.guildcolor)
 					.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 					.setDescription(`**Global Rank›** #${me.rank}\n**Current Guild Level›** ${me.level}`)
-					.setFooter(`• Next Level› ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •`);
+					.setFooter({ text: `• Next Level› ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
 				await message.channel.send({ embeds: [embed] });
 				break;
 			}
@@ -95,7 +95,7 @@ module.exports = {
 					.setColor(settings.guildcolor)
 					.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 					.setDescription(`**Guild Rank›** #${me.rank}\n**Current Level›** ${me.level}`)
-					.setFooter(`• Next Level› ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •`);
+					.setFooter({ text: `• Next Level› ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
 				await message.channel.send({ embeds: [embed] });
 			}
 		}

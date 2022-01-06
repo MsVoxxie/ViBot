@@ -32,7 +32,7 @@ module.exports = {
 			const splitProps = Props.split(' ');
 			const Item = splitProps.slice(1).join(' ');
 			const World = bot.titleCase(splitProps[0]);
-            const Data = [];
+			const Data = [];
 
 			//Get Item Search
 			let response = await xiv.search(Item, { string_algo: 'match', indexes: ['Item'] });
@@ -54,27 +54,31 @@ module.exports = {
 					return data;
 				});
 
-            //Generate Description
+			//Generate Description
 			item_price.listings.forEach((entry) => {
-                Data.push({price: `${entry.hq ? Vimotes['HQ'] : ''}${bot.toThousands(entry.pricePerUnit)} ${Vimotes['GIL']} x${entry.quantity} [${entry.worldName ? entry.worldName : World}]`, total: `${Vimotes['GIL']} ${bot.toThousands(entry.total)}`, sort: entry.pricePerUnit, hq: entry.hq})
-            })
-            Data.sort((a, b) => a.sort - b.sort)
+				Data.push({
+					price: `${entry.hq ? Vimotes['HQ'] : ''}${bot.toThousands(entry.pricePerUnit)} ${Vimotes['GIL']} x${entry.quantity} [${entry.worldName ? entry.worldName : World}]`,
+					total: `${Vimotes['GIL']} ${bot.toThousands(entry.total)}`,
+					sort: entry.pricePerUnit,
+					hq: entry.hq,
+				});
+			});
+			Data.sort((a, b) => a.sort - b.sort);
 
 			//Create embeds
 			const embed = new MessageEmbed()
 				.setTitle(response.name)
 				.setURL(`${wiki_url}${item_name}`)
-				.addField('Quantity / Price', Data.map(i => i.price).join('\n'),true)
-                .addField('Total Price', Data.map(i => i.total).join('\n'),true)
+				.addField('Quantity / Price', Data.map((i) => i.price).join('\n'), true)
+				.addField('Total Price', Data.map((i) => i.total).join('\n'), true)
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
-				.setFooter(`• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']} •`);
-                
-				message.channel.send({ embeds: [embed] });
-				if(settings.prune){
-					await message.delete();
-				}
+				.setFooter({ text: `• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']} •` });
 
+			message.channel.send({ embeds: [embed] });
+			if (settings.prune) {
+				await message.delete();
+			}
 		} catch (error) {
 			return message.reply(`Unable to find item, Check usage and try again!`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);

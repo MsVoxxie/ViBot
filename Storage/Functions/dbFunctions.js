@@ -226,7 +226,7 @@ module.exports = (bot) => {
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
 					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!`)
-					.setFooter(`• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •`);
+					.setFooter({ text: `• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
 
 				levelChannel.send({ embeds: [embed] });
 			}
@@ -256,6 +256,7 @@ module.exports = (bot) => {
 				if (!mem.user.bot) return;
 				const member = mem[1];
 				await bot.addXP(guild, member, xpToAdd, bot, settings, levelChannel);
+				console.log(`Gave ${member.displayName} ${xpToAdd} XP for being in ${channel.name}`);
 			}
 		}
 	};

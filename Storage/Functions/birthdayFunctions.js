@@ -26,7 +26,11 @@ module.exports = (bot) => {
 				const todayDay = today.getDate();
 
 				if (userBirthdayMonth === todayMonth && userBirthdayDay === todayDay) {
-					const embed = new MessageEmbed().setColor(settings.guildcolor).setTitle(`🎂 Happy Birthday! 🎂`).setDescription(`<@${user.userid}>'s Birthday is today!`).setFooter(`• ${bot.shortTimestamp(Date.now())} •`);
+					const embed = new MessageEmbed()
+						.setColor(settings.guildcolor)
+						.setTitle(`🎂 Happy Birthday! 🎂`)
+						.setDescription(`<@${user.userid}>'s Birthday is today!`)
+						.setFooter({ text: `• ${bot.shortTimestamp(Date.now())} •` });
 					let msg = await birthdaychannel.send({ embeds: [embed] });
 					await msg.react('🎉');
 				}

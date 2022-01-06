@@ -9,7 +9,12 @@ const accesstoken = TwitchAccessToken;
 const authProvider = new ClientCredentialsAuthProvider(clientid, accesstoken);
 const TwitchClient = new ApiClient({ authProvider });
 
-const randomNotif = ['Hey {everyone}! {twname} is now live!', 'Heads up {everyone}, {twname} is going live!', '{twname} is live {everyone}!', "It's that time again {everyone}, Time to watch {twname}!"];
+const randomNotif = [
+	'Hey {everyone}! {twname} is now live!',
+	'Heads up {everyone}, {twname} is going live!',
+	'{twname} is live {everyone}!',
+	"It's that time again {everyone}, Time to watch {twname}!",
+];
 
 module.exports = (bot) => {
 	bot.twitchWatch = async () => {
@@ -101,7 +106,7 @@ module.exports = (bot) => {
 			.setTitle(`${chan.channelname}'s stream has ended.`)
 			.setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
 			.setThumbnail('https://cdn.iconscout.com/icon/free/png-256/social-190-96705.png');
-			// .setFooter(`As of› ${bot.Timestamp(Date.now())}`);
+		//.setFooter({ text: `As of› ${bot.Timestamp(Date.now())}` });
 		return offembed;
 	}
 };

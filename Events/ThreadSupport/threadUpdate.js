@@ -18,7 +18,7 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setTitle(`Thread Archived`)
 			.setDescription(`***‹${newThread.name}›*** has been archived.`)
-			.setFooter(`Archived› ${bot.Timestamp(newThread.archivedAt)}`);
+			.setFooter({ text: `Archived› ${bot.Timestamp(newThread.archivedAt)}` });
 
 		logChannel.send({ embeds: [embed] });
 	},

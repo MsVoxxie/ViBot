@@ -25,7 +25,7 @@ module.exports = {
 			.setTitle('Random Cat!')
 			.setURL(cat.file)
 			.setColor(settings.guildcolor)
-			.setFooter(`A cat for ${message.author.username}!`);
+			.setFooter({ text: `A cat for ${message.author.username}!` });
 
 		await loading.edit({ content: null, embeds: [embed] });
 	},

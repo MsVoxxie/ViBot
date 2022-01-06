@@ -43,10 +43,14 @@ module.exports = {
 			// Create Embed
 			const embed = new MessageEmbed()
 				.setTitle('Members Roles Changed')
-				.setAuthor({ name: `${newMember.nickname ? `${newMember.nickname} | ${newMember.user.tag}` : newMember.user.tag}`, iconURL: newMember.user.displayAvatarURL({ dynamic: true })})
-				.setDescription(`**Member›** <@${newMember.user.id}> | **${newMember.user.tag}**\n${rolesAdded.length > 0 ? `\n**Roles Added›**\n\`\`\`${rolesAdded.map((r) => r.name).join(' | ')}\`\`\`` : ''}\n${rolesRemoved.length > 0 ? `**Roles Removed›**\n${rolesRemoved.map((r) => r.name).join(' | ')}` : ''}`)
+				.setAuthor({ name: `${newMember.nickname ? `${newMember.nickname} | ${newMember.user.tag}` : newMember.user.tag}`, iconURL: newMember.user.displayAvatarURL({ dynamic: true }) })
+				.setDescription(
+					`**Member›** <@${newMember.user.id}> | **${newMember.user.tag}**\n${rolesAdded.length > 0 ? `\n**Roles Added›**\n\`\`\`${rolesAdded.map((r) => r.name).join(' | ')}\`\`\`` : ''}\n${
+						rolesRemoved.length > 0 ? `**Roles Removed›**\n${rolesRemoved.map((r) => r.name).join(' | ')}` : ''
+					}`
+				)
 				.setColor(settings.guildcolor)
-				.setFooter(bot.Timestamp(new Date()));
+				.setFooter({ text: bot.Timestamp(new Date()) });
 
 			logChannel.send({ embeds: [embed] });
 		}

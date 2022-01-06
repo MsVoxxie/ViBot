@@ -25,7 +25,7 @@ module.exports = {
 			.setTitle('Random Fox!')
 			.setURL(fox.image)
 			.setColor(settings.guildcolor)
-			.setFooter(`A fox for ${message.author.username}!`);
+			.setFooter({ text: `A fox for ${message.author.username}!` });
 
 		await await loading.edit({ content: null, embeds: [embed] });
 	},

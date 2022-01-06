@@ -25,7 +25,7 @@ module.exports = {
 			.setTitle('Random Dog!')
 			.setURL(dog.message.toString())
 			.setColor(settings.guildcolor)
-			.setFooter(`A dog for ${message.author.username}!`);
+			.setFooter({ text: `A dog for ${message.author.username}!` });
 
 		await loading.edit({ content: null, embeds: [embed] });
 	},

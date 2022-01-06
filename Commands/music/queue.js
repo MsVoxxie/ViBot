@@ -98,7 +98,7 @@ function generateQueueEmbed(message, queue, settings, totalTime) {
 			.setThumbnail(message.guild.iconURL({ dynamic: true }))
 			.setColor(settings.guildcolor)
 			.setDescription(`**Current Song - [${queue[0].title}](${queue[0].url})**\n\n${info}`)
-			.setFooter(`Playlist Duration› ${totalTime}`);
+			.setFooter({ text: `Playlist Duration› ${totalTime}` });
 		embeds.push(embed);
 	}
 

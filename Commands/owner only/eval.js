@@ -17,9 +17,7 @@ module.exports = {
 	async execute(bot, message, args, settings) {
 		function clean(text) {
 			if (typeof text === 'string') {
-				return text
-					.replace(/`/g, '`' + String.fromCharCode(8203))
-					.replace(/@/g, '@' + String.fromCharCode(8203));
+				return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 			} else {
 				return text;
 			}
@@ -40,21 +38,21 @@ module.exports = {
 				evaled = require('util').inspect(evaled);
 			}
 			const codeEmbed = new Discord.MessageEmbed()
-				.setAuthor({ name: message.member.displayName})
+				.setAuthor({ name: message.member.displayName })
 				.setTitle('__**Success!**__')
 				.setColor('#32a852')
 				.addField('📥 Input:', `\`\`\`Javascript\n${code}\`\`\`\n`, false)
 				.addField('📤 Output:', `\`\`\`Javascript\n${clean(evaled)}\`\`\``, false)
-				.setFooter(`Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.`);
+				.setFooter({ text: `Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.` });
 			message.channel.send({ embeds: [codeEmbed] });
 		} catch (err) {
 			const failedEmbed = new Discord.MessageEmbed()
-				.setAuthor({ name: message.member.displayName})
+				.setAuthor({ name: message.member.displayName })
 				.setTitle('__**Failed!**__')
 				.setColor('#a83232')
 				.addField('📥 Input:', `\`\`\`Javascript\n${code}\`\`\`\n`, false)
 				.addField('📤 Output:', `\`\`\`Javascript\n${clean(err)}\`\`\``, false)
-				.setFooter(`Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.`);
+				.setFooter({ text: `Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms.` });
 			message.channel.send({ embeds: [failedEmbed] });
 		}
 	},

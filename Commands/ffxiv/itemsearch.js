@@ -49,7 +49,7 @@ module.exports = {
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
 				.setDescription(`${fetched_data.Description ? item_description.split('[')[0] : ''}`)
-				.setFooter(`• ${bot.titleCase(fetched_data.ItemUICategory['Name'])} • ${fetched_data.GamePatch['ExName']} • ${fetched_data.GamePatch['Name']} •`);
+				.setFooter({ text:`• ${bot.titleCase(fetched_data.ItemUICategory['Name'])} • ${fetched_data.GamePatch['ExName']} • ${fetched_data.GamePatch['Name']} •` });
 
 			message.channel.send({ embeds: [embed] });
 			if(settings.prune){
