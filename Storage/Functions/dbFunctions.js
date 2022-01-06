@@ -247,16 +247,19 @@ module.exports = (bot) => {
 		if (!guild.afkChannel) return;
 
 		//Loops
-		const channels = await guild.channels.cache.filter((ch) => ch.type === 'GUILD_VOICE');
+		const channels = await guild.channels.cache
+			.filter((ch) => ch.type === 'GUILD_VOICE')
+			.filter(function (x) {
+				return x !== undefined;
+			});
 		for await (const chan of channels) {
 			const channel = chan[1];
 			if (channel.id === guild.afkChannelId) continue;
 			const members = await channel.members;
 			for await (const mem of members) {
-				if (!mem.user.bot) return;
 				const member = mem[1];
+				if (member.user.bot) return console.log(`${mem.user.tag} is a bot, skipping.`);
 				await bot.addXP(guild, member, xpToAdd, bot, settings, levelChannel);
-				console.log(`Gave ${member.displayName} ${xpToAdd} XP for being in ${channel.name}`);
 			}
 		}
 	};
