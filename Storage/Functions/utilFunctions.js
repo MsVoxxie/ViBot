@@ -1,7 +1,12 @@
 const moment = require('moment');
-const { parse } = require('querystring');
+const deJunk = require('dejunk.js');
 
 module.exports = (bot) => {
+	//BottomText
+	bot.isBottomText = (message) => {
+		if ((deJunk.isJunk(message.content) && !message.mentions.members.size) && !message.mentions.channels.size && !message.mentions.roles.size) return true;
+		else return false;
+	};
 	// Timestamp
 	bot.Timestamp = (date) => {
 		return moment(date).format('MMMM Do YYYY, h:mm A');
@@ -53,9 +58,9 @@ module.exports = (bot) => {
 		// Command Checks
 		let command = bot.commands.get(cmd);
 		if (!command) command = bot.commands.get(bot.aliases.get(cmd));
-		if(command) {
+		if (command) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	};

@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'messageReactionAdd',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(reaction, user, bot, Vimotes) {
 		//Check if message was partial, if so fetch it.
@@ -79,3 +79,17 @@ module.exports = {
 		return imgRegex;
 	},
 };
+
+
+//Fetch Guild Stars
+		// const guildStars = await Starboard.findOneAndUpdate(
+		// 	{ guildid: message.guild.id, messageid: message.id },
+		// 	{
+		// 		guildid: message.guild.id,
+		// 		guildname: message.guild.name,
+		// 		messageid: message.id,
+		// 		$inc: { stars: 1 },
+		// 	},
+		// 	{ upsert: true, new: true }
+		// );
+		// if (!guildStars) return;

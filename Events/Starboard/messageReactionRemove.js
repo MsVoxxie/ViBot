@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'messageReactionRemove',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(reaction, user, bot, Vimotes) {
 		//Check if message was partial, if so fetch it.
@@ -35,17 +35,24 @@ module.exports = {
 		if (!stars) return;
 
 		if (stars) {
+
+			//Check for Images or URL's
+			const imageAt = (await message.attachments.size) > 0 ? await this.imageAttachment(message) : '';
+			const imgLink = (await message.content) ? this.imageURL(message) : '';
+			const finalImage = imageAt ? imageAt : imgLink ? imgLink[0] : '';
+
 			// return console.log(stars.content)
 			const star = /(?!⭐|✨|🌟|💫\s?)\d+/.exec(stars.content);
 			const embed = new MessageEmbed()
 				.setColor('#c2b04e')
 				.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
 				.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+				.setImage(finalImage)
 				.setFooter({ text: `MessageID: ${message.id}` });
 
 			const starMsg = await starChannel.messages.fetch(stars.id);
 			await starMsg.edit({ content: `${randStar} ${parseInt(star[0]) - 1} | <#${message.channel.id}>`, embeds: [embed] });
-			if (parseInt(star[0]) - 1 <= ReactLimit) return setTimeout(() => starMsg.delete(), 1 * 3000);
+			if (parseInt(star[0]) - 1 >= ReactLimit) return setTimeout(() => starMsg.delete(), 1 * 3000);
 		}
 	},
 

@@ -11,8 +11,8 @@ module.exports = {
 	cooldown: 2,
 	hidden: true,
 	ownerOnly: true,
-	userPerms: ['MANAGE_GUILD'],
-	botPerms: ['MANAGE_GUILD'],
+	userPerms: [],
+	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Create a Backup
 		try {

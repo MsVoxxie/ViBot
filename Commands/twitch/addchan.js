@@ -40,6 +40,7 @@ module.exports = {
 		message.reply(`Added channel ${addChan} to my watch list.`).then((s) => {
 			if (settings.prune) {
 				setTimeout(() => s.delete(), 30 * 1000);
+				setTimeout(() => message.delete(), 30 * 1000);
 			}
 		});
 	},

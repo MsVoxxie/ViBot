@@ -19,7 +19,12 @@ module.exports = {
 		await TwitchChannels.map(async (channel) => {
 			if (channel.channelname === args[0]) {
 				await bot.removeTwitchChannel(message.guild, { channelname: args[0] });
-				message.reply(`Removed ${args[0]} from my watch list.`).then((m) => setTimeout(() => m.delete(), 5 * 3000));
+				message.reply(`Removed ${args[0]} from my watch list.`).then((s) => {
+					if (settings.prune) {
+						setTimeout(() => s.delete(), 30 * 1000);
+						setTimeout(() => message.delete(), 30 * 1000);
+					}
+				});
 			} else {
 				return;
 			}

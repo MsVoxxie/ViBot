@@ -9,6 +9,7 @@ module.exports = {
 
 		//Declarations
 		if(message.author.bot) return;
+		if(bot.isBottomText(message)) return;
 		const { guild, member } = message;
 		const settings = await bot.getGuild(guild);
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);

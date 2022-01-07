@@ -33,6 +33,7 @@
 		"booru": "^2.4.0",
 		"canvas": "^2.8.0",
 		"canvas-constructor": "^5.0.1",
+		"dejunk.js": "^0.4.4",
 		"discord-backup": "^3.0.1",
 		"discord-giveaways": "^5.0.1",
 		"discord-player": "^5.1.0-dev.1636095464.54bb4b0",
