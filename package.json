@@ -55,6 +55,7 @@
 		"request": "^2.88.2",
 		"saucenao": "0.0.2",
 		"twit": "^2.2.4",
+		"word-definition": "^2.1.6",
 		"ytdl-core": "^4.9.1"
 	}
 }

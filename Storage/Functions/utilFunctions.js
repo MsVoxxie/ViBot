@@ -4,7 +4,7 @@ const deJunk = require('dejunk.js');
 module.exports = (bot) => {
 	//BottomText
 	bot.isBottomText = (message) => {
-		if ((deJunk.isJunk(message.content) && !message.mentions.members.size) && !message.mentions.channels.size && !message.mentions.roles.size) return true;
+		if (deJunk.isJunk(message.content) && !message.mentions.members.size && !message.mentions.channels.size && !message.mentions.roles.size) return true;
 		else return false;
 	};
 	// Timestamp
@@ -50,6 +50,9 @@ module.exports = (bot) => {
 	bot.titleCase = (string) => {
 		return string[0].toUpperCase() + string.slice(1).toLowerCase();
 	};
+
+	//Trim
+	bot.trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 	//IsCommandOrAlias
 	bot.isCmdorAlias = (message) => {
