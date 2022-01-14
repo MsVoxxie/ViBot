@@ -9,7 +9,7 @@ module.exports = {
 
 		//Declarations
 		if(message.author.bot) return;
-		if(bot.isBottomText(message)) return;
+		if(bot.isBottomText(message)) return console.log(`[${message.guild.name}] ${message.author.tag}: Bottom`);
 		const { guild, member } = message;
 		const settings = await bot.getGuild(guild);
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);

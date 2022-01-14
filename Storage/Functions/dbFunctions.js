@@ -256,6 +256,7 @@ module.exports = (bot) => {
 			const channel = chan[1];
 			if (channel.id === guild.afkChannelId) continue;
 			const members = await channel.members;
+			if (members.size < 2) return;
 			for await (const mem of members) {
 				const member = mem[1];
 				if (member.user.bot) return console.log(`${mem.user.tag} is a bot, skipping.`);
