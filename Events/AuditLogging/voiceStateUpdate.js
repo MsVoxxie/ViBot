@@ -33,8 +33,9 @@ module.exports = {
 		if (!oldState.channelId && newState.channelId && !oldState.channel && newState.channel) {
 			embed = new MessageEmbed()
 				.setTitle('User Joined Voice Channel')
-				.setDescription(`**User›** <@${author.id}>\n**Connected›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-				.addField('**Voice Channel›**', `<#${newchannelid}>`, false)
+				.setThumbnail(author.displayAvatarURL({ dynamic: true }))
+				.setDescription(`**User›** <@${author.id}>\n**UserID›** \`${author.id}\`\n**ChannelID›** \`${newchannelid}\`\n**Connected›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.addField('**Voice Channel›**', `<#${newchannelid}>`, true)
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -43,8 +44,9 @@ module.exports = {
 		if (oldState.channelId && !newState.channelId && oldState.channel && !newState.channel) {
 			embed = new MessageEmbed()
 				.setTitle('User Left Voice Channel')
-				.setDescription(`**User›** <@${author.id}>\n**Disconnected** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-				.addField('**Voice Channel›**', `<#${oldchannelid}>`, false)
+				.setThumbnail(author.displayAvatarURL({ dynamic: true }))
+				.setDescription(`**User›** <@${author.id}>\n**UserID›** \`${author.id}\`\n**ChannelID›** \`${oldchannelid}\`\n**Disconnected›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.addField('**Voice Channel›**', `<#${oldchannelid}>`, true)
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -55,9 +57,10 @@ module.exports = {
 			if (oldState.channelId !== newState.channelId) {
 				embed = new MessageEmbed()
 					.setTitle('User Switched Voice Channels')
-					.setDescription(`**User›** <@${author.id}>\n**Switched** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-					.addField('**Left Channel›**', `<#${oldchannelid}>`, false)
-					.addField('**Joined Channel›**', `<#${newchannelid}>`, false)
+					.setThumbnail(author.displayAvatarURL({ dynamic: true }))
+					.setDescription(`**User›** <@${author.id}>\n**UserID›** \`${author.id}\`\n**OldChannelID›** \`${oldchannelid}\`\n**NewChannelID›** \`${newchannelid}\`\n**Switched›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+					.addField('**Left Channel›**', `<#${oldchannelid}>`, true)
+					.addField('**Joined Channel›**', `<#${newchannelid}>`, true)
 					.setColor(settings.guildcolor);
 				logChannel.send({ embeds: [embed] });
 			}
