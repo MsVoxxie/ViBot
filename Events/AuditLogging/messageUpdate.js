@@ -18,6 +18,7 @@ module.exports = {
 		if (newMessage.channel.type !== 'GUILD_TEXT') return;
 		if (newMessage.content.toString() === oldMessage.content.toString()) return;
 		const logChannel = await newMessage.guild.channels.cache.get(settings.auditchannel);
+		if (!logChannel) return;
 
 		// Setup Embed
 		const embed = new MessageEmbed()

@@ -2,6 +2,12 @@ const moment = require('moment');
 const deJunk = require('dejunk.js');
 
 module.exports = (bot) => {
+	//'Sleep'
+	bot.sleep = function (ms) {
+		return new Promise((resolve) => {
+			setTimeout(resolve, ms);
+		});
+	};
 	//BottomText
 	bot.isBottomText = (message) => {
 		if (deJunk.isJunk(message.content) && !message.mentions.members.size && !message.mentions.channels.size && !message.mentions.roles.size) return true;

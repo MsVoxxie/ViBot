@@ -2,46 +2,65 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'voiceStateUpdate',
-	disabled: true,
+	disabled: false,
 	once: false,
 	async execute(oldState, newState, bot, Vimotes) {
 		//Declarations / checks
-		const settings = await bot.getGuild(oldState.guild);
+		let userid = oldState.id || newState.id;
+		let guildid = oldState.guild.id || newState.guild.id;
+		let guild = await bot.guilds.cache.find((g) => g.id === guildid);
+		let author = await guild.members.cache.find((a) => a.id === userid);
+		if (author && author.bot === true) return;
+
+		const settings = await bot.getGuild(guild);
 		if (!settings) return;
 		if (settings.audit === false) return;
-		const logChannel = await oldState.guild.channels.cache.get(settings.auditchannel);
-		const chan = oldState.channel || newState.channel;
+		const logChannel = await guild.channels.cache.get(settings.auditchannel);
+		if (!logChannel) return;
 
-		if (oldState.channel.id != null && newState.channel.id != null && newState.channel.id != oldState.channel.id) {
-			console.log('a user switched channels');
-		}
-		if (oldState.channel.id === null) {
-			console.log('a user joined!');
-		}
-		if (newState.channel.id === null) {
-			console.log('a user left!');
-		}
+		// Setup channel strings
+		let oldchannelid = 'unknown';
+		if (oldState && oldState.channel && oldState.channel.parent && oldState.channel.parent.name) oldparentname = oldState.channel.parent.name;
+		if (oldState && oldState.channel && oldState.channel.name) oldchannelname = oldState.channel.name;
+		if (oldState && oldState.channelId) oldchannelid = oldState.channelId;
 
-		if (newState.channel.id && !oldState.channel.id) {
-			const embed = new MessageEmbed()
-				.setTitle('Voice State Changed')
-				.setDescription(`**Member›** <@${newState.member.user.id}> | **${newState.member.user.tag}**\n**Channel›** <#${chan.id}> | **${chan.name}**\n**Status›** **${Vimotes['JOIN_ARROW']}Connected**`)
-				.setColor(settings.guildcolor)
-				.setFooter({ text: `At› ${bot.Timestamp(Date().now)}` });
+		let newchannelid = 'unknown';
+		if (newState && newState.channel && newState.channel.parent && newState.channel.parent.name) newparentname = newState.channel.parent.name;
+		if (newState && newState.channel && newState.channel.name) newchannelname = newState.channel.name;
+		if (newState && newState.channelId) newchannelid = newState.channelId;
 
+		//Joined Voice Channel
+		if (!oldState.channelId && newState.channelId && !oldState.channel && newState.channel) {
+			embed = new MessageEmbed()
+				.setTitle('User Joined Voice Channel')
+				.setDescription(`**User›** <@${author.id}>\n**Connected›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.addField('**Voice Channel›**', `<#${newchannelid}>`, false)
+				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
-		} else if (oldState.channel.id && !newState.channel.id) {
-			const embed = new MessageEmbed()
-				.setTitle('Voice State Changed')
-				.setDescription(
-					`**Member›** <@${newState.member.user.id}> | **${newState.member.user.tag}**\n**Channel›** <#${chan.id}> | **${chan.name}**\n**Status›** **${Vimotes['LEAVE_ARROW']}Disconnected**`
-				)
-				.setColor(settings.guildcolor)
-				.setFooter({ text: `At› ${bot.Timestamp(Date().now)}` });
+		}
 
+		//Left Voice Channel
+		if (oldState.channelId && !newState.channelId && oldState.channel && !newState.channel) {
+			embed = new MessageEmbed()
+				.setTitle('User Left Voice Channel')
+				.setDescription(`**User›** <@${author.id}>\n**Disconnected** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.addField('**Voice Channel›**', `<#${oldchannelid}>`, false)
+				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
-		} else {
-			return;
+		}
+
+		//Switched Voice Channel
+		if (oldState.channelId && newState.channelId && oldState.channel && newState.channel) {
+			// False positive check
+			if (oldState.channelId !== newState.channelId) {
+				embed = new MessageEmbed()
+					.setTitle('User Switched Voice Channels')
+					.setDescription(`**User›** <@${author.id}>\n**Switched** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+					.addField('**Left Channel›**', `<#${oldchannelid}>`, false)
+					.addField('**Joined Channel›**', `<#${newchannelid}>`, false)
+					.setColor(settings.guildcolor);
+				logChannel.send({ embeds: [embed] });
+			}
 		}
 	},
 };
