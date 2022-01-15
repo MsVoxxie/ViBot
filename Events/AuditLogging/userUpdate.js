@@ -26,7 +26,7 @@ module.exports = {
 						// Setup Embed
 						const usernameEmbed = new MessageEmbed()
 							.setTitle('User Changed Username')
-							.setAuthor({ name: `${newUser.tag}}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
+							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
 							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
 							.addField('**Old Username›**', `${oldUser.username}#${oldUser.discriminator}`, false)
 							.addField('**New Username›**', `${newUser.username}#${newUser.discriminator}`, false)
@@ -39,7 +39,7 @@ module.exports = {
 						// Setup Embed
 						const discriminatorEmbed = new MessageEmbed()
 							.setTitle('User Changed Discriminator')
-							.setAuthor({ name: `${newUser.tag}}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
+							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
 							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
 							.addField(`**Old Discriminator›** ${oldUser.discriminator}`, false)
 							.addField(`**New Discriminator›** ${newUser.discriminator}`, false)
@@ -52,7 +52,7 @@ module.exports = {
 						// Setup Embed
 						const avatarEmbed = new MessageEmbed()
 							.setTitle('User Changed Avatar')
-							.setAuthor({ name: `${newUser.tag}}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
+							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
 							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
 							.setThumbnail(oldUser.displayAvatarURL({ dynamic: true }))
 							.setImage(newUser.displayAvatarURL({ dynamic: true }))
