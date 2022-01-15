@@ -21,6 +21,6 @@ module.exports = {
 		if (!levelChannel) return;
 
 		//Add XP
-		await bot.addXP(guild, member, xpadd, bot, settings, levelChannel);
+		await bot.addXP(guild, member, xpadd, bot, settings, levelChannel, message);
 	},
 };
