@@ -32,8 +32,7 @@ module.exports = {
 		// ROLE CHANGE
 		const oldMemberRoles = oldMember.roles.cache;
 		const newMemberRoles = newMember.roles.cache;
-
-		let roleChanged = newMemberRoles.difference(oldMemberRoles);
+		const roleChanged = newMemberRoles.difference(oldMemberRoles);
 
 		if (roleChanged.size !== 0) {
 			const roleAdded = [];
@@ -52,8 +51,8 @@ module.exports = {
 				.setAuthor({ name: newMember.user.tag, icon_url: newMember.displayAvatarURL({ dynamic: true }) })
 				.setColor(settings.guildcolor)
 				.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-				.addField(`**Added›**`, `${roleAdded.length ? roleAdded.map((r) => r.name).join(', ') : 'None.'}`, false)
-				.addField(`**Removed›**`, `${roleRemoved.length ? roleRemoved.map((r) => r.name).join(', ') : 'None'}`, false);
+				.addField(`**Added›**`, `${roleAdded.length ? roleAdded.map((r) => `**${r.name}**`).join(', ') : 'None.'}`, false)
+				.addField(`**Removed›**`, `${roleRemoved.length ? roleRemoved.map((r) => `**${r.name}**`).join(', ') : 'None'}`, false);
 			logChannel.send({ embeds: [embed] });
 		}
 	},
