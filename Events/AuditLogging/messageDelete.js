@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 
 module.exports = {
 	name: 'messageDelete',
@@ -40,15 +40,8 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Message Deleted')
-			.setDescription(
-				`**Author›** <@${message.author.id}> | **${message.author.tag}**\n${LogTarget ? `**Deleted By›** **${LogTarget}**` : ''}\n**Channel›** <#${message.channel.id}> | **${
-					message.channel.name
-				}**\n**Deleted›** **<t:${Math.round(Date.now() / 1000)}:R>**\n${message.content.length > 0 ? `\n**Deleted Message›**\n\`\`\`${message.content.replace(/`/g, "'")}\`\`\`` : ''}\n${
-					message.attachments.size > 0 ? `**Attachment URL› **\n[Link Here](${message.attachments.map((a) => a.proxyURL)})` : ''
-				}`
-			)
+			.setDescription(`**Author›** <@${message.author.id}> | **${message.author.tag}**\n${LogTarget ? `**Deleted By›** **${LogTarget}**` : ''}\n**Channel›** <#${message.channel.id}> | **${message.channel.name}**\n**Deleted›** **<t:${Math.round(Date.now() / 1000)}:R>**\n${message.content.length > 0 ? `\n**Deleted Message›**\n\`\`\`${message.content.replace(/`/g, "'")}\`\`\`` : ''}\n${message.attachments.size > 0 ? `**Attachment URL› **[Image Link](${message.attachments.map((a) => a.proxyURL)})` : ''}`)
 			.setColor(settings.guildcolor)
-			.setImage(message.attachments.map((a) => a.proxyURL)[0], { dynamic: true });
 
 		logChannel.send({ embeds: [embed] });
 	},
