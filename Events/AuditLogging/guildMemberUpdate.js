@@ -48,11 +48,9 @@ module.exports = {
 
 			const embed = new MessageEmbed()
 				.setTitle('Role Changed')
-				.setAuthor({ name: newMember.user.tag, icon_url: newMember.displayAvatarURL({ dynamic: true }) })
 				.setColor(settings.guildcolor)
-				.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-				.addField(`**Added›**`, `${roleAdded.length ? roleAdded.map((r) => `**${r.name}**`).join(', ') : 'None.'}`, false)
-				.addField(`**Removed›**`, `${roleRemoved.length ? roleRemoved.map((r) => `**${r.name}**`).join(', ') : 'None'}`, false);
+				.setDescription(`**Member** <@${newMember.user.id}> | **${newMember.user.tag}**\n**Member ID› \`${newMember.id}\`\n**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.addField('**Roles›**', `${roleAdded.length ? `\`\`\`css\n#ADDED\n${roleAdded.map((r) => r.name).join('\n')}\`\`\`` : `\`\`\`css\n#REMOVED\n${roleRemoved.map((r) => r.name).join('\n')}\`\`\``}`);
 			logChannel.send({ embeds: [embed] });
 		}
 	},
