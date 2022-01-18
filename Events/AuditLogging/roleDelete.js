@@ -28,7 +28,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Deleted')
-        .setDescription(`${Vimotes['XMARK']} **${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
+        .setDescription(`**${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
         .setColor(role.hexColor);
 
 		logChannel.send({ embeds: [embed] });

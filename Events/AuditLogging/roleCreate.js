@@ -28,7 +28,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Created')
-        .setDescription(`${Vimotes['CHECK']} <@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
+        .setDescription(`<@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
         .setColor(role.hexColor);
 
 		logChannel.send({ embeds: [embed] });
