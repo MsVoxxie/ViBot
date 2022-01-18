@@ -49,7 +49,7 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setTitle('Role Changed')
 				.setColor(settings.guildcolor)
-				.setDescription(`**Member** <@${newMember.user.id}> | **${newMember.user.tag}**\n**Member ID› \`${newMember.id}\`\n**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.setDescription(`**Member** <@${newMember.user.id}> | **${newMember.user.tag}**\n**Member ID›** \`${newMember.id}\`\n**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
 				.addField('**Roles›**', `${roleAdded.length ? `\`\`\`css\n#ADDED\n${roleAdded.map((r) => r.name).join('\n')}\`\`\`` : `\`\`\`css\n#REMOVED\n${roleRemoved.map((r) => r.name).join('\n')}\`\`\``}`);
 			logChannel.send({ embeds: [embed] });
 		}
