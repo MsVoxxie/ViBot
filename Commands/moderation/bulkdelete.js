@@ -26,15 +26,11 @@ module.exports = {
 		await message.channel.messages.fetch({ limit: deleteAmount + 1 }).then(async (messages) => {
 			if (userTarget) {
 				const filterBy = userTarget ? userTarget.id : bot.user.id;
-				messages = await messages
-					.filter((m) => m.author.id === filterBy)
-					.array()
-					.slice(0, deleteAmount);
+				messages = await messages.filter((m) => m.author.id === filterBy).array().slice(0, deleteAmount);
 			}
 			//Purge!
-			await message.channel.bulkDelete(messages, true).catch((e) => {
-				message.reply(e.message);
-			});
+			await message.channel.bulkDelete(messages, true).catch((e) => {message.reply(e.message);});
+			await message.channel.send(`Successfully deleted ${deleteAmount} messages.`)
 		});
 	},
 };

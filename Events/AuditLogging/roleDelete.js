@@ -1,4 +1,4 @@
-const { RoleDeleteCheck } = require('../../Storage/Functions/auditFunctions');
+const { AuditCheck } = require('../../Storage/Functions/auditFunctions');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 		await bot.sleep(500);
 
 		// Role Create Check
-		await RoleDeleteCheck(role).then((Data) => {
+		await AuditCheck(role, 'ROLE_DELETE').then((Data) => {
 			RoleData = Data;
 		});
 
@@ -28,7 +28,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Deleted')
-        .setDescription(`**${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
+        .setDescription(`**${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
         .setColor(role.hexColor);
 
 		logChannel.send({ embeds: [embed] });

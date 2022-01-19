@@ -1,4 +1,4 @@
-const { RoleCreateCheck } = require('../../Storage/Functions/auditFunctions');
+const { AuditCheck } = require('../../Storage/Functions/auditFunctions');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 		await bot.sleep(500);
 
 		// Role Create Check
-		await RoleCreateCheck(role).then((Data) => {
+		await AuditCheck(role, 'ROLE_CREATE').then((Data) => {
 			RoleData = Data;
 		});
 
@@ -28,7 +28,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Created')
-        .setDescription(`<@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
+        .setDescription(`<@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
         .setColor(role.hexColor);
 
 		logChannel.send({ embeds: [embed] });

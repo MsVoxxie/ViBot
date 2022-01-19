@@ -41,8 +41,8 @@ module.exports = {
 							.setTitle('User Changed Discriminator')
 							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
 							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-							.addField(`**Old Discriminator›** ${oldUser.discriminator}`, false)
-							.addField(`**New Discriminator›** ${newUser.discriminator}`, false)
+							.addField(`**New Discriminator›** ${newUser.discriminator ? newUser.discriminator : 'Unknown' }`, false)
+							.addField(`**Old Discriminator›** ${oldUser.discriminator ? oldUser.discriminator : 'Unknown' }`, false)
 							.setColor(settings.guildcolor);
 						logChannel.send({ embeds: [discriminatorEmbed] });
 					}

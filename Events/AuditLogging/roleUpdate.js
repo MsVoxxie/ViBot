@@ -1,4 +1,4 @@
-const { RoleUpdateCheck } = require('../../Storage/Functions/auditFunctions');
+const { AuditCheck } = require('../../Storage/Functions/auditFunctions');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { MessageEmbed } = require('discord.js');
 
@@ -20,7 +20,7 @@ module.exports = {
 		await bot.sleep(500);
 
 		// Role Create Check
-		await RoleUpdateCheck(oldRole).then((Data) => {
+		await AuditCheck(role, 'ROLE_UPDATE').then((Data) => {
 			RoleData = Data;
 		});
 
@@ -36,7 +36,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Role Updated')
-			.setDescription(`**Old Name›** ${oldRole.name}\n**Role ID›** \`${oldRole.id}\`\n**Role Color›** ${oldRole.hexColor}\n**Update by›** ${RoleData ? RoleData.createdby : 'Unknown'}`)
+			.setDescription(`**Old Name›** ${oldRole.name}\n**Role ID›** \`${oldRole.id}\`\n**Role Color›** ${oldRole.hexColor}\n**Update by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
 			.addField('Updated Role›', `**Role Name›** **${newRole.name}**\n**New Role Color›** \`${newRole.hexColor}\``)
             .addField('Permissions Changed›', `${permissionsAdded.length ? `\n\`\`\`css\n#ADDED\n${permissionsAdded.map(perm => permissions[perm]).join('\n')}\`\`\`` : ''}${permissionsRemoved.length ? `\n\`\`\`css\n#REMOVED\n${permissionsRemoved.map(perm => permissions[perm]).join('\n')}\`\`\`` : ''}${!permissionsAdded.length || !permissionsRemoved.length ? '' : 'No Changes'}`)
 			.setColor(newRole.hexColor);

@@ -1,4 +1,4 @@
-const { KickCheck } = require('../../Storage/Functions/auditFunctions');
+const { AuditCheck } = require('../../Storage/Functions/auditFunctions');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
 		await bot.sleep(500);
 
 		// Kick Check
-		await KickCheck(member).then((Data) => {
+		await AuditCheck(member, 'MEMBER_KICK').then((Data) => {
 			LeaveData = Data;
 		});
 
@@ -30,7 +30,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setAuthor({ name: `${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`${Vimotes['LEAVE_ARROW']} ${member.user.tag} Left the server **<t:${Math.round(Date.now() / 1000)}:R>**.${LeaveData ? `\n**Kicked by›** ${LeaveData.kickedby}` : ''}${LeaveData ? `\n**Reason›** ${LeaveData.reason}` : ''}`)
+			.setDescription(`${Vimotes['LEAVE_ARROW']} ${member.user.tag} Left the server **<t:${Math.round(Date.now() / 1000)}:R>**.${LeaveData ? `\n**Kicked by›** <@${LeaveData.executor.id}>` : ''}${LeaveData ? `\n**Reason›** ${LeaveData.reason}` : ''}`)
 			.setColor(settings.guildcolor)
 			.setFooter({ text: bot.Timestamp(new Date()) });
 
