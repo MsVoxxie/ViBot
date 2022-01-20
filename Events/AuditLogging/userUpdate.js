@@ -49,6 +49,7 @@ module.exports = {
 
 					// Avatar Changed
 					if (oldUser.avatar !== newUser.avatar) {
+						if(oldUser.id === bot.user.id) return;
 						// Setup Embed
 						const avatarEmbed = new MessageEmbed()
 							.setTitle('User Changed Avatar')

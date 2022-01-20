@@ -1,8 +1,9 @@
+const { Starboard } = require('../../Storage/Database/models/');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'messageReactionAdd',
-	disabled: true,
+	disabled: false,
 	once: false,
 	async execute(reaction, user, bot, Vimotes) {
 		//Check if message was partial, if so fetch it.
@@ -11,8 +12,8 @@ module.exports = {
 		}
 		//Defininitions
 		const message = await reaction.message;
-		const ReactLimit = 5;
 		const settings = await bot.getGuild(message.guild);
+		let StarData;
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
@@ -23,45 +24,65 @@ module.exports = {
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
+		//Get Counts
+		const ReactLimit = 5;
+		const starCount = await message.reactions.cache.get('⭐').count;
+
 		//get starchannel
 		const starChannelID = await settings.starchannel;
 		const starChannel = await message.guild.channels.cache.get(starChannelID);
 		if (!starChannel) return;
 
-		//Fetch messages
-		const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
-		const stars = await fetchedMessages.find((msg) => (msg.emebds != undefined ? msg.embeds[0].footer.text.includes(`MessageID: ${message.id}`) : null));
+		//Check if message is already starred
+		const ExistingStar = await Starboard.findOne({ guildid: message.guild.id, messageid: message.id });
 
-		if (stars) {
-			// return console.log(stars.content)
-			const star = /(?!⭐|✨|🌟|💫\s?)\d+/.exec(stars.content);
-			const embed = new MessageEmbed()
-				.setColor('#c2b04e')
-				.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
-				.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-				.setFooter({ text: `MessageID: ${message.id}` });
+		//If message is already starred, update star count
+		if (ExistingStar) {
+			StarData = await Starboard.findOneAndUpdate({ guildid: message.guild.id, messageid: message.id }, { $set: { starcount: starCount } }, { new: true, upsert: true });
+		} else {
+			//If message is not starred, create new star
+			StarData = await Starboard.findOneAndUpdate(
+				{ guildid: message.guild.id, authorid: message.author.id, messageid: message.id, channelid: message.channel.id },
+				{ $set: { guildid: message.guild.id, messageid: message.id, starcount: starCount, starred: false } },
+				{ new: true, upsert: true }
+			);
+		}
 
-			const starMsg = await starChannel.messages.fetch(stars.id);
-			await starMsg.edit({ content: `${randStar} ${parseInt(star[0]) + 1} | <#${message.channel.id}>`, embeds: [embed] });
-		} else if (!stars && reaction.emoji.name === '⭐' && reaction.count >= ReactLimit) {
-			//Check for Images or URL's
-			const imageAt = (await message.attachments.size) > 0 ? await this.imageAttachment(message) : '';
-			const imgLink = (await message.content) ? this.imageURL(message) : '';
-			const finalImage = imageAt ? imageAt : imgLink ? imgLink[0] : '';
+		//Check for Images or URL's
+		const imageAt = (await message.attachments.size) > 0 ? await this.imageAttachment(message) : '';
+		const imgLink = (await message.content) ? this.imageURL(message) : '';
+		const finalImage = imageAt ? imageAt : imgLink ? imgLink[0] : '';
 
-			// Check if the messages is empty.
-			if (finalImage === '' && message.content.length < 1)
-				return message.reply(`You cannot star an empty message.`).then((s) => {
-					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-				});
+		// Check if the messages is empty.
+		if (finalImage === '' && message.content.length < 1)
+			return message.reply(`You cannot star an empty message.`).then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
 
-			const embed = new MessageEmbed()
-				.setColor('#c2b04e')
-				.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
-				.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-				.setImage(finalImage)
-				.setFooter({ text: `MessageID: ${message.id}` });
-			await starChannel.send({ content: `${randStar} ${ReactLimit} | <#${message.channel.id}>`, embeds: [embed] });
+		//Embed
+		const embed = new MessageEmbed()
+			.setColor('#c2b04e')
+			.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+			.setImage(finalImage)
+			.setFooter({ text: `MessageID: ${message.id}` });
+
+		if (StarData && StarData.starcount >= ReactLimit) {
+			if (StarData.starred == false) {
+				//If not starred, Post the star!
+				const sm = await starChannel.send({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: [embed] });
+				StarData = await Starboard.findOneAndUpdate({ guildid: message.guild.id, messageid: message.id }, { $set: { starred: true, starid: sm.id } }, { new: true, upsert: true });
+			} else if (StarData.starred == true) {
+				//Fetch Messages and find Star Message
+				const Messages = await starChannel.messages.fetch({ limit: 100 });
+				const Message = await Messages.find((m) => m.id === StarData.starid);
+
+				//If Star was Deleted in channel, remove entry
+				if (!Message) return await Starboard.deleteOne({ guildid: message.guild.id, messageid: message.id });
+
+				//Update Star Message
+				await Message.edit({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: [embed] });
+			}
 		}
 	},
 
@@ -79,17 +100,3 @@ module.exports = {
 		return imgRegex;
 	},
 };
-
-
-//Fetch Guild Stars
-		// const guildStars = await Starboard.findOneAndUpdate(
-		// 	{ guildid: message.guild.id, messageid: message.id },
-		// 	{
-		// 		guildid: message.guild.id,
-		// 		guildname: message.guild.name,
-		// 		messageid: message.id,
-		// 		$inc: { stars: 1 },
-		// 	},
-		// 	{ upsert: true, new: true }
-		// );
-		// if (!guildStars) return;

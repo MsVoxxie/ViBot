@@ -5,7 +5,7 @@ const starboardSchema = mongooose.Schema({
 		type: String,
 		required: true,
 	},
-	guildname: {
+	authorid: {
 		type: String,
 		required: true,
 	},
@@ -13,10 +13,22 @@ const starboardSchema = mongooose.Schema({
 		type: String,
 		required: true,
 	},
-	stars: {
+	starid: {
+		type: String,
+		required: true,
+	},
+	channelid: {
+		type: String,
+		required: true,
+	},
+	starcount: {
 		type: Number,
 		required: true,
 	},
+	starred: {
+		type: Boolean,
+		require: true,
+	}
 });
 
 module.exports = mongooose.model('Starboard', starboardSchema);
