@@ -1,7 +1,7 @@
 const { TwitchWatch } = require('../../Storage/Database/models');
 
 module.exports = {
-	name: 'addchan',
+	name: 'addtwitch',
 	aliases: [],
 	description: 'Add a twitch channel to my watch list.',
 	example: '',

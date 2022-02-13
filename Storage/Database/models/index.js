@@ -7,4 +7,5 @@ module.exports = {
 	TwitchWatch: require('./twitchwatch'),
 	Starboard: require('./starboard'),
 	Xp: require('./xp'),
+	UserData: require('./userData'),
 };
