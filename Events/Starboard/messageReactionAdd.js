@@ -17,7 +17,12 @@ module.exports = {
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		// if (message.author.id === user.id) return;
+		if (message.author.id === user.id) {
+			await message.reactions.cache.first().remove(message.author.id);
+			return message.reply('You cannot star your own messages!').then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
+		}
 		if (message.author.bot) return;
 
 		//Random Star!
@@ -25,7 +30,7 @@ module.exports = {
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 5;
+		const ReactLimit = 3;
 		const starCount = await message.reactions.cache.get('⭐').count;
 
 		//get starchannel
@@ -38,7 +43,11 @@ module.exports = {
 
 		//If message is already starred, update star count
 		if (ExistingStar) {
-			StarData = await Starboard.findOneAndUpdate({ guildid: message.guild.id, messageid: message.id }, { $set: { starcount: starCount } }, { new: true, upsert: true });
+			StarData = await Starboard.findOneAndUpdate(
+				{ guildid: message.guild.id, messageid: message.id },
+				{ $set: { starcount: starCount } },
+				{ new: true, upsert: true }
+			);
 		} else {
 			//If message is not starred, create new star
 			StarData = await Starboard.findOneAndUpdate(
@@ -71,7 +80,11 @@ module.exports = {
 			if (StarData.starred == false) {
 				//If not starred, Post the star!
 				const sm = await starChannel.send({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: [embed] });
-				StarData = await Starboard.findOneAndUpdate({ guildid: message.guild.id, messageid: message.id }, { $set: { starred: true, starid: sm.id } }, { new: true, upsert: true });
+				StarData = await Starboard.findOneAndUpdate(
+					{ guildid: message.guild.id, messageid: message.id },
+					{ $set: { starred: true, starid: sm.id } },
+					{ new: true, upsert: true }
+				);
 			} else if (StarData.starred == true) {
 				//Fetch Messages and find Star Message
 				const Messages = await starChannel.messages.fetch({ limit: 100 });

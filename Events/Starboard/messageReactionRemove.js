@@ -17,7 +17,7 @@ module.exports = {
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		// if (message.author.id === user.id) return;
+		if (message.author.id === user.id) return;
 		if (message.author.bot) return;
 
 		//Random Star!

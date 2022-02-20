@@ -10,6 +10,13 @@ module.exports = {
 	async execute(message, bot) {
 		if (message.author.bot) return;
 
+		if (message.content.includes('https://media.discordapp.net/attachments/487387789814661121/882311854641283083/image0.gif')) {
+			message.reply('https://media.discordapp.net/attachments/487387789814661121/882311854641283083/image0.gif');
+		}
+		if (message.content.includes('https://tenor.com/view/post-this-rat-rat-post-dancing-bounce-gif-16643947')) {
+			message.reply('https://tenor.com/view/post-this-rat-rat-post-dancing-bounce-gif-16643947');
+		}
+
 		// Get Guild Settings
 		let settings;
 		if (message.channel.type !== 'DM') {
@@ -81,9 +88,15 @@ module.exports = {
 		if (command.userPerms) {
 			const usermissing = message.channel.permissionsFor(message.author).missing(command.userPerms);
 			if (usermissing.length > 0) {
-				return message.reply(`Sorry, The command \`${command.name}\` requires the following permissions:\n\`${usermissing.map((perm) => permissions[perm]).join(', ')}\``).then((s) => {
-					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-				});
+				return message
+					.reply(
+						`Sorry, The command \`${command.name}\` requires the following permissions:\n\`${usermissing
+							.map((perm) => permissions[perm])
+							.join(', ')}\``
+					)
+					.then((s) => {
+						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+					});
 			}
 		}
 
@@ -92,7 +105,11 @@ module.exports = {
 			const botmissing = message.channel.permissionsFor(message.guild.me).missing(command.botPerms);
 			if (botmissing.length > 0) {
 				return message
-					.reply(`I cannot execute the command \`${command.name}\`, I'm missing the the following permissions:\n\`${botmissing.map((perm) => permissions[perm]).join(', ')}\``)
+					.reply(
+						`I cannot execute the command \`${command.name}\`, I'm missing the the following permissions:\n\`${botmissing
+							.map((perm) => permissions[perm])
+							.join(', ')}\``
+					)
 					.then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});

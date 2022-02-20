@@ -21,6 +21,5 @@ module.exports = {
 			},
 			{ new: true, upsert: true }
 		);
-		mongoose.UserData.createIndexes({ createdAt: 1 }, { expireAfterSeconds: 60 });
 	},
 };
