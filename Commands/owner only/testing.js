@@ -14,12 +14,12 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		await UserData.findOneAndUpdate(
-			{ guildid: message.guild.id, userid: message.member.user.id },
-			{
-				userroles: message.member.roles.cache.map((r) => r.id),
-			},
-			{ new: true, upsert: true }
-		);
+		// await UserData.findOneAndUpdate(
+		// 	{ guildid: message.guild.id, userid: message.member.user.id },
+		// 	{
+		// 		userroles: message.member.roles.cache.map((r) => r.id),
+		// 	},
+		// 	{ new: true, upsert: true }
+		// );
 	},
 };

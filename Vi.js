@@ -99,7 +99,7 @@ cron.schedule('* * * * *', async () => {
 	for await (const g of guilds) {
 		const guild = g[1];
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-		const xpadd = clamp(Math.round(Math.random() * 25), 1, 100);
+		const xpadd = clamp(Math.round(Math.random() * 100), 1, 100);
 		await bot.awardVoiceXP(xpadd, guild, bot);
 	}
 });
