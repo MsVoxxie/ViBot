@@ -1,7 +1,7 @@
 const { Client, Intents, Collection } = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
-const {BotData} = require('./Storage/Database/models');
+const { BotData } = require('./Storage/Database/models');
 const cron = require('node-cron');
 
 //Setup Client
@@ -75,31 +75,30 @@ bot.Music.on('error', (queue, error) => {
 });
 
 // Init Bot / Database
+bot.Debug = false;
 bot.mongoose.init();
 bot.login(Token);
-
-//BotData
-cron.schedule('* * * * * ', () => {
-	bot.updateBotData(bot);
-})
 
 //Birthday Check
 cron.schedule('0 8 * * *', () => {
 	bot.checkBirthdays();
 });
 
-//Twitch Check
-cron.schedule('* * * * *', () => {
+//Minute Interval
+setInterval(async () => {
+	//Twitch Check
 	bot.twitchWatch();
-});
 
-//VoiceChatXP
-cron.schedule('* * * * *', async () => {
+	//Bot Data
+	bot.updateBotData(bot);
+
+	//Voice Chat XP
 	const guilds = await bot.guilds.cache;
 	for await (const g of guilds) {
 		const guild = g[1];
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 		const xpadd = clamp(Math.round(Math.random() * 100), 1, 100);
+		if (bot.Debug) console.log(`Checking ${guild.name}`);
 		await bot.awardVoiceXP(xpadd, guild, bot);
 	}
-});
+}, 1 * 60 * 1000);

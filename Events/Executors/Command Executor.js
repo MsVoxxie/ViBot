@@ -16,6 +16,12 @@ module.exports = {
 		if (message.content.includes('https://tenor.com/view/post-this-rat-rat-post-dancing-bounce-gif-16643947')) {
 			message.reply('https://tenor.com/view/post-this-rat-rat-post-dancing-bounce-gif-16643947');
 		}
+		if (message.content.includes('https://cdn.discordapp.com/attachments/876658140962230354/947893057406267452/the_cccmfmmggs_ihnknky.gif')) {
+			message.reply('https://cdn.discordapp.com/attachments/876658140962230354/947893057406267452/the_cccmfmmggs_ihnknky.gif');
+		}
+		if (message.content.includes('https://tenor.com/view/post-this-bun-as-fast-as-you-can-meme-post-this-cat-gif-24523182')) {
+			message.reply('https://tenor.com/view/post-this-bun-as-fast-as-you-can-meme-post-this-cat-gif-24523182');
+		}
 
 		// Get Guild Settings
 		let settings;
