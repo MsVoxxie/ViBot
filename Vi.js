@@ -98,7 +98,6 @@ setInterval(async () => {
 		const guild = g[1];
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 		const xpadd = clamp(Math.round(Math.random() * 100), 1, 100);
-		if (bot.Debug) console.log(`Checking ${guild.name}`);
 		await bot.awardVoiceXP(xpadd, guild, bot);
 	}
 }, 1 * 60 * 1000);

@@ -267,7 +267,6 @@ module.exports = (bot) => {
 			//Loop Members
 			for await (const mem of members) {
 				const member = mem[1];
-				console.log(member.user.tag);
 				if (member.user.bot) return;
 				if (bot.Debug) console.log(`Granting ${xpToAdd} Voice XP to ${member.displayName}`);
 				await bot.addXP(guild, member, xpToAdd, bot, settings, levelChannel);
