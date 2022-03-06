@@ -43,12 +43,16 @@ module.exports = {
 
 			// Setup Embed pages
 			const embed = new MessageEmbed()
-				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true })})
+				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true }) })
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
-				.setDescription(`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`)
+				.setDescription(
+					`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`
+				)
 				.addField(
 					`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`,
-					dir.map((command) => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n')
+					dir
+						.map((command) => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`)
+						.join('\n')
 				)
 				.setColor(settings.guildcolor);
 
@@ -64,7 +68,7 @@ module.exports = {
 
 			// Init Embed
 			const helpEmbed = new MessageEmbed()
-				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true })})
+				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true }) })
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 
@@ -79,13 +83,17 @@ module.exports = {
 
 			// If Valid, Generate information sheet
 			helpEmbed.setDescription(
-				`**This guilds prefix is›** ${settings.prefix}\n${command.name ? `**Command›**  ${command.name}\n` : ''}${command.aliases.length ? `**Aliases›** ${command.aliases.join(' | ')}\n` : ''}${
-					command.example ? `**Example›** ${settings.prefix}${command.example}\n` : ''
-				}${settings.disabledModules.includes(command.category) ? `**Status›** ${Vimotes['XMARK']}Disabled.\n` : `**Status›** ${Vimotes['AUTHORIZED']}Enabled\n`}${
-					command.cooldown ? `**Cooldown›** ${command.cooldown}\n` : ''
-				}${command.description ? `**Description›** ${command.description}\n` : ''}${command.userPerms.length ? `**Required User Permissions›** ${command.userPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''}${
-					command.botPerms.length ? `**Required Bot Permissions›** ${command.botPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''
-				}`
+				`**This guilds prefix is›** ${settings.prefix}\n${command.name ? `**Command›**  ${command.name}\n` : ''}${
+					command.aliases.length ? `**Aliases›** ${command.aliases.join(' | ')}\n` : ''
+				}${command.example ? `**Example›** ${settings.prefix}${command.example}\n` : ''}${
+					settings.disabledModules.includes(command.category)
+						? `**Status›** ${Vimotes['XMARK']}Disabled.\n`
+						: `**Status›** ${Vimotes['AUTHORIZED']}Enabled\n`
+				}${command.cooldown ? `**Cooldown›** ${command.cooldown}\n` : ''}${
+					command.description ? `**Description›** ${command.description}\n` : ''
+				}${
+					command.userPerms.length ? `**Required User Permissions›** ${command.userPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''
+				}${command.botPerms.length ? `**Required Bot Permissions›** ${command.botPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''}`
 			);
 			await message.reply({ embeds: [helpEmbed] });
 		} else {
@@ -144,6 +152,13 @@ module.exports = {
 						break;
 					}
 				}
+			});
+
+			//Tell users the collection ended when it has.
+			collector.on('end', async () => {
+				const msg = await message.channel.messages.fetch(embedList.id);
+				await msg.reactions.removeAll();
+				await embedList.edit('**«Collection Timed Out»**');
 			});
 		}
 	},
