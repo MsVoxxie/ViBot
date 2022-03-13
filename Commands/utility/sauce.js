@@ -10,8 +10,8 @@ module.exports = {
 	category: 'utility',
 	args: false,
 	cooldown: 0,
-	hidden: false,
-	ownerOnly: true,
+	hidden: true,
+	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
@@ -50,12 +50,17 @@ module.exports = {
 
 		//Setup Embeds
 		Results.forEach((Res) => {
+			if (!Res.data['ext_urls']) return message.reply(`An Error seems to have occurred!`);
 			if (!Res.data['ext_urls'][0]) return;
 			const embed = new MessageEmbed()
 				.setThumbnail(Res.header['thumbnail'])
 				.setColor(settings.guildcolor)
 				// .setDescription(`[${Res['title']}](${Res['url']})`)
-				.addField('Author›', `[${Res.data['author_name'] ? Res.data['author_name'] : 'Unknown'}](${Res.data['author_url'] ? Res.data['author_url'] : ''})`, false)
+				.addField(
+					'Author›',
+					`[${Res.data['author_name'] ? Res.data['author_name'] : 'Unknown'}](${Res.data['author_url'] ? Res.data['author_url'] : ''})`,
+					false
+				)
 				.addField('Post URL›', `[Click Here](${Res.data['ext_urls'][0]})`, false)
 				.addField('Likelihood›', `${Res.header['similarity']}%`, false)
 				.setFooter({ text: message.member.user.username })
@@ -66,7 +71,10 @@ module.exports = {
 		});
 
 		// Send pagination
-		const embedList = await message.reply({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
+		const embedList = await message.reply({
+			content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`,
+			embeds: [Embeds[currentPage]],
+		});
 
 		// Apply Reactions
 		try {

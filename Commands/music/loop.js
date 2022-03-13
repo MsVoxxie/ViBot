@@ -35,9 +35,11 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed().setColor(settings.guildcolor);
 
+		console.log(queue.repeatMode);
+
 		switch (cmd.toLowerCase()) {
 			case 'queue':
-				if (queue.repeatMode) {
+				if (queue.repeatMode === 2) {
 					queue.setRepeatMode(3);
 					embed.setDescription(`${message.author} Disabled Queue Repeat Mode.`);
 					await message.channel.send({ embeds: [embed] }).then((s) => {
@@ -53,7 +55,7 @@ module.exports = {
 				break;
 
 			default:
-				if (queue.repeatMode) {
+				if (queue.repeatMode === 1) {
 					queue.setRepeatMode(3);
 					embed.setDescription(`${message.author} Disabled Song Repeat Mode.`);
 					await message.channel.send({ embeds: [embed] }).then((s) => {
