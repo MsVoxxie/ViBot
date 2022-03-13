@@ -17,6 +17,11 @@ module.exports = {
 		// Get Queue
 		const queue = await bot.Music.getQueue(message.guild.id);
 		// Checks
+		console.log(queue.tracks.length);
+		if(queue.tracks.length === 0){
+			return bot.commands.get('nowplaying').execute(bot, message, args, settings);
+		}
+
 		if (!message.member.voice.channel)
 			return message.reply('Please join a voice channel to play music.').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);

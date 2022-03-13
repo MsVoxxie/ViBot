@@ -35,8 +35,6 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed().setColor(settings.guildcolor);
 
-		console.log(queue.repeatMode);
-
 		switch (cmd.toLowerCase()) {
 			case 'queue':
 				if (queue.repeatMode === 2) {

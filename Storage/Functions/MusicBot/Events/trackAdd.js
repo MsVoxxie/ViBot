@@ -6,7 +6,7 @@ module.exports = async (bot, queue, track) => {
 	// Setup Embed
 	const embed = new MessageEmbed()
 		.setColor(settings.guildcolor)
-		.setAuthor(message.member.user.tag, message.member.user.displayAvatarURL({ dynamic: true }))
+		.setAuthor({ name: message.member.user.tag, iconURL: message.member.user.displayAvatarURL({ dynamic: true }) })
 		.setThumbnail(track.thumbnail)
 		.setDescription(`Added [${track.title}](${track.url}) to the Queue.`)
 		.setFooter({ text: bot.Timestamp(Date.now()) });

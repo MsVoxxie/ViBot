@@ -32,8 +32,6 @@ module.exports = {
 		// Get Playing Song
 		const track = await queue.nowPlaying();
 
-		console.log(track);
-
 		// Generate Embed
 		const embed = new MessageEmbed()
 			.setTitle(track.title)
