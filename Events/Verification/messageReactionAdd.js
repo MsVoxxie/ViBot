@@ -48,8 +48,6 @@ module.exports = {
 		//If reactor isnt staff, deny them!
 		if (!reactorhasStaffRole) return;
 
-		console.log(authorhasStaffRole, reactorhasStaffRole);
-
 		//Check if author has the verified role already
 		const hasVerifiedRole = await message.member.roles.cache.has(settings.verifiedrole);
 
