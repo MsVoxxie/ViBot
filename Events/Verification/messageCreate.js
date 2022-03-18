@@ -25,7 +25,11 @@ module.exports = {
 			}
 		});
 
+		//Check if user is verified
+		const hasVerifiedRole = await message.member.roles.cache.has(settings.verifiedrole);
+
 		if (hasStaffRole) return;
+		if (hasVerifiedRole) return;
 
 		await message.react('✅');
 		await message.react('⛔');

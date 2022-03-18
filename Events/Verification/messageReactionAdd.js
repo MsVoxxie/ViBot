@@ -56,7 +56,6 @@ module.exports = {
 		//Switchcase
 		switch (reaction.emoji.name) {
 			case '✅': {
-				console.log('0');
 				//Simple checks
 				if (authorhasStaffRole) return;
 				if (hasVerifiedRole) return;
