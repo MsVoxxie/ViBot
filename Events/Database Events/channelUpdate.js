@@ -1,3 +1,5 @@
+const { Guild } = require('../../Storage/Database/models');
+
 module.exports = {
 	name: 'channelUpdate',
 	disabled: false,
@@ -5,7 +7,7 @@ module.exports = {
 	async execute(oldChannel, newChannel, bot) {
 		if (oldChannel === newChannel) return;
 
-		const data = [];
+		const channeldata = [];
 		await newChannel.guild.channels.cache
 			.filter((ch) => ch.type === 'GUILD_CATEGORY')
 			.filter((x) => x !== undefined)
@@ -13,7 +15,7 @@ module.exports = {
 			.map((categories) => {
 				const children = categories.children.filter((ch) => ch.type === 'GUILD_TEXT' || ch.type === 'GUILD_NEWS').filter((x) => x !== undefined);
 
-				data.push({
+				channeldata.push({
 					category: categories.name,
 					channels: [
 						children.map((child) => {
@@ -24,8 +26,18 @@ module.exports = {
 					],
 				});
 			});
-		const final = [...new Set(data)];
+		const finalChannels = [...new Set(channeldata)];
 
-		await bot.updateGuild(newChannel.guild, { channels: final });
+		await Guild.findOneAndUpdate(
+			{ guildid: newChannel.guild.id },
+			{
+				guildname: newChannel.guild.name,
+				channels: finalChannels,
+			},
+			{
+				upsert: true,
+				new: true,
+			}
+		);
 	},
 };

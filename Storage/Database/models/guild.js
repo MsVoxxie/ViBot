@@ -1,101 +1,134 @@
 const mongoose = require('mongoose');
-const { defaultSettings: def } = require('./guildDefaults');
 
 const guildSchema = mongoose.Schema({
+	//Prefix
 	prefix: {
 		type: String,
-		default: def.prefix,
+		default: '?',
 	},
+
+	//Guild Settings
 	guildcolor: {
 		type: String,
-		default: def.guildgolor,
+		default: '',
 	},
 	guildid: {
 		type: Number,
-		default: def.guildid,
+		default: '',
 	},
 	guildname: {
 		type: String,
-		default: def.guildname,
+		default: '',
 	},
+
+	//verification Settings
+	verifiedrole: {
+		type: String,
+		default: 'Not Set',
+	},
+
+	//Toggles
 	prune: {
 		type: Boolean,
-		default: def.prune,
+		default: false,
 	},
 	audit: {
 		type: Boolean,
-		default: def.audit,
+		default: false,
 	},
 	allownsfw: {
 		type: Boolean,
-		default: def.allownsfw,
-	},
-	auditchannel: {
-		type: String,
-		default: def.auditchannel,
+		default: false,
 	},
 	welcome: {
 		type: Boolean,
-		default: def.welcome,
-	},
-	welcomechannel: {
-		type: String,
-		default: def.welcomechannel,
+		default: false,
 	},
 	allowinvites: {
 		type: Boolean,
-		default: def.allowinvites,
-	},
-	invitelimit: {
-		type: Number,
-		default: def.invitelimit,
-	},
-	ruleschannel: {
-		type: String,
-		default: def.ruleschannel,
-	},
-	starchannel: {
-		type: String,
-		default: def.starchannel,
-	},
-	twitterchannel: {
-		type: String,
-		default: def.twitterchannel,
-	},
-	twitchchannel: {
-		type: String,
-		default: def.twitchchannel,
+		default: false,
 	},
 	twitchmention: {
 		type: Boolean,
-		default: def.twitchmention,
+		default: false,
+	},
+	kickondeny: {
+		type: Boolean,
+		default: false,
+	},
+
+	//Channels
+	auditchannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	welcomechannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	verifychannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	invitelimit: {
+		type: Number,
+		default: 10,
+	},
+	ruleschannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	starchannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	twitterchannel: {
+		type: String,
+		default: 'Not Set',
+	},
+	twitchchannel: {
+		type: String,
+		default: 'Not Set',
 	},
 	birthdaychannel: {
 		type: String,
-		default: def.birthdaychannel,
+		default: 'Not Set',
 	},
 	levelchannel: {
 		type: String,
-		default: def.levelchannel,
+		default: 'Not Set',
 	},
+
+	//Arrays
 	disabledModules: {
 		type: Array,
 		unique: true,
-		default: def.disabledModules,
+		default: ['legacy'],
 	},
 	channels: {
 		type: Array,
-		default: def.channels,
+		unique: true,
+		default: [],
+	},
+	roles: {
+		type: Array,
+		unique: true,
+		default: [],
 	},
 	twitterwatch: {
 		type: Array,
 		unique: true,
-		default: def.twitterwatch,
+		default: [],
 	},
 	nsfwblacklist: {
 		type: Array,
 		unique: true,
-		default: def.nsfwblacklist,
+		default: [],
+	},
+	staffroles: {
+		type: Array,
+		unique: true,
+		default: [],
 	},
 });
 

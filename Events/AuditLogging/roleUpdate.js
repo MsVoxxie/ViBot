@@ -20,7 +20,7 @@ module.exports = {
 		await bot.sleep(500);
 
 		// Role Create Check
-		await AuditCheck(role, 'ROLE_UPDATE').then((Data) => {
+		await AuditCheck(newRole, 'ROLE_UPDATE').then((Data) => {
 			RoleData = Data;
 		});
 
