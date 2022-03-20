@@ -27,9 +27,11 @@ module.exports = {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
-			return message.reply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-			});
+			return message
+				.reply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`)
+				.then((s) => {
+					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+				});
 
 		const queue = await bot.Music.createQueue(message.guild, {
 			leaveOnEnd: true,
@@ -44,20 +46,20 @@ module.exports = {
 				channel: message.channel,
 				voice_channel: message.member.voice.channel,
 			},
-			async onBeforeCreateStream(track) {
-				if (track.url.includes('youtube')) {
-					return (await playdl.stream(track.url)).stream;
-				} else if (track.url.includes('spotify')) {
-					const songs = await Player.search(track.title, {
-							requestedBy: message.member,
-						})
-						.catch(err => {
-							return console.error(err);
-						})
-						.then((x) => x.tracks[0]);
-					return (await playdl.stream(songs.url)).stream;
-				}
-			},
+			// async onBeforeCreateStream(track) {
+			// 	if (track.url.includes('youtube')) {
+			// 		return (await playdl.stream(track.url)).stream;
+			// 	} else if (track.url.includes('spotify')) {
+			// 		const songs = await Player.search(track.title, {
+			// 				requestedBy: message.member,
+			// 			})
+			// 			.catch(err => {
+			// 				return console.error(err);
+			// 			})
+			// 			.then((x) => x.tracks[0]);
+			// 		return (await playdl.stream(songs.url)).stream;
+			// 	}
+			// },
 		});
 
 		try {
@@ -70,12 +72,10 @@ module.exports = {
 		}
 
 		const Song = await bot.Music.search(Search, {
-			requestedBy: message.author,
-		}).then((queueList) => {
-			return queueList.tracks[0];
+			requestedBy: message.member,
 		});
 
-		if (!Song) {
+		if (!Song.tracks[0]) {
 			await message.reply('No results found.').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
@@ -86,8 +86,8 @@ module.exports = {
 		if (settings.prune) {
 			await message.delete();
 		}
-		
+
 		await loading.delete();
-		await queue.play(Song);
+		await queue.play(Song.tracks[0]);
 	},
 };

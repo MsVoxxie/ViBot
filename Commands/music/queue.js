@@ -17,16 +17,12 @@ module.exports = {
 		// Get Queue
 		const queue = await bot.Music.getQueue(message.guild.id);
 		// Checks
-		if(queue.tracks.length === 0){
+		if (queue.tracks.length === 0) {
 			return bot.commands.get('nowplaying').execute(bot, message, args, settings);
 		}
 
 		if (!message.member.voice.channel)
 			return message.reply('Please join a voice channel to play music.').then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-			});
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
-			return message.reply(`You are not in the same voice channel as me, Please join ${message.guild.me.voice.channel} to play music!`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		if (!queue)
@@ -40,7 +36,10 @@ module.exports = {
 		const embeds = generateQueueEmbed(message, queue.tracks, settings, totalTime);
 
 		// Generate Embed Message
-		const queueEmbed = await message.channel.send({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
+		const queueEmbed = await message.channel.send({
+			content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+			embeds: [embeds[currentPage]],
+		});
 
 		// Add reactions to embed message
 		try {

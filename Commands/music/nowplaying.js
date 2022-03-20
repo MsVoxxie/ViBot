@@ -20,10 +20,6 @@ module.exports = {
 			return message.reply('Cannot retrieve this guilds queue if you are not in a voice channel.').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
-		if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id)
-			return message.reply('You are not in the same voice channel as me.').then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-			});
 		if (!queue)
 			return message.reply('No music is currently playing.').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
@@ -38,9 +34,11 @@ module.exports = {
 			.setURL(track.url)
 			.setColor(settings.guildcolor)
 			.setDescription(
-				`**Channel›** ${track.author}\n**Views›** \`${bot.toThousands(track.views)}\`\n**Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Requested By›** \`${
-					track.requestedBy.username
-				}\`\n**Repeated›** \`${queue.repeatMode ? 'Yes' : 'No'}\`\n**Paused›** \`${queue.setPaused() ? 'Yes' : 'No'}\``
+				`**Channel›** ${track.author}\n**Views›** \`${bot.toThousands(track.views)}\`\n**Duration›** \`${
+					track.durationMS > 10 ? track.duration : 'Live Stream'
+				}\`\n**Requested By›** \`${track.requestedBy.username}\`\n**Repeated›** \`${queue.repeatMode ? 'Yes' : 'No'}\`\n**Paused›** \`${
+					queue.setPaused() ? 'Yes' : 'No'
+				}\``
 			)
 			.setThumbnail(track.thumbnail);
 		if (track.durationMS > 10) {
