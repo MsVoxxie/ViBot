@@ -18,7 +18,7 @@ module.exports = {
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
 		if (message.author.id === user.id) {
-			await message.reactions.cache.first().remove(message.author.id);
+			await message.reactions.cache.first().users.remove(user.id)
 			return message.reply('You cannot star your own messages!').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});

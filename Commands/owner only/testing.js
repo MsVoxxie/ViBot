@@ -1,3 +1,5 @@
+const { MessageButton, MessageActionRow } = require('discord.js');
+
 module.exports = {
 	name: 'test',
 	aliases: ['t'],
@@ -12,17 +14,37 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings) {
 		//Setup Dashboard Roles
-		const guildRoles = await message.guild.roles.cache
-			.sort((a, b) => b.position - a.position)
-			.map((r) => {
-				if (!r.managed && r.id !== message.guild.id) {
-					return r;
-				}
-			})
-			.filter((x) => x !== undefined);
+		const Buttons = new MessageActionRow().addComponents(
+			new MessageButton().setLabel('Approve').setStyle('SUCCESS').setCustomId('approve'),
 
-			for (const role of guildRoles) {
-				console.log(role.id, role.name);
+			new MessageButton().setLabel('Deny').setStyle('DANGER').setCustomId('deny')
+		);
+
+		await message.channel.send({ content: 'BlahBlah', components: [Buttons] });
+
+		const filter = (interaction) => {
+			if (interaction.user.id === message.author.id) return true;
+			return;
+		};
+
+		const collector = message.channel.createMessageComponentCollector({ filter, max: 1 });
+
+		collector.on('end', async (ButtonInteraction) => {
+			const btnId = ButtonInteraction.first().customId;
+
+			switch (btnId) {
+				case 'approve':
+					ButtonInteraction.first().reply({ content: 'Approved' });
+					ButtonInteraction.first().message.edit({ components: [] });
+
+					break;
+
+				case 'deny':
+					ButtonInteraction.first().reply({ content: 'Denied' });
+					ButtonInteraction.first().message.edit({ components: [] });
+
+					break;
 			}
+		});
 	},
 };
