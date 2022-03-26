@@ -70,6 +70,10 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: 'Not Set',
 	},
+	confirmationchannel: {
+		type: String,
+		default: 'Not Set',
+	},
 	invitelimit: {
 		type: Number,
 		default: 10,

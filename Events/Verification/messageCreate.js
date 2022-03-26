@@ -1,3 +1,6 @@
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { Verification } = require('../../Storage/Database/models/index.js');
+
 module.exports = {
 	name: 'messageCreate',
 	disabled: false,
@@ -13,6 +16,8 @@ module.exports = {
 		const verifyChannel = await message.guild.channels.cache.get(verifyChannelID);
 		if (!verifyChannel) return;
 		if (message.channel.id !== verifyChannelID) return;
+		const confirmChannel = await message.guild.channels.cache.get(settings.confirmationchannel);
+		if (!confirmChannel) return;
 
 		//Check if message author is staff
 		const staffRoles = await settings.staffroles;
@@ -31,7 +36,23 @@ module.exports = {
 		if (hasStaffRole) return;
 		if (hasVerifiedRole) return;
 
-		await message.react('✅');
-		await message.react('⛔');
+		//Setup Dashboard Roles
+		const Buttons = new MessageActionRow().addComponents(
+			new MessageButton().setLabel('Approve').setStyle('SUCCESS').setCustomId(`app_${message.author.id}`).setEmoji('✅'),
+			new MessageButton().setLabel('Deny').setStyle('DANGER').setCustomId(`den_${message.author.id}`).setEmoji('⛔')
+		);
+
+		const Embed = new MessageEmbed()
+			.setTitle('Verification Request')
+			.setColor(settings.guildcolor)
+			.setDescription(`${message.author} has requested to be verified in [${message.channel.name}](${message.url}).\nTheir post was created ${bot.relativeTimestamp(message.createdAt)}.\n\nPlease click ✅ to approve or ⛔ to deny.`);
+
+			const Exists = await Verification.findOne({ guildid: message.guild.id, userid: message.author.id }).lean();
+			if(Exists) return;
+
+			const Check = await Verification.findOneAndUpdate({ guildid: message.guild.id, userid: message.author.id, messageid: message.id, verified: false }, { }, { upsert: true, new: true })
+			if(Check.verified === true) return;
+
+			await confirmChannel.send({ embeds: [Embed], components: [Buttons] });
 	},
 };

@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
 	name: 'test',
@@ -15,18 +15,23 @@ module.exports = {
 	async execute(bot, message, args, settings) {
 		//Setup Dashboard Roles
 		const Buttons = new MessageActionRow().addComponents(
-			new MessageButton().setLabel('Approve').setStyle('SUCCESS').setCustomId('approve'),
-
-			new MessageButton().setLabel('Deny').setStyle('DANGER').setCustomId('deny')
+			new MessageButton().setLabel('Approve').setStyle('SUCCESS').setCustomId('approve').setEmoji('✅'),
+			new MessageButton().setLabel('Deny').setStyle('DANGER').setCustomId('deny').setEmoji('⛔')
 		);
 
-		await message.channel.send({ content: 'BlahBlah', components: [Buttons] });
+		const Embed = new MessageEmbed().setTitle('Verification Request')
+		.setColor(settings.guildcolor)
+		.setDescription(`${message.author} has requested to be verified in [${message.channel.name}](${message.url}).\n\nPlease click ✅ to approve or ⛔ to deny.\n\nTheir post was created ${bot.relativeTimestamp(message.createdAt)}.`)
+
+		await message.channel.send({ embeds: [Embed], components: [Buttons] });
 
 		const filter = (interaction) => {
-			if (interaction.user.id === message.author.id) return true;
-			return;
+			if (interaction.user.id === message.author.id) {
+				return true;
+			} else {
+				return false;
+			}
 		};
-
 		const collector = message.channel.createMessageComponentCollector({ filter, max: 1 });
 
 		collector.on('end', async (ButtonInteraction) => {

@@ -8,4 +8,5 @@ module.exports = {
 	Starboard: require('./starboard'),
 	Xp: require('./xp'),
 	UserData: require('./userData'),
+	Verification: require('./verification'),
 };
