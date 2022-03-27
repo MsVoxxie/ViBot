@@ -28,11 +28,9 @@ module.exports = {
 
 		//Delete, and send message
 		await Warning.findOneAndDelete({ guildid: message.guild.id, warningid: warningId });
-		const successEmbed = new MessageEmbed().setColor('#42f560').setDescription(`${Vimotes['CHECK']} **${member.user.tag}'s** Warning has been deleted.\n**Warning ID:** ${warningId}`);
-        const headsupEmbed = new MessageEmbed().setColor('#42f560').setDescription(`${Vimotes['CHECK']} One of your warnings in **${message.guild.name}** has been removed.`);
-		await message.reply({ embeds: [successEmbed] });
+		await message.reply({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['CHECK']} **${member.user.tag}'s** Warning has been deleted.\n**Warning ID:** ${warningId}` })] });
         try {
-            await member.send({ embeds: [headsupEmbed]});
+            await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['CHECK']} One of your warnings in **${message.guild.name}** has been removed.` })] });
         } catch(e) {
             console.error(e)
         }

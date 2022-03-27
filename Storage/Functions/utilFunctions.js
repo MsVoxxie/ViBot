@@ -89,7 +89,14 @@ module.exports = (bot) => {
 	};
 
 	//Generate One Line Embed
-	bot.replyEmbed = (color, description) => {
-		return new Discord.MessageEmbed().setColor(color).setDescription(description);
+	bot.replyEmbed = (data) => {
+		const embed = new MessageEmbed();
+		if (data?.color) {
+			embed.setColor(data.color);
+		}
+		if (data?.text) {
+			embed.setDescription(data.text);
+		}
+		return embed;
 	};
 };
