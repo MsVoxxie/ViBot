@@ -24,6 +24,7 @@ module.exports = {
 		if ((memberTarget && !warningId) || !warningId.length === 32) {
 			const userWarnings = await Warning.find({ guildid: message.guild.id, userid: memberTarget.id }).limit(10).lean();
 			userWarnings.sort((a, b) => a.date - b.date);
+			if(!userWarnings.length) return message.reply('This user has no warnings.');
 
 			//Setup Embed
 			const listEmbed = new MessageEmbed().setColor(settings.guildcolor).setAuthor({ name: `${userWarnings.length} Warnings for ${memberTarget.user.tag}`, iconURL: memberTarget.displayAvatarURL({ dynamic: true }) });
