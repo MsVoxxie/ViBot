@@ -10,7 +10,8 @@ module.exports = (bot) => {
 	};
 	//BottomText
 	bot.isBottomText = (message) => {
-		if (deJunk.isJunk(message.content) && !message.mentions.members.size && !message.mentions.channels.size && !message.mentions.roles.size) return true;
+		if (deJunk.isJunk(message.content) && !message.mentions.members.size && !message.mentions.channels.size && !message.mentions.roles.size)
+			return true;
 		else return false;
 	};
 	// Timestamp
@@ -72,5 +73,15 @@ module.exports = (bot) => {
 		} else {
 			return false;
 		}
+	};
+
+	//Generate Unique ID
+	bot.genUniqueId = () => {
+		let Gen4 = () => {
+			return Math.floor((1 + Math.random()) * 0x10000)
+				.toString(16)
+				.substring(1);
+		};
+		return `${Gen4()}${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}${Gen4()}`;
 	};
 };

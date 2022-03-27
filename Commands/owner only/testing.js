@@ -13,43 +13,14 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		//Setup Dashboard Roles
-		const Buttons = new MessageActionRow().addComponents(
-			new MessageButton().setLabel('Approve').setStyle('SUCCESS').setCustomId('approve').setEmoji('✅'),
-			new MessageButton().setLabel('Deny').setStyle('DANGER').setCustomId('deny').setEmoji('⛔')
-		);
-
-		const Embed = new MessageEmbed().setTitle('Verification Request')
-		.setColor(settings.guildcolor)
-		.setDescription(`${message.author} has requested to be verified in [${message.channel.name}](${message.url}).\n\nPlease click ✅ to approve or ⛔ to deny.\n\nTheir post was created ${bot.relativeTimestamp(message.createdAt)}.`)
-
-		await message.channel.send({ embeds: [Embed], components: [Buttons] });
-
-		const filter = (interaction) => {
-			if (interaction.user.id === message.author.id) {
-				return true;
-			} else {
-				return false;
-			}
+		let UniqueId = () => {
+			let Gen4 = () => {
+				return Math.floor((1 + Math.random()) * 0x10000)
+					.toString(16)
+					.substring(1);
+			};
+			return `${Gen4()}${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}${Gen4()}`;
 		};
-		const collector = message.channel.createMessageComponentCollector({ filter, max: 1 });
-
-		collector.on('end', async (ButtonInteraction) => {
-			const btnId = ButtonInteraction.first().customId;
-
-			switch (btnId) {
-				case 'approve':
-					ButtonInteraction.first().reply({ content: 'Approved' });
-					ButtonInteraction.first().message.edit({ components: [] });
-
-					break;
-
-				case 'deny':
-					ButtonInteraction.first().reply({ content: 'Denied' });
-					ButtonInteraction.first().message.edit({ components: [] });
-
-					break;
-			}
-		});
+		message.reply(UniqueId());
 	},
 };

@@ -9,4 +9,5 @@ module.exports = {
 	Xp: require('./xp'),
 	UserData: require('./userData'),
 	Verification: require('./verification'),
+	Warning: require('./warnings'),
 };

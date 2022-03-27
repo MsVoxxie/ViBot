@@ -62,7 +62,9 @@ module.exports = {
 					//Add verified role
 					const verifiedRole = await guild.roles.fetch(settings.verifiedrole);
 					await user.roles.add(verifiedRole);
-					await user.send(`You have been Allowed access to ${message.guild.name}!`);
+
+					const successEmbed = new MessageEmbed().setColor('#42f560').setDescription(`*${Vimotes['CHECK']} You have been allowed access to ${message.guild.name}*`);
+					await user.send({ embeds: [successEmbed] });
 
 					//Update Embed
 					Embed.setDescription(`${user} has been approved by ${clicker}!`);
@@ -88,7 +90,9 @@ module.exports = {
 				try {
 					if (settings.kickondeny) {
 						//Inform the user
-						await user.send(`You have been Denied access to ${message.guild.name}.`);
+
+						const deniedEmbed = new MessageEmbed().setColor('#f54242').setDescription(`*You have been Denied access to ${message.guild.name}.*`);
+						await user.send({ embeds: [deniedEmbed] });
 						await user.kick(`Denied by ${clicker.displayName}`);
 
 						await message.edit({ embeds: [Embed], components: [] });
