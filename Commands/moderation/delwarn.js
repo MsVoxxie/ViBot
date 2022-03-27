@@ -4,8 +4,8 @@ const { Warning } = require('../../Storage/Database/models/index.js');
 module.exports = {
 	name: 'delwarn',
 	aliases: ['unwarn', 'removewarning'],
-	description: 'Get a users warnings.',
-	example: '?delwarn warningId',
+	description: 'Deletes a users warning by ID.',
+	example: 'delwarn warningId',
 	category: 'moderation',
 	args: false,
 	cooldown: 5,

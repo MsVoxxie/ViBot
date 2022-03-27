@@ -5,7 +5,7 @@ module.exports = {
 	name: 'warn',
 	aliases: ['addwarn', 'addwarning'],
 	description: 'Warn a user.',
-	example: '?warn @User Broke rule #7',
+	example: 'warn @User Broke rule #7',
 	category: 'moderation',
 	args: true,
 	cooldown: 5,
