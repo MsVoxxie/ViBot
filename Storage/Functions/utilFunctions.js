@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const deJunk = require('dejunk.js');
 
@@ -8,12 +9,14 @@ module.exports = (bot) => {
 			setTimeout(resolve, ms);
 		});
 	};
+
 	//BottomText
 	bot.isBottomText = (message) => {
 		if (deJunk.isJunk(message.content) && !message.mentions.members.size && !message.mentions.channels.size && !message.mentions.roles.size)
 			return true;
 		else return false;
 	};
+
 	// Timestamp
 	bot.Timestamp = (date) => {
 		return moment(date).format('MMMM Do YYYY, h:mm A');
@@ -83,5 +86,10 @@ module.exports = (bot) => {
 				.substring(1);
 		};
 		return `${Gen4()}${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}${Gen4()}`;
+	};
+
+	//Generate One Line Embed
+	bot.replyEmbed = (color, description) => {
+		return new Discord.MessageEmbed().setColor(color).setDescription(description);
 	};
 };

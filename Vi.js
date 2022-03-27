@@ -76,7 +76,6 @@ bot.Music.on('error', (queue, error) => {
 
 // Init Bot / Database
 bot.Debug = false;
-bot.mongoose.init();
 bot.login(Token);
 
 //Birthday Check
