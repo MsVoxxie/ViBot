@@ -33,9 +33,6 @@ module.exports = {
 		//Check if user is verified
 		const hasVerifiedRole = await message.member.roles.cache.has(settings.verifiedrole);
 
-		if (hasStaffRole) return;
-		if (hasVerifiedRole) return;
-
 		//Setup Dashboard Roles
 		const Buttons = new MessageActionRow().addComponents(
 			new MessageButton().setLabel('Approve').setStyle('SUCCESS').setCustomId(`app_${message.author.id}`).setEmoji('✅'),
@@ -48,10 +45,14 @@ module.exports = {
 			.setDescription(`${message.author} has requested to be verified in [${message.channel.name}](${message.url}).\nTheir post was created ${bot.relativeTimestamp(message.createdAt)}.\n\nPlease click ✅ to approve or ⛔ to deny.`);
 
 			const Exists = await Verification.findOne({ guildid: message.guild.id, userid: message.author.id }).lean();
-			if(Exists) return;
+			if(Exists) return message.delete();
 
-			const Check = await Verification.findOneAndUpdate({ guildid: message.guild.id, userid: message.author.id, messageid: message.id, verified: false }, { }, { upsert: true, new: true })
+
+			const Check = await Verification.findOneAndUpdate({ guildid: message.guild.id, userid: message.author.id, messageid: message.id, verified: `${hasVerifiedRole ? true : false}` }, { }, { upsert: true, new: true })
 			if(Check.verified === true) return;
+
+			if (hasStaffRole) return;
+			if (hasVerifiedRole) return;
 
 			await confirmChannel.send({ embeds: [Embed], components: [Buttons] });
 	},
