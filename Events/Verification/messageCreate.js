@@ -5,7 +5,7 @@ module.exports = {
 	name: 'messageCreate',
 	disabled: false,
 	once: false,
-	async execute(message, bot) {
+	async execute(message, bot, Vimotes) {
 		if (message.author.bot) return;
 
 		//Defininitions
@@ -45,14 +45,18 @@ module.exports = {
 			.setDescription(`${message.author} has requested to be verified in [${message.channel.name}](${message.url}).\nTheir post was created ${bot.relativeTimestamp(message.createdAt)}.\n\nPlease click ✅ to approve or ⛔ to deny.`);
 
 			const Exists = await Verification.findOne({ guildid: message.guild.id, userid: message.author.id }).lean();
-			if(Exists) return message.delete();
+			if(Exists) {
+				await message.delete();
+				await message.member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have already requested verification in ${message.guild.name}*` })] });
+				return
+			}
 
 
 			const Check = await Verification.findOneAndUpdate({ guildid: message.guild.id, userid: message.author.id, messageid: message.id, verified: `${hasVerifiedRole ? true : false}` }, { }, { upsert: true, new: true })
 			if(Check.verified === true) return;
 
+			if (hasVerifiedRole) return;
 			if (hasStaffRole) return;
-			if (hasVerifiedRole) return message.member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have already requested verification in ${message.guild.name}*` })] });
 
 			await confirmChannel.send({ embeds: [Embed], components: [Buttons] });
 	},
