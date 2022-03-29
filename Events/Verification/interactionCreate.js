@@ -88,7 +88,7 @@ module.exports = {
 				try {
 					if (settings.kickondeny) {
 						//Inform the user
-						await user.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*You have been Denied access to ${message.guild.name}.*` })] });
+						await user.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
 						await user.kick(`Denied by ${clicker.displayName}`);
 
 						await message.edit({ embeds: [Embed], components: [] });
@@ -97,7 +97,7 @@ module.exports = {
 						await Verification.findOneAndDelete({ guildid: guild.id, userid: user.id });
 
 					} else {
-						await user.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*You have been Denied access to ${message.guild.name}.*` })] });
+						await user.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
 					}
 				} catch (e) {
 					console.error(e);

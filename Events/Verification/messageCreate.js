@@ -52,7 +52,7 @@ module.exports = {
 			if(Check.verified === true) return;
 
 			if (hasStaffRole) return;
-			if (hasVerifiedRole) return;
+			if (hasVerifiedRole) return message.member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have already requested verification in ${message.guild.name}*` })] });
 
 			await confirmChannel.send({ embeds: [Embed], components: [Buttons] });
 	},
