@@ -23,7 +23,8 @@ module.exports = {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
-		if (message.author.bot) return;
+
+		// if (message.author.bot) return;
 
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
