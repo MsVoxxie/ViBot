@@ -17,13 +17,20 @@ module.exports = {
 		url.hostname = 'fxtwitter.com';
 		await message.react('🐦');
 
-		//Create Collector and Filter
+		//Create Filter
 		const filter = (reaction, user) => reaction.emoji.name === '🐦' && user.id === message.author.id;
-		const collector = message.createReactionCollector(filter, { time: 60 * 1000 });
+		const collector = message.createReactionCollector({ filter, time: 60 * 1000, error: ['time'] });
+
+		//Collector Collects
 		collector.on('collect', async (reaction, user) => {
-			if (user.id === message.author.id) {
-				message.delete();
-				message.channel.send(`From ${message.author} | ${url.href}`);
+			message.delete();
+			message.channel.send(`Original post by ${message.author}\n${url.href}`);
+		});
+
+		//Collector Ends
+		collector.on('end', async (collected, reason) => {
+			if (reason === 'time') {
+				await message.reactions.cache.first().users.remove(bot.user.id);
 			}
 		});
 	},

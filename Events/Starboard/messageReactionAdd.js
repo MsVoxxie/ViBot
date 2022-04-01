@@ -18,13 +18,13 @@ module.exports = {
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
 		if (message.author.id === user.id) {
-			await message.reactions.cache.first().users.remove(user.id)
+			await message.reactions.cache.first().users.remove(user.id);
 			return message.reply('You cannot star your own messages!').then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 		}
 
-		// if (message.author.bot) return;
+		if (message.author.bot) return;
 
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
