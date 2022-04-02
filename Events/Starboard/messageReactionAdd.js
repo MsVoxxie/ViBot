@@ -24,8 +24,6 @@ module.exports = {
 			});
 		}
 
-		if (message.author.bot) return;
-
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
