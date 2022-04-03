@@ -41,6 +41,7 @@ bot.Music = Music;
 
 // Command Info
 bot.commands = new Collection();
+bot.slashCommands = new Collection();
 bot.aliases = new Collection();
 bot.cooldowns = new Collection();
 
@@ -67,6 +68,7 @@ bot.Owners = ['101789503634554880', '101790332437405696'];
 
 // Init Loaders
 require('./Storage/Core/Command Loader')(bot);
+require('./Storage/Core/Slash Loader.js')(bot);
 require('./Storage/Core/Event Loader')(bot);
 
 //Music
