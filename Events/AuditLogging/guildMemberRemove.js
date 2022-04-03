@@ -6,6 +6,9 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(member, bot, Vimotes) {
+
+		if(member.id === bot.user.id) return;
+
 		// If Partial, Fetch
 		if (member.partial) {
 			await member.fetch();

@@ -7,6 +7,9 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(member, bot, Vimotes) {
+
+		if(member.id === bot.user.id) return;
+
 		// Fetch the member, just in case.
 		const getMember = await member.guild.members.fetch(member.id);
 
