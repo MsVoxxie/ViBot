@@ -93,6 +93,10 @@ const Vimotes = {
 	A_UPDATING: '<a:updating:753802620694429827>',
 	GIL: '<:gil:919738472548433970>',
 	HQ: '<:high_quality:919757521365893130>',
+	ADDED: '<:added:960116965811322880>',
+	UNCHANGED: '<:unchanged:960116965656117248>',
+	REMOVED: '<:removed:960116965563838534>',
+	ALERT: '<a:alert:960116965639348285>',
 };
 
 const canModifyQueue = async (member) => {
