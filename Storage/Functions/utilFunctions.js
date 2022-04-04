@@ -97,6 +97,9 @@ module.exports = (bot) => {
 		if (data?.text) {
 			embed.setDescription(data.text);
 		}
+		if(data?.footer) {
+			embed.setFooter({ text: data.footer });
+		}
 		return embed;
 	};
 };

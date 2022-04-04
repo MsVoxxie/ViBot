@@ -29,7 +29,7 @@ module.exports = {
 		const embed = new MessageEmbed()
         .setTitle('Role Deleted')
         .setDescription(`**${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-        .setColor(role.hexColor);
+        .setColor(settings.guildcolor)
 
 		logChannel.send({ embeds: [embed] });
 	},
