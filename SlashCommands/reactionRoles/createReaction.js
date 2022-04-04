@@ -11,7 +11,7 @@ module.exports = {
 		.addRoleOption((option) => option.setName('role').setDescription('The role you want to use.').setRequired(true))
 		.addStringOption((option) => option.setName('emoji').setDescription('The emoji you want to use.').setRequired(true)),
 	options: {
-		ownerOnly: true,
+		ownerOnly: false,
 		userPerms: ['MANAGE_ROLES'],
 		botPerms: ['MANAGE_ROLES'],
 	},
