@@ -2,6 +2,8 @@ const { readdirSync } = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { Token } = require('../../Storage/Config/Config.json');
+const ascii = require('ascii-table');
+const table = new ascii().setHeading('Slash Commands', 'Registration Status');
 
 module.exports = {
 	name: 'registerSlash',
@@ -16,23 +18,28 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-		readdirSync('./SlashCommands/').forEach(async (dir) => {
-			const cmds = [];
+		const cmds = [];
+		await readdirSync('./SlashCommands/').forEach(async (dir) => {
 			const commands = readdirSync(`./SlashCommands/${dir}/`).filter((file) => file.endsWith('.js'));
 			for await (const file of commands) {
 				const command = require(`../../SlashCommands/${dir}/${file}`);
-				cmds.push(command.data.toJSON());
+				if (command.data) {
+					table.addRow(`${dir} | ${file}`, '✔ » Registered');
+					cmds.push(command.data.toJSON());
+				} else {
+					table.addRow(`${dir} | ${file}`, '❌ » Failed to Register!');
+					continue;
+				}
 			}
-
-			const rest = new REST({ version: '9' }).setToken(Token);
-			rest
-				.put(Routes.applicationCommands('827375161665650689'), { body: cmds })
-				// .put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: cmds })
-				.then(() => {
-					console.log('Successfully registered application commands.');
-					message.reply('Successfully registered all commands!');
-				})
-				.catch(console.error);
 		});
+		await bot.sleep(1000);
+		const rest = new REST({ version: '9' }).setToken(Token);
+		rest.put(Routes.applicationCommands('827375161665650689'), { body: cmds })
+			// .put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: cmds })
+			.then(() => {
+				console.log(table.toString());
+				message.reply('Successfully registered all commands!');
+			})
+			.catch(console.error);
 	},
 };
