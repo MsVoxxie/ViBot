@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('avatar')
-		.setDescription('Get the avatar URL of the selected user, or your own avatar.')
+		.setDescription('Display a users avatar, or your own!.')
 		.addUserOption((option) => option.setName('user').setDescription("The user's avatar to show")),
 	options: {
 		ownerOnly: false,

@@ -1,3 +1,4 @@
+const { Reaction } = require('../../Storage/Database/models/');
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'messageReactionAdd',
@@ -8,34 +9,39 @@ module.exports = {
 			await msg.message.fetch();
 		}
 		if (user.bot) return;
-		const settings = await bot.getGuild(msg.message.guild);
-		const data = await bot.getReactions(msg.message.guild);
-		const roles = await data.reactionRoles;
-		const ch = await roles.map((reaction) => reaction['channel']);
-		if (!ch.includes(msg.message.channel)) return;
-		const valid = await roles.find((reaction) => reaction['reaction'] === msg.emoji.name);
-		if (valid.reaction !== msg.emoji.name) return;
-		const Role = await msg.message.guild.roles.cache.get(valid.role);
+		const fetchReactions = await Reaction.find({
+			guildid: msg.message.guild.id,
+			messageid: msg.message.id,
+			channelid: msg.message.channel.id,
+			reaction: msg.emoji.name,
+		}).lean();
+		const getReactions = fetchReactions[0]; // This is a horrible way to do this. Too bad!
+
+		//Checks
+		if (!getReactions) return;
+		if (msg.emoji.name.toString() !== getReactions.reaction) return console.log('Reaction is not the same');
+		const Role = await msg.message.guild.roles.cache.get(getReactions.roleid);
 		const member = await msg.message.guild.members.cache.get(user.id);
 
-		if (msg.emoji.name === valid.reaction && msg.message.id === valid.message) {
-			if (member.roles.cache.some((r) => r.name === Role.name)) return;
-			await member.roles.add(Role);
+		//Check if the user has the role
+		if (!member.roles.cache.has(Role.id)) {
 			try {
-				// Define Embed
-				const embed = new MessageEmbed()
-					.setAuthor({ name: msg.message.guild.name, iconURL: msg.message.guild.iconURL({ dynamic: true })})
-					.setColor(Role.color)
-					.setDescription(`${Vimotes['AUTHORIZED']}${Role.name} Added.`);
-				await member.send({ embeds: [embed] }).then((s) => {
-					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-				});
-			} catch (error) {
-				console.log(error);
-				return;
+				await member.roles.add(Role);
+				await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['ADDED']} **»** You have been assigned the role ***${Role.name}***` })] });
+			} catch (e) {
+				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['UNCHANGED']} **»** I was unable to assign the role ***${Role.name}***` })] });
 			}
-		} else if (msg.message.id === valid.message && msg.emoji.name !== valid.reaction) {
-			msg.users.remove(member.id);
+		} else {
+			try {
+				await member.roles.remove(Role);
+				await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['REMOVED']} **»** You have been removed from the role ***${Role.name}***` })] });
+			} catch (e) {
+				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['UNCHANGED']} **»** I was unable to assign the role ***${Role.name}***` })] });
+			}
 		}
+
+		//Remove the reaction
+		const userReaction = await msg.message.reactions.cache.get(msg.emoji.name);
+		await userReaction.users.remove(user.id);
 	},
 };

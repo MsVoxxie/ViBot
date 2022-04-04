@@ -51,7 +51,6 @@ bot.events = new Collection();
 // Load Database
 bot.mongoose = require('./Storage/Database/mongoose');
 bot.guildDefaults = require('./Storage/Database/models/guildDefaults');
-bot.reactionDefaults = require('./Storage/Database/models/reactionDefaults');
 bot.birthdayDefaults = require('./Storage/Database/models/birthdayDefaults');
 bot.twitchwatchDefaults = require('./Storage/Database/models/twitchwatchDefaults');
 

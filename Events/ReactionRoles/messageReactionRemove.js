@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'messageReactionRemove',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(msg, user, bot, Vimotes) {
 		if (msg.message.partial) {

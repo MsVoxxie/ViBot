@@ -1,18 +1,29 @@
 const mongoose = require('mongoose');
-const { defaultSettings: def } = require('./reactionDefaults');
 
 const reactionSchema = mongoose.Schema({
 	guildid: {
 		type: String,
-		default: def.guildid,
+		required: true,
 	},
-	guildname: {
+	messageid: {
 		type: String,
-		default: def.guildname,
+		required: true,
 	},
-	reactionRoles: {
-		type: Array,
-		default: def.reactionRoles,
+	channelid: {
+		type: String,
+		required: true,
+	},
+	roleidentifier: {
+		type: String,
+		required: true,
+	},
+	roleid: {
+		type: String,
+		required: true,
+	},
+	reaction: {
+		type: String,
+		required: true,
 	},
 });
 

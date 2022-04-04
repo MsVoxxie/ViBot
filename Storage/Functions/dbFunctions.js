@@ -39,48 +39,48 @@ module.exports = (bot) => {
 		}
 	};
 
-	// Reaction Roles Create
-	bot.createReactions = async (settings) => {
-		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.reactionDefaults.defaultSettings);
-		const merged = Object.assign(defaults, settings);
-		const newReaction = await new Reaction(merged);
-		const check = await Reaction.findOne({ guildid: merged.guildid });
-		if (check) {
-			return;
-		} else {
-			return newReaction.save().then(console.log(`Created new Reaction Model for \`${merged.guildname}\``));
-		}
-	};
+	// // Reaction Roles Create
+	// bot.createReactions = async (settings) => {
+	// 	const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.reactionDefaults.defaultSettings);
+	// 	const merged = Object.assign(defaults, settings);
+	// 	const newReaction = await new Reaction(merged);
+	// 	const check = await Reaction.findOne({ guildid: merged.guildid });
+	// 	if (check) {
+	// 		return;
+	// 	} else {
+	// 		return newReaction.save().then(console.log(`Created new Reaction Model for \`${merged.guildname}\``));
+	// 	}
+	// };
 
-	// Get guild Reaction Roles
-	bot.getReactions = async (guild) => {
-		if (!guild) throw new Error('No Guild Provided!');
-		const data = await Reaction.findOne({ guildid: guild.id });
-		if (data) return data;
-		else return bot.reactionDefaults.defaultSettings;
-	};
+	// // Get guild Reaction Roles
+	// bot.getReactions = async (guild) => {
+	// 	if (!guild) throw new Error('No Guild Provided!');
+	// 	const data = await Reaction.findOne({ guildid: guild.id });
+	// 	if (data) return data;
+	// 	else return bot.reactionDefaults.defaultSettings;
+	// };
 
-	// Add Reaction to Guild
-	bot.addReaction = async (guild, settings) => {
-		if (!guild) throw new Error('No Guild Provided!');
-		const data = await Reaction.findOne({ guildid: guild.id });
-		const reactionRoles = await data.reactionRoles;
-		if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+	// // Add Reaction to Guild
+	// bot.addReaction = async (guild, settings) => {
+	// 	if (!guild) throw new Error('No Guild Provided!');
+	// 	const data = await Reaction.findOne({ guildid: guild.id });
+	// 	const reactionRoles = await data.reactionRoles;
+	// 	if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
 
-		reactionRoles.push(settings);
-		data.save();
-	};
+	// 	reactionRoles.push(settings);
+	// 	data.save();
+	// };
 
-	// Remove Reaction to Guild
-	bot.removeReaction = async (guild, settings) => {
-		if (!guild) throw new Error('No Guild Provided!');
-		const data = await Reaction.findOne({ guildid: guild.id });
-		const reactionRoles = await data.reactionRoles;
-		if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+	// // Remove Reaction to Guild
+	// bot.removeReaction = async (guild, settings) => {
+	// 	if (!guild) throw new Error('No Guild Provided!');
+	// 	const data = await Reaction.findOne({ guildid: guild.id });
+	// 	const reactionRoles = await data.reactionRoles;
+	// 	if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
 
-		reactionRoles.pull(settings);
-		data.save();
-	};
+	// 	reactionRoles.pull(settings);
+	// 	data.save();
+	// };
 
 	// Add Module to List
 	bot.disableModule = async (guild, module) => {

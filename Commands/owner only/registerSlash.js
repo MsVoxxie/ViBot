@@ -28,8 +28,10 @@ module.exports = {
 			rest
 				.put(Routes.applicationCommands('827375161665650689'), { body: cmds })
 				// .put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: cmds })
-
-				.then(() => console.log('Successfully registered application commands.'))
+				.then(() => {
+					console.log('Successfully registered application commands.');
+					message.reply('Successfully registered all commands!');
+				})
 				.catch(console.error);
 		});
 	},
