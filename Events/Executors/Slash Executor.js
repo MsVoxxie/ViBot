@@ -1,4 +1,5 @@
 const { permissions } = require('../../Storage/Functions/miscFunctions');
+const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'interactionCreate',
@@ -63,7 +64,7 @@ module.exports = {
 
 		//Execute the command
 		try {
-			await command.execute(bot, interaction, intGuild, intMember, settings);
+			await command.execute(bot, interaction, intGuild, intMember, settings, Vimotes);
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });

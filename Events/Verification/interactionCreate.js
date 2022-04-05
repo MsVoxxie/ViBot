@@ -62,7 +62,7 @@ module.exports = {
 					//Add verified role
 					const verifiedRole = await guild.roles.fetch(settings.verifiedrole);
 					await user.roles.add(verifiedRole);
-					await user.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `*${Vimotes['CHECK']} You have been allowed access to ${message.guild.name}*` })] });
+					await user.send({ embeds: [bot.replyEmbed({ color: bot.colors.success, text: `*${Vimotes['CHECK']} You have been allowed access to ${message.guild.name}*` })] });
 
 					//Update Embed
 					Embed.setDescription(`${user} has been approved by ${clicker}!`);
@@ -88,7 +88,7 @@ module.exports = {
 				try {
 					if (settings.kickondeny) {
 						//Inform the user
-						await user.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
+						await user.send({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
 						await user.kick(`Denied by ${clicker.displayName}`);
 
 						await message.edit({ embeds: [Embed], components: [] });
@@ -97,7 +97,7 @@ module.exports = {
 						await Verification.findOneAndDelete({ guildid: guild.id, userid: user.id });
 
 					} else {
-						await user.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
+						await user.send({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
 					}
 				} catch (e) {
 					console.error(e);

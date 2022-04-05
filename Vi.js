@@ -21,6 +21,13 @@ const bot = new Client({
 	},
 });
 
+//Bot Colors
+bot.colors = {
+	success: '#42f560',
+	warning: '#f5e142',
+	error: '#f54242',
+}
+
 //Setup MusicPlayer
 const Music = new Player(bot, {
 	leaveOnEnd: true,
