@@ -16,6 +16,12 @@ module.exports = {
 		const member = await intGuild.members.fetch(interaction.options.getUser('user').id);
 		const reason = interaction.options.getString('reason');
 
+		//Dont kick yourself...
+		if(member.id === intMember.id) return interaction.reply({
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} You cannot kick yourself.` })],
+			ephemeral: true,
+		});
+
 		//Check if the user is kickable
 		if (!member.kickable || member.permissions.has('KICK_MEMBERS'))
 			return interaction.reply({

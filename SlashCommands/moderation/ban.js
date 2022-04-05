@@ -26,7 +26,13 @@ module.exports = {
 		const reason = interaction.options.getString('reason');
 		const days = interaction.options.getString('days');
 
-		//Check if the user is kickable
+		//Dont ban yourself...
+		if(member.id === intMember.id) return interaction.reply({
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} You cannot ban yourself.` })],
+			ephemeral: true,
+		});
+
+		//Check if the user is bannable
 		if (!member.bannable || member.permissions.has('BAN_MEMBERS'))
 			return interaction.reply({
 				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I cannot ban ${member}` })],
