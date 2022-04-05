@@ -36,9 +36,15 @@ module.exports = {
 		//Ban the user
 		try {
 			await member.ban({ days: days, reason: reason });
-			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Banned ${member}.` })] });
+			return interaction.reply({
+				embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Banned ${member}.` })],
+				ephemeral: false,
+			});
 		} catch (err) {
-			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not ban ${member}.` })] });
+			return interaction.reply({
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not ban ${member}.` })],
+				ephemeral: true,
+			});
 		}
 	},
 };

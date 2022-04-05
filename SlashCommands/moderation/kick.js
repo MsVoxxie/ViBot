@@ -28,10 +28,13 @@ module.exports = {
 			await member.kick(reason);
 			return interaction.reply({
 				embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Kicked ${member}.` })],
-				ephemeral: true,
+				ephemeral: false,
 			});
 		} catch (err) {
-			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not kick ${member}.` })] });
+			return interaction.reply({
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not kick ${member}.` })],
+				ephemeral: true,
+			});
 		}
 	},
 };
