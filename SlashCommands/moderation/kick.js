@@ -34,7 +34,7 @@ module.exports = {
 			await member.kick(reason);
 			return interaction.reply({
 				embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Kicked ${member}.` })],
-				ephemeral: false,
+				ephemeral: true,
 			});
 		} catch (err) {
 			return interaction.reply({

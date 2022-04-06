@@ -79,7 +79,7 @@ module.exports = {
 				embeds: [
 					bot.replyEmbed({
 						color: bot.colors.warning,
-						text: `${Vimotes['XMARK']} There was an error while executing this command!`,
+						text: `${Vimotes['ALERT']} There was an error while executing this command!`,
 					}),
 				],
 				ephemeral: true,

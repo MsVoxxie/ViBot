@@ -44,7 +44,7 @@ module.exports = {
 			await member.ban({ days: days, reason: reason });
 			return interaction.reply({
 				embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Banned ${member}.` })],
-				ephemeral: false,
+				ephemeral: true,
 			});
 		} catch (err) {
 			return interaction.reply({

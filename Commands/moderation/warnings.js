@@ -18,8 +18,6 @@ module.exports = {
 		const memberTarget = await (message.mentions.members.first() || message.guild.members.cache.get(args[0]));
 		const warningId = args[`${memberTarget ? 1 : 0}`];
 
-		if(!memberTarget || warningId) return message.reply('Invalid user or warning ID.');
-
 		//Get all of a users warnings
 		if ((memberTarget && !warningId) || !warningId.length === 32) {
 			const userWarnings = await Warning.find({ guildid: message.guild.id, userid: memberTarget.id }).limit(10).lean();
