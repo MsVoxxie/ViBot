@@ -1,4 +1,4 @@
-const { Reaction } = require('../../Storage/Database/models/');
+const { Reaction, userData } = require('../../Storage/Database/models/');
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'messageReactionAdd',
@@ -22,19 +22,24 @@ module.exports = {
 		if (msg.emoji.name.toString() !== getReactions.reaction) return console.log('Reaction is not the same');
 		const Role = await msg.message.guild.roles.cache.get(getReactions.roleid);
 		const member = await msg.message.guild.members.cache.get(user.id);
+		const uData = await userData.findOne({ guildid: msg.message.guild.id, userid: user.id });
 
 		//Check if the user has the role
 		if (!member.roles.cache.has(Role.id)) {
 			try {
 				await member.roles.add(Role);
-				await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['ADDED']} **»** You have been assigned the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				if(uData?.receivedm === false) return;
+					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['ADDED']} **»** You have been assigned the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				
 			} catch (e) {
 				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['UNCHANGED']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
 			}
 		} else {
 			try {
 				await member.roles.remove(Role);
-				await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['REMOVED']} **»** You have been removed from the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				if(uData?.receivedm === false) return;
+					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['REMOVED']} **»** You have been removed from the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				
 			} catch (e) {
 				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['UNCHANGED']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
 			}

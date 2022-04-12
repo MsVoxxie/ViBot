@@ -1,4 +1,5 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { SRAClient } = require("node-some-random-api");
+const api = new SRAClient("PKABo8zcJrrtkfqmolR9LFZyBC5artSgVc0BEmiAdncYeUYngs977On3mimQKN0D")
 
 module.exports = {
 	name: 'test',
@@ -13,14 +14,9 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		let UniqueId = () => {
-			let Gen4 = () => {
-				return Math.floor((1 + Math.random()) * 0x10000)
-					.toString(16)
-					.substring(1);
-			};
-			return `${Gen4()}${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}-${Gen4()}${Gen4()}`;
-		};
-		message.reply(UniqueId());
+		const msg = args.join(' ')
+		api.chatBot(msg).then(res => {
+			console.log(res);
+		})
 	},
 };

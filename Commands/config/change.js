@@ -8,7 +8,7 @@ module.exports = {
 	example: '',
 	category: 'config',
 	args: false,
-	hidden: false,
+	hidden: true,
 	ownerOnly: false,
 	userPerms: ['MANAGE_GUILD'],
 	botPerms: [],
