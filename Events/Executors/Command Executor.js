@@ -69,6 +69,16 @@ module.exports = {
 			});
 		}
 
+		if (command.converted)
+			return message.reply({
+				embeds: [
+					bot.replyEmbed({
+						color: bot.colors.warning,
+						text: `${Vimotes['ALERT']} **${command.name}** has been converted into a Slash (/) command!`,
+					}),
+				],
+			});
+
 		// Check if args required
 		if (command.args && !args.length) {
 			return message.reply(`The command \`${command.name}\` requires arguments, you did not provide any!`).then((s) => {

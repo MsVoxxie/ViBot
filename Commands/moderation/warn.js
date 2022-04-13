@@ -8,6 +8,7 @@ module.exports = {
 	example: 'warn @User Broke rule #7',
 	category: 'moderation',
 	args: true,
+	converted: true,
 	cooldown: 5,
 	hidden: false,
 	ownerOnly: false,

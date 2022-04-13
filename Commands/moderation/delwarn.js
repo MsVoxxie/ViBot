@@ -8,6 +8,7 @@ module.exports = {
 	example: 'delwarn warningId',
 	category: 'moderation',
 	args: false,
+	converted: true,
 	cooldown: 5,
 	hidden: false,
 	ownerOnly: false,
