@@ -24,10 +24,10 @@ module.exports = {
 		const newInvites = await member.guild.invites.fetch();
 		const oldInvites = await Invite.find({ guildid: member.guild.id }).lean();
 		const invite = newInvites.find(i => i.uses > oldInvites.find(o => o.invitecode === i.code).uses);
-		const inviter = await member.guild.members.cache.get(invite.inviter.id);
+		const inviter = await member.guild.members.cache.get(invite?.inviter?.id);
 
 		//Update the invite
-		await Invite.findOneAndUpdate({ guildid: member.guild.id, invitecode: invite.code }, { uses: invite.uses });
+		await Invite.findOneAndUpdate({ guildid: member.guild.id, invitecode: invite?.code }, { uses: invite?.uses });
 
 		// console.log(invite);
 
@@ -42,7 +42,6 @@ module.exports = {
 				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }) })
 				.setDescription(`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${invite ? invite.code : 'Unknown!'}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`)
 				.setColor(settings.guildcolor)
-				.setFooter({ text: bot.Timestamp(getMember.joinedAt) });
 			logChannel.send({ embeds: [embed] });
 		}
 
@@ -51,7 +50,6 @@ module.exports = {
 			const welcome = new MessageEmbed()
 				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }) })
 				.setDescription(`Welcome to ${getMember.guild.name}, ${getMember}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
-				.setFooter({ text: `Joined› ${bot.Timestamp(getMember.joinedAt)}` })
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 			welChannel.send({ embeds: [welcome] });
