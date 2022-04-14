@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Add some pride flair to your avatar!')
 		.addStringOption((option) =>
 			option
-				.setName('flag')
+				.setName('first_flag')
 				.setDescription('The pride flag you associate with.')
 				.addChoice('Agender', 'agender')
 				.addChoice('Aromantic', 'aromantic')
@@ -22,6 +22,23 @@ module.exports = {
 				.addChoice('Polyamorous', 'polyamorous')
 				.addChoice('Transexual', 'transexual')
 				.setRequired(true)
+		)
+		.addStringOption((option) =>
+			option
+				.setName('second_flag')
+				.setDescription('(Optional) The second pride flag you associate with.')
+				.addChoice('Agender', 'agender')
+				.addChoice('Aromantic', 'aromantic')
+				.addChoice('Asexual', 'asexual')
+				.addChoice('Bisexual', 'bisexual')
+				.addChoice('Gay', 'gay')
+				.addChoice('Genderfluid', 'genderfluid')
+				.addChoice('Lesbian', 'lesbian')
+				.addChoice('Nonbinary', 'nonbinary')
+				.addChoice('Pansexual', 'pansexual')
+				.addChoice('Polyamorous', 'polyamorous')
+				.addChoice('Transexual', 'transexual')
+				.setRequired(false)
 		),
 	options: {
 		ownerOnly: false,
@@ -30,7 +47,8 @@ module.exports = {
 	},
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Definitions
-		const flagArg = await interaction.options.getString('flag');
+		const flagOne = await interaction.options.getString('first_flag');
+		const flagTwo = await interaction.options.getString('second_flag');
 		const borderSize = 0.04;
 
 		// Define flags
@@ -111,14 +129,15 @@ module.exports = {
 		}
 
 		const flags = [];
-		flags.push(flagArg);
+		flags.push(flagOne);
+		if (flagTwo) flags.push(flagTwo);
 
 		// Create the actual avatar of the user!
 		const avatarURL = await intMember.displayAvatarURL({ format: 'png', dynamic: true, size: 512 });
 		const avatarType = (await avatarURL.includes('.gif')) ? { mime: jimp.MIME_GIF, format: '.gif' } : { mime: jimp.MIME_PNG, format: '.png' };
 		const avatar = await createPrideAvatar(avatarURL, flags);
 		const buffer = await avatar.getBufferAsync(avatarType.mime);
-		const attachment = new MessageAttachment(buffer, `${flagArg}_avatar${avatarType.format}`);
+		const attachment = new MessageAttachment(buffer, `pride_avatar${avatarType.format}`);
 		await interaction.reply({ content: 'Heres your Avatar!', files: [attachment] });
 	},
 };

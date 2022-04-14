@@ -1,5 +1,4 @@
-const { SRAClient } = require("node-some-random-api");
-const api = new SRAClient("PKABo8zcJrrtkfqmolR9LFZyBC5artSgVc0BEmiAdncYeUYngs977On3mimQKN0D")
+const { Invite } = require('../../Storage/Database/models/');
 
 module.exports = {
 	name: 'test',
@@ -14,9 +13,18 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings) {
-		const msg = args.join(' ')
-		api.chatBot(msg).then(res => {
-			console.log(res);
-		})
+		//Get current invites
+		const newInvites = await message.guild.invites.fetch();
+		const oldInvites = await Invite.find({ guildid: message.guild.id }).lean();
+
+		const invite = newInvites.find(i => i.uses > oldInvites.find(o => o.invitecode === i.code).uses)
+
+		// oldInvites.find(i => {
+		// 	console.log(i.uses)
+		// })
+
+		// console.log(oldInvites.find(old => old.invitecode ==='8VH65FKEWy'))
+
+		console.log(invite.code);
 	},
 };

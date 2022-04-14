@@ -1,5 +1,5 @@
+const { Invite } = require('../../Storage/Database/models/index.js');
 const { MessageEmbed } = require('discord.js');
-// const InviteTracker = require('@androz2091/discord-invites-tracker');
 const moment = require('moment');
 
 module.exports = {
@@ -20,30 +20,16 @@ module.exports = {
 		const welChannel = await getMember.guild.channels.cache.get(settings.welcomechannel);
 		const ruleChannel = await getMember.guild.channels.cache.get(settings.ruleschannel);
 
-		// const Tracker = new InviteTracker(bot, {
-		// 	fetchGuilds: true,
-		// 	fetchVanity: true,
-		// 	fetchAuditLogs: true,
-		// });
+		//Get current invites
+		const newInvites = await member.guild.invites.fetch();
+		const oldInvites = await Invite.find({ guildid: member.guild.id }).lean();
+		const invite = newInvites.find(i => i.uses > oldInvites.find(o => o.invitecode === i.code).uses);
+		const inviter = await member.guild.members.cache.get(invite.inviter.id);
 
-		// Tracker.on('guildMemberAdd', (member, type, invite) => {
-		// 	if (type === 'invite') {
-		// 		const embed = new MessageEmbed()
-		// 			.setColor(settings.guildcolor)
-		// 			.setTitle('Invite')
-		// 			.setDescription(`${member.user.tag} (${member.user.id}) joined the server using an invite.`)
-		// 			.addField('Invite', invite.code, true)
-		// 			.addField('Inviter', invite.inviter.tag, true)
-		// 			.addField('Inviter ID', invite.inviter.id, true)
-		// 			.addField('Invitee', member.user.tag, true)
-		// 			.addField('Invitee ID', member.user.id, true)
-		// 			.addField('Invitee Created At', moment(member.user.createdAt).format('MMMM Do YYYY, h:mm:ss a'), true)
-		// 			.addField('Invitee Joined At', moment(member.joinedAt).format('MMMM Do YYYY, h:mm:ss a'), true)
-		// 			.setTimestamp();
+		//Update the invite
+		await Invite.findOneAndUpdate({ guildid: member.guild.id, invitecode: invite.code }, { uses: invite.uses });
 
-		// 		logChannel.send({ embed: [embed] });
-		// 	}
-		// });
+		// console.log(invite);
 
 		// If Partial, Fetch
 		if (member.partial) {
@@ -54,11 +40,7 @@ module.exports = {
 		if (settings.audit) {
 			const embed = new MessageEmbed()
 				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }) })
-				.setDescription(
-					`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Account Created›** <t:${Math.round(
-						getMember.user.createdTimestamp / 1000
-					)}:R>`
-				)
+				.setDescription(`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used**› ${invite ? invite.code : 'Unknown!'}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`)
 				.setColor(settings.guildcolor)
 				.setFooter({ text: bot.Timestamp(getMember.joinedAt) });
 			logChannel.send({ embeds: [embed] });

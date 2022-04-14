@@ -10,4 +10,5 @@ module.exports = {
 	userData: require('./userData'),
 	Verification: require('./verification'),
 	Warning: require('./warnings'),
+	Invite: require('./invites'),
 };
