@@ -14,17 +14,24 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings) {
 		//Get current invites
-		const newInvites = await message.guild.invites.fetch();
-		const oldInvites = await Invite.find({ guildid: message.guild.id }).lean();
-
-		const invite = newInvites.find(i => i.uses > oldInvites.find(o => o.invitecode === i.code).uses)
-
-		// oldInvites.find(i => {
-		// 	console.log(i.uses)
-		// })
-
-		// console.log(oldInvites.find(old => old.invitecode ==='8VH65FKEWy'))
-
-		console.log(invite.code);
+		for await (const g of bot.guilds.cache) {
+			const curGuild = g[1];
+			try {
+				const newInvites = await curGuild.invites.fetch();
+				for await (const i of newInvites) {
+					const invite = i[1];
+					await Invite.create({
+						guildid: invite.guild.id,
+						invitecode: invite.code,
+						inviter: invite.inviter.id,
+						uses: invite.uses,
+					}).then(() => {
+						console.log(`Saved invite ${invite.code} for guild ${invite.guild.name}`);
+					});
+				}
+			} catch (err) {
+				continue;
+			}
+		}
 	},
 };

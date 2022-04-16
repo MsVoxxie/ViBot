@@ -17,6 +17,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 		const msg = args.join(' ');
 		API.chatBot(msg).then((res) => {
+			console.log(res?.response);
             if(!res.response || res.response.includes('<a href=')) return message.reply('I am not sure what to say!');
             message.reply(res.response);
 		});

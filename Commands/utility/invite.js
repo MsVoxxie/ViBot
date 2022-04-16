@@ -8,6 +8,7 @@ module.exports = {
 	example: 'invite',
 	category: 'utility',
 	args: false,
+	converted: true,
 	cooldown: 15,
 	hidden: false,
 	ownerOnly: false,
