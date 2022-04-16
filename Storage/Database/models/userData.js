@@ -9,9 +9,18 @@ const userDataSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	joinedat:{
+		type: Date,
+		default: Date.now(),
+		required: true,
+	},
 	receivedm: {
 		type: Boolean,
 		default: true,
+	},
+	bottomcount: {
+		type: Number,
+		default: 0,
 	},
 	userroles: {
 		type: Array,

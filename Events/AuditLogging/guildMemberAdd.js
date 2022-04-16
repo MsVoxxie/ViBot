@@ -1,4 +1,4 @@
-const { Invite } = require('../../Storage/Database/models/index.js');
+const { Invite, userData } = require('../../Storage/Database/models/index.js');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
@@ -53,6 +53,20 @@ module.exports = {
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 			welChannel.send({ embeds: [welcome] });
+		}
+
+		// Add the member to the database
+		if(!await userData.exists({ userid: getMember.id, guildid: getMember.guild.id })) {
+			await userData.create({
+				guildid: getMember.guild.id,
+				userid: getMember.id,
+				joinedat: getMember.joinedAt,
+				receivedm: true,
+				bottomcount: 0,
+				userroles: [],
+			});
+		}else{
+			await userData.findOneAndUpdate({ guildid: getMember.guild.id, userid: getMember.id }, { joinedat: Date.now() });
 		}
 	},
 };

@@ -1,3 +1,4 @@
+const { userData } = require('../../Storage/Database/models/index.js');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
@@ -16,6 +17,20 @@ module.exports = {
 		if (settings.audit === false) return;
 		const logChannel = await newMember.guild.channels.cache.get(settings.auditchannel);
 		if (!logChannel) return;
+
+		// Avatar Changed
+		if (oldMember.displayAvatarURL({ dynamic: true }) !== newMember.displayAvatarURL({ dynamic: true })) {
+			if(oldMember.id === bot.user.id) return;
+			// Setup Embed
+			const avatarEmbed = new MessageEmbed()
+				.setTitle('Member Changed Avatar')
+				.setAuthor({ name: `${newMember.user.tag}`, iconURL: newMember.displayAvatarURL({ dynamic: true }) })
+				.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.setThumbnail(oldMember.displayAvatarURL({ dynamic: true }))
+				.setImage(newMember.displayAvatarURL({ dynamic: true }))
+				.setColor(settings.guildcolor);
+			logChannel.send({ embeds: [avatarEmbed] });
+		}
 
 		// NICKNAME CHANGE
 		if (oldMember.nickname !== newMember.nickname) {
@@ -52,6 +67,10 @@ module.exports = {
 				.setDescription(`**Member›** <@${newMember.user.id}> | **${newMember.user.tag}**\n**Member ID›** \`${newMember.id}\`\n**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
 				.addField('**Roles›**', `${roleAdded.length ? `\`\`\`css\n#ADDED\n${roleAdded.map((r) => r.name).join('\n')}\`\`\`` : `\`\`\`css\n#REMOVED\n${roleRemoved.map((r) => r.name).join('\n')}\`\`\``}`);
 			logChannel.send({ embeds: [embed] });
+
+			// Update UserData
+			await userData.findOneAndUpdate({ guildid: newMember.guild.id, userid: newMember.id }, { userroles: newMember.roles.cache.map((r) => r.id) }, { upsert: true, new: true });
+
 		}
 	},
 };

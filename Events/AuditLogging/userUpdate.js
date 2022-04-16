@@ -47,19 +47,19 @@ module.exports = {
 						logChannel.send({ embeds: [discriminatorEmbed] });
 					}
 
-					// Avatar Changed
-					if (oldUser.avatar !== newUser.avatar) {
-						if(oldUser.id === bot.user.id) return;
-						// Setup Embed
-						const avatarEmbed = new MessageEmbed()
-							.setTitle('User Changed Avatar')
-							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
-							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-							.setThumbnail(oldUser.displayAvatarURL({ dynamic: true }))
-							.setImage(newUser.displayAvatarURL({ dynamic: true }))
-							.setColor(settings.guildcolor);
-						logChannel.send({ embeds: [avatarEmbed] });
-					}
+					// // Avatar Changed
+					// if (oldUser.avatar !== newUser.avatar) {
+					// 	if(oldUser.id === bot.user.id) return;
+					// 	// Setup Embed
+					// 	const avatarEmbed = new MessageEmbed()
+					// 		.setTitle('User Changed Avatar')
+					// 		.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
+					// 		.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+					// 		.setThumbnail(oldUser.displayAvatarURL({ dynamic: true }))
+					// 		.setImage(newUser.displayAvatarURL({ dynamic: true }))
+					// 		.setColor(settings.guildcolor);
+					// 	logChannel.send({ embeds: [avatarEmbed] });
+					// }
 				}
 			});
 		});

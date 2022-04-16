@@ -1,5 +1,7 @@
+const { userData } = require('../../Storage/Database/models/index.js');
 const { AuditCheck } = require('../../Storage/Functions/auditFunctions');
 const { MessageEmbed } = require('discord.js');
+const moment = require('moment');
 
 module.exports = {
 	name: 'guildMemberRemove',
@@ -36,7 +38,15 @@ module.exports = {
 			.setDescription(`${Vimotes['LEAVE_ARROW']} ${member.user.tag} Left the server **<t:${Math.round(Date.now() / 1000)}:R>**.${LeaveData ? `\n**Kicked by›** <@${LeaveData.executor.id}>` : ''}${LeaveData ? `\n**Reason›** ${LeaveData.reason}` : ''}`)
 			.setColor(settings.guildcolor)
 			.setFooter({ text: bot.Timestamp(new Date()) });
-
 		logChannel.send({ embeds: [embed] });
+
+		// If User is in the database, abd they left the server before 24hrs, remove them from the database
+		if(await userData.exists({ userid: member.id, guildid: member.guild.id })) {
+			const user = await userData.findOne({ userid: member.id, guildid: member.guild.id });
+			const days = moment().diff(moment(user.joinedat), 'days');
+			if(days <= 1){
+				await userData.findOneAndDelete({ userid: member.id, guildid: member.guild.id });
+			}
+		}
 	},
 };
