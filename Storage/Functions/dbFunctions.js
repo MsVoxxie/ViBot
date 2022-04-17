@@ -71,18 +71,18 @@ module.exports = (bot) => {
 		data.save();
 	};
 
-	// Create Birthday Database
-	bot.createBirthdays = async (settings) => {
-		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.birthdayDefaults.defaultSettings);
-		const merged = Object.assign(defaults, settings);
-		const newBirthday = await new Birthdays(merged);
-		const check = await Birthdays.findOne({ guildid: merged.guildid });
-		if (check) {
-			return;
-		} else {
-			return newBirthday.save().then(console.log(`Created new Birthday Model for \`${merged.guildname}\``));
-		}
-	};
+	// // Create Birthday Database
+	// bot.createBirthdays = async (settings) => {
+	// 	const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.birthdayDefaults.defaultSettings);
+	// 	const merged = Object.assign(defaults, settings);
+	// 	const newBirthday = await new Birthdays(merged);
+	// 	const check = await Birthdays.findOne({ guildid: merged.guildid });
+	// 	if (check) {
+	// 		return;
+	// 	} else {
+	// 		return newBirthday.save().then(console.log(`Created new Birthday Model for \`${merged.guildname}\``));
+	// 	}
+	// };
 
 	// // Get guild Birthdays
 	// bot.getBirthdays = async (guild) => {
