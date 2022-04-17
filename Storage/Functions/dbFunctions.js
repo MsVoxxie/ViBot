@@ -84,36 +84,36 @@ module.exports = (bot) => {
 		}
 	};
 
-	// Get guild Birthdays
-	bot.getBirthdays = async (guild) => {
-		if (!guild) throw new Error('No Guild Provided!');
-		const data = await Birthdays.findOne({ guildid: guild.id });
-		if (data) return data;
-		else return bot.birthdayDefaults.defaultSettings;
-	};
+	// // Get guild Birthdays
+	// bot.getBirthdays = async (guild) => {
+	// 	if (!guild) throw new Error('No Guild Provided!');
+	// 	const data = await Birthdays.findOne({ guildid: guild.id });
+	// 	if (data) return data;
+	// 	else return bot.birthdayDefaults.defaultSettings;
+	// };
 
-	// Add Birthday to Guild
-	bot.addBirthday = async (guild, settings) => {
-		if (!guild) throw new Error('No Guild Provided!');
-		const data = await Birthdays.findOne({ guildid: guild.id });
-		const guildBirthdays = await data.birthdays;
-		if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+	// // Add Birthday to Guild
+	// bot.addBirthday = async (guild, settings) => {
+	// 	if (!guild) throw new Error('No Guild Provided!');
+	// 	const data = await Birthdays.findOne({ guildid: guild.id });
+	// 	const guildBirthdays = await data.birthdays;
+	// 	if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
 
-		guildBirthdays.push(settings);
-		data.save();
-	};
+	// 	guildBirthdays.push(settings);
+	// 	data.save();
+	// };
 
-	// Remove Birthday from Guild
-	bot.removeBirthday = async (guild, settings) => {
-		if (!guild) throw new Error('No Guild Provided!');
-		const data = await Birthdays.findOne({ guildid: guild.id });
-		const guildBirthdays = await data.birthdays;
-		const removeUser = await guildBirthdays.find((u) => u.userid === settings.userid);
-		if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
+	// // Remove Birthday from Guild
+	// bot.removeBirthday = async (guild, settings) => {
+	// 	if (!guild) throw new Error('No Guild Provided!');
+	// 	const data = await Birthdays.findOne({ guildid: guild.id });
+	// 	const guildBirthdays = await data.birthdays;
+	// 	const removeUser = await guildBirthdays.find((u) => u.userid === settings.userid);
+	// 	if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
 
-		guildBirthdays.pull(removeUser);
-		data.save();
-	};
+	// 	guildBirthdays.pull(removeUser);
+	// 	data.save();
+	// };
 
 	// Create Twitch Database
 	bot.createTwitchWatch = async (settings) => {

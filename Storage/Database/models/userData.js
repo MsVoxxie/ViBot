@@ -22,6 +22,18 @@ const userDataSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
+	birthday: {
+		type: String,
+		default: '',
+	},
+	birthdaysent: {
+		type: Boolean,
+		default: false,
+	},
+	commandsused: {
+		type: Number,
+		default: 0,
+	},
 	userroles: {
 		type: Array,
 		default: [],

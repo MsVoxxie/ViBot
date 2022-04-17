@@ -68,9 +68,6 @@ module.exports = {
 			//Create Reactions
 			await await bot.createReactions({ guildid: guild.id, guildname: guild.name });
 
-			//Create Birthdays
-			await bot.createBirthdays({ guildid: guild.id, guildname: guild.name });
-
 			//Create TwitchWatch
 			await bot.createTwitchWatch({ guildid: guild.id, guildname: guild.name });
 		} catch (error) {

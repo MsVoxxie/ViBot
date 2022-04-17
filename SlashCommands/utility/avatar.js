@@ -12,7 +12,7 @@ module.exports = {
 		botPerms: [],
 	},
 	async execute(bot, interaction, intGuild, intMember, settings) {
-		const intuser = (await interaction.options.getUser('user')) || interaction.user;
+		const intuser = (await interaction.options.getUser('user')) || intMember;
 		const member = await intGuild.members.fetch(intuser.id);
 
 		const embed = new MessageEmbed()

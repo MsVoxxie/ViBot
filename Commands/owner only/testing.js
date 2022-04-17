@@ -12,5 +12,8 @@ module.exports = {
 	ownerOnly: true,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {},
+	async execute(bot, message, args, settings) {
+		const userRoles = await userData.findOne({ guildid: message.guild.id, userid: message.author.id })
+		console.log(userRoles.userroles.map((r) => { if(r !== message.guild.id) { return `<@&${r}>` } }).filter(x => x !== undefined).join(' **|** '))
+	},
 };

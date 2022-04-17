@@ -1,3 +1,4 @@
+const { userData } = require('../../Storage/Database/models/index.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
@@ -72,6 +73,7 @@ module.exports = {
 
 		//Execute the command
 		try {
+			await userData.findOneAndUpdate({ guildid: intGuild.id, userid: intMember.id }, { $inc: { commandsused: 1 } }, { upsert: true, new: true });
 			await command.execute(bot, interaction, intGuild, intMember, settings, Vimotes);
 		} catch (error) {
 			console.error(error);

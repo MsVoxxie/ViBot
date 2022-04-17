@@ -69,7 +69,8 @@ module.exports = {
 			logChannel.send({ embeds: [embed] });
 
 			// Update UserData
-			await userData.findOneAndUpdate({ guildid: newMember.guild.id, userid: newMember.id }, { userroles: newMember.roles.cache.map((r) => r.id) }, { upsert: true, new: true });
+			const userRoles = newMember.roles.cache.map((r) => { if(r.id !== newMember.guild.id) { return r.id } }).filter(x => x !== undefined);
+			await userData.findOneAndUpdate({ guildid: newMember.guild.id, userid: newMember.id }, { userroles: userRoles }, { upsert: true, new: true });
 
 		}
 	},

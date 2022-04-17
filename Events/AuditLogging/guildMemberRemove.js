@@ -43,8 +43,8 @@ module.exports = {
 		// If User is in the database, abd they left the server before 24hrs, remove them from the database
 		if(await userData.exists({ userid: member.id, guildid: member.guild.id })) {
 			const user = await userData.findOne({ userid: member.id, guildid: member.guild.id });
-			const days = moment().diff(moment(user.joinedat), 'days');
-			if(days <= 1){
+			const days = moment().diff(moment(user.joinedat), 'months', true);
+			if(days <= 6){
 				await userData.findOneAndDelete({ userid: member.id, guildid: member.guild.id });
 			}
 		}

@@ -8,6 +8,7 @@ module.exports = {
 	example: '',
 	category: 'birthday',
 	args: false,
+	converted: true,
 	cooldown: 2,
 	hidden: false,
 	ownerOnly: false,

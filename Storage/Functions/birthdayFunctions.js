@@ -1,23 +1,22 @@
 const mongoose = require('mongoose');
-const { Birthdays } = require('../Database/models');
+const { userData } = require('../Database/models');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = (bot) => {
 	bot.checkBirthdays = async () => {
-		bot.guilds.cache.map(async (guild) => {
+		for await (const g of bot.guilds.cache) {
+			const guild = g[1];
 			//Definitions
 			const settings = await bot.getGuild(guild);
-			const GuildBdays = await bot.getBirthdays(guild);
-			const Userbirthdays = GuildBdays.birthdays;
 			const birthdaychannel = await guild.channels.cache.get(settings.birthdaychannel);
 
 			//Checks
-			if (!birthdaychannel) return;
-			if (!Userbirthdays.length) return;
+			if (!birthdaychannel) continue;
+			const allMembers = await guild.members.fetch();
 
-			console.log(`Checking for Birthdays in› ${guild.name}`);
-
-			for await (const user of Userbirthdays) {
+			for await (const users of allMembers) {
+				const u = users[1];
+				const user = await userData.findOne({ guildid: guild.id, userid: u.id });
 				const userBirthday = new Date(parseInt(user.birthday));
 				const today = new Date();
 				const userBirthdayMonth = userBirthday.getMonth();
@@ -35,6 +34,6 @@ module.exports = (bot) => {
 					await msg.react('🎉');
 				}
 			}
-		});
+		}
 	};
 };

@@ -1,7 +1,9 @@
-const Discord = require('discord.js');
-const ms = require('ms');
+const { userData } = require('../../Storage/Database/models/index.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
+const Discord = require('discord.js');
+const ms = require('ms');
+
 
 module.exports = {
 	name: 'messageCreate',
@@ -9,19 +11,6 @@ module.exports = {
 	once: false,
 	async execute(message, bot) {
 		if (message.author.bot) return;
-
-		if (message.content.includes('https://media.discordapp.net/attachments/487387789814661121/882311854641283083/image0.gif')) {
-			message.reply('https://media.discordapp.net/attachments/487387789814661121/882311854641283083/image0.gif');
-		}
-		if (message.content.includes('https://tenor.com/view/post-this-rat-rat-post-dancing-bounce-gif-16643947')) {
-			message.reply('https://tenor.com/view/post-this-rat-rat-post-dancing-bounce-gif-16643947');
-		}
-		if (message.content.includes('https://cdn.discordapp.com/attachments/876658140962230354/947893057406267452/the_cccmfmmggs_ihnknky.gif')) {
-			message.reply('https://cdn.discordapp.com/attachments/876658140962230354/947893057406267452/the_cccmfmmggs_ihnknky.gif');
-		}
-		if (message.content.includes('https://tenor.com/view/post-this-bun-as-fast-as-you-can-meme-post-this-cat-gif-24523182')) {
-			message.reply('https://tenor.com/view/post-this-bun-as-fast-as-you-can-meme-post-this-cat-gif-24523182');
-		}
 
 		// Get Guild Settings
 		let settings;
@@ -165,7 +154,8 @@ module.exports = {
 
 		// Execute command
 		try {
-			command.execute(bot, message, args, settings, Vimotes);
+			await userData.findOneAndUpdate({ guildid: message.guild.id, userid: message.author.id }, { $inc: { commandsused: 1 } }, { upsert: true, new: true });
+			await command.execute(bot, message, args, settings, Vimotes);
 		} catch (e) {
 			console.error(e);
 			message.reply(`Uh Oh, There was an error trying to execute \`${command.name}\``);
