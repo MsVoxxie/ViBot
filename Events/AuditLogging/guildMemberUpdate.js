@@ -69,7 +69,7 @@ module.exports = {
 			logChannel.send({ embeds: [embed] });
 
 			// Update UserData
-			const userRoles = newMember.roles.cache.map((r) => { if(r.id !== newMember.guild.id) { return r.id } }).filter(x => x !== undefined);
+			const userRoles = newMember.roles.cache.map((r) => { if(r.id !== newMember.guild.id) { return { id: r.id, position: r.position } } }).filter(x => x !== undefined).sort((a, b) => b.position - a.position);
 			await userData.findOneAndUpdate({ guildid: newMember.guild.id, userid: newMember.id }, { userroles: userRoles }, { upsert: true, new: true });
 
 		}

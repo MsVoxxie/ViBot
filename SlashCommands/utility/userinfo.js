@@ -32,10 +32,10 @@ module.exports = {
             .addField('Commands Used', dbMember?.commandsused ? dbMember?.commandsused.toString() : 'None, Yet!', true)
             .addField('Joined Server', bot.relativeTimestamp(member.joinedAt), true)
             .addField('Account Created', bot.relativeTimestamp(member.user.createdAt), true)
-            .addField('Currently Playing', currentGames.length > 0 ? `\`\`\`${currentGames}\`\`\`` : '\`\`\`Offline, Invisible, Or simply not playing anything!\`\`\`', false)
-            .addField('Custom Status', member.presence.activities.find(a => a.type === 'CUSTOM') ? `\`\`\`${member.presence.activities.find(a => a.type === 'CUSTOM').state}\`\`\`` : '\`\`\`None Set!\`\`\`', false)
-            .addField('Roles', dbMember.userroles.length ? dbMember.userroles.map((r) => { if(r !== intGuild.id) { return `<@&${r}>` } }).filter(x => x !== undefined).join(' **|** ') : 'None', false)
-            .setFooter({ text: `User ID› ${member.id}` })
+            .addField('Roles', dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`} ).filter(x => x !== undefined).join(' **|** ') : 'None', false)
+            if(currentGames.length > 0) { embed.addField('Currently Playing', currentGames.length > 0 ? `\`\`\`${currentGames}\`\`\`` : '\`\`\`Not playing anything\`\`\`', false) }
+            if(member.presence.activities.find(a => a.type === 'CUSTOM')) { embed.addField('Custom Status', member.presence.activities.find(a => a.type === 'CUSTOM') ? `\`\`\`${member.presence.activities.find(a => a.type === 'CUSTOM').state}\`\`\`` : '\`\`\`No custom status set\`\`\`', false) }
+            embed.setFooter({ text: `User ID› ${member.id}` })
             await interaction.reply({ embeds: [embed] });
     },
 };
