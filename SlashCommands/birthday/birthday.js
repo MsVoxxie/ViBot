@@ -34,7 +34,7 @@ module.exports = {
 				.setRequired(true)
 		),
 	options: {
-		ownerOnly: true,
+		ownerOnly: false,
 		userPerms: [],
 		botPerms: [],
 	},

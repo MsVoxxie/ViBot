@@ -6,7 +6,7 @@ module.exports = {
 		.setName('removebirthday')
 		.setDescription('Remove your birthday from the database!'),
 	options: {
-		ownerOnly: true,
+		ownerOnly: false,
 		userPerms: [],
 		botPerms: [],
 	},
