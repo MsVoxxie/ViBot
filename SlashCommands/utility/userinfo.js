@@ -20,7 +20,7 @@ module.exports = {
 
         //Definitions
         const currentGames = member.presence?.activities?.filter(a => a.type === 'PLAYING').map(a => { return `+ ${a.name}${a.details ? `\n› ${a.details}` : ''}${a.state ? `\n› ${a.state}` : ''}${a.party?.size ? `${a.party.size[0] == 1 ? `\n› Playing Solo` : `\n› In Party (${a.party?.size[0]}/${a.party?.size[1]})`}` : ''}${a.timestamps?.start ? `\n- (${bot.getDuration(a.timestamps.start, Date.now()).join(' ')})` : ''}`}).join('\n\n');
-        console.log(member.presence?.activities)
+
         //Create embed
         const embed = new MessageEmbed()
             .setColor(settings.guildcolor)
