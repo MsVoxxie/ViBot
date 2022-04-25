@@ -89,7 +89,7 @@ module.exports = {
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
 					.setImage(tweetData.tweet.video_url ? null : tweetData.tweet.media_url)
-					.setDescription(`${tweetData.tweet.description}\n─────────────\n♥ [${tweetData.tweet.likes}] ⤴ [${tweetData.tweet.retweets}]\n─────────────`)
+					.setDescription(`${tweetData.tweet.description}\n─────────────\n♥ [${bot.toThousands(tweetData.tweet.likes)}] ⤴ [${bot.toThousands(tweetData.tweet.retweets)}]\n─────────────`)
 					.setColor(settings.guildcolor);
 
 				//Send the embed
