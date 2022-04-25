@@ -84,13 +84,12 @@ module.exports = {
 			collector.on('collect', async (reaction, user) => {
 				//Create embed
 				const embed = new MessageEmbed()
-					.setTitle(`@${tweetData.user.screen_name}`)
+					.setAuthor({ name: `@${tweetData.user.screen_name}` })
+					.setTitle(tweetData.user.name)
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
 					.setImage(tweetData.tweet.video_url ? null : tweetData.tweet.media_url)
-					.setDescription(
-						`${tweetData.tweet.description}\n─────────────\n♥ [${tweetData.tweet.likes}] ⤴ [${tweetData.tweet.retweets}]\n─────────────`
-					)
+					.setDescription(`${tweetData.tweet.description}\n─────────────\n♥ [${tweetData.tweet.likes}] ⤴ [${tweetData.tweet.retweets}]\n─────────────`)
 					.setColor(settings.guildcolor);
 
 				//Send the embed
