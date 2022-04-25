@@ -48,7 +48,7 @@ module.exports = (bot) => {
 			parts.push(seconds + ' ' + (seconds > 1 ? 'seconds' : 'second'));
 		}
 		return parts;
-	}
+	};
 
 	// Timestamp
 	bot.Timestamp = (date) => {
@@ -130,7 +130,7 @@ module.exports = (bot) => {
 		if (data?.text) {
 			embed.setDescription(data.text);
 		}
-		if(data?.footer) {
+		if (data?.footer) {
 			embed.setFooter({ text: data.footer });
 		}
 		return embed;
