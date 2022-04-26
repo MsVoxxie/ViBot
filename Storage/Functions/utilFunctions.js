@@ -161,11 +161,13 @@ module.exports = (bot) => {
 
 				//If theres a video, get the highest quality one
 				if (data?.extended_entities?.media[0]?.video_info) {
-					for (var j = 0; j < data.extended_entities.media[0].video_info.variants.length; j++) {
-						if (data.extended_entities.media[0].video_info.variants[j].bitrate) {
-							if (data.extended_entities.media[0].video_info.variants[j].bitrate > bitrate) {
+					for (var j = 0; j < data.extended_entities.media[0].video_info?.variants.length; j++) {
+						if (data.extended_entities.media[0].video_info.variants[j]?.bitrate >= 0) {
+							if (data.extended_entities.media[0].video_info.variants[j].bitrate >= bitrate) {
 								bitrate = data.extended_entities.media[0].video_info.variants[j].bitrate;
 								hq_video_url = data.extended_entities.media[0].video_info.variants[j].url;
+								console.log(bitrate);
+								console.log(hq_video_url);
 							}
 						}
 					}
