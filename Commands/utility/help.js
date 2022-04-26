@@ -45,15 +45,8 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true }) })
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
-				.setDescription(
-					`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.`
-				)
-				.addField(
-					`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`,
-					dir
-						.map((command) => `${command.ownerOnly ? '🔒' : ''}**${command.name}** › ${command.description ? command.description : ''}`)
-						.join('\n')
-				)
+				.setDescription(`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.\n${Vimotes['CHANGED']} Represents a command converted into Slash (/).\n\n**${Cap}**`)
+				.addField(`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`,dir.map((command) => `${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n'))
 				.setColor(settings.guildcolor);
 
 			embeds.push(embed);

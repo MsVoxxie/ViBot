@@ -97,6 +97,7 @@ const Vimotes = {
 	UNCHANGED: '<:unchanged:960116965656117248>',
 	REMOVED: '<:removed:960116965563838534>',
 	ALERT: '<a:alert:963858233464848467>',
+	CHANGED: '<:updated:968323772719439872>'
 };
 
 const canModifyQueue = async (member) => {

@@ -8,8 +8,8 @@ module.exports = {
 	category: 'utility',
 	args: false,
 	cooldown: 60,
-	hidden: true, //Don't forget to unset this.
-	ownerOnly: true, //Don't forget to unset this.
+	hidden: false, //Don't forget to unset this.
+	ownerOnly: false, //Don't forget to unset this.
 	userPerms: ['USE_PUBLIC_THREADS'],
 	botPerms: ['MANAGE_THREADS'],
 	async execute(bot, message, args, settings, Vimotes) {

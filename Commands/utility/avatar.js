@@ -7,10 +7,10 @@ module.exports = {
 	example: 'av @user | av',
 	category: 'Utility',
 	args: false,
+	converted: true,
 	cooldown: 2,
 	hidden: false,
 	ownerOnly: false,
-	converted: true,
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
