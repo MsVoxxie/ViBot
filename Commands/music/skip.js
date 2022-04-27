@@ -35,12 +35,12 @@ module.exports = {
 			.setDescription(`${message.member} skipped the song.`);
 
 		const success = await queue.skip();
-		await queue.currentEmbed.delete();
+		await queue.currentEmbed?.delete();
 		if (success) {
 			await message.channel.send({ embeds: [embed] }).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
-			return queue.currentEmbed.delete();
+			return queue.currentEmbed?.delete();
 		}
 	},
 };

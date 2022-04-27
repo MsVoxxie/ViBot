@@ -21,6 +21,7 @@ module.exports = {
 				{
 					$inc: {
 						bottomcount: 1,
+						totalmessages: 1,
 					},
 				},
 				{

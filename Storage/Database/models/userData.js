@@ -9,7 +9,7 @@ const userDataSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	joinedat:{
+	joinedat: {
 		type: Date,
 		default: Date.now(),
 		required: true,
@@ -17,6 +17,18 @@ const userDataSchema = new mongoose.Schema({
 	receivedm: {
 		type: Boolean,
 		default: true,
+	},
+	xp: {
+		type: Number,
+		default: 0,
+	},
+	level: {
+		type: Number,
+		default: 1,
+	},
+	totalmessages: {
+		type: Number,
+		default: 0,
 	},
 	bottomcount: {
 		type: Number,

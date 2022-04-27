@@ -6,7 +6,6 @@ module.exports = {
 	Birthdays: require('./birthday'),
 	TwitchWatch: require('./twitchwatch'),
 	Starboard: require('./starboard'),
-	Xp: require('./xp'),
 	userData: require('./userData'),
 	Verification: require('./verification'),
 	Warning: require('./warnings'),

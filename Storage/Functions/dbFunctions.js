@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 require('moment-duration-format');
 const { MessageEmbed } = require('discord.js');
-const { BotData, Guild, Reaction, Birthdays, TwitchWatch, Xp } = require('../Database/models');
+const { BotData, Guild, Reaction, Birthdays, TwitchWatch, userData } = require('../Database/models');
 
 module.exports = (bot) => {
 	// Get Guild Settings
@@ -71,50 +71,6 @@ module.exports = (bot) => {
 		data.save();
 	};
 
-	// // Create Birthday Database
-	// bot.createBirthdays = async (settings) => {
-	// 	const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.birthdayDefaults.defaultSettings);
-	// 	const merged = Object.assign(defaults, settings);
-	// 	const newBirthday = await new Birthdays(merged);
-	// 	const check = await Birthdays.findOne({ guildid: merged.guildid });
-	// 	if (check) {
-	// 		return;
-	// 	} else {
-	// 		return newBirthday.save().then(console.log(`Created new Birthday Model for \`${merged.guildname}\``));
-	// 	}
-	// };
-
-	// // Get guild Birthdays
-	// bot.getBirthdays = async (guild) => {
-	// 	if (!guild) throw new Error('No Guild Provided!');
-	// 	const data = await Birthdays.findOne({ guildid: guild.id });
-	// 	if (data) return data;
-	// 	else return bot.birthdayDefaults.defaultSettings;
-	// };
-
-	// // Add Birthday to Guild
-	// bot.addBirthday = async (guild, settings) => {
-	// 	if (!guild) throw new Error('No Guild Provided!');
-	// 	const data = await Birthdays.findOne({ guildid: guild.id });
-	// 	const guildBirthdays = await data.birthdays;
-	// 	if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
-
-	// 	guildBirthdays.push(settings);
-	// 	data.save();
-	// };
-
-	// // Remove Birthday from Guild
-	// bot.removeBirthday = async (guild, settings) => {
-	// 	if (!guild) throw new Error('No Guild Provided!');
-	// 	const data = await Birthdays.findOne({ guildid: guild.id });
-	// 	const guildBirthdays = await data.birthdays;
-	// 	const removeUser = await guildBirthdays.find((u) => u.userid === settings.userid);
-	// 	if (typeof settings !== 'object') return console.log('User did not provide an object, Returning.');
-
-	// 	guildBirthdays.pull(removeUser);
-	// 	data.save();
-	// };
-
 	// Create Twitch Database
 	bot.createTwitchWatch = async (settings) => {
 		const defaults = Object.assign({ _id: mongoose.Types.ObjectId() }, bot.twitchwatchDefaults.defaultSettings);
@@ -154,13 +110,11 @@ module.exports = (bot) => {
 	//Add XP to Member
 	bot.addXP = async (guild, member, xpToAdd, bot, settings, levelChannel, message) => {
 		try {
-			const result = await Xp.findOneAndUpdate(
-				{ guildid: guild.id, memberid: member.id },
+			const result = await userData.findOneAndUpdate(
+				{ guildid: guild.id, userid: member.id },
 				{
 					guildid: guild.id,
-					guildname: guild.name,
-					memberid: member.id,
-					membername: member.user.tag,
+					userid: member.id,
 					$inc: {
 						xp: xpToAdd,
 					},
@@ -182,17 +136,13 @@ module.exports = (bot) => {
 					.setTitle('Level Up!')
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(
-						`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${
-							message ? `\n[Jump to Level Message](${message.url})` : ''
-						}`
-					)
+					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
 					.setFooter({ text: `• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
 
 				levelChannel.send({ embeds: [embed] });
 			}
 
-			await Xp.updateOne({ guildid: guild.id, memberid: member.id }, { level, xp });
+			await userData.updateOne({ guildid: guild.id, userid: member.id }, { level, xp });
 		} catch (err) {
 			console.log(err);
 		}
