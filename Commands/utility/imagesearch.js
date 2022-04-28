@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const googleSearch = require('g-i-s');
 
 module.exports = {
@@ -34,7 +34,10 @@ module.exports = {
 			imgResults.forEach((res) => {
 				const embed = new MessageEmbed()
 					.setColor(settings.guildcolor)
-					.setAuthor({ name: `${message.member.nickname ? message.member.nickname : message.member.user.username}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true })})
+					.setAuthor({
+						name: `${message.member.nickname ? message.member.nickname : message.member.user.username}`,
+						iconURL: message.member.user.displayAvatarURL({ dynamic: true }),
+					})
 					.setImage(res)
 					.setTimestamp(Date.now());
 
@@ -44,51 +47,66 @@ module.exports = {
 			});
 
 			// Send pagination
-			const embedList = await loading.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
+			const embedList = await loading.edit({
+				content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+				embeds: [embeds[currentPage]],
+			});
 
 			// Apply Reactions
 			try {
-				await embedList.react('◀');
-				await embedList.react('⏹');
-				await embedList.react('▶');
+				const Buttons = new MessageActionRow().addComponents(
+					new MessageButton().setLabel('Back').setStyle('SUCCESS').setCustomId('BACK'), //.setEmoji('⏮️'),
+					new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'), //.setEmoji('⏹️'),
+					new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT') //.setEmoji('⏭️')
+				);
+				await embedList.edit({ components: [Buttons] });
 			} catch (e) {
 				console.error(e);
 			}
 
 			// Filter Reactions, setup Collector and try each reaction
-			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
-			const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
-			collector.on('collect', async (reaction) => {
+			const filter = (interaction) => message.author.id === interaction.user.id;
+			const collector = await embedList.createMessageComponentCollector({ filter, time: 300 * 1000 });
+			collector.on('collect', async (interaction) => {
+				await interaction.deferUpdate();
 				// Switch Case
-				switch (reaction.emoji.name) {
+				switch (interaction.customId) {
 					// Backwards
-					case '◀': {
-						await reaction.users.remove(message.author.id);
+					case 'BACK': {
 						if (currentPage !== 0) {
 							currentPage--;
-							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
+							embedList.edit({
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								embeds: [embeds[currentPage]],
+							});
 						}
 						break;
 					}
 
 					// Stop
-					case '⏹': {
+					case 'STOP': {
 						collector.stop();
-						reaction.message.reactions.removeAll();
-						embedList.edit({ content: '**«Collection Stopped»**', embeds: [embeds[currentPage]] });
+						embedList.edit({ content: '**«Collection Stopped»**', components: [] });
 						break;
 					}
 
 					// Forwards
-					case '▶': {
-						await reaction.users.remove(message.author.id);
+					case 'NEXT': {
 						if (currentPage < embeds.length - 1) {
 							currentPage++;
-							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
+							embedList.edit({
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								embeds: [embeds[currentPage]],
+							});
 						}
 						break;
 					}
 				}
+			});
+			//Tell users the collection ended when it has.
+			collector.on('end', async () => {
+				const msg = await message.channel.messages.fetch(embedList.id);
+				await msg.edit({ content: '**«Collection Stopped»**', components: [] });
 			});
 		}
 	},

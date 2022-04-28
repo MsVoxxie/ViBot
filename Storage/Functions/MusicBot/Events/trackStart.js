@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = async (bot, queue, track) => {
 	// Get Settings
@@ -10,7 +10,11 @@ module.exports = async (bot, queue, track) => {
 		.setColor(settings.guildcolor)
 		.setAuthor({ name: `Requested By› ${track.requestedBy.username}`, iconURL: track.requestedBy.displayAvatarURL({ dynamic: true }) })
 		.setThumbnail(track.thumbnail)
-		.setDescription(`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${track.durationMS > 10 ? track.duration : 'Live Stream'}\`\n**Channel›** ${message.guild.me.voice.channel}\n`)
+		.setDescription(
+			`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${
+				track.durationMS > 10 ? track.duration : 'Live Stream'
+			}\`\n**Channel›** ${message.guild.me.voice.channel}\n`
+		)
 		.setFooter({ text: bot.Timestamp(Date.now()) });
 
 	if (queue.currentEmbed) await queue.currentEmbed.delete();
@@ -18,29 +22,31 @@ module.exports = async (bot, queue, track) => {
 
 	// Reaction Controls
 	try {
-		await playing.react('⏹');
-		await playing.react('⏯');
-		await playing.react('🔁');
-		await playing.react('⏭');
+		const Buttons = new MessageActionRow().addComponents(
+			new MessageButton().setLabel('Stop').setStyle('PRIMARY').setCustomId('STOP').setEmoji('⏹️'),
+			new MessageButton().setLabel('Play / Pause').setStyle('PRIMARY').setCustomId('PAUSE').setEmoji('⏯️'),
+			new MessageButton().setLabel('Toggle Loop').setStyle('PRIMARY').setCustomId('LOOP').setEmoji('🔁'),
+			new MessageButton().setLabel('Skip').setStyle('PRIMARY').setCustomId('SKIP').setEmoji('⏭️')
+		);
+		await playing.edit({ components: [Buttons] });
 	} catch (error) {
 		console.error(error);
 	}
 
-	// Setup Filter and Collector
-	const filter = (reaction, user) => user.id !== message.client.user.id;
-	const collector = await playing.createReactionCollector({ filter, time: track.durationMS > 0 ? track.durationMS : 60 * 60 * 1000 });
+	const filter = (interaction) => message.author.id === interaction.user.id;
+	const collector = await playing.createMessageComponentCollector({ filter, time: track.durationMS > 0 ? track.durationMS : 60 * 60 * 1000 });
 
-	collector.on('collect', async (reaction, user) => {
+	collector.on('collect', async (interaction) => {
+		await interaction.deferUpdate();
 		const args = ['', ''];
-		await reaction.users.remove(user.id);
-		switch (reaction.emoji.name) {
-			case '⏹':
+		switch (interaction.customId) {
+			case 'STOP':
 				if (!queue) return;
 				bot.commands.get('stop').execute(bot, message, args, settings);
 				collector.stop();
 				break;
 
-			case '⏯':
+			case 'PAUSE':
 				if (queue.connection.paused) {
 					bot.commands.get('resume').execute(bot, message, args, settings);
 				} else {
@@ -48,17 +54,18 @@ module.exports = async (bot, queue, track) => {
 				}
 				break;
 
-			case '🔁':
+			case 'LOOP':
 				bot.commands.get('loop').execute(bot, message, args, settings);
 				break;
 
-			case '⏭':
+			case 'SKIP':
 				bot.commands.get('skip').execute(bot, message, args, settings);
 				break;
 		}
 	});
 
 	collector.on('end', async () => {
-		if (queue.currentEmbed) return await playing.reactions.removeAll();
+		if (queue.currentEmbed) return await playing.edit({ components: [] });
+		if(playing) return await playing.delete();
 	});
 };

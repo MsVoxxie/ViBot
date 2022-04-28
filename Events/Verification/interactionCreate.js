@@ -12,13 +12,13 @@ module.exports = {
 		const settings = await bot.getGuild(guild);
 		const message = await interaction.message;
 
-		const choise = await interaction.customId.substring(0, 4);
-		const user = await guild.members.fetch(interaction.customId.substring(4));
-		const clicker = await guild.members.fetch(interaction.user);
-
 		//get verification channel
 		const confirmationchannelID = await settings.confirmationchannel;
 		if (interaction.channel.id !== confirmationchannelID) return;
+
+		const choice = await interaction.customId.substring(0, 4);
+		const user = await guild.members.fetch(interaction.customId.substring(4));
+		const clicker = await guild.members.fetch(interaction.user);
 
 		//Get user data from Database
 		const UserData = await Verification.findOne({ guildid: guild.id, userid: user.id }).lean();
@@ -51,7 +51,7 @@ module.exports = {
 		//Embed
 		const Embed = new MessageEmbed().setTitle('Verification Request').setColor(settings.guildcolor);
 
-		switch (choise) {
+		switch (choice) {
 			case 'app_': {
 				//Update Embed
 				Embed.setDescription(`${user} has been approved by ${clicker}!`);
@@ -62,7 +62,11 @@ module.exports = {
 					//Add verified role
 					const verifiedRole = await guild.roles.fetch(settings.verifiedrole);
 					await user.roles.add(verifiedRole);
-					await user.send({ embeds: [bot.replyEmbed({ color: bot.colors.success, text: `*${Vimotes['CHECK']} You have been allowed access to ${message.guild.name}*` })] });
+					await user.send({
+						embeds: [
+							bot.replyEmbed({ color: bot.colors.success, text: `*${Vimotes['CHECK']} You have been allowed access to ${message.guild.name}*` }),
+						],
+					});
 
 					//Update Embed
 					Embed.setDescription(`${user} has been approved by ${clicker}!`);
@@ -72,7 +76,6 @@ module.exports = {
 
 					//Update Database
 					await Verification.findOneAndUpdate({ guildid: guild.id, userid: user.id }, { verified: true }, { upsert: true, new: true });
-
 				} catch (e) {
 					console.error(e);
 				}
@@ -88,16 +91,23 @@ module.exports = {
 				try {
 					if (settings.kickondeny) {
 						//Inform the user
-						await user.send({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
+						await user.send({
+							embeds: [
+								bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` }),
+							],
+						});
 						await user.kick(`Denied by ${clicker.displayName}`);
 
 						await message.edit({ embeds: [Embed], components: [] });
 
 						//Update Database
 						await Verification.findOneAndDelete({ guildid: guild.id, userid: user.id });
-
 					} else {
-						await user.send({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` })] });
+						await user.send({
+							embeds: [
+								bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` }),
+							],
+						});
 					}
 				} catch (e) {
 					console.error(e);

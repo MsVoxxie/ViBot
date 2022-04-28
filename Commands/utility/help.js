@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { readdirSync } = require('fs');
 
@@ -45,8 +45,20 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true }) })
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
-				.setDescription(`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.\n${Vimotes['CHANGED']} Represents a command converted into Slash (/).\n\n**${Cap}**`)
-				.addField(`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`,dir.map((command) => `${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** › ${command.description ? command.description : ''}`).join('\n'))
+				.setDescription(
+					`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['XMARK']} Represents a Disabled Module.\n🔒 Represents a Locked Command.\n${Vimotes['CHANGED']} Represents a command converted into Slash (/).\n\n**${Cap}**`
+				)
+				.addField(
+					`${settings.disabledModules.includes(Cat) ? `${Vimotes['XMARK']}${Cap}` : Cap} [${dir.size}] ›`,
+					dir
+						.map(
+							(command) =>
+								`${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** › ${
+									command.description ? command.description : ''
+								}`
+						)
+						.join('\n')
+				)
 				.setColor(settings.guildcolor);
 
 			embeds.push(embed);
@@ -98,22 +110,24 @@ module.exports = {
 
 			// Apply Reactions
 			try {
-				await embedList.react('◀');
-				await embedList.react('⏹');
-				await embedList.react('▶');
+				const Buttons = new MessageActionRow().addComponents(
+					new MessageButton().setLabel('Back').setStyle('SUCCESS').setCustomId('BACK'), //.setEmoji('⏮️'),
+					new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'), //.setEmoji('⏹️'),
+					new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT') //.setEmoji('⏭️')
+				);
+				await embedList.edit({ components: [Buttons] });
 			} catch (error) {
 				console.error(error);
 			}
 
-			// Filter Reactions, setup Collector and try each reaction
-			const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
-			const collector = await embedList.createReactionCollector({ filter, time: 300 * 1000 });
-			collector.on('collect', async (reaction) => {
+			const filter = (interaction) => message.author.id === interaction.user.id;
+			const collector = await embedList.createMessageComponentCollector({ filter, time: 300 * 1000 });
+			collector.on('collect', async (interaction) => {
+				await interaction.deferUpdate();
 				// Switch Case
-				switch (reaction.emoji.name) {
+				switch (interaction.customId) {
 					// Backwards
-					case '◀': {
-						await reaction.users.remove(message.author.id);
+					case 'BACK': {
 						if (currentPage !== 0) {
 							currentPage--;
 							embedList.edit({
@@ -125,16 +139,14 @@ module.exports = {
 					}
 
 					// Stop
-					case '⏹': {
+					case 'STOP': {
 						collector.stop();
-						reaction.message.reactions.removeAll();
-						embedList.edit('**«Collection Stopped»**');
+						embedList.edit({ content: '**«Collection Stopped»**', components: [] });
 						break;
 					}
 
 					// Forwards
-					case '▶': {
-						await reaction.users.remove(message.author.id);
+					case 'NEXT': {
 						if (currentPage < embeds.length - 1) {
 							currentPage++;
 							embedList.edit({
@@ -150,8 +162,7 @@ module.exports = {
 			//Tell users the collection ended when it has.
 			collector.on('end', async () => {
 				const msg = await message.channel.messages.fetch(embedList.id);
-				await msg.reactions.removeAll();
-				await embedList.edit('**«Collection Timed Out»**');
+				await msg.edit({ content: '**«Collection Stopped»**', components: [] });
 			});
 		}
 	},
