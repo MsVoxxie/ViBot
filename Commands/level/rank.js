@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const xpSchema = require('../../Storage/Database/models/xp');
+const { userData } = require('../../Storage/Database/models/');
 
 module.exports = {
 	name: 'rank',
@@ -24,7 +24,7 @@ module.exports = {
 				const member = await message.guild.members.fetch(Getmember.id);
 
 				//Get users of guild
-				const users = await xpSchema.find({}).sort({ level: -1, xp: -1 }).lean();
+				const users = await userData.find({}).sort({ level: -1, xp: -1 }).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -34,7 +34,7 @@ module.exports = {
 				}
 
 				//Get the member who requested their rank
-				const me = await users.find((u) => u.guildid === message.guild.id && u.memberid === member.id);
+				const me = await users.find((u) => u.guildid === message.guild.id && u.userid === member.id);
 				if (!me.level) return message.delete();
 
 				const embed = new MessageEmbed()
@@ -49,7 +49,7 @@ module.exports = {
 
 			case 'top': {
 				//Get users of guild
-				const users = await xpSchema.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(5).lean();
+				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(5).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -65,7 +65,7 @@ module.exports = {
 					.setAuthor({ name: `${message.guild.name}'s Top 5 Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
-					.addField('Guild Member', guildTop.map((m) => `<@${m.memberid}> | Level› ${m.level}`).join('\n'), true)
+					.addField('Guild Member', guildTop.map((m) => `<@${m.userid}> | Level› ${m.level}`).join('\n'), true)
 					.addField('Guild Rank', guildTop.map((m) => `# ${m.rank}`).join('\n'), true);
 				await message.channel.send({ embeds: [embed] });
 				break;
@@ -77,7 +77,7 @@ module.exports = {
 				const member = await message.guild.members.fetch(Getmember.id);
 
 				//Get users of guild
-				const users = await xpSchema.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).lean();
+				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -87,7 +87,7 @@ module.exports = {
 				}
 
 				//Get the member who requested their rank
-				const me = await users.find((user) => user.memberid === member.id);
+				const me = await users.find((user) => user.userid === member.id);
 				if (!me.level) return message.delete();
 
 				const embed = new MessageEmbed()
