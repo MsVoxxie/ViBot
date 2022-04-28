@@ -35,8 +35,8 @@ module.exports = {
 		await bot.sleep(1000);
 		const rest = new REST({ version: '9' }).setToken(Token)
 			await rest
-			.put(Routes.applicationCommands('827375161665650689'), { body: cmds })
-			// .put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: cmds })
+			// .put(Routes.applicationCommands('827375161665650689'), { body: cmds })
+			.put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: cmds })
 			.then(() => {
 				console.log(table.toString());
 				message.reply('Successfully registered all commands!');

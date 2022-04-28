@@ -41,6 +41,7 @@ module.exports = {
 				.setRequired(false)
 		),
 	options: {
+		cooldown: 10,
 		ownerOnly: false,
 		userPerms: [],
 		botPerms: [],

@@ -7,9 +7,15 @@ module.exports = {
 		.setName('invite')
 		.setDescription('Create an invite to this server!')
 		.addNumberOption((option) =>
-			option.setName('uses').setDescription('The number of times the invite can be used. (Min 1 Max 10)').setMinValue(1).setMaxValue(10).setRequired(true)
+			option
+				.setName('uses')
+				.setDescription('The number of times the invite can be used. (Min 1 Max 10)')
+				.setMinValue(1)
+				.setMaxValue(10)
+				.setRequired(true)
 		),
 	options: {
+		cooldown: 60,
 		ownerOnly: false,
 		userPerms: ['SEND_MESSAGES'],
 		botPerms: ['MANAGE_MESSAGES', 'CREATE_INSTANT_INVITE'],
@@ -17,7 +23,8 @@ module.exports = {
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Checks
 		if (!settings.allowinvites) return interaction.reply({ content: 'User created invites are disabled.', ephemeral: true });
-		if (!settings.ruleschannel) return interaction.reply({ content: 'This guild does not have a proper rules channel configured.', ephemeral: true });
+		if (!settings.ruleschannel)
+			return interaction.reply({ content: 'This guild does not have a proper rules channel configured.', ephemeral: true });
 
 		//Declarations
 		const arg = await interaction.options.getNumber('uses');

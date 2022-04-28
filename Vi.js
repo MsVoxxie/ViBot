@@ -52,6 +52,7 @@ bot.commands = new Collection();
 bot.slashCommands = new Collection();
 bot.aliases = new Collection();
 bot.cooldowns = new Collection();
+bot.slash_cooldowns = new Collection();
 
 // Event Info
 bot.events = new Collection();

@@ -1,6 +1,8 @@
 const { userData } = require('../../Storage/Database/models/index.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
+const { Collection } = require('discord.js');
+const ms = require('ms');
 
 module.exports = {
 	name: 'interactionCreate',
@@ -71,9 +73,46 @@ module.exports = {
 			}
 		}
 
+		// Command Cooldowns
+		if (options.cooldown) {
+			if (!bot.slash_cooldowns.has(interaction.commandName)) {
+				bot.slash_cooldowns.set(interaction.commandName, new Collection());
+			}
+
+			const now = Date.now();
+			const timestamps = bot.slash_cooldowns.get(interaction.commandName);
+			const cooldownAmount = (options.cooldown || 3) * 1000;
+
+			if (timestamps.has(intMember.id)) {
+				const expirationTime = timestamps.get(intMember.id) + cooldownAmount;
+
+				if (now < expirationTime) {
+					const timeLeft = expirationTime - now;
+					return interaction.reply({
+						embeds: [
+							bot.replyEmbed({
+								color: bot.colors.warning,
+								text: `${Vimotes['ALERT']} Please wait, You have \`${ms(timeLeft, { long: true })}\` left until you can reuse \`${
+									interaction.commandName
+								}\`.`,
+							}),
+						],
+						ephemeral: true,
+					});
+				}
+			}
+
+			timestamps.set(intMember.id, now);
+			setTimeout(() => timestamps.delete(intMember.id), cooldownAmount);
+		}
+
 		//Execute the command
 		try {
-			await userData.findOneAndUpdate({ guildid: intGuild.id, userid: intMember.id }, { $inc: { commandsused: 1 } }, { upsert: true, new: true });
+			await userData.findOneAndUpdate(
+				{ guildid: intGuild.id, userid: intMember.id },
+				{ $inc: { commandsused: 1 } },
+				{ upsert: true, new: true }
+			);
 			await command.execute(bot, interaction, intGuild, intMember, settings, Vimotes);
 		} catch (error) {
 			console.error(error);

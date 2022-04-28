@@ -9,6 +9,7 @@ module.exports = {
 		.setDescription('Get information about yourself or another user!')
 		.addUserOption((option) =>option.setName('user').setDescription('The user to get info about.')),
 	options: {
+        cooldown: 5,
 		ownerOnly: false,
 		userPerms: [],
 		botPerms: [],

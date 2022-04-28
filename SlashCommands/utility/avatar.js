@@ -7,6 +7,7 @@ module.exports = {
 		.setDescription('Display a users avatar, or your own!.')
 		.addUserOption((option) => option.setName('user').setDescription("The user's avatar to show")),
 	options: {
+		cooldown: 2,
 		ownerOnly: false,
 		userPerms: [],
 		botPerms: [],

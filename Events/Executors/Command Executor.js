@@ -4,7 +4,6 @@ const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 const Discord = require('discord.js');
 const ms = require('ms');
 
-
 module.exports = {
 	name: 'messageCreate',
 	disabled: false,
@@ -137,11 +136,16 @@ module.exports = {
 				if (now < expirationTime) {
 					const timeLeft = expirationTime - now;
 					return message
-						.reply(
-							`Please wait, You have \`${ms(timeLeft, {
-								long: true,
-							})}\` left until you can reuse \`${command.name}\`.`
-						)
+						.reply({
+							embeds: [
+								bot.replyEmbed({
+									color: bot.colors.warning,
+									text: `${Vimotes['ALERT']} Please wait, You have \`${ms(timeLeft, { long: true })}\` left until you can reuse \`${
+										command.name
+									}\`.`,
+								}),
+							],
+						})
 						.then((s) => {
 							if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 						});
@@ -154,7 +158,11 @@ module.exports = {
 
 		// Execute command
 		try {
-			await userData.findOneAndUpdate({ guildid: message.guild.id, userid: message.author.id }, { $inc: { commandsused: 1 } }, { upsert: true, new: true });
+			await userData.findOneAndUpdate(
+				{ guildid: message.guild.id, userid: message.author.id },
+				{ $inc: { commandsused: 1 } },
+				{ upsert: true, new: true }
+			);
 			await command.execute(bot, message, args, settings, Vimotes);
 		} catch (e) {
 			console.error(e);
