@@ -26,7 +26,7 @@ module.exports = {
             .addField('Total Roles', guild.roles.cache.size.toString(), true)
 			.addField('Total Emojis', guild.emojis.cache.size.toString(), true)
 			.addField('Total Stickers', guild.stickers.cache.size.toString(), true)
-			.addField('Created At', bot.relativeTimestamp(guild.createdAt), true)
+			.addField('Created', bot.relativeTimestamp(guild.createdAt), true)
             .addField('Roles', guild.roles.cache.map((r) => { if(r.id !== guild.id) return `<@&${r.id}>`} ).filter(x => x !== undefined).join(' **|** '), false)
             await interaction.reply({ embeds: [embed] });
 	},
