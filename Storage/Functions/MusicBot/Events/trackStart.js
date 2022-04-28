@@ -26,7 +26,7 @@ module.exports = async (bot, queue, track) => {
 			new MessageButton().setLabel('Play / Pause').setStyle('SUCCESS').setCustomId('PAUSE'),
 			new MessageButton().setLabel('Skip').setStyle('DANGER').setCustomId('SKIP'),
 			new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'),
-			new MessageButton().setLabel('Toggle Loop').setStyle('SECONDARY').setCustomId('LOOP')
+			new MessageButton().setLabel('Toggle Loop').setStyle('PRIMARY').setCustomId('LOOP')
 		);
 		await playing.edit({ components: [Buttons] });
 	} catch (error) {
