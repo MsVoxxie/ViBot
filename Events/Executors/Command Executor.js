@@ -20,6 +20,13 @@ module.exports = {
 		// Member declaration
 		const member = await message.member;
 
+		//Increase messages sent.
+		await userData.findOneAndUpdate(
+			{ guildid: message.guild.id, userid: message.author.id },
+			{ $inc: { totalmessages: 1 } },
+			{ upsert: true, new: true }
+		);
+
 		// Setup Prefix
 		const prefixMention = new RegExp(`^<@!?${bot.user.id}> `);
 		const prefixes = [settings ? settings.prefix : '?', message.content.match(prefixMention) ? message.content.match(prefixMention[0]) : '?'];

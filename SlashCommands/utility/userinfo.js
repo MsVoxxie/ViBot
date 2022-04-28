@@ -30,9 +30,12 @@ module.exports = {
             .addField('Nickname', member.nickname ? member.nickname : 'None', true)
             .addField('Online State', bot.titleCase(member?.presence?.status ? member.presence.status : 'Offline'), true)
             .addField('Birthday', dbMember.birthday ? moment(Number(dbMember.birthday)).format('MMMM Do') : 'Not Set!', true)
-            .addField('Commands Used', dbMember?.commandsused ? dbMember?.commandsused.toString() : 'None, Yet!', true)
+            .addField('Commands Used', dbMember?.commandsused ? bot.toThousands(dbMember?.commandsused.toString()) : 'None, Yet!', true)
+            .addField('Total Messages', dbMember?.totalmessages ? bot.toThousands(dbMember?.totalmessages.toString()) : 'None, Yet!', true)
+            .addField('Current Level', `${dbMember?.level ? `Level› ${dbMember?.level.toString()}` : 'Leveling Disabled'}`, true)
             .addField('Joined Server', bot.relativeTimestamp(member.joinedAt), true)
             .addField('Account Created', bot.relativeTimestamp(member.user.createdAt), true)
+            .addField('Account Badges', member.user.flags.toArray().map(flag => `${Vimotes[`${flag}`]}`).join(' '), true)
             .addField('Roles', dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`} ).filter(x => x !== undefined).join(' **|** ') : 'None', false)
             if(currentGames?.length > 0) { embed.addField('Currently Playing - ', currentGames.length > 0 ? `\`\`\`diff\n${currentGames}\`\`\`` : '\`\`\`Not playing anything\`\`\`', false) }
             if(member.presence?.activities.find(a => a.type === 'CUSTOM')) { embed.addField('Custom Status', member.presence.activities.find(a => a.type === 'CUSTOM') ? `\`\`\`fix\n${member.presence.activities.find(a => a.type === 'CUSTOM').state}\`\`\`` : '\`\`\`No custom status set\`\`\`', false) }

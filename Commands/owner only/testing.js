@@ -1,3 +1,5 @@
+const { Vimotes } = require("../../Storage/Functions/miscFunctions");
+
 module.exports = {
 	name: 'test',
 	aliases: ['t'],
@@ -10,5 +12,10 @@ module.exports = {
 	ownerOnly: true,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {},
+	async execute(bot, message, args, settings) {
+		const member = await message.member;
+		const flags = await member.user.fetchFlags();
+		const send = flags.toArray().map(flag => `${Vimotes[`${flag}`]}`).join(' ');
+		message.channel.send(send);
+	},
 };
