@@ -111,9 +111,9 @@ module.exports = {
 			// Apply Reactions
 			try {
 				const Buttons = new MessageActionRow().addComponents(
-					new MessageButton().setLabel('Back').setStyle('SUCCESS').setCustomId('BACK'), //.setEmoji('⏮️'),
-					new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'), //.setEmoji('⏹️'),
-					new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT') //.setEmoji('⏭️')
+					new MessageButton().setLabel('Back').setStyle('SUCCESS').setCustomId('BACK'),
+					new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'),
+					new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT')
 				);
 				await embedList.edit({ components: [Buttons] });
 			} catch (error) {

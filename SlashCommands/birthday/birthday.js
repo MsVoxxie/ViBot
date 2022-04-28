@@ -36,7 +36,7 @@ module.exports = {
 	options: {
 		ownerOnly: false,
 		userPerms: [],
-		botPerms: [],
+		botPerms: ["SEND_MESSAGES"],
 	},
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Definitions

@@ -23,10 +23,10 @@ module.exports = async (bot, queue, track) => {
 	// Reaction Controls
 	try {
 		const Buttons = new MessageActionRow().addComponents(
-			new MessageButton().setLabel('Stop').setStyle('PRIMARY').setCustomId('STOP').setEmoji('⏹️'),
-			new MessageButton().setLabel('Play / Pause').setStyle('PRIMARY').setCustomId('PAUSE').setEmoji('⏯️'),
-			new MessageButton().setLabel('Toggle Loop').setStyle('PRIMARY').setCustomId('LOOP').setEmoji('🔁'),
-			new MessageButton().setLabel('Skip').setStyle('PRIMARY').setCustomId('SKIP').setEmoji('⏭️')
+			new MessageButton().setLabel('Play / Pause').setStyle('SUCCESS').setCustomId('PAUSE'),
+			new MessageButton().setLabel('Skip').setStyle('DANGER').setCustomId('SKIP'),
+			new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'),
+			new MessageButton().setLabel('Toggle Loop').setStyle('SECONDARY').setCustomId('LOOP')
 		);
 		await playing.edit({ components: [Buttons] });
 	} catch (error) {
@@ -66,6 +66,6 @@ module.exports = async (bot, queue, track) => {
 
 	collector.on('end', async () => {
 		if (queue.currentEmbed) return await playing.edit({ components: [] });
-		if(playing) return await playing.delete();
+		if (playing) return await playing.delete();
 	});
 };

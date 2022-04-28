@@ -10,7 +10,7 @@ module.exports = {
 		cooldown: 2,
 		ownerOnly: false,
 		userPerms: [],
-		botPerms: [],
+		botPerms: ["SEND_MESSAGES"],
 	},
 	async execute(bot, interaction, intGuild, intMember, settings) {
 		const intuser = (await interaction.options.getUser('user')) || intMember;
