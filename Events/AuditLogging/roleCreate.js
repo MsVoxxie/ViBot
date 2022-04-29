@@ -28,8 +28,8 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Created')
-        .setDescription(`<@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-        .setColor(role.hexColor);
+        .setDescription(`<@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created›** <t:${Math.round(Date.now() / 1000)}:R>\n**Created by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
+		.setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });
 	},

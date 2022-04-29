@@ -14,6 +14,7 @@ const bot = new Client({
 		Intents.FLAGS.GUILD_INVITES,
 		Intents.FLAGS.GUILD_PRESENCES,
 		Intents.FLAGS.GUILD_VOICE_STATES,
+		Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
 	],
 	partials: ['MESSAGE', 'REACTION'],
 	allowedMentions: {
@@ -66,6 +67,7 @@ bot.twitchwatchDefaults = require('./Storage/Database/models/twitchwatchDefaults
 // Load Functions
 require('./Storage/Functions/dbFunctions')(bot);
 require('./Storage/Functions/utilFunctions')(bot);
+require('./Storage/Functions/embedFunctions')(bot);
 require('./Storage/Functions/twitterFunctions')(bot);
 require('./Storage/Functions/giveawayDatabase')(bot);
 require('./Storage/Functions/birthdayFunctions')(bot);

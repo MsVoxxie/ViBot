@@ -8,6 +8,7 @@ module.exports = {
 	once: false,
 	async execute(oldRole, newRole, bot, Vimotes) {
 		if (oldRole === newRole) return;
+		if(newRole.position !== oldRole.position) return;
 
 		const guild = newRole.guild;
 		// Declarations / Checks
@@ -36,10 +37,13 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Role Updated')
-			.setDescription(`**Old Name›** ${oldRole.name}\n**Role ID›** \`${oldRole.id}\`\n**Role Color›** ${oldRole.hexColor}\n**Update by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-			.addField('Updated Role›', `**Role Name›** **${newRole.name}**\n**New Role Color›** \`${newRole.hexColor}\``)
-            .addField('Permissions Changed›', `${permissionsAdded.length ? `\n\`\`\`css\n#ADDED\n${permissionsAdded.map(perm => permissions[perm]).join('\n')}\`\`\`` : ''}${permissionsRemoved.length ? `\n\`\`\`css\n#REMOVED\n${permissionsRemoved.map(perm => permissions[perm]).join('\n')}\`\`\`` : ''}${!permissionsAdded.length || !permissionsRemoved.length ? '' : 'No Changes'}`)
-			.setColor(newRole.hexColor);
+			.setDescription(`**Updated›** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
+			.addField('Old Role', `**Old Name›** ${oldRole.name}\n**Old Color›** \`${oldRole.hexColor}`)
+			.addField('Updated Role›', `**New Name›** ${newRole.name}\n**New Color›** \`${newRole.hexColor ? newRole.hexColor : oldRole.hexColor}\``)
+			.setFooter({ text: `Role ID› ${oldRole.id}` })
+			.setColor(settings.guildcolor)
+			if(permissionsAdded.length) embed.addField('Permissions Added', `\`\`\`diff\n${permissionsAdded.map(perm => `+ ${permissions[perm]}`).join('\n')}\`\`\``)
+			if(permissionsRemoved.length) embed.addField('Permissions Removed', `\`\`\`diff\n${permissionsRemoved.map(perm => `- ${permissions[perm]}`).join('\n')}\`\`\``)
 
 		logChannel.send({ embeds: [embed] });
 	},
