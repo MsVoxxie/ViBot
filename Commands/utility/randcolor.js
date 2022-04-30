@@ -21,7 +21,7 @@ module.exports = {
 		);
 
 		//Setup Embed
-		const firstColour = await createColouredSquare(args);
+		const firstColour = await createColouredSquare();
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 			.setDescription(`\`\`\`Hex Code› ${firstColour.color}\`\`\``)
@@ -64,8 +64,7 @@ module.exports = {
 async function createColouredSquare(args) {
 	return new Promise((resolve, reject) => {
 		try {
-			//Optional args
-			const randColor = args ? args[0].toUpperCase() : `#${Math.floor(Math.random() * 16777215).toString(16)}`.toUpperCase();
+			const randColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`.toUpperCase();
 			const canvas = Canvas.createCanvas(512, 512);
 			const ctx = canvas.getContext('2d');
 
