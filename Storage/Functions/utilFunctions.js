@@ -2,13 +2,6 @@ const { twit_consumer, twit_consumer_secret, twit_access_token, twit_access_toke
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const deJunk = require('dejunk.js');
-const Twit = require('twit');
-const Twitter = new Twit({
-	consumer_key: twit_consumer,
-	consumer_secret: twit_consumer_secret,
-	access_token: twit_access_token,
-	access_token_secret: twit_access_token_secret,
-});
 
 module.exports = (bot) => {
 	//'Sleep'
@@ -142,61 +135,5 @@ module.exports = (bot) => {
 			embed.setFooter({ text: data.footer });
 		}
 		return embed;
-	};
-
-	//Get Twitter Media
-	bot.getTwitterMedia = async (url) => {
-		const idRegex = RegExp(/status\/(\d+)/);
-		const tweet = url;
-		const tweetId = idRegex.exec(tweet)[0].slice(7);
-		let bitrate = 0;
-		let hq_video_url;
-
-		//If no tweet, return!
-		if (!tweetId[0]) return;
-
-		return new Promise((resolve, reject) => {
-			Twitter.get('statuses/show/:id', { tweet_mode: 'extended', id: tweetId }, (err, data) => {
-				if (err) return reject(error);
-
-				//If theres a video, get the highest quality one
-				if (data?.extended_entities?.media[0]?.video_info) {
-					for (var j = 0; j < data.extended_entities.media[0].video_info?.variants.length; j++) {
-						if (data.extended_entities.media[0].video_info.variants[j]?.bitrate >= 0) {
-							if (data.extended_entities.media[0].video_info.variants[j].bitrate >= bitrate) {
-								bitrate = data.extended_entities.media[0].video_info.variants[j].bitrate;
-								hq_video_url = data.extended_entities.media[0].video_info.variants[j].url;
-								console.log(bitrate);
-								console.log(hq_video_url);
-							}
-						}
-					}
-				}
-
-				//Define our own data object
-				const tweetData = {
-					user: {
-						name: data.user.name,
-						screen_name: data.user.screen_name,
-						profile_image_url: data.user.profile_image_url_https.replace('_normal', ''),
-						followers: data.user.followers_count,
-					},
-					tweet: {
-						url: data.entities.media[0].url,
-						media_url: data.entities.media[0].media_url_https,
-						video_url: hq_video_url ? hq_video_url.replace('?tag=12', '') : null,
-						description: data.full_text
-							.replace(/&lt;/g, '<')
-							.replace(/&quot;/g, '"')
-							.replace(/&apos;/g, "'")
-							.replace(/&amp;/g, '&')
-							.replace(/(?:https?|ftp):\/\/[\n\S]+/g, ''),
-						likes: data.favorite_count,
-						retweets: data.retweet_count,
-					},
-				};
-				resolve(tweetData);
-			});
-		});
 	};
 };
