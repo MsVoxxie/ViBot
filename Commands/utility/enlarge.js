@@ -17,9 +17,8 @@ module.exports = {
 		let type;
 
 		// Split Emoji into pieces
-		const CutFront = args[0].replace('<', '');
-		const CutBack = CutFront.replace('>', '');
-		const Slice = CutBack.split(':');
+		const cutArrows = args[0].replace(/\<|\>/g, '');
+		const Slice = cutArrows.split(':');
 		if (Slice.includes('a')) {
 			type = '.gif';
 		} else {
