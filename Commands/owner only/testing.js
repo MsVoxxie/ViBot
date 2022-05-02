@@ -1,7 +1,5 @@
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 const { MessageAttachment } = require('discord.js');
-const Canvas = require('canvas');
-const axios = require('axios');
 
 module.exports = {
 	name: 'test',
@@ -15,8 +13,5 @@ module.exports = {
 	ownerOnly: true,
 	userPerms: [],
 	botPerms: [],
-	async execute(bot, message, args, settings) {
-
-	},
+	async execute(bot, message, args, settings) {},
 };
-

@@ -19,7 +19,6 @@ module.exports = (bot) => {
 		const idRegex = RegExp(/status\/(\d+)/);
 		const tweet = url;
 		const tweetId = idRegex.exec(tweet)[0].slice(7);
-		let bitrate = 0;
 		let hq_video_url;
 
 		//If no tweet, return!

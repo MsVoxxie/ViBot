@@ -1,5 +1,5 @@
 const { Starboard } = require('../../Storage/Database/models/');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 
 module.exports = {
 	name: 'messageReactionAdd',
@@ -13,7 +13,12 @@ module.exports = {
 		//Defininitions
 		const message = await reaction.message;
 		const settings = await bot.getGuild(message.guild);
+		let attachment;
+		let embeds = [];
 		let StarData;
+		let Message;
+		let type;
+		let sm;
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
@@ -57,28 +62,109 @@ module.exports = {
 		}
 
 		//Check for Images or URL's
-		const imageAt = (await message.attachments.size) > 0 ? await this.imageAttachment(message) : '';
-		const imgLink = (await message.content) ? this.imageURL(message) : '';
-		const finalImage = imageAt ? imageAt : imgLink ? imgLink[0] : '';
-
+		const mediaData = await bot.hasMedia(message);
+		//Get Type
+		if (mediaData.videos.length > 0) {
+			type = 'Video';
+		} else if (mediaData.images.length > 0) {
+			type = 'Image';
+		} else if (mediaData.tweetData) {
+			type = 'Tweet';
+		}
 		// Check if the messages is empty.
-		if (finalImage === '' && message.content.length < 1)
+		if (!mediaData && message.content.length < 1)
 			return message.reply(`You cannot star an empty message.`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 
-		//Embed
-		const embed = new MessageEmbed()
-			.setColor('#c2b04e')
-			.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
-			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-			.setImage(finalImage)
-			.setFooter({ text: `MessageID: ${message.id}` });
+		//Embeds
+		switch (type) {
+			case 'Tweet': {
+				const intData = `♥️ [${bot.toThousands(mediaData.tweetData.tweet.likes)}] 🔃 [${bot.toThousands(mediaData.tweetData.tweet.retweets)}]`;
+				const wrapLines = '─'.repeat(bot.MinMax(intData.length / 1.5, 1, 18));
 
+				if (!mediaData.tweetData.tweet.video_url) {
+					for await (const photo of mediaData.tweetData.tweet.media_urls) {
+						const embed = new MessageEmbed()
+							.setColor('#c2b04e')
+							.setURL(message.url)
+							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+							.setImage(photo)
+							.setFooter({ text: `MessageID: ${message.id}` });
+						embeds.push(embed);
+					}
+				} else {
+					const embed = new MessageEmbed()
+						.setAuthor({ name: `@${mediaData.tweetData.user.screen_name}` })
+						.setTitle(mediaData.tweetData.user.name)
+						.setURL(mediaData.tweetData.tweet.url)
+						.setThumbnail(mediaData.tweetData.user.profile_image_url)
+						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+						.setColor(settings.guildcolor);
+					attachment = new MessageAttachment(mediaData.tweetData.tweet.video_url, `media.mp4`);
+					embeds.push(embed);
+				}
+				break;
+			}
+
+			//Video
+			case 'Video': {
+				const embed = new MessageEmbed()
+					.setColor('#c2b04e')
+					.setURL(message.url)
+					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+					.setFooter({ text: `MessageID: ${message.id}` });
+				embeds.push(embed);
+				if (mediaData.videos.length > 0) {
+					attachment = new MessageAttachment(mediaData.videos[0], `media.mp4`);
+				}
+				break;
+			}
+
+			//Image
+			case 'Image': {
+				for await (const media of mediaData.images) {
+					const embed = new MessageEmbed()
+						.setColor('#c2b04e')
+						.setURL(message.url)
+						.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+						.setImage(media)
+						.setFooter({ text: `MessageID: ${message.id}` });
+					embeds.push(embed);
+				}
+				break;
+			}
+
+			//Text
+			default: {
+				const embed = new MessageEmbed()
+					.setColor('#c2b04e')
+					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+					.setImage(finalImage)
+					.setFooter({ text: `MessageID: ${message.id}` });
+				embeds.push(embed);
+				break;
+			}
+		}
 		if (StarData && StarData.starcount >= ReactLimit) {
 			if (StarData.starred == false) {
 				//If not starred, Post the star!
-				const sm = await starChannel.send({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: [embed] });
+				if (attachment) {
+					sm = await starChannel.send({
+						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
+						embeds: embeds.map((e) => e),
+						files: attachment ? [attachment] : null,
+					});
+				} else {
+					sm = await starChannel.send({
+						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
+						embeds: embeds.map((e) => e),
+					});
+				}
 				StarData = await Starboard.findOneAndUpdate(
 					{ guildid: message.guild.id, messageid: message.id },
 					{ $set: { starred: true, starid: sm.id } },
@@ -87,28 +173,25 @@ module.exports = {
 			} else if (StarData.starred == true) {
 				//Fetch Messages and find Star Message
 				const Messages = await starChannel.messages.fetch({ limit: 100 });
-				const Message = await Messages.find((m) => m.id === StarData.starid);
+				Message = await Messages.find((m) => m.id === StarData.starid);
 
 				//If Star was Deleted in channel, remove entry
 				if (!Message) return await Starboard.deleteOne({ guildid: message.guild.id, messageid: message.id });
 
 				//Update Star Message
-				await Message.edit({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: [embed] });
+				if (attachment) {
+					await Message.edit({
+						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
+						embeds: embeds.map((e) => e),
+					});
+				} else {
+					await Message.edit({
+						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
+						embeds: embeds.map((e) => e),
+						files: [attachment],
+					});
+				}
 			}
 		}
-	},
-
-	//Functions
-	imageAttachment(message) {
-		const imageLink = message.attachments.first().url.split('.');
-		const typeOfImage = imageLink[imageLink.length - 1];
-		const image = /(jpg|jpeg|png|gif)/gi.test(typeOfImage);
-		if (!image) return '';
-		return message.attachments.first().url;
-	},
-
-	imageURL(message) {
-		let imgRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|webp)/.exec(message.content);
-		return imgRegex;
 	},
 };
