@@ -2,8 +2,9 @@ module.exports = {
 	name: 'channelCreate',
 	disabled: false,
 	once: false,
-	async execute(channel, bot) {
-		if (!channel) return;
+	async execute(chan, bot) {
+		if (!chan) return;
+		const channel = await chan.guild.channels.cache.get(chan.id);
 
 		const data = [];
 		await channel.guild.channels.cache

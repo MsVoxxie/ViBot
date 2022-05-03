@@ -9,6 +9,18 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(interaction, bot) {
+		//Are we in a guild?
+		if (!interaction.guild)
+			return interaction.reply({
+				embeds: [
+					bot.replyEmbed({
+						color: bot.colors.warning,
+						text: `${Vimotes['ALERT']} Sorry, Commands can only be used in guilds!`,
+					}),
+				],
+				ephemeral: true,
+			});
+
 		//Who used the command
 		const intGuild = interaction?.guild;
 		const intMember = await intGuild?.members.fetch(interaction.user.id);

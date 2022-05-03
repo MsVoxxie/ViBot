@@ -10,12 +10,18 @@ module.exports = {
 	once: false,
 	async execute(message, bot) {
 		if (message.author.bot) return;
+		if (!message.guild)
+			return message.reply({
+				embeds: [
+					bot.replyEmbed({
+						color: bot.colors.warning,
+						text: `${Vimotes['ALERT']} Sorry, Commands can only be used in guilds!`,
+					}),
+				],
+			});
 
 		// Get Guild Settings
-		let settings;
-		if (message.channel.type !== 'DM') {
-			settings = await bot.getGuild(message.guild);
-		}
+		const settings = await bot.getGuild(message.guild);
 
 		// Member declaration
 		const member = await message.member;
