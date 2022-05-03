@@ -27,7 +27,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Channel Deleted')
-        .setDescription(`**${channel.name}** was Deleted.\n**Parent›** ${channel.parent.name}\n**Channel ID›** \`${channel.id}\`\n**Deleted›** <t:${Math.round(Date.now() / 1000)}:R>\n**Deleted by›** ${ChannelData ? `<@${ChannelData.executor.id}>` : 'Unknown'}`)
+        .setDescription(`**${channel.name}** was Deleted.\n**Parent›** ${channel.parent ? channel.parent.name : 'None'}\n**Channel ID›** \`${channel.id}\`\n**Deleted›** <t:${Math.round(Date.now() / 1000)}:R>\n**Deleted by›** ${ChannelData ? `<@${ChannelData.executor.id}>` : 'Unknown'}`)
         .setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });

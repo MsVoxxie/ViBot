@@ -10,8 +10,8 @@ module.exports = {
 	once: false,
 	async execute(interaction, bot) {
 		//Who used the command
-		const intGuild = interaction.guild;
-		const intMember = await intGuild.members.fetch(interaction.user.id);
+		const intGuild = interaction?.guild;
+		const intMember = await intGuild?.members.fetch(interaction.user.id);
 
 		// Get Guild Settings
 		const settings = await bot.getGuild(intGuild);
