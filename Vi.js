@@ -28,7 +28,7 @@ bot.colors = {
 	success: '#42f560',
 	warning: '#f5e142',
 	error: '#f54242',
-}
+};
 
 //Setup MusicPlayer
 const Music = new Player(bot, {
@@ -70,7 +70,7 @@ require('./Storage/Functions/utilFunctions')(bot);
 require('./Storage/Functions/embedFunctions')(bot);
 require('./Storage/Functions/twitterFunctions')(bot);
 require('./Storage/Functions/giveawayDatabase')(bot);
-require('./Storage/Functions/birthdayFunctions')(bot);
+require('./Storage/Functions/dateFunctions')(bot);
 require('./Storage/Functions/twitchFunctions')(bot);
 
 // Declare myself as Owner of bot.
@@ -98,13 +98,16 @@ cron.schedule('0 8 * * *', () => {
 //Minute Interval
 setInterval(async () => {
 	//Twitch Check
-	bot.twitchWatch();
+	await bot.twitchWatch();
 
 	//Bot Data
-	bot.updateBotData(bot);
+	await bot.updateBotData(bot);
+
+	//Reminder Check
+	await bot.checkReminders();
 
 	//Voice Chat XP
-	const guilds = await bot.guilds.cache;
+	const guilds = bot.guilds.cache;
 	for await (const g of guilds) {
 		const guild = g[1];
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);

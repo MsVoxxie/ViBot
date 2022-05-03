@@ -4,10 +4,12 @@ const userDataSchema = new mongoose.Schema({
 	guildid: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	userid: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	joinedat: {
 		type: Date,
@@ -46,6 +48,10 @@ const userDataSchema = new mongoose.Schema({
 		type: Array,
 		default: [],
 	},
+	reminders: {
+		type: Array,
+		default: [],
+	}
 });
 
 module.exports = mongoose.model('userData', userDataSchema);

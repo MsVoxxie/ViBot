@@ -3,6 +3,7 @@ const { userData } = require('../Database/models');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = (bot) => {
+	//Check for birthday
 	bot.checkBirthdays = async () => {
 		for await (const g of bot.guilds.cache) {
 			const guild = g[1];
@@ -32,6 +33,39 @@ module.exports = (bot) => {
 						.setFooter({ text: `• ${bot.shortTimestamp(Date.now())} •` });
 					let msg = await birthdaychannel.send({ embeds: [embed] });
 					await msg.react('🎉');
+				}
+			}
+		}
+	};
+	//Check for remindsers
+	bot.checkReminders = async () => {
+		for await (const g of bot.guilds.cache) {
+			const guild = g[1];
+
+			//Definitions
+			const allMembers = await guild.members.fetch();
+
+			for await (const users of allMembers) {
+				const u = users[1];
+				const user = await userData.findOne({ guildid: guild.id, userid: u.id, reminders: { $exists: true } });
+				if (!user) continue;
+				const now = Date.now();
+				const reminders = user?.reminders?.filter((r) => r.time <= now);
+				if (!reminders) continue;
+
+				for (const r of reminders) {
+					if (!r) continue;
+					try {
+						const embed = new MessageEmbed()
+							.setColor(bot.colors.success)
+							.setTitle(`📌 Reminder 📌`)
+							.setAuthor({ name: `${u.user.tag}`, iconURL: u.user.avatarURL({ dynamic: true }) })
+							.setDescription(`\`\`\`${r.message}\`\`\`\n${bot.relativeTimestamp(r.time)}`);
+						await u.send({ embeds: [embed] });
+						await userData.findOneAndUpdate({ guildid: guild.id, userid: u.id }, { $pull: { reminders: { id: r.id } } }, { new: true });
+					} catch (e) {
+						return console.log(e);
+					}
 				}
 			}
 		}
