@@ -34,6 +34,7 @@
 		"booru": "^2.4.0",
 		"canvas": "^2.8.0",
 		"canvas-constructor": "^5.0.1",
+		"color-thief-node": "^1.0.4",
 		"deepl": "^1.0.13",
 		"dejunk.js": "^0.4.4",
 		"discord-api-types": "^0.30.0",

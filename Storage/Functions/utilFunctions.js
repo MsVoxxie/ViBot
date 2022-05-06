@@ -18,6 +18,17 @@ module.exports = (bot) => {
 		else return false;
 	};
 
+	//ColorToHEX
+	bot.ColorToHex = (color) => {
+		var hexadecimal = color.toString(16);
+		return hexadecimal.length == 1 ? '0' + hexadecimal : hexadecimal;
+	};
+
+	//RGBtoHEX
+	bot.ConvertRGBtoHex = (red, green, blue) => {
+		return '#' + bot.ColorToHex(red) + bot.ColorToHex(green) + bot.ColorToHex(blue);
+	};
+
 	//Get Duration
 	bot.getDuration = (startDate, endDate) => {
 		let parts = [];
@@ -154,10 +165,16 @@ module.exports = (bot) => {
 					images.push(message.content);
 				}
 				if (message.attachments.size > 0 && images.length === 0) {
-					images = message.attachments.map((a) => a.url).slice(0, 4).map((e) => e);
+					images = message.attachments
+						.map((a) => a.url)
+						.slice(0, 4)
+						.map((e) => e);
 				}
 				if (message.embeds.length > 0 && images.length === 0) {
-					images = message.embeds.map((e) => e.image.url).slice(0, 4).map((e) => e);
+					images = message.embeds
+						.map((e) => e.image.url)
+						.slice(0, 4)
+						.map((e) => e);
 				}
 			}
 		}

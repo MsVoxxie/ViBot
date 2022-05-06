@@ -1,4 +1,5 @@
 const { Guild, Reaction, Birthdays, TwitchWatch } = require('../../Storage/Database/models');
+const { getColorFromURL } = require('color-thief-node');
 
 module.exports = {
 	name: 'guildCreate',
@@ -32,10 +33,10 @@ module.exports = {
 
 			//Setup Dashboard Roles
 			const roledata = [];
-			const guildRoles = message.guild.roles.cache
+			const guildRoles = guild.roles.cache
 				.sort((a, b) => b.position - a.position)
 				.map((r) => {
-					if (!r.managed && r.id !== message.guild.id) {
+					if (!r.managed && r.id !== guild.id) {
 						return r;
 					}
 				})
@@ -49,11 +50,15 @@ module.exports = {
 			//Save Roles as a non duplicating array
 			const finalRoles = [...new Set(roledata)];
 
+			//Generate a dominant colour of the guilds icon.
+			const dominant = await getColorFromURL(guild.iconURL({ format: 'png' }));
+			const domHex = bot.ConvertRGBtoHex(dominant[0], dominant[1], dominant[2]);
+
 			//Create Guild
 			await Guild.findOneAndUpdate(
 				{ guildid: guild.id },
 				{
-					guildcolor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+					guildcolor: domHex,
 					guildid: guild.id,
 					guildname: guild.name,
 					channels: finalChannels,
@@ -64,9 +69,6 @@ module.exports = {
 					new: true,
 				}
 			);
-
-			//Create Reactions
-			await await bot.createReactions({ guildid: guild.id, guildname: guild.name });
 
 			//Create TwitchWatch
 			await bot.createTwitchWatch({ guildid: guild.id, guildname: guild.name });
