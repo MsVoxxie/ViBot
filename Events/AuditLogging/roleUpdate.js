@@ -38,7 +38,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setTitle('Role Updated')
 			.setDescription(`**Updated›** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-			.addField('Old Role', `**Old Name›** ${oldRole.name}\n**Old Color›** \`${oldRole.hexColor}`)
+			.addField('Old Role', `**Old Name›** ${oldRole.name}\n**Old Color›** \`${oldRole.hexColor}\``)
 			.addField('Updated Role›', `**New Name›** ${newRole.name}\n**New Color›** \`${newRole.hexColor ? newRole.hexColor : oldRole.hexColor}\``)
 			.setFooter({ text: `Role ID› ${oldRole.id}` })
 			.setColor(settings.guildcolor)
