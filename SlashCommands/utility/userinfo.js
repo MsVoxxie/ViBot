@@ -21,6 +21,7 @@ module.exports = {
 
         //Definitions
         const currentGames = member.presence?.activities?.filter(a => a.type === 'PLAYING').map(a => { return `+ ${a.name}${a.details ? `\n› ${a.details}` : ''}${a.state ? `\n› ${a.state}` : ''}${a.party?.size ? `${a.party.size[0] == 1 ? `\n› Playing Solo` : `\n› In Party (${a.party?.size[0]}/${a.party?.size[1]})`}` : ''}${a.timestamps?.start ? `\n- (${bot.getDuration(a.timestamps.start, Date.now()).join(' ')})` : ''}`}).join('\n\n');
+        const userBadges = member.user.flags.toArray().length ? member.user.flags.toArray().map(flag => `${Vimotes[`${flag}`]}`).join(' ') : 'None!';
 
         //Create embed
         const embed = new MessageEmbed()
@@ -32,10 +33,10 @@ module.exports = {
             .addField('Birthday', dbMember.birthday ? moment(Number(dbMember.birthday)).format('MMMM Do') : 'Not Set!', true)
             .addField('Commands Used', dbMember?.commandsused ? bot.toThousands(dbMember?.commandsused.toString()) : 'None, Yet!', true)
             .addField('Total Messages', dbMember?.totalmessages ? bot.toThousands(dbMember?.totalmessages.toString()) : 'None, Yet!', true)
-            .addField('Current Level', `${dbMember?.level ? `Level› ${dbMember?.level.toString()}` : 'Leveling Disabled'}`, true)
+            .addField('Current Level', `${dbMember?.level ? `Level ${dbMember?.level.toString()}` : 'Leveling Disabled'}`, true)
             .addField('Joined Server', bot.relativeTimestamp(member.joinedAt), true)
             .addField('Account Created', bot.relativeTimestamp(member.user.createdAt), true)
-            .addField('Account Badges', member.user.flags.toArray().map(flag => `${Vimotes[`${flag}`]}`).join(' '), true)
+            .addField('Account Badges', userBadges, true)
             .addField('Roles', dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`} ).filter(x => x !== undefined).join(' **|** ') : 'None', false)
             if(currentGames?.length > 0) { embed.addField('Currently Playing - ', currentGames.length > 0 ? `\`\`\`diff\n${currentGames}\`\`\`` : '\`\`\`Not playing anything\`\`\`', false) }
             if(member.presence?.activities.find(a => a.type === 'CUSTOM')) { embed.addField('Custom Status', member.presence.activities.find(a => a.type === 'CUSTOM') ? `\`\`\`fix\n${member.presence.activities.find(a => a.type === 'CUSTOM').state}\`\`\`` : '\`\`\`No custom status set\`\`\`', false) }
