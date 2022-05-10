@@ -144,7 +144,6 @@ module.exports = {
 					.setColor('#c2b04e')
 					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-					.setImage(finalImage)
 					.setFooter({ text: `MessageID: ${message.id}` });
 				embeds.push(embed);
 				break;
