@@ -2,6 +2,7 @@ module.exports = {
 	BotData: require('./botData'),
 	Guild: require('./guild'),
 	Reaction: require('./reactions'),
+	Levelroles: require('./levelroles'),
 	Giveaways: require('./giveaways'),
 	Birthdays: require('./birthday'),
 	TwitchWatch: require('./twitchwatch'),

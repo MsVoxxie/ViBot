@@ -31,7 +31,7 @@ module.exports = {
 		const identifier = nanoid(8);
 
        //Database Info
-        const reaction = await Reaction.create({
+        await Reaction.create({
 			guildid: intGuild.id,
 			messageid: msg.id,
 			channelid: msgChan.id,
@@ -46,7 +46,7 @@ module.exports = {
 		//Create Embed
 		const embed = new MessageEmbed()
 			.setTitle('Reaction Role Created')
-			.setDescription(`Reaction ID› ${identifier}\nEmoji› ${interaction.options.getString('emoji')}\nRole› ${interaction.options.getRole('role')}\nChannel› ${msg.channel}\nMessage Link› [Jump To Message](${msg.url})`)
+			.setDescription(`Reaction ID› \`${identifier}\`\nEmoji› ${interaction.options.getString('emoji')}\nRole› ${interaction.options.getRole('role')}\nChannel› ${msg.channel}\nMessage Link› [Jump To Message](${msg.url})`)
 			.setColor(settings.guildcolor);
 
 		await interaction.reply({ embeds: [embed] });
