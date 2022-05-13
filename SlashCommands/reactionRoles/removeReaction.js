@@ -17,6 +17,9 @@ module.exports = {
         //Check for valid options
         const reactionID = interaction.options.getString('roleid');
         const reaction = await Reaction.findOne({ guildid: intGuild.id, roleidentifier: reactionID });
+		const reactionChannel = await intGuild.channels.fetch(reaction.channelid);
+		const reactionMessage = await reactionChannel.messages.fetch(reaction.messageid);
+		await reactionMessage.reactions.cache.get(reaction.reaction).remove();
 
         //Check if reaction exists
         if(!reaction) return interaction.reply({ content: 'The reaction role you provided does not exist.', ephemeral: true });
