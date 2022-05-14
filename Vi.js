@@ -30,6 +30,9 @@ bot.colors = {
 	error: '#f54242',
 };
 
+//Undesired members
+bot.undesirables = new Map();
+
 //Setup MusicPlayer
 const Music = new Player(bot, {
 	leaveOnEnd: true,

@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'roleUpdate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(oldRole, newRole, bot, Vimotes) {
 		if (oldRole === newRole) return;

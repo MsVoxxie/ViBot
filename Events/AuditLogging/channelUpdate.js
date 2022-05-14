@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'channelUpdate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(oldChannel, newChannel, bot, Vimotes) {
 		const guild = newChannel.guild;

@@ -56,6 +56,10 @@ const guildSchema = mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	spamdetection: {
+		type: Boolean,
+		default: false,
+	},
 
 	//Channels
 	auditchannel: {
