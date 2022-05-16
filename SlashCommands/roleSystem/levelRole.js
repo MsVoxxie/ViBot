@@ -8,6 +8,14 @@ module.exports = {
 		.setName('levelroles')
 		.setDescription('Create a level role.')
 		.addRoleOption((option) => option.setName('role').setDescription('The role you would like to add.').setRequired(true))
+		.addStringOption((option) =>
+			option
+				.setName('type')
+				.setDescription('Should this role be added or remove on level?')
+				.addChoice('Add', 'add')
+				.addChoice('Remove', 'remove')
+				.setRequired(true)
+		)
 		.addIntegerOption((option) => option.setName('level').setDescription('The level to link the role to.').setRequired(true).setMinValue(1)),
 	options: {
 		ownerOnly: false,
@@ -31,18 +39,21 @@ module.exports = {
 		//Create unique identifier
 		const identifier = nanoid(8);
 
-        //Database Info
+		//Database Info
 		await Levelroles.create({
 			guildid: intGuild.id,
 			level: interaction.options.getInteger('level'),
 			roleidentifier: identifier,
 			roleid: interaction.options.getRole('role').id,
+			type: interaction.options.getString('type'),
 		});
 
 		//Create Embed
 		const embed = new MessageEmbed()
 			.setTitle('Level Role Created')
-			.setDescription(`Level Role ID› \`${identifier}\`\nRole› ${interaction.options.getRole('role')}\nLevel› ${interaction.options.getInteger('level')}`)
+			.setDescription(
+				`Level Role ID› \`${identifier}\`\nRole› ${interaction.options.getRole('role')}\nLevel› ${interaction.options.getInteger('level')}`
+			)
 			.setColor(settings.guildcolor);
 
 		await interaction.reply({ embeds: [embed] });

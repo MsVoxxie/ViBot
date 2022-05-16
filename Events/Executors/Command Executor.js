@@ -36,7 +36,7 @@ module.exports = {
 		//People were nice to me, show them a nice emoji.
 		const tyRegex = /(danke|thank you|thank u|thanks|ty) vi/gi;
 		if (tyRegex.test(message.content)) {
-			const tyCounter = await BotData.findOneAndUpdate({}, { $inc: { totalthanks: 1 } }, { upsert: true, new: true });
+			await BotData.findOneAndUpdate({}, { $inc: { totalthanks: 1 } }, { upsert: true, new: true });
 			await message.react('💕');
 		}
 
