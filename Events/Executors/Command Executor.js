@@ -1,4 +1,4 @@
-const { userData } = require('../../Storage/Database/models/index.js');
+const { userData, BotData } = require('../../Storage/Database/models/index.js');
 const { permissions } = require('../../Storage/Functions/miscFunctions');
 const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 const Discord = require('discord.js');
@@ -34,9 +34,10 @@ module.exports = {
 		);
 
 		//People were nice to me, show them a nice emoji.
-		const tyRegex = /(danke|thank you|thanks|ty) vi|bot/gi;
+		const tyRegex = /(danke|thank you|thanks|ty) vi/gi;
 		if (tyRegex.test(message.content)) {
-			message.react('💕');
+			const tyCounter = await BotData.findOneAndUpdate({}, { $inc: { totalthanks: 1 } }, { upsert: true, new: true });
+			await message.react('💕');
 		}
 
 		// Setup Prefix

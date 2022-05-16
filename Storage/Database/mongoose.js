@@ -6,6 +6,7 @@ const table = new ascii().setHeading('Database', 'Status');
 module.exports = {
 	init: () => {
 		const dbOptions = {
+			useFindAndModify: false,
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			autoIndex: false,

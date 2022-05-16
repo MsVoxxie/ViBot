@@ -136,11 +136,11 @@ module.exports = (bot) => {
 				let addedRoles = [];
 				if (levelRoles) {
 					for await (const lr of levelRoles) {
-						if(member.roles.cache.has(lr.roleid)) continue;
+						if (member.roles.cache.has(lr.roleid)) continue;
 						const role = await guild.roles.cache.get(lr.roleid);
 						try {
 							await member.roles.add(role);
-							addedRoles.push(role)
+							addedRoles.push(role);
 						} catch (error) {
 							console.log(error);
 						}
@@ -151,7 +151,11 @@ module.exports = (bot) => {
 					.setTitle('Level Up!')
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${addedRoles.length ? `\nAwarded Role${addedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${addedRoles.map(r => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
+					.setDescription(
+						`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${
+							addedRoles.length ? `\nAwarded Role${addedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''
+						}${addedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`
+					)
 					.setFooter({ text: `• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
 
 				levelChannel.send({ embeds: [embed] });
@@ -198,7 +202,7 @@ module.exports = (bot) => {
 
 	//BotData
 	bot.updateBotData = async (bot) => {
-		const data = await BotData.findOneAndUpdate(
+		await BotData.findOneAndUpdate(
 			{},
 			{
 				botuptime: moment.duration(bot.uptime).format('Y[Y] M[M] W[W] D[D] H[h] m[m]'),

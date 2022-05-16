@@ -1,4 +1,4 @@
-const { userData } = require('../../Storage/Database/models/index.js');
+const { userData, BotData } = require('../../Storage/Database/models/index.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
@@ -37,9 +37,14 @@ module.exports = {
             .addField('Joined Server', bot.relativeTimestamp(member.joinedAt), true)
             .addField('Account Created', bot.relativeTimestamp(member.user.createdAt), true)
             .addField('Account Badges', userBadges, true)
-            .addField('Roles', dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`} ).filter(x => x !== undefined).join(' **|** ') : 'None', false)
+            if(member.id === intGuild.me.id) {
+                const viData = await BotData.findOne({}).lean();
+                embed.addField('Thanks, Vi!', `💕 ${viData.totalthanks}`, true)
+            }
+            embed.addField('Roles', dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`} ).filter(x => x !== undefined).join(' **|** ') : 'None', false)
             if(currentGames?.length > 0) { embed.addField('Currently Playing - ', currentGames.length > 0 ? `\`\`\`diff\n${currentGames}\`\`\`` : '\`\`\`Not playing anything\`\`\`', false) }
             if(member.presence?.activities.find(a => a.type === 'CUSTOM')) { embed.addField('Custom Status', member.presence.activities.find(a => a.type === 'CUSTOM') ? `\`\`\`fix\n${member.presence.activities.find(a => a.type === 'CUSTOM').state}\`\`\`` : '\`\`\`No custom status set\`\`\`', false) }
+            
             embed.setFooter({ text: `User ID› ${member.id}` })
             await interaction.reply({ embeds: [embed] });
     },
