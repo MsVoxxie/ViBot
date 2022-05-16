@@ -33,6 +33,12 @@ module.exports = {
 			{ upsert: true, new: true }
 		);
 
+		//People were nice to me, show them a nice emoji.
+		const tyRegex = /(danke|thank you|thanks|ty) vi|bot/gi;
+		if (tyRegex.test(message.content)) {
+			message.react('💕');
+		}
+
 		// Setup Prefix
 		const prefixMention = new RegExp(`^<@!?${bot.user.id}> `);
 		const prefixes = [settings ? settings.prefix : '?', message.content.match(prefixMention) ? message.content.match(prefixMention[0]) : '?'];
