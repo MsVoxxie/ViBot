@@ -13,6 +13,7 @@ module.exports = {
 	hidden: false,
 	ownerOnly: true,
 	requiredRoles: [],
+	userPerms: [],
 	botPerms: ['MANAGE_MESSAGES'],
 	async execute(bot, message, args, settings) {
 		function clean(text) {

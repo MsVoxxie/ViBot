@@ -109,6 +109,9 @@ module.exports = (bot) => {
 	//Trim
 	bot.trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
+	//Shuffle
+	bot.shuffle = str => [...str].sort(()=>Math.random()-.5).join('');
+
 	//IsCommandOrAlias
 	bot.isCmdorAlias = (message) => {
 		// Setup Conditionals
