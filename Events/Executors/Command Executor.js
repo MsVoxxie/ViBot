@@ -9,7 +9,6 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(message, bot) {
-		if (message.author.bot) return;
 		if (!message.guild)
 			return message.reply({
 				embeds: [
@@ -32,6 +31,9 @@ module.exports = {
 			{ $inc: { totalmessages: 1 } },
 			{ upsert: true, new: true }
 		);
+
+		//Bots cant execute commands.
+		if (message.author.bot) return;
 
 		//People were nice to me, show them a nice emoji.
 		const tyRegex = /(danke|thank you|thank u|thanks|ty) vi/gi;
