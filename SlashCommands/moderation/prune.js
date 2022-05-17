@@ -26,8 +26,8 @@ module.exports = {
 
 		if (user) {
 			await interaction.channel.messages.fetch({ limit: count }).then(async (messages) => {
-				messages.filter((m) => m.author.id === user.id);
-				await interaction.channel.bulkDelete(messages);
+				let filterMsg = await messages.filter((m) => m.author.id === user.id);
+				await interaction.channel.bulkDelete(filterMsg);
 				return interaction.reply({
 					embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Deleted ${count} messages from ${user}.` })],
 					ephemeral: true,
