@@ -60,6 +60,10 @@ const guildSchema = mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	kicknew: {
+		type: Boolean,
+		default: false,
+	},
 
 	//Channels
 	auditchannel: {
