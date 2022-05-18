@@ -4,14 +4,14 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'channelUpdate',
-	disabled: true,
+	disabled: false,
 	once: false,
 	async execute(oldChannel, newChannel, bot, Vimotes) {
 		const guild = newChannel.guild;
 
         // Declarations / Checks
 		if (oldChannel === newChannel) return;
-		if (newChannel.position !== oldChannel.position) return;
+		if (newChannel.name === oldChannel.name) return;
 		const settings = await bot.getGuild(guild);
 		if (!settings) return;
 		if (settings.audit === false) return;

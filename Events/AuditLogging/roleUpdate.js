@@ -4,11 +4,11 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'roleUpdate',
-	disabled: true,
+	disabled: false,
 	once: false,
 	async execute(oldRole, newRole, bot, Vimotes) {
 		if (oldRole === newRole) return;
-		if(newRole.position !== oldRole.position) return;
+		if(oldRole.name === newRole.name) return;
 
 		const guild = newRole.guild;
 		// Declarations / Checks
