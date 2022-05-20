@@ -10,9 +10,9 @@ module.exports = {
 			option
 				.setName('days')
 				.setDescription('Delete past messages?')
-				.addChoice("Don't Delete", '0')
-				.addChoice('Past 24 hours', '1')
-				.addChoice('Past week', '7')
+				.addChoices({ name: 'Don\'t Delete', value: '0' })
+				.addChoices({ name: 'Past 24 hours', value: '1' })
+				.addChoices({ name: 'Past week', value: '7' })
 				.setRequired(true)
 		),
 	options: {

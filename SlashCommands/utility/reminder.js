@@ -13,12 +13,12 @@ module.exports = {
 			option
 				.setName('interval')
 				.setDescription('Minutes, days, weeks?.')
-				.addChoice('Minutes', 'minutes')
-				.addChoice('Hours', 'hours')
-				.addChoice('Days', 'days')
-				.addChoice('Weeks', 'weeks')
-				.addChoice('Months', 'months')
-				.addChoice('Years', 'years')
+				.addChoices({ name: 'Minutes', value: 'minutes' })
+				.addChoices({ name: 'Hours', value: 'hours' })
+				.addChoices({ name: 'Days',  value:'days' })
+				.addChoices({ name: 'Weeks', value: 'weeks' })
+				.addChoices({ name: 'Months', value: 'months' })
+				.addChoices({ name: 'Years', value: 'years' })
 				.setRequired(true)
 		)
 		.addStringOption((option) => option.setName('message').setDescription('Message to be reminded').setRequired(true)),

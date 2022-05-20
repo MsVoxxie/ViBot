@@ -9,8 +9,8 @@ module.exports = {
 			option
 				.setName('choice')
 				.setDescription('Opt in or out of DM notifications?')
-				.addChoice('Opt In', 'true')
-				.addChoice('Opt Out', 'false')
+				.addChoices({ name: 'Opt In', value: 'true' })
+				.addChoices({ name: 'Opt Out', value: 'false' })
 				.setRequired(true)
 		),
 	options: {

@@ -12,8 +12,8 @@ module.exports = {
 			option
 				.setName('type')
 				.setDescription('Should this role be added or remove on level?')
-				.addChoice('Add', 'add')
-				.addChoice('Remove', 'remove')
+				.addChoices({ name: 'Add', value: 'add' })
+				.addChoices({ name: 'Remove', value: 'remove' })
 				.setRequired(true)
 		)
 		.addIntegerOption((option) => option.setName('level').setDescription('The level to link the role to.').setRequired(true).setMinValue(1)),
