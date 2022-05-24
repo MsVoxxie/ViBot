@@ -1,8 +1,9 @@
 const { Client, Intents, Collection } = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
-const { BotData } = require('./Storage/Database/models');
 const cron = require('node-cron');
+const path = require('path');
+const fs = require('fs');
 
 //Setup Client
 const bot = new Client({
@@ -118,3 +119,10 @@ setInterval(async () => {
 		await bot.awardVoiceXP(xpadd, guild, bot);
 	}
 }, 1 * 60 * 1000);
+
+//Write Logs to File
+const access = fs.createWriteStream(__dirname + '/Storage/Logs/Logs.txt', { flags: 'a' });
+const error = fs.createWriteStream(__dirname + '/Storage/Logs/Errors.txt', { flags: 'a' });
+
+process.stdout.pipe(access);
+process.stderr.pipe(error);

@@ -1,3 +1,4 @@
 node_modules
 Storage/Config/Config.json
 Storage/Giveaways/Giveaways.json
+Storage/Logs
