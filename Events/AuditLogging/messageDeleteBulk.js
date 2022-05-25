@@ -23,7 +23,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Messages Bulk Deleted')
-			.setDescription(`**Channel›** <#${firstMessage.channel.id}> | **${firstMessage.channel.name}**\n**Deleted Messages›**\n\`\`\`${trim(filteredMessages.join('\n'),3500)}\`\`\``)
+			.setDescription(`**Channel›** **<#${firstMessage.channel.id}> | ${firstMessage.channel.name}**\n**Deleted Messages›**\n\`\`\`${trim(filteredMessages.join('\n'),3500)}\`\`\``)
 			.setColor(settings.guildcolor)
 			.setFooter({ text: `Executed › ${bot.Timestamp(Date.now())}` });
 

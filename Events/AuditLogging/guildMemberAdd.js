@@ -55,17 +55,8 @@ module.exports = {
 		// Send Audit Message
 		if (settings.audit) {
 			const embed = new MessageEmbed()
-				.setAuthor({
-					name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,
-					iconURL: getMember.user.displayAvatarURL({ dynamic: true }),
-				})
-				.setDescription(
-					`${Vimotes['JOIN_ARROW']} <@${getMember.user.id}> Joined the server **<t:${Math.round(
-						Date.now() / 1000
-					)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${
-						invite ? invite.code : 'Unknown!'
-					}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`
-				)
+				.setAuthor({name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,iconURL: getMember.user.displayAvatarURL({ dynamic: true }),})
+				.setDescription(`${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${invite ? invite.code : 'Unknown!'}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`)
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}

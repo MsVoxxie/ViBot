@@ -17,8 +17,8 @@ module.exports = {
 
 		// Setup Embed
 		const embed = new MessageEmbed()
-			.setAuthor({ name: `${member.nickname ? `${member.nickname} | ${member.tag}` : member.tag}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`${Vimotes['UP_ARROW']} <@${member.id}> was Unbanned **<t:${Math.round(Date.now() / 1000)}:R>**.`)
+			.setAuthor({ name: `${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
+			.setDescription(`${Vimotes['UP_ARROW']} **<@${member.id}> | ${member.user.tag}** was Unbanned **<t:${Math.round(Date.now() / 1000)}:R>**.`)
 			.setColor(settings.guildcolor)
 			.setFooter({ text: bot.Timestamp(member.joinedAt) });
 
