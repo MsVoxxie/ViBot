@@ -7,7 +7,6 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('translate')
 		.setDescription('Translate a message to another language.')
-		.addStringOption((option) => option.setName('messagelink').setDescription('The message link you want to translate.').setRequired(true))
 		.addStringOption((option) =>
 			option
 				.setName('language')
@@ -38,7 +37,9 @@ module.exports = {
 				.addChoices({ name: 'Spanish', value: 'ES' })
 				.addChoices({ name: 'Swedish', value: 'SV' })
 				.setRequired(true)
-		),
+		)
+		.addStringOption((option) => option.setName('text').setDescription('The text to Translate. (Pick One!)'))
+		.addStringOption((option) => option.setName('messagelink').setDescription('The message link you want to translate. (Pick One!)')),
 
 	options: {
 		cooldown: 60,
@@ -47,11 +48,29 @@ module.exports = {
 		botPerms: [],
 	},
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
+		//Definitions
+		let text;
+		const msgLink = interaction.options.getString('messagelink');
+		const msgText = interaction.options.getString('text');
+
+		if(!msgText && !msgLink) return interaction.reply({
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Please provide either a **\`Message Link\`** or **\`Text\`** for me to translate!` })],
+			ephemeral: true,
+		});
+
+		if(msgText && msgLink) return interaction.reply({
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Please send only one **\`Message Link\`** or **\`Text\`** for me to translate!` })],
+			ephemeral: true,
+		});
+
 		// Get the message
-		const msgLink = interaction.options.getString('messagelink').split('/').slice(5);
-		const msgChan = await intGuild.channels.fetch(msgLink[0]);
-		const msg = await msgChan.messages.fetch(msgLink[1]);
-		const message = msg.content;
+		if (msgLink) {
+			const msgChan = await intGuild.channels.fetch(msgLink.split('/').slice(5)[0]);
+			const msg = await msgChan.messages.fetch(msgLink.split('/').slice(5)[1]);
+			text = msg.content;
+		} else if (msgText) {
+			text = msgText;
+		}
 
 		//Get Language
 		const lang = interaction.options.getString('language');
@@ -59,7 +78,7 @@ module.exports = {
 		// Translate
 		await translate({
 			free_api: true,
-			text: message,
+			text: text,
 			target_lang: lang,
 			auth_key: DeepL,
 		}).then((t) => {
@@ -72,7 +91,7 @@ module.exports = {
 					name: `Translated by DeepL`,
 					iconURL: 'https://is3-ssl.mzstatic.com/image/thumb/Purple115/v4/97/e4/99/97e49907-7fdf-57c9-ee01-3b20d055a875/source/512x512bb.jpg',
 				})
-				.addField(`📥 Input› ${response.detected_source_language}`, `\`\`\`\n${message}\`\`\`\n`, false)
+				.addField(`📥 Input› ${response.detected_source_language}`, `\`\`\`\n${text}\`\`\`\n`, false)
 				.addField(`📤 Output› ${lang}`, `\`\`\`\n${response.text}\`\`\``, false);
 			interaction.reply({ embeds: [embed] });
 		});
