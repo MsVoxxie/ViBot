@@ -15,6 +15,7 @@ module.exports = {
 	},
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Declarations
+		let member;
 		let memberTarget = null;
 		if (interaction.options.getUser('user')) {
 			memberTarget = await intGuild.members.fetch(interaction.options.getUser('user')?.id);
@@ -72,16 +73,25 @@ module.exports = {
 					ephemeral: true,
 				});
 			//Get the user
-			const member = await intGuild.members.fetch(userWarning[0].userid);
+			try {
+				member = await intGuild.members.fetch(userWarning[0].userid);
+			} catch (e) {
+				if (!member) member = null;
+			}
+
 			//Get the moderator who warned the user
-			const moderator = await intGuild.members.fetch(userWarning[0].moderator);
+			let moderator = await intGuild.members.fetch(userWarning[0].moderator);
+			if (!moderator) moderator = null;
 
 			//Setup Embed
 			const singleEmbed = new MessageEmbed()
 				.setColor(settings.guildcolor)
-				.setAuthor({ name: `Warning for ${member.user.tag}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
+				.setAuthor({
+					name: `Warning for ${member ? member.user.tag : userWarning[0].usernick}`,
+					iconURL: member?.displayAvatarURL({ dynamic: true }),
+				})
 				.addField(
-					`Moderator: ${moderator.user.tag}`,
+					`Moderator: ${moderator ? moderator.user.tag : 'Unable to retrieve moderator'}`,
 					`**Nickname:** ${userWarning[0].usernick}\n**Reason:** ${userWarning[0].reason}\n**Date:** ${bot.Timestamp(
 						userWarning[0].date
 					)}\n**Warning ID:** ${userWarning[0].warningid}`

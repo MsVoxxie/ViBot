@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Warning } = require('../../Storage/Database/models/index.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -46,24 +47,23 @@ module.exports = {
 			await WarningCall.save();
 
 			//Confirmation
-			await member.send({
-				embeds: [
-					bot.replyEmbed({
-						color: '#f54242',
-						text: `${Vimotes['ALERT']} You were warned in **${intGuild.name}**.\n**Reason:** ${reason ? reason : 'No Reason Provided'}`,
-					}),
-				],
-			});
-			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Warned ${member}.` })],
-				ephemeral: false,
-			});
+			await member.send({ embeds: [ bot.replyEmbed({color: '#f54242',text: `${Vimotes['ALERT']} You were warned in **${intGuild.name}**.\n**Reason:** ${reason ? reason : 'No Reason Provided'}`,}), ], });
+			if(settings.audit && settings.auditchannel) {
+				try {
+				const logChannel = await intGuild.channels.cache.get(settings.auditchannel);
+				const embed = new MessageEmbed()
+					.setTitle('User Warned')
+					.setDescription(`**${memberNick}** was Warned in **${intGuild.name}**.\n**Reason:** ${reason ? reason : 'No Reason Provided'}\n**Warned by:** <@${intMember.id}>\n**Warning ID:** \`${warningId}\``)
+					.setColor(settings.guildcolor);
+				await logChannel.send({ embeds: [embed] });
+				} catch (err) {
+					console.log(err);
+				}
+			}
+			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Warned ${member}.` }) ],ephemeral: false, });
 		} catch (e) {
 			console.error(e);
-			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not warn ${member}.` })],
-				ephemeral: true,
-			});
+			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not warn ${member}.` })], ephemeral: true, });
 		}
 	},
 };
