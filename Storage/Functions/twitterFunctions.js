@@ -47,7 +47,7 @@ module.exports = (bot) => {
 						followers: data.user.followers_count,
 					},
 					tweet: {
-						url: data?.entities?.media[0]?.url,
+						url: data?.entities?.media ? data?.entities?.media[0]?.url : null,
 						media_urls: data?.extended_entities?.media
 							.filter((item) => {
 								return item.type === 'photo';

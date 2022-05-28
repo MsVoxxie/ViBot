@@ -18,7 +18,7 @@ module.exports = (bot) => {
 			for await (const users of allMembers) {
 				const u = users[1];
 				const user = await userData.findOne({ guildid: guild.id, userid: u.id });
-				const userBirthday = new Date(parseInt(user.birthday));
+				const userBirthday = new Date(parseInt(user?.birthday));
 				const today = new Date();
 				const userBirthdayMonth = userBirthday.getMonth();
 				const userBirthdayDay = userBirthday.getDate();

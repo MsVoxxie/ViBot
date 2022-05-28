@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const ascii = require('ascii-table');
-const table = new ascii().setHeading('Servers', 'Connection Status');
+const { BotData } = require('../../Storage/Database/models/index.js');
 const { DevMode } = require('../../Storage/Config/Config.json');
+const ascii = require('ascii-table');
+const mongoose = require('mongoose');
+const table = new ascii().setHeading('Servers', 'Connection Status');
 
 module.exports = {
 	name: 'ready',
@@ -23,8 +24,26 @@ module.exports = {
 			table.addRow(`${guild.name}`, '✔ » Connected');
 		});
 		console.log(table.toString());
+
+		//Bot Data
 		bot.StartedAt = Date.now();
 		bot.updateBotData(bot);
+
+		//If the bot was restarted, update the message.
+		const currentState = await BotData.find({}).lean();
+		const data = currentState[0].restartdata;
+		if (data.restarted === true) {
+			const g = await bot.guilds.fetch(data.guild);
+			const c = await g.channels.fetch(data.channel);
+			const m = await c.messages.fetch(data.message);
+
+			//Get time it took
+			const difference = Date.now() - m.createdTimestamp;
+			await m.edit(`✅ Restarted in ***\`${Math.round(difference / 1000)}\`*** seconds.`);
+
+			//Reset restart data
+			await BotData.findOneAndUpdate({}, { restartdata: { restarted: false } }, { upsert: true, new: true });
+		}
 
 		if (DevMode === true) {
 			await bot.user.setPresence({ activities: [{ name: '«Dev Mode Enabled»' }], status: 'online' });

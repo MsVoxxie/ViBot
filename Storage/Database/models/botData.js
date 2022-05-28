@@ -8,6 +8,10 @@ const botDataSchema = mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
+	restartdata: {
+		type: Object,
+		default: {},
+	},
 });
 
 module.exports = mongoose.model('BotData', botDataSchema);

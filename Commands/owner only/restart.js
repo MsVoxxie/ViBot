@@ -1,3 +1,5 @@
+const { BotData } = require('../../Storage/Database/models/index.js');
+
 module.exports = {
 	name: 'restart',
 	aliases: [],
@@ -12,10 +14,24 @@ module.exports = {
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
 		try {
-			await message.reply('Restarting.');
+			// Define last message and such
+			const myMessage = await message.reply(`${Vimotes['A_LOADING']} Restarting...`);
+
+			await BotData.findOneAndUpdate(
+				{},
+				{
+					restartdata: {
+						restarted: true,
+						guild: message.guild.id,
+						channel: message.channel.id,
+						message: myMessage.id,
+					},
+				},
+				{ upsert: true, new: true }
+			);
+
 			process.exit(1);
-		}
-		catch (error) {
+		} catch (error) {
 			console.error(error);
 		}
 	},

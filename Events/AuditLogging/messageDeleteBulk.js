@@ -16,9 +16,7 @@ module.exports = {
 		const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 		//Filter messages
-		const filteredMessages = messages.map((m) => {
-			return `${m.author.username}› ${m.emeds ? 'Embeded Message' : m.content.replace(/`/g, "'")}`;
-		});
+		const filteredMessages = messages.map((m) => { return `${m.author.username}› ${m.emeds ? 'Embeded Message' : m.content.replace(/`/g, "'")}`; });
 
 		// Setup Embed
 		const embed = new MessageEmbed()
