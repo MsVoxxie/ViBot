@@ -16,7 +16,7 @@ module.exports = {
             .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
 			.setThumbnail(guild.iconURL({ dynamic: true }))
             .addField('Guild Owner', `<@${guild.ownerId}>`, true)
-			.addField('Boost Level', guild.premiumTier !== 'NONE' ? `${Vimotes[`${guild.premiumTier}`]}` : 'None... Yet?', true)
+			.addField('Boost Level', guild.premiumTier !== 'NONE' ? `${Vimotes[`${guild.premiumTier}`]} ${bot.titleCase(guild.premiumTier.replace("_", " "))}` : 'None... Yet?', true)
             .addField('Total Categories', guild.channels.cache.filter(ch => ch.type === 'GUILD_CATEGORY').size.toString(), true)
             .addField('Total Text Channels', guild.channels.cache.filter(ch => ch.type === 'GUILD_TEXT').size.toString(), true)
             .addField('Total Voice Channels', guild.channels.cache.filter(ch => ch.type === 'GUILD_VOICE').size.toString(), true)
