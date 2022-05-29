@@ -55,8 +55,8 @@ module.exports = {
 		// Send Audit Message
 		if (settings.audit) {
 			const embed = new MessageEmbed()
-				.setAuthor({name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,iconURL: getMember.user.displayAvatarURL({ dynamic: true }),})
-				.setDescription(`${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${invite ? invite.code : 'Unknown!'}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`)
+				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
+				.setDescription( `${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round( Date.now() / 1000 )}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${ invite ? invite.code : 'Unknown!' }\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}` )
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -64,15 +64,8 @@ module.exports = {
 		// Send Welcome Message
 		if (settings.welcome) {
 			const welcome = new MessageEmbed()
-				.setAuthor({
-					name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,
-					iconURL: getMember.user.displayAvatarURL({ dynamic: true }),
-				})
-				.setDescription(
-					`Welcome to ${getMember.guild.name}, ${getMember}!\n${
-						ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'
-					}`
-				)
+				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
+				.setDescription(`Welcome to ${getMember.guild.name}, ${getMember}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 			welChannel.send({ embeds: [welcome] });
@@ -89,7 +82,33 @@ module.exports = {
 				userroles: [],
 			});
 		} else {
-			await userData.findOneAndUpdate({ guildid: getMember.guild.id, userid: getMember.id }, { joinedat: Date.now() });
+			const oldUser = await userData.findOneAndUpdate({ guildid: getMember.guild.id, userid: getMember.id }, { joinedat: Date.now() });
+			const userRoles = oldUser.userroles;
+			if(!userRoles.length) return;
+
+			// Add old user roles back.
+			let addedRoles = [];
+			let failedRoles = [];
+			for await (const role of userRoles) {
+				console.log(role);
+				try {
+					const r = await getMember.guild.roles.fetch(role.id);
+					await getMember.roles.add(r);
+					addedRoles.push(r);
+				} catch (e) {
+					const r = await getMember.guild.roles.fetch(role.id);
+					failedRoles.push(r);
+					continue;
+				}
+			}
+			//Create Embed
+			const qembed = new MessageEmbed()
+				.setThumbnail(getMember.guild.iconURL({ dynamic: true }))
+				.setDescription(`Welcome back to ***${getMember.guild.name}***, ${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned›\n${addedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable›\n${failedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\``)
+				.setColor(settings.guildcolor);
+
+			//Send Message
+			await getMember.send({ embeds: [qembed] });
 		}
 	},
 };

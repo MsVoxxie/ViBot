@@ -40,11 +40,12 @@ module.exports = {
 			.setFooter({ text: bot.Timestamp(new Date()) });
 		logChannel.send({ embeds: [embed] });
 
-		// If User is in the database, abd they left the server before 24hrs, remove them from the database
+		// If User is in the database, and they left the server before 2 weeks, remove them from the database
 		if(await userData.exists({ userid: member.id, guildid: member.guild.id })) {
 			const user = await userData.findOne({ userid: member.id, guildid: member.guild.id });
-			const days = moment().diff(moment(user.joinedat), 'months', true);
-			if(days <= 6){
+			const weeks = Math.floor(moment().diff(moment(user.joinedat), 'weeks', true));
+			if(weeks <= 2){
+				console.log(`${member.user.tag} left the server before 2 weeks, removing from database.`);
 				await userData.findOneAndDelete({ userid: member.id, guildid: member.guild.id });
 			}
 		}
