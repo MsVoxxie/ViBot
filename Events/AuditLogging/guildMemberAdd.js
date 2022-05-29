@@ -86,6 +86,15 @@ module.exports = {
 			const userRoles = oldUser.userroles;
 			if(!userRoles.length) return;
 
+			//If the user has a nickname saved, Set it back!
+			if (oldUser.nickname) {
+				try {
+					await getMember.setNickname(oldUser.nickname);
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
 			// Add old user roles back.
 			let addedRoles = [];
 			let failedRoles = [];

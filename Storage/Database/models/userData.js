@@ -16,6 +16,10 @@ const userDataSchema = new mongoose.Schema({
 		default: Date.now(),
 		required: true,
 	},
+	nickname: {
+		type: String,
+		default: '',
+	},
 	receivedm: {
 		type: Boolean,
 		default: true,

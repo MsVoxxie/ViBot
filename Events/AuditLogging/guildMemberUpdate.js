@@ -41,7 +41,10 @@ module.exports = {
 				.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
 				.addField(`**Old Nickname›**`, `${oldMember.nickname ? `${oldMember.nickname}#${oldMember.user.discriminator}` : `${oldMember.displayName}#${oldMember.user.discriminator}`}`, false)
 				.addField('**New Nickname›**', `${newMember.nickname ? `${newMember.nickname}#${newMember.user.discriminator}` : `${newMember.displayName}#${newMember.user.discriminator}`}`, false);
-			logChannel.send({ embeds: [embed] });
+			await logChannel.send({ embeds: [embed] });
+
+			//Update nickname
+			await userData.findOneAndUpdate({ guildid: newMember.guild.id, userid: newMember.id }, { nickname: newMember.nickname });
 		}
 
 		// ROLE CHANGE
