@@ -49,7 +49,7 @@ module.exports = {
 
 			case 'top': {
 				//Get users of guild
-				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(5).lean();
+				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(10).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -59,10 +59,10 @@ module.exports = {
 				}
 
 				//Get top 5 of guild
-				const guildTop = users.sort((a, b) => b.level - a.level).slice(0, 5);
+				const guildTop = users.sort((a, b) => b.level - a.level).slice(0, 10);
 
 				const embed = new MessageEmbed()
-					.setAuthor({ name: `${message.guild.name}'s Top 5 Members` })
+					.setAuthor({ name: `${message.guild.name}'s Top 10 Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
 					.addField('Guild Member', guildTop.map((m) => `<@${m.userid}> | Level› ${m.level}`).join('\n'), true)

@@ -50,8 +50,7 @@ module.exports = {
 
 		//Setup Embeds
 		Results.forEach((Res) => {
-			if (!Res.data['ext_urls']) return message.reply(`An Error seems to have occurred!`);
-			if (!Res.data['ext_urls'][0]) return;
+			if (!Res.data['ext_urls']) return;
 			const embed = new MessageEmbed()
 				.setThumbnail(Res.header['thumbnail'])
 				.setColor(settings.guildcolor)
