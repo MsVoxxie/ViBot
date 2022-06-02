@@ -11,6 +11,7 @@ module.exports = {
 	args: false,
 	cooldown: 0,
 	hidden: true,
+	nsfw: true,
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],

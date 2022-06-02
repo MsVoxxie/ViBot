@@ -97,11 +97,11 @@ module.exports = {
 		}
 
 		//Check if Guild Allows Nsfw
-		if (settings.allownsfw === false && command.nsfw) {
-			return message.reply('Sorry, This guild has disable NSFW Commands.').then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-			});
-		}
+		// if (settings.allownsfw === false && command.nsfw) {
+		// 	return message.reply('Sorry, This guild has disable NSFW Commands.').then((s) => {
+		// 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+		// 	});
+		// }
 
 		// Check NSFW
 		if (!message.channel.nsfw && command.nsfw) {
