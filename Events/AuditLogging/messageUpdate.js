@@ -15,7 +15,7 @@ module.exports = {
 		if (!settings) return;
 		if (settings.audit === false) return;
 		if (newMessage.author.bot) return;
-		if (newMessage.channel.type !== 'GUILD_TEXT') return;
+		if (newMessage.channel.type === 'DM') return;
 		if (newMessage.content?.toString() === oldMessage.content?.toString()) return;
 		const logChannel = await newMessage.guild.channels.cache.get(settings.auditchannel);
 		if (!logChannel) return;

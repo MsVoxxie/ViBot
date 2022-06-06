@@ -15,7 +15,7 @@ module.exports = {
 		if (!settings) return;
 		if (settings.audit === false) return;
 		if (message.author.bot) return;
-		if (message.channel.type !== 'GUILD_TEXT') return;
+		if (message.channel.type === 'DM') return;
 		let MessageData;
 
 		//Wait!

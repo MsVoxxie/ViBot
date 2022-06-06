@@ -10,7 +10,7 @@ module.exports = {
 		const settings = await bot.getGuild(firstMessage.guild);
 		if (!settings) return;
 		if (settings.audit === false) return;
-		if (firstMessage.channel.type !== 'GUILD_TEXT') return;
+		if (firstMessage.channel.type === 'DM') return;
 		const logChannel = await firstMessage.guild.channels.cache.get(settings.auditchannel);
 		if (!logChannel) return;
 		const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);

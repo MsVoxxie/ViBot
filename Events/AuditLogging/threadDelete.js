@@ -16,7 +16,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
 			.setTitle(`Thread Deleted`)
-			.setDescription(`***‹${threadChannel.name}›*** has been deleted.`)
+			.setDescription(`**Thread Parent›** ${oldThread.parent.name}\n**Thread Name›** ${threadChannel.name}`)
 			.setFooter({ text: `Deleted ${bot.Timestamp(threadChannel.archivedAt)}` });
 
 		logChannel.send({ embeds: [embed] });
