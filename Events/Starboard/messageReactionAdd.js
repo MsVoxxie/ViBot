@@ -34,7 +34,7 @@ module.exports = {
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 1;
+		const ReactLimit = 5;
 		const starCount = await message.reactions.cache.get('⭐').count;
 
 		//get starchannel
