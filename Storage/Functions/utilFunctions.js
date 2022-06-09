@@ -157,7 +157,7 @@ module.exports = (bot) => {
 		let videos = [];
 		let tweetData;
 		const imageRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|webp)/;
-		const videoRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:mp4|gif)/;
+		const videoRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:mp4|gif|webm|mov)/;
 		if (message.content.startsWith('https://twitter.com/')) {
 			tweetData = await bot.getTwitterMedia(message.content);
 		} else {

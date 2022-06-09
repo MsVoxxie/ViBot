@@ -20,7 +20,7 @@ module.exports = {
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		if (message.author.id === user.id) return;
+		// if (message.author.id === user.id) return;
 		if (message.author.bot) return;
 
 		//Random Star!
@@ -28,8 +28,8 @@ module.exports = {
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 5;
-		const starCount = await message.reactions.cache.get('⭐').count;
+		const ReactLimit = 1;
+		const starCount = await message.reactions.cache.get('⭐').count || 0;
 
 		//get starchannel
 		const starChannelID = await settings.starchannel;

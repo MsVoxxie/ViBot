@@ -44,9 +44,9 @@ module.exports = {
 		await WarningCall.save()
 
 		//Send Message
-		await message.reply( {embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['CHECK']} ${memberTarget} has been warned.` })] })
+		await message.reply( {embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} ${memberTarget} has been warned.` })] })
 		try {
-			await memberTarget.send( {embeds: [bot.replyEmbed({ color: '#f54242', text: `You were warned in **${message.guild.name}**.\n**Reason:** ${reason ? reason : 'No Reason Provided'}` })] })
+			await memberTarget.send( {embeds: [bot.replyEmbed({ color: bot.colors.warning, text: `You were warned in **${message.guild.name}**.\n**Reason:** ${reason ? reason : 'No Reason Provided'}` })] })
 		} catch(e) {
 			console.error(e)
 		}

@@ -24,6 +24,14 @@ module.exports = {
 
 			if (diff <= 14) {
 				try {
+					await getMember.send({
+						embeds: [
+							bot.replyEmbed({
+								color: bot.colors.warning,
+								text: `Sorry, Your account is less than two weeks old.\nYou have been automatically kicked.`,
+							}),
+						],
+					});
 					return await getMember.kick('Account created less than 14 days ago.');
 				} catch (e) {
 					console.log(e);
@@ -55,8 +63,17 @@ module.exports = {
 		// Send Audit Message
 		if (settings.audit) {
 			const embed = new MessageEmbed()
-				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
-				.setDescription( `${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round( Date.now() / 1000 )}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${ invite ? invite.code : 'Unknown!' }\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}` )
+				.setAuthor({
+					name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,
+					iconURL: getMember.user.displayAvatarURL({ dynamic: true }),
+				})
+				.setDescription(
+					`${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round(
+						Date.now() / 1000
+					)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${
+						invite ? invite.code : 'Unknown!'
+					}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`
+				)
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -64,8 +81,15 @@ module.exports = {
 		// Send Welcome Message
 		if (settings.welcome) {
 			const welcome = new MessageEmbed()
-				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
-				.setDescription(`Welcome to ${getMember.guild.name}, ${getMember}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
+				.setAuthor({
+					name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,
+					iconURL: getMember.user.displayAvatarURL({ dynamic: true }),
+				})
+				.setDescription(
+					`Welcome to ${getMember.guild.name}, ${getMember}!\n${
+						ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'
+					}`
+				)
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 			welChannel.send({ embeds: [welcome] });
@@ -84,7 +108,7 @@ module.exports = {
 		} else {
 			const oldUser = await userData.findOneAndUpdate({ guildid: getMember.guild.id, userid: getMember.id }, { joinedat: Date.now() });
 			const userRoles = oldUser.userroles;
-			if(!userRoles.length) return;
+			if (!userRoles.length) return;
 
 			//If the user has a nickname saved, Set it back!
 			if (oldUser.nickname) {
@@ -113,7 +137,13 @@ module.exports = {
 			//Create Embed
 			const qembed = new MessageEmbed()
 				.setThumbnail(getMember.guild.iconURL({ dynamic: true }))
-				.setDescription(`Welcome back to ***${getMember.guild.name}***, ${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned›\n${addedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable›\n${failedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\``)
+				.setDescription(
+					`Welcome back to ***${
+						getMember.guild.name
+					}***, ${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned›\n${addedRoles
+						.map((r) => `› ${r.name}`)
+						.join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable›\n${failedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\``
+				)
 				.setColor(settings.guildcolor);
 
 			//Send Message

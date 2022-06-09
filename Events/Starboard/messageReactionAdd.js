@@ -22,19 +22,19 @@ module.exports = {
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		if (message.author.id === user.id) {
-			await message.reactions.cache.first().users.remove(user.id);
-			return message.reply('You cannot star your own messages!').then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-			});
-		}
+		// if (message.author.id === user.id) {
+		// 	await message.reactions.cache.first().users.remove(user.id);
+		// 	return message.reply('You cannot star your own messages!').then((s) => {
+		// 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+		// 	});
+		// }
 
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 5;
+		const ReactLimit = 1;
 		const starCount = await message.reactions.cache.get('⭐').count;
 
 		//get starchannel
