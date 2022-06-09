@@ -1,6 +1,5 @@
 const { userData } = require('../../Storage/Database/models/index.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
 module.exports = {
