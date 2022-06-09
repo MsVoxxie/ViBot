@@ -137,13 +137,7 @@ module.exports = {
 			//Create Embed
 			const qembed = new MessageEmbed()
 				.setThumbnail(getMember.guild.iconURL({ dynamic: true }))
-				.setDescription(
-					`Welcome back to ***${
-						getMember.guild.name
-					}***, ${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned›\n${addedRoles
-						.map((r) => `› ${r.name}`)
-						.join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable›\n${failedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\``
-				)
+				.setDescription(`Welcome back to ***${getMember.guild.name}***\n${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned›\n${addedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable›\n${failedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\``)
 				.setColor(settings.guildcolor);
 
 			//Send Message
