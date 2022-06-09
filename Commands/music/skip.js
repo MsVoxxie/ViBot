@@ -40,7 +40,6 @@ module.exports = {
 			await message.channel.send({ embeds: [embed] }).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
-			return queue.currentEmbed?.delete();
 		}
 	},
 };
