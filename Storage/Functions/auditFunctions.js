@@ -18,10 +18,10 @@ AuditCheck = async function (data, AuditType) {
 			const { executor, target } = FirstEntry;
 
 			const Info = {
-				target: target.username,
-				id: target.id,
+				target: target?.username,
+				id: target?.id,
 				executor: executor,
-				reason: FirstEntry.reason,
+				reason: FirstEntry?.reason,
 			};
 
 			return resolve(Info);
