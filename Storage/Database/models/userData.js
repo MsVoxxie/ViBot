@@ -55,7 +55,20 @@ const userDataSchema = new mongoose.Schema({
 	reminders: {
 		type: Array,
 		default: [],
-	}
+	},
+
+	// Voice Data
+	lastvoice: {
+		channelid: {
+			type: String,
+		},
+		jointime: {
+			type: Date,
+		},
+		leavetime: {
+			type: Date,
+		},
+	},
 });
 
 module.exports = mongoose.model('userData', userDataSchema);
