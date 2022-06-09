@@ -32,9 +32,11 @@ module.exports = {
 		}
 		const { guild, member } = message;
 		const settings = await bot.getGuild(guild);
+		const verifyChannelID = await settings.verifychannel;
+		if(message.channel.id === verifyChannelID) return;
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 		const xpadd = clamp(Math.round(Math.random() * message.content.length), 1, 100);
-
+		
 		//Check
 		if (bot.isCmdorAlias(message) === true) return;
 		const levelChannel = await guild.channels.cache.get(settings.levelchannel);
