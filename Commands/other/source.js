@@ -18,7 +18,7 @@ module.exports = {
 			.setTitle('__**ViBot\'s Code**__')
 			.setColor('#700707')
 			.setThumbnail('https://share.voxxie.me/images/VoxelIco.png')
-			.setDescription('Source Code can be found [Here on Github](https://github.com/MsVoxxie/ViBot/tree/v13)\nMy Creator is 👑 Ms.Voxxie#0001\nCreate an Issue if anything comes up!');
+			.setDescription('Source Code can be found [Here on Github](https://github.com/MsVoxxie/ViBot/tree/master)\nMy Creator is 👑 Ms.Voxxie#0001\nCreate an Issue if anything comes up!');
 
 		message.channel.send({ embeds: [embed] });
 	},
