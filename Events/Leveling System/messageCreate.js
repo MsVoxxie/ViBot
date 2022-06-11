@@ -13,23 +13,10 @@ module.exports = {
 		//Declarations
 		if (message.author.bot) return;
 		if (bot.isBottomText(message)) {
-			await userData.findOneAndUpdate(
-				{
-					guildid: message.guild.id,
-					userid: message.author.id,
-				},
-				{
-					$inc: {
-						bottomcount: 1,
-					},
-				},
-				{
-					upsert: true,
-					new: true,
-				}
-			);
+			await userData.findOneAndUpdate( { guildid: message.guild.id, userid: message.author.id, }, { $inc: { bottomcount: 1, }, }, { upsert: true, new: true, } );
 			return console.log(`[${message.guild.name}] ${message.author.tag}: Bottom`);
 		}
+
 		const { guild, member } = message;
 		const settings = await bot.getGuild(guild);
 		const verifyChannelID = await settings.verifychannel;

@@ -107,76 +107,73 @@ module.exports = (bot) => {
 	//Calculate needed xp
 	const getNeededXP = (level) => level * level * 50;
 
-	//Add XP to Member
-	bot.addXP = async (guild, member, xpToAdd, bot, settings, levelChannel, message) => {
-		try {
-			const result = await userData.findOneAndUpdate(
-				{ guildid: guild.id, userid: member.id },
-				{
-					guildid: guild.id,
-					userid: member.id,
-					$inc: {
-						xp: xpToAdd,
-					},
-				},
-				{
-					upsert: true,
-					new: true,
+	//Check Level Roles
+	bot.checkLevelRoles = async (guild, member, level) => {
+		return new Promise(async (resolve, reject) => {
+			//Check for level role, add it if it exists
+			const levelRoles = await Levelroles.find({ guildid: guild.id, level: { $lte: level } });
+			let addedRoles = [];
+			let removedRoles = [];
+			if (levelRoles) {
+				for await (const lr of levelRoles) {
+					switch (lr.type) {
+						// Add
+						case 'add': {
+							if (member.roles.cache.has(lr.roleid)) continue;
+							const role = await guild.roles.cache.get(lr.roleid);
+							try {
+								await member.roles.add(role);
+								addedRoles.push(role);
+							} catch (error) {
+								console.log(error);
+							}
+							break;
+						}
+						// Remove
+						case 'remove': {
+							if (!member.roles.cache.has(lr.roleid)) continue;
+							const role = await guild.roles.cache.get(lr.roleid);
+							try {
+								await member.roles.remove(role);
+								removedRoles.push(role);
+							} catch (error) {
+								console.log(error);
+							}
+							break;
+						}
+					}
 				}
-			);
+			}
+		resolve({ addedRoles, removedRoles });
+		});
+	}
 
-			let { xp, level } = result;
+	//Add XP to Member
+	bot.addXP = async (guild, member, xpToAdd, bot, settings, levelChannel, message, check) => {
+		try {
+			const result = await userData.findOneAndUpdate( { guildid: guild.id, userid: member.id }, { guildid: guild.id, userid: member.id, $inc: { xp: xpToAdd, xpinterval: 1 }, }, { upsert: true, new: true, } );
+
+			let { xp, level, xpinterval } = result;
 			const needed = getNeededXP(level);
 			if (xp >= needed) {
 				++level;
 				xp -= needed;
 
-				//Check for level role, add it if it exists
-				const levelRoles = await Levelroles.find({ guildid: guild.id, level: { $lte: level } });
-				let addedRoles = [];
-				let removedRoles = [];
-				if (levelRoles) {
-					for await (const lr of levelRoles) {
-						switch (lr.type) {
-							// Add
-							case 'add': {
-								if (member.roles.cache.has(lr.roleid)) continue;
-								const role = await guild.roles.cache.get(lr.roleid);
-								try {
-									await member.roles.add(role);
-									addedRoles.push(role);
-								} catch (error) {
-									console.log(error);
-								}
-								break;
-							}
-							// Remove
-							case 'remove': {
-								if (!member.roles.cache.has(lr.roleid)) continue;
-								const role = await guild.roles.cache.get(lr.roleid);
-								try {
-									await member.roles.remove(role);
-									removedRoles.push(role);
-								} catch (error) {
-									console.log(error);
-								}
-								break;
-							}
-						}
-					}
-				}
+				const RoleCheck = await bot.checkLevelRoles(guild, member, result.level);
+
 				//Generate Embed
 				const embed = new MessageEmbed()
 					.setTitle('Level Up!')
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${addedRoles.length ? `\nAwarded Role${addedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${addedRoles.map((r) => r).join(' | ')}${removedRoles.length ? `\nRevoked Role${removedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${removedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
+					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${RoleCheck.addedRoles.length ? `\nAwarded Role${RoleCheck.addedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${RoleCheck.addedRoles.map((r) => r).join(' | ')}${RoleCheck.removedRoles.length ? `\nRevoked Role${RoleCheck.removedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${RoleCheck.removedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
 					.setFooter({ text: `• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
 
 				levelChannel.send({ embeds: [embed] });
 			}
 
-			await userData.updateOne({ guildid: guild.id, userid: member.id }, { level, xp });
+			await userData.updateOne({ guildid: guild.id, userid: member.id }, { level, xp, xpinterval: result.xpinterval >= 10 ? 0 : result.xpinterval });
+
 		} catch (e) {
 			console.error(e);
 		}

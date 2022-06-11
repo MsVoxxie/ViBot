@@ -28,6 +28,10 @@ const userDataSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
+	xpinterval: {
+		type: Number,
+		default: 0,
+	},
 	level: {
 		type: Number,
 		default: 1,
