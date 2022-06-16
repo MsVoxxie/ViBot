@@ -158,7 +158,7 @@ module.exports = {
 			//If Star was Deleted in channel, remove entry
 			if (!Message) return await Starboard.deleteOne({ guildid: message.guild.id, messageid: message.id });
 			//Update Star Message
-			await Message.edit({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: [embed] });
+			await Message.edit({ content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`, embeds: embeds.map((e) => e) });
 		}
 	},
 

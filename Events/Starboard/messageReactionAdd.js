@@ -182,12 +182,12 @@ module.exports = {
 					await Message.edit({
 						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
 						embeds: embeds.map((e) => e),
+						files: [attachment],
 					});
 				} else {
 					await Message.edit({
 						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
 						embeds: embeds.map((e) => e),
-						files: [attachment],
 					});
 				}
 			}
