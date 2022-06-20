@@ -47,7 +47,7 @@ module.exports = {
 		//Get current invites
 		const newInvites = await member.guild.invites.fetch();
 		const oldInvites = await Invite.find({ guildid: member.guild.id }).lean();
-		const invite = newInvites.find((i) => i.uses > oldInvites.find((o) => o.invitecode === i.code).uses);
+		const invite = newInvites.find((i) => i.uses > oldInvites.find((o) => o.invitecode === i.code)?.uses);
 		const inviter = await member.guild.members.cache.get(invite?.inviter?.id);
 
 		//Update the invite
