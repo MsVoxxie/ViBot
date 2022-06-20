@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 const Canvas = require('canvas');
+const fs = require('fs');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,7 +21,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setAuthor({ name: `${role.name}'s Information`, iconURL: role.iconURL({ dynamic: true }) })
             .setColor(settings.guildcolor)
-            .setDescription(`ID› \`${role.id}\`\nHex Code› \`${role.hexColor}\`\nMentionable› \`${role.mentionable ? 'Yes' : 'No'}\`\nManaged› \`${role.managed ? 'Yes' : 'No'}\`\nMembers› \`${role.members.size.toString()}\`\nCreated› ${bot.relativeTimestamp(role.createdAt)}`)
+            .setDescription(`ID› \`${role.id}\`\nHex Code› \`${role.hexColor !== '#000000' ? role.hexColor : 'Transparent'}\`\nMentionable› \`${role.mentionable ? 'Yes' : 'No'}\`\nManaged› \`${role.managed ? 'Yes' : 'No'}\`\nMembers› \`${role.members.size.toString()}\`\nCreated› ${bot.relativeTimestamp(role.createdAt)}`)
 			.setThumbnail('attachment://col.png')
 		await interaction.reply({ files: [rolecolorImage.attachment], embeds: [embed] });
 	},
@@ -39,8 +40,16 @@ async function createColouredSquare(hex) {
             ctx.clip();
 
 			//Fill with Colour!
-			ctx.fillStyle = hex;
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			if(hex !== '#000000') {
+				ctx.fillStyle = hex;
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+			}
+
+			//Rim it!
+			ctx.lineWidth = 15;
+			ctx.beginPath();
+			ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+			ctx.stroke();
 
 			//Create Attachment
 			const attachment = new MessageAttachment(canvas.toBuffer(), 'col.png');
