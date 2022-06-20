@@ -21,7 +21,8 @@ module.exports = {
 		const clicker = await guild.members.fetch(interaction.user);
 
 		//Get user data from Database
-		const UserData = await Verification.findOne({ guildid: guild.id, userid: user.id }).lean();
+		// Why is this here? It's never used? Commenting out for now...
+		// const UserData = await Verification.findOne({ guildid: guild.id, userid: user.id }).lean();
 
 		//Check if clicker is staff
 		const staffRoles = await settings.staffroles;
@@ -54,11 +55,16 @@ module.exports = {
 		switch (choice) {
 			case 'app_': {
 				//Update Embed
-				Embed.setDescription(`${user} has been approved by ${clicker}!`);
+				//Why is this being updated twice?? Commenting out for now...
+				// Embed.setDescription(`**User Approved›** ${user} | ${user.user.tag}\n**Approved by›** ${clicker} | ${clicker.user.tag}`);
 				if (authorhasStaffRole) return message.delete();
 				if (hasVerifiedRole) return message.delete();
 
 				try {
+
+					//Update Embed
+					Embed.setDescription(`**User Approved›** ${user} | ${user.user.tag}\n**Approved by›** ${clicker} | ${clicker.user.tag}`);
+					
 					//Add verified role
 					const verifiedRole = await guild.roles.fetch(settings.verifiedrole);
 					await user.roles.add(verifiedRole);
@@ -67,9 +73,6 @@ module.exports = {
 							bot.replyEmbed({ color: bot.colors.success, text: `*${Vimotes['CHECK']} You have been allowed access to ${message.guild.name}*` }),
 						],
 					});
-
-					//Update Embed
-					Embed.setDescription(`${user} has been approved by ${clicker}!`);
 
 					//Update Message
 					await message.edit({ embeds: [Embed], components: [] });
@@ -83,12 +86,14 @@ module.exports = {
 			}
 
 			case 'den_': {
-				//Update Embed
-				Embed.setDescription(`${user} has been denied by ${clicker}!`);
 				if (authorhasStaffRole) return message.delete();
 				if (hasVerifiedRole) return message.delete();
 
 				try {
+
+					//Update Embed
+					Embed.setDescription(`**User Denied** ${user} | ${user.user.tag}\n**Denied by›** ${clicker} | ${clicker.user.tag}`);
+
 					if (settings.kickondeny) {
 						//Inform the user
 						await user.send({
