@@ -63,17 +63,8 @@ module.exports = {
 		// Send Audit Message
 		if (settings.audit) {
 			const embed = new MessageEmbed()
-				.setAuthor({
-					name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,
-					iconURL: getMember.user.displayAvatarURL({ dynamic: true }),
-				})
-				.setDescription(
-					`${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round(
-						Date.now() / 1000
-					)}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${
-						invite ? invite.code : 'Unknown!'
-					}\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}`
-				)
+				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
+				.setDescription( `${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round( Date.now() / 1000 )}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${ invite ? invite.code : 'Unknown!' }\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}` )
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -81,15 +72,8 @@ module.exports = {
 		// Send Welcome Message
 		if (settings.welcome) {
 			const welcome = new MessageEmbed()
-				.setAuthor({
-					name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`,
-					iconURL: getMember.user.displayAvatarURL({ dynamic: true }),
-				})
-				.setDescription(
-					`Welcome to ${getMember.guild.name}, ${getMember}!\n${
-						ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'
-					}`
-				)
+				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
+				.setDescription(`Welcome to ${getMember.guild.name}, ${getMember}!\n${ruleChannel ? `Please head on over to ${ruleChannel} and get familiar with our rules!` : 'Please enjoy your stay!'}`)
 				.setThumbnail(getMember.user.displayAvatarURL({ dynamic: true }))
 				.setColor(settings.guildcolor);
 			welChannel.send({ embeds: [welcome] });
