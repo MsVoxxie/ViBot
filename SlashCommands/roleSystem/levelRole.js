@@ -52,7 +52,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setTitle('Level Role Created')
 			.setDescription(
-				`Level Role ID› \`${identifier}\`\nRole› ${interaction.options.getRole('role')}\nLevel› ${interaction.options.getInteger('level')}`
+				`Level Role ID› \`${identifier}\`\nRole› ${interaction.options.getRole('role')}\nLevel› \`${interaction.options.getInteger('level')}\`\nType› \`${interaction.options.getString('type')}\``
 			)
 			.setColor(settings.guildcolor);
 

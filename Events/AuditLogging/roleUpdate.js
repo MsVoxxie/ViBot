@@ -7,7 +7,7 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(oldRole, newRole, bot, Vimotes) {
-		if (oldRole === newRole && oldRole.position === newRole.position) return;
+		if (oldRole === newRole && oldRole.position !== newRole.position) return;
 
 		const guild = newRole.guild;
 		// Declarations / Checks
@@ -40,8 +40,8 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setTitle('Role Updated')
 			.setDescription(`**Updated›** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-			.addField('Old Role', `**Old Name›** \`${oldRole.name}\`\n**Old Color›** \`${oldRole.hexColor !== '#000000' ? oldRole.hexColor : 'Transparent'}\`\n**Old Position›** \`${oldRole.position}\``)
-			.addField('Updated Role›', `**New Name›** \`${newRole.name}\`\n**New Color›** \`${newRole.hexColor !== '#000000' ? newRole.hexColor : 'Transparent'}\`\n**New Position›** \`${newRole.position}\``)
+			.addField('Old Role', `**Old Name›** \`${oldRole.name}\`\n**Old Color›** \`${oldRole.hexColor !== '#000000' ? oldRole.hexColor : 'Transparent'}\``)
+			.addField('Updated Role›', `**New Name›** \`${newRole.name}\`\n**New Color›** \`${newRole.hexColor !== '#000000' ? newRole.hexColor : 'Transparent'}\``)
 			.setThumbnail('attachment://col.png')
 			.setFooter({ text: `Role ID› ${oldRole.id}` })
 			.setColor(settings.guildcolor)
