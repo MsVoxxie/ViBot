@@ -25,12 +25,16 @@ module.exports = {
 		const logChannel = await guild.channels.cache.get(settings.auditchannel);
 		if (!logChannel) return;
 
+		//Generate Colors
+		const colorImage = await bot.createMultiColorCircle([role.hexColor], 256, 45);
+
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Created')
         .setDescription(`<@&${role.id}> was Created.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Created›** <t:${Math.round(Date.now() / 1000)}:R>\n**Created by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
+        .setThumbnail('attachment://col.png')
 		.setColor(settings.guildcolor);
 
-		logChannel.send({ embeds: [embed] });
+		await logChannel.send({ files: [colorImage.attachment], embeds: [embed] });
 	},
 };

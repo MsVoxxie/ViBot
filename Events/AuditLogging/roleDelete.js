@@ -25,12 +25,17 @@ module.exports = {
 		const logChannel = await guild.channels.cache.get(settings.auditchannel);
 		if (!logChannel) return;
 
+		
+		//Generate Colors
+		const colorImage = await bot.createMultiColorCircle([role.hexColor], 256, 45);
+
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Deleted')
         .setDescription(`**${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-        .setColor(settings.guildcolor)
+        .setThumbnail('attachment://col.png')
+		.setColor(settings.guildcolor)
 
-		logChannel.send({ embeds: [embed] });
+		await logChannel.send({ files: [colorImage.attachment], embeds: [embed] });
 	},
 };

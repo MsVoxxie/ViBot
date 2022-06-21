@@ -7,8 +7,7 @@ module.exports = {
 	disabled: false,
 	once: false,
 	async execute(oldRole, newRole, bot, Vimotes) {
-		if (oldRole === newRole) return;
-		if(oldRole.name === newRole.name) return;
+		if (oldRole === newRole && oldRole.position === newRole.position) return;
 
 		const guild = newRole.guild;
 		// Declarations / Checks
@@ -34,18 +33,22 @@ module.exports = {
 		const permissionsAdded = newRolePerms.filter(x => !oldRolePerms.includes(x));
 		const permissionsRemoved = oldRolePerms.filter(x => !newRolePerms.includes(x));
 
+		//Generate Colors
+		const colorImage = await bot.createMultiColorCircle([oldRole.hexColor, newRole.hexColor], 256, 45);
+
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Role Updated')
 			.setDescription(`**Updated›** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
-			.addField('Old Role', `**Old Name›** ${oldRole.name}\n**Old Color›** \`${oldRole.hexColor}\``)
-			.addField('Updated Role›', `**New Name›** ${newRole.name}\n**New Color›** \`${newRole.hexColor ? newRole.hexColor : oldRole.hexColor}\``)
+			.addField('Old Role', `**Old Name›** \`${oldRole.name}\`\n**Old Color›** \`${oldRole.hexColor !== '#000000' ? oldRole.hexColor : 'Transparent'}\`\n**Old Position›** \`${oldRole.position}\``)
+			.addField('Updated Role›', `**New Name›** \`${newRole.name}\`\n**New Color›** \`${newRole.hexColor !== '#000000' ? newRole.hexColor : 'Transparent'}\`\n**New Position›** \`${newRole.position}\``)
+			.setThumbnail('attachment://col.png')
 			.setFooter({ text: `Role ID› ${oldRole.id}` })
 			.setColor(settings.guildcolor)
-			if(permissionsAdded.length) embed.addField('Permissions Added', `\`\`\`diff\n${permissionsAdded.map(perm => `+ ${permissions[perm]}`).join('\n')}\`\`\``)
+			if(permissionsAdded.length) embed.addField('Permissions Added', `\`\`\`diff\n${permissionsAdded.map(perm => `+ ${permissions[perm]}`).join('\n')}\`\`\``);
 			if(permissionsRemoved.length) embed.addField('Permissions Removed', `\`\`\`diff\n${permissionsRemoved.map(perm => `- ${permissions[perm]}`).join('\n')}\`\`\``)
 
-		logChannel.send({ embeds: [embed] });
+		logChannel.send({ files: [colorImage.attachment], embeds: [embed] });
 	},
 };
 

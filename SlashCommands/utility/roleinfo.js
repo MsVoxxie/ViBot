@@ -15,7 +15,7 @@ module.exports = {
 	},
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		const role = interaction.options.getRole('role');
-		const rolecolorImage = await createColouredSquare(role.hexColor);
+		const colorImage = await bot.createMultiColorCircle([role.hexColor], 256, 45);
 
         //Generate Embed
         const embed = new MessageEmbed()
@@ -23,40 +23,6 @@ module.exports = {
             .setColor(settings.guildcolor)
             .setDescription(`ID› \`${role.id}\`\nHex Code› \`${role.hexColor !== '#000000' ? role.hexColor : 'Transparent'}\`\nMentionable› \`${role.mentionable ? 'Yes' : 'No'}\`\nManaged› \`${role.managed ? 'Yes' : 'No'}\`\nMembers› \`${role.members.size.toString()}\`\nCreated› ${bot.relativeTimestamp(role.createdAt)}`)
 			.setThumbnail('attachment://col.png')
-		await interaction.reply({ files: [rolecolorImage.attachment], embeds: [embed] });
+		await interaction.reply({ files: [colorImage.attachment], embeds: [embed] });
 	},
 };
-
-async function createColouredSquare(hex) {
-	return new Promise((resolve, reject) => {
-		try {
-			const canvas = Canvas.createCanvas(256, 256);
-			const ctx = canvas.getContext('2d');
-
-            //Make it a circle!
-            ctx.beginPath();
-            ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
-
-			//Fill with Colour!
-			if(hex !== '#000000') {
-				ctx.fillStyle = hex;
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
-			}
-
-			//Rim it!
-			ctx.lineWidth = 15;
-			ctx.beginPath();
-			ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-			ctx.stroke();
-
-			//Create Attachment
-			const attachment = new MessageAttachment(canvas.toBuffer(), 'col.png');
-
-			resolve({ attachment: attachment, color: hex });
-		} catch (error) {
-			reject(error);
-		}
-	});
-}
