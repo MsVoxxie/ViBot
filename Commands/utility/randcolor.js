@@ -64,7 +64,7 @@ module.exports = {
 async function createColouredSquare(args) {
 	return new Promise((resolve, reject) => {
 		try {
-			const randColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`.toUpperCase();
+			const randColor = `#${(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')}`.toUpperCase();
 			const canvas = Canvas.createCanvas(512, 512);
 			const ctx = canvas.getContext('2d');
 
