@@ -34,7 +34,7 @@ module.exports = {
 		const permissionsRemoved = oldRolePerms.filter(x => !newRolePerms.includes(x));
 
 		//Generate Colors
-		const colorImage = await bot.createMultiColorCircle([oldRole.hexColor, newRole.hexColor], 256, 45);
+		const colorImage = await bot.createMultiColorCircle([oldRole.hexColor, newRole.hexColor], 1024, 45);
 
 		// Setup Embed
 		const embed = new MessageEmbed()

@@ -26,7 +26,7 @@ module.exports = {
 		if (!logChannel) return;
 
 		//Generate Colors
-		const colorImage = await bot.createMultiColorCircle([role.hexColor], 256, 45);
+		const colorImage = await bot.createMultiColorCircle([role.hexColor], 1024, 45);
 
 		// Setup Embed
 		const embed = new MessageEmbed()
