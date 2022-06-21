@@ -31,7 +31,7 @@ module.exports = {
 
 		//Listen for Interactions
 		const filter = (interaction) => message.author.id === interaction.user.id;
-		const collector = await embedMsg.createMessageComponentCollector({ filter, time: 300 * 1000 });
+		const collector = await embedMsg.createMessageComponentCollector({ filter, time: 120 * 1000 });
 		collector.on('collect', async (interaction) => {
 			interaction.deferUpdate();
 			// Switch Case
