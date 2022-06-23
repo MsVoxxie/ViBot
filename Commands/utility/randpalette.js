@@ -9,7 +9,7 @@ module.exports = {
 	example: '',
 	category: 'utility',
 	args: false,
-	cooldown: 2,
+	cooldown: 10,
 	hidden: false,
 	ownerOnly: false,
 	userPerms: [],
@@ -67,51 +67,55 @@ async function createColourPalette() {
 	return new Promise(async (resolve, reject) => {
 		try {
 			//Get Colours
-			const response = await axios.post('http://colormind.io/api/', { model: 'default' });
-			const data = response.data.result;
-			const colors = [];
+			const response = await axios.get('https://api.voxxie.me:3001/api/canvas/palette');
+			const data = response.data;
+			const colors = data;
 			let offset = 0;
 
 			//Create Canvas
-			const canvas = Canvas.createCanvas(1140, 172);
+			const canvas = Canvas.createCanvas(1024, 256);
+			const OffsetWidth = canvas.width / colors.length;
 			const ctx = canvas.getContext('2d');
 
 			//Loop over colours and add to canvas
-			for (let i = 0; i < data.length; i++) {
-				let Hex = ConvertRGBtoHex(data[i][0], data[i][1], data[i][2]);
-				colors.push(Hex.toUpperCase());
+			for (let i = 0; i < colors.length; i++) {
+				let Hex = `#${colors[i]}`;
 
 				//Make Coloured Square 1
 				ctx.fillStyle = Hex;
-				ctx.fillRect(offset, 0, 228, canvas.height);
+				ctx.fillRect(offset, 0, canvas.width / colors.length, canvas.height);
+
+				//Center Text
+				const centerText = canvas.width / colors.length / 2 + offset;
 
 				//Add Text
-				ctx.font = '40px sans-serif';
+				ctx.font = applyText(canvas, centerText);
 				ctx.fillStyle = '#ffffff';
 				ctx.strokeStyle = 'black';
-				ctx.lineWidth = 1;
+				ctx.lineWidth = 1.25;
 				ctx.textAlign = 'center';
-				ctx.fillText(Hex.toUpperCase(), offset + 13.5 * Hex.length, canvas.height - 10);
-				ctx.strokeText(Hex.toUpperCase(), offset + 13.5 * Hex.length, canvas.height - 10);
+				ctx.fillText(Hex.toLocaleUpperCase(), centerText, canvas.height - 10);
+				ctx.strokeText(Hex.toLocaleUpperCase(), centerText, canvas.height - 10);
 
-				offset += 228;
+				offset += OffsetWidth;
 			}
 
 			//Create Attachment
 			const attachment = new MessageAttachment(canvas.toBuffer(), 'col.png');
 
-			resolve({ attachment: attachment, colors: colors }); //, color: randColor });
+			resolve({ attachment: attachment, colors: colors });
 		} catch (error) {
 			reject(error);
 		}
 	});
 }
 
-function ColorToHex(color) {
-	var hexadecimal = color.toString(16);
-	return hexadecimal.length == 1 ? '0' + hexadecimal : hexadecimal;
-}
+const applyText = (canvas, text) => {
+	const context = canvas.getContext('2d');
+	let fontSize = 50;
+	do {
+		context.font = `${(fontSize -= 10)}px sans-serif`;
+	} while (context.measureText(text).width > canvas.width - 200);
 
-function ConvertRGBtoHex(red, green, blue) {
-	return '#' + ColorToHex(red) + ColorToHex(green) + ColorToHex(blue);
-}
+	return context.font;
+};

@@ -54,12 +54,12 @@ module.exports = {
 		const msgText = interaction.options.getString('text');
 
 		if(!msgText && !msgLink) return interaction.reply({
-			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Please provide either a **\`Message Link\`** or **\`Text\`** for me to translate!` })],
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} Please provide either a **\`Message Link\`** or **\`Text\`** for me to translate!` })],
 			ephemeral: true,
 		});
 
 		if(msgText && msgLink) return interaction.reply({
-			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Please send only one **\`Message Link\`** or **\`Text\`** for me to translate!` })],
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} Please send only one **\`Message Link\`** or **\`Text\`** for me to translate!` })],
 			ephemeral: true,
 		});
 

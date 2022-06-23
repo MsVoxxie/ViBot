@@ -19,7 +19,7 @@ module.exports = {
 		//Check if count is too high.
 		if (count < 1 || count > 99) {
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Value must be between 1 and 99!` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} Value must be between 1 and 99!` })],
 				ephemeral: true,
 			});
 		}
@@ -38,7 +38,7 @@ module.exports = {
 				console.log(err);
 				return interaction.reply({
 					embeds: [
-						bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} There was an error pruning messages in this channel!` }),
+						bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} There was an error pruning messages in this channel!` }),
 					],
 					ephemeral: true,
 				});

@@ -21,7 +21,7 @@ module.exports = {
 			const answer = definition;
 
 			if (!answer.definition)
-				return await loading.edit(`${Vimotes['XMARK']} Failed to find a result.`).then((s) => {
+				return await loading.edit(`${Vimotes['ERROR']} Failed to find a result.`).then((s) => {
 					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 

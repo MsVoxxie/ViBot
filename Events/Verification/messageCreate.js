@@ -47,7 +47,7 @@ module.exports = {
 			const Exists = await Verification.findOne({ guildid: message.guild.id, userid: message.author.id }).lean();
 			if(Exists) {
 				await message.delete();
-				await message.member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['XMARK']} You have already requested verification in ${message.guild.name}*` })] });
+				await message.member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `*${Vimotes['ERROR']} You have already requested verification in ${message.guild.name}*` })] });
 				return
 			}
 

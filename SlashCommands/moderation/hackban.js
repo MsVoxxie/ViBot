@@ -19,14 +19,14 @@ module.exports = {
 
 		if (!idCheck.test(userId))
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} This is not a user ID!` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} This is not a user ID!` })],
 				ephemeral: true,
 			});
 
 		//Dont ban yourself...
 		if (userId === intMember.id)
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} You cannot ban yourself.` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} You cannot ban yourself.` })],
 				ephemeral: true,
 			});
 
@@ -40,7 +40,7 @@ module.exports = {
 			});
 		} catch (err) {
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not ban the ID ${userId}.` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} I could not ban the ID ${userId}.` })],
 				ephemeral: true,
 			});
 		}

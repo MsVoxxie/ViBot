@@ -29,14 +29,14 @@ module.exports = {
 		//Dont ban yourself...
 		if (member.id === intMember.id)
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} You cannot ban yourself.` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} You cannot ban yourself.` })],
 				ephemeral: true,
 			});
 
 		//Check if the user is bannable
 		if (!member.bannable || member.permissions.has('BAN_MEMBERS'))
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I cannot ban ${member}` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} I cannot ban ${member}` })],
 				ephemeral: true,
 			});
 
@@ -49,7 +49,7 @@ module.exports = {
 			});
 		} catch (err) {
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not ban ${member}.` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} I could not ban ${member}.` })],
 				ephemeral: true,
 			});
 		}

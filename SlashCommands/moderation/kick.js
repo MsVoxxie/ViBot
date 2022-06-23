@@ -18,14 +18,14 @@ module.exports = {
 
 		//Dont kick yourself...
 		if(member.id === intMember.id) return interaction.reply({
-			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} You cannot kick yourself.` })],
+			embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} You cannot kick yourself.` })],
 			ephemeral: true,
 		});
 
 		//Check if the user is kickable
 		if (!member.kickable || member.permissions.has('KICK_MEMBERS'))
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I cannot kick ${member}` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} I cannot kick ${member}` })],
 				ephemeral: true,
 			});
 
@@ -38,7 +38,7 @@ module.exports = {
 			});
 		} catch (err) {
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not kick ${member}.` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} I could not kick ${member}.` })],
 				ephemeral: true,
 			});
 		}

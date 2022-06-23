@@ -32,7 +32,7 @@ module.exports = {
 					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['ADDED']} **»** You have been assigned the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
 				
 			} catch (e) {
-				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['UNCHANGED']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['INFO']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
 			}
 		} else {
 			try {
@@ -41,7 +41,7 @@ module.exports = {
 					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['REMOVED']} **»** You have been removed from the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
 				
 			} catch (e) {
-				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['UNCHANGED']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['INFO']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
 			}
 		}
 

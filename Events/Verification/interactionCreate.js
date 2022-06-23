@@ -98,7 +98,7 @@ module.exports = {
 						//Inform the user
 						await user.send({
 							embeds: [
-								bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` }),
+								bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['ERROR']} You have been Denied access to ${message.guild.name}.*` }),
 							],
 						});
 						await user.kick(`Denied by ${clicker.displayName}`);
@@ -110,7 +110,7 @@ module.exports = {
 					} else {
 						await user.send({
 							embeds: [
-								bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['XMARK']} You have been Denied access to ${message.guild.name}.*` }),
+								bot.replyEmbed({ color: bot.colors.error, text: `*${Vimotes['ERROR']} You have been Denied access to ${message.guild.name}.*` }),
 							],
 						});
 					}

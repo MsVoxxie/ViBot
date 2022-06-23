@@ -30,7 +30,7 @@ module.exports = {
 				embeds: [
 					bot.replyEmbed({
 						color: bot.colors.error,
-						text: `${Vimotes['XMARK']} The leveling system is not enabled on this server.`,
+						text: `${Vimotes['ERROR']} The leveling system is not enabled on this server.`,
 					}),
 				],
 				ephemeral: true,

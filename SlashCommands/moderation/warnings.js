@@ -24,7 +24,7 @@ module.exports = {
 
 		if (!memberTarget && !warningId)
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['XMARK']} You must specify a user or a warningId.` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ERROR']} You must specify a user or a warningId.` })],
 			});
 
 		//Get all of a users warnings

@@ -29,7 +29,7 @@ module.exports = {
 			});
 		if (interaction.channel.permissionsFor(member).has(this.options.userPerms[0]))
 			return interaction.reply({
-				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} You cannot warn ${member}` })],
+				embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} You cannot warn ${member}` })],
 				ephemeral: true,
 			});
 
@@ -63,7 +63,7 @@ module.exports = {
 			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Warned ${member}.` }) ],ephemeral: false, });
 		} catch (e) {
 			console.error(e);
-			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} I could not warn ${member}.` })], ephemeral: true, });
+			return interaction.reply({ embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['ERROR']} I could not warn ${member}.` })], ephemeral: true, });
 		}
 	},
 };
