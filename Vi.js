@@ -2,7 +2,6 @@ const { Client, Intents, Collection } = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
 const { Player } = require('discord-player');
 const cron = require('node-cron');
-const path = require('path');
 const fs = require('fs');
 
 //Setup Client

@@ -10,12 +10,13 @@ module.exports = {
 			await message.fetch();
 		}
 
-		//Declarations
-		if (message.author.bot) return;
+		//Return statements
+		if (message.author.bot) return; //Bot's don't need xp!
+		if(message.content.startsWith('p!c')) return; //Ignore pokebot spam
 		if (bot.isBottomText(message)) {
 			await userData.findOneAndUpdate( { guildid: message.guild.id, userid: message.author.id, }, { $inc: { bottomcount: 1, }, }, { upsert: true, new: true, } );
 			return console.log(`[${message.guild.name}] ${message.author.tag}: Bottom`);
-		}
+		} //No spam in my house!
 
 		const { guild, member } = message;
 		const settings = await bot.getGuild(guild);
