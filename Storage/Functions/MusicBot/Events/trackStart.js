@@ -65,7 +65,7 @@ module.exports = async (bot, queue, track) => {
 	});
 
 	collector.on('end', async () => {
-		if (queue.currentEmbed) return await playing.edit({ components: [] });
-		if (playing) return await playing.delete();
+		if (queue.currentEmbed) return await playing?.edit({ components: [] });
+		if (playing) return await playing?.delete();
 	});
 };
