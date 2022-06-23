@@ -79,7 +79,7 @@ async function createColourPalette() {
 
 			//Loop over colours and add to canvas
 			for (let i = 0; i < colors.length; i++) {
-				let Hex = `#${colors[i]}`;
+				let Hex = colors[i];
 
 				//Make Coloured Square 1
 				ctx.fillStyle = Hex;
