@@ -46,6 +46,7 @@
 		"g-i-s": "^2.1.6",
 		"got": "^11.8.3",
 		"jimp": "^0.16.1",
+		"jpeg-js": "^0.4.4",
 		"minecraft-server-util": "^3.6.0",
 		"moment": "^2.29.1",
 		"moment-duration-format": "^2.3.2",
