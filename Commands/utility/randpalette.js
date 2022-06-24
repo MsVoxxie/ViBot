@@ -66,8 +66,11 @@ module.exports = {
 async function createColourPalette() {
 	return new Promise(async (resolve, reject) => {
 		try {
+			//Pick a random API to use.
+			const API = ['https://api.voxxie.me:3001/api/canvas/colormind', 'https://api.voxxie.me:3001/api/canvas/colorlovers'];
+
 			//Get Colours
-			const response = await axios.get('https://api.voxxie.me:3001/api/canvas/palette');
+			const response = await axios.get(API[Math.floor(Math.random() * API.length)]);
 			const data = response.data;
 			const colors = data;
 			let offset = 0;
