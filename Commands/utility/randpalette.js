@@ -32,7 +32,7 @@ module.exports = {
 
 		//Listen for Interactions
 		const filter = (interaction) => message.author.id === interaction.user.id;
-		const collector = await embedMsg.createMessageComponentCollector({ filter, time: 120 * 1000 });
+		const collector = await embedMsg.createMessageComponentCollector({ filter, time: 300 * 1000 });
 		collector.on('collect', async (interaction) => {
 			interaction.deferUpdate();
 			// Switch Case
@@ -58,7 +58,7 @@ module.exports = {
 		//Tell users the collection ended when it has.
 		collector.on('end', async () => {
 			const msg = await message.channel.messages.fetch(embedMsg.id);
-			await msg.edit({ components: [] });
+			await msg.edit({ content: '**«Collection Stopped»**', components: [] });
 		});
 	},
 };
