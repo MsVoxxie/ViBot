@@ -13,7 +13,7 @@ module.exports = {
 	hidden: false,
 	ownerOnly: true,
 	userPerms: [],
-	botPerms: [],
+	botPerms: ['SEND_MESSAGES'],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Get Search Query
 		const Videos = [];
