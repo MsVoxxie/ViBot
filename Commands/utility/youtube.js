@@ -34,7 +34,7 @@ module.exports = {
 			new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT')
 		);
 
-		const Message = await message.channel.send({
+		const Message = await message.reply({
 			content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}›**\n${Videos[0]}`,
 			components: [Buttons],
 		});
