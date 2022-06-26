@@ -15,7 +15,7 @@ module.exports = {
 	async execute(bot, message, args, settings, Vimotes) {
 		const randomQuip = [
 			'*Getcha Head In The Game*',
-			'*Believe In The You That Believes In Vi*',
+			'*Believe In The Me That Believes In Vi*',
 			'*Feel The Inspiration*',
 			'*Are you inspired yet?*',
 			'*You sure like these, huh?*',
