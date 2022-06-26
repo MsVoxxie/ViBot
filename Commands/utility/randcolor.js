@@ -21,13 +21,13 @@ module.exports = {
 		);
 
 		//Setup Embed
-		const firstColour = await createColouredSquare();
+		const firstColor = await createColoredSquare();
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`\`\`\`Hex Code› ${firstColour.color}\`\`\``)
+			.setDescription(`\`\`\`Hex Code› ${firstColor.color}\`\`\``)
 			.setImage('attachment://col.png')
 			.setColor(settings.guildcolor);
-		const embedMsg = await message.reply({ embeds: [embed], files: [firstColour.attachment], components: [Button] });
+		const embedMsg = await message.reply({ embeds: [embed], files: [firstColor.attachment], components: [Button] });
 
 		//Listen for Interactions
 		const filter = (interaction) => message.author.id === interaction.user.id;
@@ -38,12 +38,13 @@ module.exports = {
 			switch (interaction.customId) {
 				// Backwards
 				case 'GENCOL': {
-					const newColour = await createColouredSquare();
+					const newColor = await createColoredSquare();
 					const embed = new MessageEmbed()
-						.setDescription(`\`\`\`Hex Code› ${newColour.color}\`\`\``)
+						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+						.setDescription(`\`\`\`Hex Code› ${newColor.color}\`\`\``)
 						.setImage('attachment://col.png')
 						.setColor(settings.guildcolor);
-					await embedMsg.edit({ embeds: [embed], files: [newColour.attachment] });
+					await embedMsg.edit({ embeds: [embed], files: [newColor.attachment] });
 					break;
 				}
 				// Done
@@ -61,14 +62,14 @@ module.exports = {
 	},
 };
 
-async function createColouredSquare(args) {
+async function createColoredSquare(args) {
 	return new Promise((resolve, reject) => {
 		try {
-			const randColor = `#${(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')}`.toUpperCase();
+			const randColor = `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0')}`.toUpperCase();
 			const canvas = Canvas.createCanvas(512, 512);
 			const ctx = canvas.getContext('2d');
 
-			//Make Coloured Square
+			//Make Colored Square
 			ctx.fillStyle = randColor;
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 

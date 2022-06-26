@@ -1,4 +1,5 @@
 const { MessageAttachment, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { VIAPI } = require('../../Storage/Config/Config.json');
 const Canvas = require('canvas');
 const axios = require('axios');
 
@@ -22,13 +23,14 @@ module.exports = {
 		);
 
 		//Setup Embed
-		const firstColour = await createColourPalette();
+		const firstColor = await createColorPalette();
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`\`\`\`Hex Codes›\n${firstColour.colors.map((col) => col).join(' | ')}\`\`\``)
+			.setDescription(`\`\`\`Hex Codes›\n${firstColor.colors.map((col) => col).join(' | ')}\`\`\``)
 			.setImage('attachment://col.png')
+			.setFooter({ text: `Endpoint› ${bot.titleCase(firstColor.endpoint)}` })
 			.setColor(settings.guildcolor);
-		const embedMsg = await message.reply({ embeds: [embed], files: [firstColour.attachment], components: [Button] });
+		const embedMsg = await message.reply({ embeds: [embed], files: [firstColor.attachment], components: [Button] });
 
 		//Listen for Interactions
 		const filter = (interaction) => message.author.id === interaction.user.id;
@@ -39,13 +41,14 @@ module.exports = {
 			switch (interaction.customId) {
 				// New Palette
 				case 'GENCOL': {
-					const newColour = await createColourPalette();
+					const newColor = await createColorPalette();
 					const embed = new MessageEmbed()
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-						.setDescription(`\`\`\`Hex Codes›\n${newColour.colors.map((col) => col).join(' | ')}\`\`\``)
+						.setDescription(`\`\`\`Hex Codes›\n${newColor.colors.map((col) => col).join(' | ')}\`\`\``)
 						.setImage('attachment://col.png')
+						.setFooter({ text: `Endpoint› ${bot.titleCase(newColor.endpoint)}` })
 						.setColor(settings.guildcolor);
-					await embedMsg.edit({ embeds: [embed], files: [newColour.attachment] });
+					await embedMsg.edit({ embeds: [embed], files: [newColor.attachment] });
 					break;
 				}
 				// Done
@@ -63,14 +66,15 @@ module.exports = {
 	},
 };
 
-async function createColourPalette() {
+async function createColorPalette() {
 	return new Promise(async (resolve, reject) => {
 		try {
 			//Pick a random API to use.
-			const API = ['https://api.voxxie.me:3001/api/canvas/colormind', 'https://api.voxxie.me:3001/api/canvas/colorlovers'];
+			const ENDPOINT_OPTIONS = ['colormind', 'colorlovers'];
+			const ENDPOINT = ENDPOINT_OPTIONS[Math.floor(Math.random() * ENDPOINT_OPTIONS.length)];
 
-			//Get Colours
-			const response = await axios.get(API[Math.floor(Math.random() * API.length)]);
+			//Get Colors
+			const response = await axios.get(`${VIAPI}canvas/${ENDPOINT}`);
 			const data = response.data;
 			const colors = data;
 			let offset = 0;
@@ -80,11 +84,11 @@ async function createColourPalette() {
 			const OffsetWidth = canvas.width / colors.length;
 			const ctx = canvas.getContext('2d');
 
-			//Loop over colours and add to canvas
+			//Loop over Colors and add to canvas
 			for (let i = 0; i < colors.length; i++) {
 				let Hex = colors[i];
 
-				//Make Coloured Square 1
+				//Make Colored Square 1
 				ctx.fillStyle = Hex;
 				ctx.fillRect(offset, 0, canvas.width / colors.length, canvas.height);
 
@@ -106,7 +110,7 @@ async function createColourPalette() {
 			//Create Attachment
 			const attachment = new MessageAttachment(canvas.toBuffer(), 'col.png');
 
-			resolve({ attachment: attachment, colors: colors });
+			resolve({ attachment: attachment, colors: colors, endpoint: ENDPOINT });
 		} catch (error) {
 			reject(error);
 		}
