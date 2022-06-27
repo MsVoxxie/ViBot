@@ -121,8 +121,8 @@ setInterval(async () => {
 }, 1 * 60 * 1000);
 
 //Write Logs to File
-const access = fs.createWriteStream(__dirname + '/Storage/Logs/Logs.txt', { flags: 'a' });
-const error = fs.createWriteStream(__dirname + '/Storage/Logs/Errors.txt', { flags: 'a' });
+const access = fs.createWriteStream(`${__dirname}/Storage/Logs/Logs.txt`, { flags: 'a' });
+const error = fs.createWriteStream(`${__dirname}/Storage/Logs/Errors.txt`, { flags: 'a' });
 
 process.stdout.pipe(access);
 process.stderr.pipe(error);
