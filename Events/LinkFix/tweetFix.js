@@ -15,9 +15,11 @@ module.exports = {
 		// if (!message.content.startsWith('https://twitter.com/')) return;
 
 		//Declarations
-		const RegEx = /((https?):\/\/)?(www.)?twitter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}/gi;
+		const RegEx = /((https?):\/\/)?(www.)?twitter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
 		const Matches = [...message.content.matchAll(RegEx)];
 		const settings = await bot.getGuild(message.guild);
+		let lastMessage = null;
+		let loop = false;
 
 		//Check if Message is a Tweet
 		if (!Matches.length) return;
@@ -30,11 +32,20 @@ module.exports = {
 
 		//Collector Collects
 		collector.on('collect', async () => {
+			//Get original message without links
+			let originalMessage = message.content;
+			Matches.forEach((match) => {
+				originalMessage = originalMessage.replace(match[0], '').trim();
+			});
+
 			//Loop through Matches
 			for await (const Match of Matches) {
-				console.log(Match[0]);
 				//Get Media
 				const tweetData = await bot.getTwitterMedia(Match[0]);
+
+				//Send Method
+				const sendMethod = (data) => (lastMessage !== null ? lastMessage.reply(data) : message.channel.send(data));
+
 				//Make the lines pretty :)
 				const intData = `♥️ [${bot.toThousands(tweetData.tweet.likes)}] 🔃 [${bot.toThousands(tweetData.tweet.retweets)}]`;
 				const wrapLines = '─'.repeat(bot.MinMax(intData.length / 1.5, 1, 18));
@@ -42,7 +53,10 @@ module.exports = {
 				//Create Embed
 				const embeds = [];
 				if (!tweetData.tweet.video_url) {
-					if (!tweetData.tweet.media_urls) return await message.channel.send({ content: `Original post by ${message.author}\n${Match[0]}` });
+					if (!tweetData.tweet.media_urls)
+						return await message.channel.send({
+							content: `${originalMessage ? `${message.author}› ${originalMessage}` : `Originally Posted By› ${message.author}`}\n${Match[0]}`,
+						});
 					for await (const photo of tweetData.tweet.media_urls) {
 						// Create embed for images
 						const embed = new MessageEmbed()
@@ -52,11 +66,19 @@ module.exports = {
 							.setThumbnail(tweetData.user.profile_image_url)
 							.setImage(tweetData.tweet.video_url ? null : photo)
 							.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
-							.setFooter({ text: `Original post by ${message.member.displayName}` })
 							.setColor(settings.guildcolor);
 						embeds.push(embed);
 					}
-					await message.channel.send({ embeds: embeds.map((e) => e) });
+
+					//This Sucks, but it works!
+					if (!loop) {
+						lastMessage = await sendMethod({
+							content: `${originalMessage ? `${message.author}› ${originalMessage}` : `Originally Posted By› ${message.author}`}`,
+							embeds: embeds.map((e) => e),
+						});
+					} else {
+						lastMessage = await sendMethod({ embeds: embeds.map((e) => e) });
+					}
 				} else {
 					// Create embed for videos
 					const embed = new MessageEmbed()
@@ -65,11 +87,24 @@ module.exports = {
 						.setURL(tweetData.tweet.url)
 						.setThumbnail(tweetData.user.profile_image_url)
 						.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
-						.setFooter({ text: `Original post by ${message.member.displayName}` })
 						.setColor(settings.guildcolor);
 					const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
-					await message.channel.send({ embeds: [embed], files: [attachment] });
+
+					//This Sucks, but it works!
+					if (!loop) {
+						lastMessage = await sendMethod({
+							content: `${originalMessage ? `${message.author}› ${originalMessage}` : `Originally Posted By› ${message.author}`}`,
+							embeds: [embed],
+							files: [attachment],
+						});
+					} else {
+						lastMessage = await sendMethod({ embeds: [embed], files: [attachment] });
+					}
 				}
+				//Set Variables
+				lastMessage = lastMessage;
+				originalMessage = null;
+				loop = true;
 			}
 			await message.delete();
 		});
