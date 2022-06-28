@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'messageCreate',
@@ -40,6 +41,14 @@ module.exports = {
 
 			//Loop through Matches
 			for await (const Match of Matches) {
+
+				//Remove first reaction and add loading emoji...
+				await message.reactions.removeAll();
+				await message.react(Vimotes["A_LOADING"]);
+
+				//Wait to not spam the api...
+				await bot.sleep(500);
+
 				//Get Media
 				const tweetData = await bot.getTwitterMedia(Match[0]);
 
