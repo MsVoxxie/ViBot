@@ -1,5 +1,5 @@
-const { MessageEmbed } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,7 +10,7 @@ module.exports = {
 		cooldown: 2,
 		ownerOnly: false,
 		userPerms: [],
-		botPerms: ["SEND_MESSAGES"],
+		botPerms: ['SEND_MESSAGES'],
 	},
 	async execute(bot, interaction, intGuild, intMember, settings) {
 		const intuser = (await interaction.options.getUser('user')) || intMember;
