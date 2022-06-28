@@ -43,11 +43,10 @@ module.exports = {
 			for await (const Match of Matches) {
 
 				//Remove first reaction and add loading emoji...
-				await message.reactions.removeAll();
-				await message.react(Vimotes["A_LOADING"]);
+				await message.reactions?.removeAll();
 
-				//Wait to not spam the api...
-				await bot.sleep(500);
+				//Wait to not overload the API
+				await bot.sleep(256);
 
 				//Get Media
 				const tweetData = await bot.getTwitterMedia(Match[0]);
