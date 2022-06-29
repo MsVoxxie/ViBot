@@ -18,29 +18,36 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-		const cmds = [];
-		await readdirSync('./SlashCommands/').forEach(async (dir) => {
-			const commands = readdirSync(`./SlashCommands/${dir}/`).filter((file) => file.endsWith('.js'));
-			for await (const file of commands) {
-				const command = require(`../../SlashCommands/${dir}/${file}`);
-				if (command.data) {
-					table.addRow(`${dir} | ${file}`, '✔ » Registered');
-					cmds.push(command.data.toJSON());
-				} else {
-					table.addRow(`${dir} | ${file}`, '❌ » Failed to Register!');
-					continue;
-				}
+		//setup arguments
+		const method = args[0];
+		try {
+			const rest = new REST({ version: '9' }).setToken(Token);
+			switch (method) {
+				case 'local':
+					//Dev
+					await rest.put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: bot.slashCommands.map((c) => c.data.toJSON()) }).then(() => {
+						message.reply('Successfully registered my local Slash Commands!');
+					});
+					break;
+				case 'global':
+					//Global
+					await rest.put(Routes.applicationCommands('827375161665650689'), { body: bot.slashCommands.map((c) => c.data.toJSON()) }).then(() => {
+						message.reply('Successfully registered my global Slash Commands!');
+					});
+					break;
+				case 'clear':
+					//Clear All Commands Globally
+					await rest.put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: [] });
+					await rest.put(Routes.applicationCommands('827375161665650689'), { body: [] }).then(() => {
+						message.reply('Successfully cleared my Slash Commands!');
+					});
+					break;
+				default:
+					//Error
+					return message.reply('Invalid method.\nValid methods are:`\nlocal\nglobal\nclear`');
 			}
-		});
-		await bot.sleep(1000);
-		const rest = new REST({ version: '9' }).setToken(Token)
-			await rest
-			.put(Routes.applicationCommands('827375161665650689'), { body: cmds }) //Global
-			// .put(Routes.applicationGuildCommands('827375161665650689', '872676325838708867'), { body: cmds }) //Dev
-			.then(() => {
-				console.log(table.toString());
-				message.reply('Successfully registered all commands!');
-			})
-			.catch(console.error);
+		} catch (e) {
+			console.log(e);
+		}
 	},
 };
