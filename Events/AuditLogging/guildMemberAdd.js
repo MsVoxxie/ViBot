@@ -45,7 +45,7 @@ module.exports = {
 		const ruleChannel = await getMember.guild.channels.cache.get(settings.ruleschannel);
 
 		//Get current invites
-		const newInvites = await member.guild.invites.fetch();
+		const newInvites = await member.guild.invites?.fetch();
 		const oldInvites = await Invite.find({ guildid: member.guild.id }).lean();
 		const invite = newInvites.find((i) => i.uses > oldInvites.find((o) => o.invitecode === i.code)?.uses);
 		const inviter = await member.guild.members.cache.get(invite?.inviter?.id);
@@ -107,7 +107,6 @@ module.exports = {
 			let addedRoles = [];
 			let failedRoles = [];
 			for await (const role of userRoles) {
-				console.log(role);
 				try {
 					const r = await getMember.guild.roles.fetch(role.id);
 					await getMember.roles.add(r);
