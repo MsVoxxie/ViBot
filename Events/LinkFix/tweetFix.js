@@ -13,10 +13,9 @@ module.exports = {
 
 		//Checks
 		if (message.author.bot) return;
-		// if (!message.content.startsWith('https://twitter.com/')) return;
 
 		//Declarations
-		const RegEx = /((https?):\/\/)?(www.)?twitter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
+		const RegEx = /((https?):\/\/)?(www.)?(|sx|ayy|vx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
 		const Matches = [...message.content.matchAll(RegEx)];
 		const settings = await bot.getGuild(message.guild);
 		let lastMessage = null;
@@ -46,7 +45,7 @@ module.exports = {
 				await message.reactions?.removeAll();
 
 				//Wait to not overload the API
-				await bot.sleep(256);
+				await bot.sleep(500);
 
 				//Get Media
 				const tweetData = await bot.getTwitterMedia(Match[0]);
