@@ -48,13 +48,7 @@ module.exports = (bot) => {
 					},
 					tweet: {
 						url: data?.entities?.media ? data?.entities?.media[0]?.url : null,
-						media_urls: data?.extended_entities?.media
-							.filter((item) => {
-								return item.type === 'photo';
-							})
-							.map((item) => {
-								return item.media_url_https;
-							}),
+						media_urls: data?.extended_entities?.media.filter((item) => { return item.type === 'photo'; }).map((item) => { return item.media_url_https; }),
 						video_url: hq_video_url ? hq_video_url : null,
 						description: data.full_text
 							.replace(/&lt;/g, '<')

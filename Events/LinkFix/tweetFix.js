@@ -40,7 +40,6 @@ module.exports = {
 
 			//Loop through Matches
 			for await (const Match of Matches) {
-
 				//Remove first reaction and add loading emoji...
 				await message.reactions?.removeAll();
 
@@ -49,6 +48,11 @@ module.exports = {
 
 				//Get Media
 				const tweetData = await bot.getTwitterMedia(Match[0]);
+
+				console.log(Matches.length);
+
+				//If only one tweet, and its text, Ignore it.
+				if (Matches.length === 1 && !tweetData.tweet.media_urls) return;
 
 				//Send Method
 				const sendMethod = (data) => (lastMessage !== null ? lastMessage.reply(data) : message.channel.send(data));
@@ -119,7 +123,7 @@ module.exports = {
 		//Collector Ends
 		collector.on('end', async (collected, reason) => {
 			if (reason === 'time') {
-				await message.reactions.cache.first().users.remove(bot.user.id);
+				await message?.reactions?.cache?.first()?.users?.remove(bot.user.id);
 			}
 		});
 	},
