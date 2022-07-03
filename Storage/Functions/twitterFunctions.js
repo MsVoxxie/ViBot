@@ -38,6 +38,8 @@ module.exports = (bot) => {
 					hq_video_url = await determineHighestQuality(variants);
 				}
 
+				// console.log(JSON.stringify(data, null, 2));
+
 				//Define our own data object
 				const tweetData = {
 					user: {
@@ -47,15 +49,10 @@ module.exports = (bot) => {
 						followers: data.user.followers_count,
 					},
 					tweet: {
-						url: data?.entities?.media ? data?.entities?.media[0]?.url : null,
-						media_urls: data?.extended_entities?.media.filter((item) => { return item.type === 'photo'; }).map((item) => { return item.media_url_https; }),
+						url: data.id_str ? `https://twitter.com/${data.user.screen_name}/status/${data.id_str}` : null,
+						media_urls:  data?.extended_entities?.media ? data?.extended_entities?.media.filter((item) => { return item.type === 'photo'; }).map((item) => { return item.media_url_https; }) : null,
 						video_url: hq_video_url ? hq_video_url : null,
-						description: data.full_text
-							.replace(/&lt;/g, '<')
-							.replace(/&quot;/g, '"')
-							.replace(/&apos;/g, "'")
-							.replace(/&amp;/g, '&')
-							.replace(/(?:https?|ftp):\/\/[\n\S]+/g, ''),
+						description: data.full_text ? data.full_text.replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&').replace(/(?:https?|ftp):\/\/[\n\S]+/g, '') : null,
 						likes: data.favorite_count,
 						retweets: data.retweet_count,
 					},

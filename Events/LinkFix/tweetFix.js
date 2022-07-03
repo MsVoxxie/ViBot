@@ -49,11 +49,6 @@ module.exports = {
 				//Get Media
 				const tweetData = await bot.getTwitterMedia(Match[0]);
 
-				console.log(Matches.length);
-
-				//If only one tweet, and its text, Ignore it.
-				if (Matches.length === 1 && !tweetData.tweet.media_urls) return;
-
 				//Send Method
 				const sendMethod = (data) => (lastMessage !== null ? lastMessage.reply(data) : message.channel.send(data));
 
@@ -63,13 +58,32 @@ module.exports = {
 
 				//Create Embed
 				const embeds = [];
-				if (!tweetData.tweet.video_url) {
-					if (!tweetData.tweet.media_urls)
-						return await message.channel.send({
-							content: `${originalMessage ? `${message.author}› ${originalMessage}` : `Originally Posted By› ${message.author}`}\n${Match[0]}`,
+
+				//Text Only
+				if (tweetData.tweet.description && !tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
+					const embed = new MessageEmbed()
+						.setAuthor({ name: `@${tweetData.user.screen_name}` })
+						.setTitle(tweetData.user.name)
+						.setURL(tweetData.tweet.url)
+						.setThumbnail(tweetData.user.profile_image_url)
+						.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+						.setColor(settings.guildcolor);
+					embeds.push(embed);
+
+					//This Sucks, but it works!
+					if (!loop) {
+						lastMessage = await sendMethod({
+							content: `${originalMessage ? `${message.author}› ${originalMessage}` : `Originally Posted By› ${message.author}`}`,
+							embeds: embeds.map((e) => e),
 						});
+					} else {
+						lastMessage = await sendMethod({ embeds: embeds.map((e) => e) });
+					}
+				}
+
+				//Media Only
+				if (tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
 					for await (const photo of tweetData.tweet.media_urls) {
-						// Create embed for images
 						const embed = new MessageEmbed()
 							.setAuthor({ name: `@${tweetData.user.screen_name}` })
 							.setTitle(tweetData.user.name)
@@ -90,8 +104,10 @@ module.exports = {
 					} else {
 						lastMessage = await sendMethod({ embeds: embeds.map((e) => e) });
 					}
-				} else {
-					// Create embed for videos
+				}
+
+				//Video Only
+				if (tweetData.tweet.video_url) {
 					const embed = new MessageEmbed()
 						.setAuthor({ name: `@${tweetData.user.screen_name}` })
 						.setTitle(tweetData.user.name)
@@ -101,7 +117,6 @@ module.exports = {
 						.setColor(settings.guildcolor);
 					const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
 
-					//This Sucks, but it works!
 					if (!loop) {
 						lastMessage = await sendMethod({
 							content: `${originalMessage ? `${message.author}› ${originalMessage}` : `Originally Posted By› ${message.author}`}`,
@@ -112,6 +127,7 @@ module.exports = {
 						lastMessage = await sendMethod({ embeds: [embed], files: [attachment] });
 					}
 				}
+
 				//Set Variables
 				lastMessage = lastMessage;
 				originalMessage = null;
