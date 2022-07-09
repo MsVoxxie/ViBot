@@ -23,7 +23,7 @@
 	"homepage": "https://github.com/MsVoxxie/ViBot#readme",
 	"dependencies": {
 		"@discord-player/extractor": "^3.0.2",
-		"@discordjs/opus": "^0.5.3",
+		"@discordjs/opus": "^0.8.0",
 		"@discordjs/rest": "^0.3.0",
 		"@twurple/api": "^5.0.9",
 		"@twurple/auth": "^5.0.9",
