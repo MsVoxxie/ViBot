@@ -7,7 +7,7 @@ module.exports = {
 		//Declarations
 		const RegEx = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/gi;
 		const Matches = [...intTarget.content.matchAll(RegEx)];
-		const ytURL = Matches[0][0];
+		const ytURL = Matches?.[0]?.[0];
 
 		//Checks
 		if (!ytURL) return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} This is not a youtube link!`, }), ], ephemeral: true, });
