@@ -31,7 +31,7 @@ module.exports = {
 			const settings = await bot.getGuild(intGuild);
 
 			//Get the Command
-			const command = bot.slashCommands.get(interaction.commandName);
+			const command = bot.interactionCommands.get(interaction.commandName);
 			if (!command) return interaction.followup(`${Vimotes['ALERT']} Sorry, I don't know that command!`);
 
 			//Get the Command Options
@@ -142,13 +142,24 @@ module.exports = {
 		// Is it a Context Command
 		if (interaction.isContextMenu()) {
 			//Defer the reply
-			const command = bot.slashCommands.get(interaction.commandName);
+			const command = bot.interactionCommands.get(interaction.commandName);
 			if (command) {
 				try {
-					//Who used the command
+					//Command Data
 					const intGuild = interaction.guild;
+					const intChannel = interaction.channel;
 					const intMember = await intGuild.members.fetch(interaction.user.id);
-					const intTarget = interaction.targetMember;
+					let intTarget;
+
+					switch (interaction.targetType) {
+						case 'USER':
+							intTarget = interaction.targetMember;
+							break;
+
+						case 'MESSAGE':
+							intTarget = await interaction.channel.messages.fetch(interaction.targetId);
+							break;
+					}
 
 					// Get Guild Settings
 					const settings = await bot.getGuild(intGuild);

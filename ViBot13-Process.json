@@ -1,6 +1,6 @@
 {
 	"script": "Vi.js",
-	"watch": ["Vi.js", "Events/", "Commands/", "SlashCommands/"],
+	"watch": ["Vi.js", "Events/", "Commands/", "SlashCommands/", "ContextCommands/"],
 	"ignore_watch": ["/home/vi/ViBot/Storage/Logs"],
 	"watch_options": {
 		"followSymlinks": false

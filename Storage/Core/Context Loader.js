@@ -1,16 +1,16 @@
 const { readdirSync } = require('fs');
 const ascii = require('ascii-table');
-const table = new ascii().setHeading('Slash Commands', 'Load Status');
+const table = new ascii().setHeading('Context Commands', 'Load Status');
 
 module.exports = async (bot) => {
 	//Read the slash commands folder
-	readdirSync('./SlashCommands/').forEach(async (dir) => {
+	readdirSync('./ContextCommands/').forEach(async (dir) => {
 		//Read the subfolders and find commands
-		const commands = readdirSync(`./SlashCommands/${dir}/`).filter((file) => file.endsWith('.js'));
+		const commands = readdirSync(`./ContextCommands/${dir}/`).filter((file) => file.endsWith('.js'));
 		//Loop through the commands
 		for await (const file of commands) {
 			//Get the command
-			const command = require(`../../SlashCommands/${dir}/${file}`);
+			const command = require(`../../ContextCommands/${dir}/${file}`);
 			//If the command has a valid name, register it.
 			if (command.data.name) {
 				//If the command type is message or user, remove description from the command data
