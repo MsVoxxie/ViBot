@@ -163,6 +163,7 @@ module.exports = {
 					//Execute the command
 					await command.execute(bot, interaction, intGuild, intMember, intTarget, settings, Vimotes);
 				} catch (error) {
+					console.error(error);
 					// If there was an error, send a message to the user
 					return interaction.reply({
 						embeds: [
