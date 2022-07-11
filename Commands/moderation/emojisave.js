@@ -98,7 +98,7 @@ module.exports = {
 		//Save the zip
 		zip
 			.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-			.pipe(fs.createWriteStream(`${USER_PATH}/${message.guild.name}_Emojis.zip`))
+			.pipe(fs.createWriteStream(`${USER_PATH}/${message.guild.name}_Emojis_and_Stickers.zip`))
 			.on('finish', async () => {
 				endedAt = Date.now();
 				const difference = endedAt - startedAt;
@@ -115,7 +115,7 @@ module.exports = {
 					files: [attachment],
 				});
 				//Delete the zip
-				fs.rmSync(`${USER_PATH}/${message.guild.name}_Emojis.zip`);
+				fs.rmSync(`${USER_PATH}/${message.guild.name}_Emojis_and_Stickers.zip`);
 				//Delete the temp folder
 				fs.rmSync(USER_PATH, { recursive: true });
 			});
