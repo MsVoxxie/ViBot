@@ -43,6 +43,7 @@
 		"discord.js": "^13.8.1",
 		"eslint": "^7.32.0",
 		"ffmpeg-static": "^4.4.0",
+		"fluent-ffmpeg": "^2.1.2",
 		"g-i-s": "^2.1.6",
 		"gifencoder": "^2.0.1",
 		"got": "^11.8.3",

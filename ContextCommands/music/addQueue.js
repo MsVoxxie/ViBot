@@ -32,7 +32,8 @@ module.exports = {
 			enableLive: true,
 			metadata: {
 				message: intTarget,
-				channel: interaction.channel,
+				executor: intMember,
+				channel: intMember.voice.channel,
 				voice_channel: intMember.voice.channel,
 			},
 		});
@@ -41,12 +42,14 @@ module.exports = {
         try {
 			if (!queue.connection) await queue.connect(intMember.voice.channel);
 		} catch (e) {
-			interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['STOP']} I was unable to connect to the voice channel!`, }), ], ephemeral: true, });
+			await interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['STOP']} I was unable to connect to the voice channel!`, }), ], ephemeral: true, });
 			return await queue.destroy();
 		}
 
         //Add the song to the queue
-        await interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} ${intMember} Added a song to queue!`, }), ], ephemeral: false, });
-        return await queue.play(Song.tracks[0]);
+        await intMember.voice.channel.send({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} ${intMember} Added song to queue!`, }), ], ephemeral: false, });
+        await interaction.deferReply();
+		await interaction.deleteReply();
+		return await queue.play(Song.tracks[0]);
 	},
 };

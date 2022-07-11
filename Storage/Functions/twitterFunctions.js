@@ -1,6 +1,5 @@
 const { twit_consumer, twit_consumer_secret, twit_access_token, twit_access_token_secret } = require('../Config/Config.json');
 const ascii = require('ascii-table');
-const table = new ascii().setHeading('Twitter', 'Status');
 const Twit = require('twit');
 const got = require('got');
 

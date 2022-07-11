@@ -10,15 +10,11 @@ module.exports = async (bot, queue, track) => {
 		.setColor(settings.guildcolor)
 		.setAuthor({ name: `Requested By› ${track.requestedBy.username}`, iconURL: track.requestedBy.displayAvatarURL({ dynamic: true }) })
 		.setThumbnail(track.thumbnail)
-		.setDescription(
-			`**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${
-				track.durationMS > 10 ? track.duration : 'Live Stream'
-			}\`\n**Channel›** ${message.guild.me.voice.channel}\n`
-		)
+		.setDescription( `**Now Playing›** [${track.title}](${track.url})\n**Song Duration›** \`${ track.durationMS > 10 ? track.duration : 'Live Stream' }\`\n**Channel›** ${message.guild.me.voice.channel}\n` )
 		.setFooter({ text: bot.Timestamp(Date.now()) });
 
 	if (queue.currentEmbed) await queue.currentEmbed.delete();
-	const playing = await message.channel.send({ embeds: [embed] }).then((m) => (queue.currentEmbed = m));
+	const playing = await queue.metadata.channel.send({ embeds: [embed] }).then((m) => (queue.currentEmbed = m));
 
 	// Reaction Controls
 	try {
@@ -33,7 +29,7 @@ module.exports = async (bot, queue, track) => {
 		console.error(error);
 	}
 
-	const filter = (interaction) => message.author.id === interaction.user.id;
+	const filter = (interaction) => queue.metadata.executor.id === interaction.user.id;
 	const collector = await playing.createMessageComponentCollector({ filter, time: track.durationMS > 0 ? track.durationMS : 60 * 60 * 1000 });
 
 	collector.on('collect', async (interaction) => {

@@ -33,6 +33,18 @@ module.exports = {
 					if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 				});
 
+		const Song = await bot.Music.search(Search, {
+			requestedBy: message.member,
+		});
+
+		if (!Song.tracks[0]) {
+			await message.reply('No results found.').then((s) => {
+				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			});
+			await loading.delete();
+			return;
+		}
+
 		const queue = await bot.Music.createQueue(message.guild, {
 			leaveOnEnd: true,
 			leaveOnEndCooldown: 90 * 1000,
@@ -43,7 +55,8 @@ module.exports = {
 			enableLive: true,
 			metadata: {
 				message: message,
-				channel: message.channel,
+				executor: message.member,
+				channel: message.member.voice.channel,
 				voice_channel: message.member.voice.channel,
 			},
 		});
@@ -55,18 +68,6 @@ module.exports = {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
 			return await queue.destroy();
-		}
-
-		const Song = await bot.Music.search(Search, {
-			requestedBy: message.member,
-		});
-
-		if (!Song.tracks[0]) {
-			await message.reply('No results found.').then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-			});
-			await loading.delete();
-			return;
 		}
 
 		if (settings.prune) {

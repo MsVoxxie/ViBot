@@ -10,7 +10,7 @@ module.exports = async (bot, queue, track) => {
 		.setThumbnail(track.thumbnail)
 		.setDescription(`Added [${track.title}](${track.url}) to the Queue.`)
 		.setFooter({ text: bot.Timestamp(Date.now()) });
-	message.channel.send({ embeds: [embed] }).then((s) => {
+	queue.metadata.channel.send({ embeds: [embed] }).then((s) => {
 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 	});
 };

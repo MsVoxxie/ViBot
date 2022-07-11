@@ -1,4 +1,5 @@
-node_modules
-Storage/Config/Config.json
 Storage/Giveaways/Giveaways.json
+Storage/Config/Config.json
+Storage/Media/Temp
 Storage/Logs
+node_modules
