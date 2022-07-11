@@ -18,12 +18,14 @@ module.exports = {
     botPerms: ['SEND_MESSAGES', 'ATTACH_FILES'],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Statics
+		const guildEmojis = await message.guild.emojis.cache;
 		const MEDIA_PATH = path.join(__dirname, '../../Storage/Media/Temp/');
 		const USER_PATH = path.join(MEDIA_PATH, `${message.author.id}/`);
 
 		//Variables
 		const startedAt = Date.now();
-		let totalEmoji = 0;
+		const totalEmoji = guildEmojis.size;
+		let savedEmoji = 0;
 		let endedAt;
 
 		//Let the user know we are starting
@@ -39,7 +41,6 @@ module.exports = {
 		}
 
 		//Get the guilds emojis and save to disk
-		const guildEmojis = await message.guild.emojis.cache;
 		for await (const emoticon of guildEmojis) {
 			const emoji = emoticon[1];
 			const ext = emoji.url.split('.').pop();
@@ -48,7 +49,7 @@ module.exports = {
 
 		//Read newly saved files
 		const savedEmojis = fs.readdirSync(USER_PATH);
-		totalEmoji = savedEmojis.length;
+		savedEmoji = savedEmojis.length;
 		const zip = new JSZip();
 		const folder = zip.folder(`${message.guild.name}'s Emojis`);
 
@@ -72,7 +73,7 @@ module.exports = {
 					embeds: [
 						bot.replyEmbed({
 							color: bot.colors.success,
-							text: `${Vimotes['CHECK']} Saved ***\`${totalEmoji}\`*** ${totalEmoji > 1 ? 'Emojis' : 'Emoji'} in ***\`${Math.round( difference / 1000 )}\`*** seconds.`,
+							text: `${Vimotes['CHECK']} Saved ***\`${savedEmoji}/${totalEmoji}\`*** ${totalEmoji > 1 ? 'Emojis' : 'Emoji'} in ***\`${Math.round( difference / 1000 )}\`*** seconds.`,
 						}),
 					],
 					files: [attachment],
