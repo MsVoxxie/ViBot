@@ -28,6 +28,9 @@ module.exports = {
 		let savedEmoji = 0;
 		let endedAt;
 
+		//Are there any emoji?
+		if (totalEmoji < 1) return;
+
 		//Let the user know we are starting
 		await message.react(Vimotes['A_LOADING']);
 
