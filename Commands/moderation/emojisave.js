@@ -47,7 +47,7 @@ module.exports = {
 		for await (const emoticon of guildEmojis) {
 			const emoji = emoticon[1];
 			const ext = emoji.url.split('.').pop();
-			await download(emoji.url, USER_PATH, `${emoji.name}.${ext}`, (e) => console.log(e));
+			await download(emoji.url, USER_PATH, emoji.name, ext);
 		}
 
 		//Read newly saved files
@@ -58,19 +58,23 @@ module.exports = {
 
 		//Add the files to the zip
 		for await (const Emoji of savedEmojis) {
-			const emojiData = fs.readFileSync(`${USER_PATH}/${Emoji}`);
-			folder.file(Emoji, emojiData);
+			try {
+				const emojiData = fs.readFileSync(`${USER_PATH}/${Emoji}`);
+				folder.file(Emoji, emojiData);
+			} catch (error) {
+				console.error(error);
+			}
 		}
 
 		//Save the zip
 		zip
 			.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-			.pipe(fs.createWriteStream(`${USER_PATH}/Emojis.zip`))
+			.pipe(fs.createWriteStream(`${USER_PATH}/${message.guild.name}_Emojis.zip`))
 			.on('finish', async () => {
 				endedAt = Date.now();
 				const difference = endedAt - startedAt;
 				//Send the zip
-				const attachment = new MessageAttachment(`${USER_PATH}/Emojis.zip`);
+				const attachment = new MessageAttachment(`${USER_PATH}/${message.guild.name}_Emojis.zip`);
 				await message?.reactions?.removeAll();
 				await message.reply({
 					embeds: [
@@ -82,20 +86,33 @@ module.exports = {
 					files: [attachment],
 				});
 				//Delete the zip
-				fs.rmSync(`${USER_PATH}/Emojis.zip`);
+				fs.rmSync(`${USER_PATH}/${message.guild.name}_Emojis.zip`);
 				//Delete the temp folder
 				fs.rmSync(USER_PATH, { recursive: true });
 			});
 	},
 };
 
-async function download(uri, filepath, filename, callback) {
-	if (!fs.existsSync(filepath)) return;
-	const file = fs.createWriteStream(`${filepath}/${filename}`);
-	const request = await axios.get(uri, { responseType: 'stream' });
-	request.data.pipe(file);
-	file.on('finish', () => {
-		file.close();
-		callback(`${filename} saved to ${filepath}`);
-	});
+async function download(uri, filepath, filename, extension) {
+	try {
+		//Variables
+		let exists = false;
+		let i = 0;
+
+		//Check if the file exists
+		if (!fs.existsSync(filepath)) return;
+		if(fs.existsSync(`${filepath}/${filename}.${extension}`)) {
+			exists = true;
+			i++;
+		}
+		//Write file
+		const file = fs.createWriteStream(`${filepath}/${filename}${exists === true ? `~${i}` : ''}.${extension}`);
+		const request = await axios.get(uri, { responseType: 'stream' });
+		request.data.pipe(file);
+		file.on('finish', () => {
+			file.close();
+		});
+	} catch(e) {
+		console.error(e);
+	}
 }

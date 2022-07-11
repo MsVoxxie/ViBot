@@ -19,6 +19,9 @@ module.exports = {
 				],
 			});
 
+		// Is the message valid?
+		if (!message) return;
+
 		// Get Guild Settings
 		const settings = await bot.getGuild(message.guild);
 
