@@ -17,9 +17,10 @@ module.exports = {
 		//Declarations
 		const Mode = 'Automatic'; // 'Automatic' or 'Manual'
 		const RegEx = /((https?):\/\/)?(www.)?(|sx|ayy|vx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
-		const RegGet = [...message.content.matchAll(RegEx)];
-		const Matches = [];
+		const Matches = [...message.content.matchAll(RegEx)].map(x => x[0]).filter(x => !x.endsWith('>')).filter(x => !x.endsWith('||')); // Respect commenting and null blocking urls
 		const settings = await bot.getGuild(message.guild);
+
+		console.log(Matches);
 
 		//Statics
 		const ORIG_MESSAGE = '**Originally Posted By›** ';
@@ -28,15 +29,6 @@ module.exports = {
 		//Variables
 		let lastMessage = null;
 		let loop = false;
-
-		//Remove Commented tweets
-		for (let i = 0; i < RegGet.length; i++) {
-			if (!RegGet[i].input.startsWith('<') && !RegGet[i].input.endsWith('>')) {
-				Matches.push(RegGet[i]);
-			}
-		}
-
-		// ^^^^ This Sucks, Fix it later. ^^^^
 
 		//Check if Message is a Tweet
 		if (!Matches.length) return;
@@ -76,7 +68,7 @@ module.exports = {
 					//Get original message without links
 					let originalMessage = message.content;
 					Matches.forEach((match) => {
-						originalMessage = originalMessage.replace(match[0], '').trim();
+						originalMessage = originalMessage.replace(match, '').trim();
 					});
 
 					//TryCatch in case of error..
@@ -117,7 +109,7 @@ async function sendTweets(funcData) {
 		await bot.sleep(500);
 
 		//Get Media
-		const tweetData = await bot.getTwitterMedia(Match[0]);
+		const tweetData = await bot.getTwitterMedia(Match);
 
 		//Send Method
 		const sendMethod = (data) => (lastMessage !== null ? lastMessage.reply(data) : message.channel.send(data));
