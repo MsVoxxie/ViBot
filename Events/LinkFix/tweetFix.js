@@ -1,5 +1,4 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
-const { Vimotes } = require('../../Storage/Functions/miscFunctions');
 
 module.exports = {
 	name: 'messageCreate',
@@ -20,8 +19,6 @@ module.exports = {
 		const Matches = [...message.content.matchAll(RegEx)].map(x => x[0]).filter(x => !x.endsWith('>')).filter(x => !x.endsWith('||')); // Respect commenting and null blocking urls
 		const settings = await bot.getGuild(message.guild);
 
-		console.log(Matches);
-
 		//Statics
 		const ORIG_MESSAGE = '**Originally Posted By›** ';
 		const AUTH_POST = `**${message.author}›** `;
@@ -38,7 +35,7 @@ module.exports = {
 				//Get original message without links
 				let originalMessage = message.content;
 				Matches.forEach((match) => {
-					originalMessage = originalMessage.replace(match[0], '').trim();
+					originalMessage = originalMessage.replace(match, '').trim();
 				});
 
 				//TryCatch in case of error..
