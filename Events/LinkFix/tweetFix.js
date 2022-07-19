@@ -17,7 +17,8 @@ module.exports = {
 		//Declarations
 		const Mode = 'Automatic'; // 'Automatic' or 'Manual'
 		const RegEx = /((https?):\/\/)?(www.)?(|sx|ayy|vx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
-		const Matches = [...message.content.matchAll(RegEx)];
+		const RegGet = [...message.content.matchAll(RegEx)];
+		const Matches = [];
 		const settings = await bot.getGuild(message.guild);
 
 		//Statics
@@ -27,6 +28,15 @@ module.exports = {
 		//Variables
 		let lastMessage = null;
 		let loop = false;
+
+		//Remove Commented tweets
+		for (let i = 0; i < RegGet.length; i++) {
+			if (!RegGet[i].input.startsWith('<') && !RegGet[i].input.endsWith('>')) {
+				Matches.push(RegGet[i]);
+			}
+		}
+
+		// ^^^^ This Sucks, Fix it later. ^^^^
 
 		//Check if Message is a Tweet
 		if (!Matches.length) return;
