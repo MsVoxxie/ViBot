@@ -2,15 +2,15 @@ const { Guild } = require('../../Storage/Database/models');
 const Twit = require('twit');
 
 const {
-	twit_consumer,
-	twit_consumer_secret,
+	twit_api,
+	twit_api_secret,
 	twit_access_token,
 	twit_access_token_secret,
 } = require('../../Storage/Config/Config.json');
 
 const Twitter = new Twit({
-	consumer_key: twit_consumer,
-	consumer_secret: twit_consumer_secret,
+	consumer_key: twit_api,
+	consumer_secret: twit_api_secret,
 	access_token: twit_access_token,
 	access_token_secret: twit_access_token_secret,
 });
@@ -49,7 +49,7 @@ module.exports = {
 				getGuild.save();
 				message.reply(`\`${LookupName}\` added to watchlist.`);
 			}
-			return await bot.updateStreams();
+			return await bot.twitterStream();
 		});
 	},
 };

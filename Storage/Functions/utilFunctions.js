@@ -1,4 +1,4 @@
-const { twit_consumer, twit_consumer_secret, twit_access_token, twit_access_token_secret } = require('../../Storage/Config/Config.json');
+const { twit_api, twit_api_secret, twit_access_token, twit_access_token_secret } = require('../../Storage/Config/Config.json');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const deJunk = require('dejunk.js');
