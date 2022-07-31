@@ -106,7 +106,7 @@ async function sendTweets(funcData) {
 		await bot.sleep(500);
 
 		//Get Media
-		const tweetData = await bot.getTwitterMedia(Match);
+		const tweetData = await bot.getTweet(Match);
 
 		//Send Method
 		const sendMethod = (data) => (lastMessage !== null ? lastMessage.reply(data) : message.channel.send(data));

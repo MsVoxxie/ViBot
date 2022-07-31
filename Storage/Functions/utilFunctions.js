@@ -159,7 +159,7 @@ module.exports = (bot) => {
 		const imageRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|webp)/;
 		const videoRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:mp4|gif|webm|mov)/;
 		if (message.content.startsWith('https://twitter.com/')) {
-			tweetData = await bot.getTwitterMedia(message.content);
+			tweetData = await bot.getTweet(message.content);
 		} else {
 			if (videoRegex.test(message.content)) {
 				videos.push(message.content);

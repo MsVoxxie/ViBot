@@ -1,16 +1,8 @@
 const { twit_api, twit_api_secret, twit_access_token, twit_access_token_secret, twit_bearer_token } = require('../Config/Config.json');
 const { ETwitterStreamEvent, TweetStream, TwitterApi, ETwitterApiError } = require('twitter-api-v2');
-const Twit = require('twit');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const got = require('got');
-
 const MAX_FILE_SIZE = 8_388_119;
-
-const Twitter = new Twit({
-	consumer_key: twit_api,
-	consumer_secret: twit_api_secret,
-	access_token: twit_access_token,
-	access_token_secret: twit_access_token_secret,
-});
 
 const TwitterClient = new TwitterApi({
 	appKey: twit_api,
@@ -20,6 +12,52 @@ const TwitterClient = new TwitterApi({
 });
 
 module.exports = async (bot) => {
+	//Tweet Data v2
+	bot.getTweet = async (URL) => {
+		return new Promise(async (resolve, reject) => {
+			//Declarations
+			const idRegex = RegExp(/status\/(\d+)/);
+			const tweetId = idRegex.exec(URL)[0].slice(7);
+			let hq_video_url;
+
+			//Get Tweet
+			try {
+				const Tweet = await TwitterClient.v1.singleTweet(tweetId, { tweet_mode: 'extended' });
+
+				//If theres a video, get the highest quality one
+				if (Tweet?.extended_entities?.media[0]?.video_info) {
+					const video = Tweet.extended_entities.media.find((item) => ['video', 'animated_gif'].includes(item.type));
+					const variants = video.video_info.variants.filter((item) => item?.bitrate !== undefined).sort((a, b) => b.bitrate - a.bitrate).map((item) => item.url);
+					hq_video_url = await determineHighestQuality(variants);
+				}
+
+				//Define the tweet data
+				const tweetData = {
+					user: {
+						name: Tweet.user.name,
+						screen_name: Tweet.user.screen_name,
+						profile_image_url: Tweet.user.profile_image_url_https.replace('_normal', ''),
+						followers: Tweet.user.followers_count,
+					},
+					tweet: {
+						url: Tweet.id_str ? `https://twitter.com/${Tweet.user.screen_name}/status/${Tweet.id_str}` : null,
+						media_urls: Tweet?.extended_entities?.media ? Tweet?.extended_entities?.media .filter((item) => { return item.type === 'photo'; }) .map((item) => { return item.media_url_https; }) : null,
+						video_url: hq_video_url ? hq_video_url : null,
+						description: Tweet.full_text ? Tweet.full_text .replace(/&lt;/g, '<') .replace(/&quot;/g, '"') .replace(/&apos;/g, "'") .replace(/&amp;/g, '&') .replace(/(?:https?|ftp):\/\/[\n\S]+/g, '') : null,
+						likes: Tweet.favorite_count,
+						retweets: Tweet.retweet_count,
+					},
+				};
+
+				//Resolve the promise
+				resolve(tweetData);
+			} catch (error) {
+				//Reject the promise
+				reject(error);
+			}
+		});
+	};
+
 	// New Twitter Stream
 	bot.twitterStream = async () => {
 		// Definitions
@@ -61,15 +99,15 @@ module.exports = async (bot) => {
 				if (settings.twitterwatch.length) {
 					if (tweet.user && settings.twitterwatch.some((id) => tweet.user.id_str === id)) {
 						// This is a tweet from a watched user in guild
-						// console.log(`${guild.name} is watching ${tweet.user.screen_name}`);
-
 						// Check for tweet channel
 						const twitterchannel = await guild.channels.cache.get(settings.twitterchannel);
 						if (!twitterchannel) continue;
 
 						// Send the tweet
 						if (!isReply(tweet)) {
-							await twitterchannel.send(`**${tweet.user.screen_name}** Posted a new Tweet!\nhttps://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
+							const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
+							tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
+							await twitterchannel.send(tweetEmbed);
 						}
 					}
 				}
@@ -82,8 +120,9 @@ module.exports = async (bot) => {
 		});
 
 		// Couldnt Reconnect
-		stream.on(ETwitterStreamEvent.ReconnectError, (number) => {
-			console.log('Twitter could not reconnect. ', number);
+		stream.on(ETwitterStreamEvent.ReconnectError, async (number) => {
+			console.log('Twitter could not reconnect.\nAttempting to Restart Stream.', number);
+			await bot.twitterStream();
 		});
 
 		// Connection Closed
@@ -104,76 +143,61 @@ module.exports = async (bot) => {
 		bot.currentTwitterStream = stream;
 	};
 
-	// Get Twitter Media
-	bot.getTwitterMedia = async (url) => {
-		const idRegex = RegExp(/status\/(\d+)/);
-		const tweet = url;
-		const tweetId = idRegex.exec(tweet)[0].slice(7);
-		let hq_video_url;
+	// Return Tweet for tweet watch
+	bot.embedTweet = async (tweet, settings) => {
+		return new Promise(async (resolve, reject) => {
+			//Define Get Tweet
+			const tweetData = await bot.getTweet(tweet);
 
-		//If no tweet, return!
-		if (!tweetId[0]) return;
+			//Make the lines pretty :)
+			const intData = `♥️ [${bot.toThousands(tweetData.tweet.likes)}] 🔃 [${bot.toThousands(tweetData.tweet.retweets)}]`;
+			const wrapLines = '─'.repeat(bot.MinMax(intData.length / 1.5, 1, 18));
 
-		return new Promise((resolve, reject) => {
-			Twitter.get('statuses/show/:id', { tweet_mode: 'extended', id: tweetId }, async (err, data) => {
-				if (err) return reject(error);
+			//Create Embed
+			const embeds = [];
 
-				//If theres a video, get the highest quality one
-				if (data?.extended_entities?.media[0]?.video_info) {
-					const video = data.extended_entities.media.find((item) => ['video', 'animated_gif'].includes(item.type));
-					const variants = video.video_info.variants
-						.filter((item) => item?.bitrate !== undefined)
-						.sort((a, b) => b.bitrate - a.bitrate)
-						.map((item) => item.url);
-					hq_video_url = await determineHighestQuality(variants);
-				}
-
-				// console.log(JSON.stringify(data, null, 2));
-
-				//Define our own data object
-				const tweetData = {
-					user: {
-						name: data.user.name,
-						screen_name: data.user.screen_name,
-						profile_image_url: data.user.profile_image_url_https.replace('_normal', ''),
-						followers: data.user.followers_count,
-					},
-					tweet: {
-						url: data.id_str ? `https://twitter.com/${data.user.screen_name}/status/${data.id_str}` : null,
-						media_urls: data?.extended_entities?.media
-							? data?.extended_entities?.media
-									.filter((item) => {
-										return item.type === 'photo';
-									})
-									.map((item) => {
-										return item.media_url_https;
-									})
-							: null,
-						video_url: hq_video_url ? hq_video_url : null,
-						description: data.full_text
-							? data.full_text
-									.replace(/&lt;/g, '<')
-									.replace(/&quot;/g, '"')
-									.replace(/&apos;/g, "'")
-									.replace(/&amp;/g, '&')
-									.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '')
-							: null,
-						likes: data.favorite_count,
-						retweets: data.retweet_count,
-					},
-				};
-				resolve(tweetData);
-			});
-		});
-		async function determineHighestQuality(urls) {
-			for (const url of urls) {
-				const response = await got.head(url);
-				if (parseInt(response.headers['content-length']) < MAX_FILE_SIZE) {
-					return await Promise.resolve(url);
-				}
+			//Text Only
+			if (tweetData.tweet.description && !tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
+				const embed = new MessageEmbed()
+					.setAuthor({ name: `@${tweetData.user.screen_name}` })
+					.setTitle(tweetData.user.name)
+					.setURL(tweetData.tweet.url)
+					.setThumbnail(tweetData.user.profile_image_url)
+					.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setColor(settings.guildcolor);
+				embeds.push(embed);
+				resolve({ embeds: embeds.map((e) => e) });
 			}
-			return await Promise.resolve(false);
-		}
+
+			//Media Only
+			if (tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
+				for await (const photo of tweetData.tweet.media_urls) {
+					const embed = new MessageEmbed()
+						.setAuthor({ name: `@${tweetData.user.screen_name}` })
+						.setTitle(tweetData.user.name)
+						.setURL(tweetData.tweet.url)
+						.setThumbnail(tweetData.user.profile_image_url)
+						.setImage(tweetData.tweet.video_url ? null : photo)
+						.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+						.setColor(settings.guildcolor);
+					embeds.push(embed);
+				}
+				resolve({ embeds: embeds.map((e) => e) });
+			}
+
+			//Video Only
+			if (tweetData.tweet.video_url) {
+				const embed = new MessageEmbed()
+					.setAuthor({ name: `@${tweetData.user.screen_name}` })
+					.setTitle(tweetData.user.name)
+					.setURL(tweetData.tweet.url)
+					.setThumbnail(tweetData.user.profile_image_url)
+					.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setColor(settings.guildcolor);
+				const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
+				resolve({ embeds: [embed], files: [attachment] });
+			}
+		});
 	};
 };
 
@@ -188,4 +212,15 @@ function isReply(tweet) {
 		tweet.in_reply_to_screen_name
 	)
 		return true;
+}
+
+//Get the highest quality video
+async function determineHighestQuality(urls) {
+	for (const url of urls) {
+		const response = await got.head(url);
+		if (parseInt(response.headers['content-length']) < MAX_FILE_SIZE) {
+			return await Promise.resolve(url);
+		}
+	}
+	return await Promise.resolve(false);
 }
