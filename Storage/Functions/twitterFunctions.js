@@ -149,9 +149,9 @@ module.exports = async (bot) => {
 			//Define Get Tweet
 			const tweetData = await bot.getTweet(tweet);
 
-			//Make the lines pretty :)
-			const intData = `♥️ [${bot.toThousands(tweetData.tweet.likes)}] 🔃 [${bot.toThousands(tweetData.tweet.retweets)}]`;
-			const wrapLines = '─'.repeat(bot.MinMax(intData.length / 1.5, 1, 18));
+			//Make the lines pretty :) -- This is pointless as the tweet is sent imediately, but it's here for future use
+			// const intData = `♥️ [${bot.toThousands(tweetData.tweet.likes)}] 🔃 [${bot.toThousands(tweetData.tweet.retweets)}]`;
+			// const wrapLines = '─'.repeat(bot.MinMax(intData.length / 1.5, 1, 18));
 
 			//Create Embed
 			const embeds = [];
@@ -163,7 +163,7 @@ module.exports = async (bot) => {
 					.setTitle(tweetData.user.name)
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
-					.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setDescription(`${tweetData.tweet.description}`) // Do this later \n${wrapLines}\n${intData}\n${wrapLines}`)
 					.setColor(settings.guildcolor);
 				embeds.push(embed);
 				resolve({ embeds: embeds.map((e) => e) });
@@ -178,7 +178,7 @@ module.exports = async (bot) => {
 						.setURL(tweetData.tweet.url)
 						.setThumbnail(tweetData.user.profile_image_url)
 						.setImage(tweetData.tweet.video_url ? null : photo)
-						.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+						.setDescription(`${tweetData.tweet.description}`) // Do this later \n${wrapLines}\n${intData}\n${wrapLines}`)
 						.setColor(settings.guildcolor);
 					embeds.push(embed);
 				}
@@ -192,7 +192,7 @@ module.exports = async (bot) => {
 					.setTitle(tweetData.user.name)
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
-					.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setDescription(`${tweetData.tweet.description}`) // Do this later \n${wrapLines}\n${intData}\n${wrapLines}`)
 					.setColor(settings.guildcolor);
 				const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
 				resolve({ embeds: [embed], files: [attachment] });
