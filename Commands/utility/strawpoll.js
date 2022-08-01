@@ -39,7 +39,7 @@ module.exports = {
 		embed.setDescription("Please type the options you would like the poll to have one line at a time.\nPlease say `Done` when you're finished.");
 		await embMessage.edit({ embeds: [embed] });
 
-		const getOptions = await embMessage.channel.createMessageCollector(filter, { time: 700 * 1000 });
+		const getOptions = await embMessage.channel.createMessageCollector({ filter, time: 700 * 1000 });
 		getOptions.on('collect', async (msg) => {
 			if (msg.cleanContent.toLowerCase() === 'done') {
 				getOptions.stop();

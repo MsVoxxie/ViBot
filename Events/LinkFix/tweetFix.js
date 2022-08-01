@@ -16,12 +16,16 @@ module.exports = {
 		//Declarations
 		const Mode = 'Automatic'; // 'Automatic' or 'Manual'
 		const RegEx = /((https?):\/\/)?(www.)?(|sx|ayy|vx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
-		const Matches = [...message.content.matchAll(RegEx)].map(x => x[0]).filter(x => !x.endsWith('>')).filter(x => !x.endsWith('||')); // Respect commenting and null blocking urls
+		const Matches = [...message.content.matchAll(RegEx)]
+			.map((x) => x[0])
+			.filter((x) => !x.endsWith('>'))
+			.filter((x) => !x.endsWith('||')); // Respect commenting and null blocking urls
 		const settings = await bot.getGuild(message.guild);
 
 		//Statics
 		const ORIG_MESSAGE = '**Originally Posted By›** ';
 		const AUTH_POST = `**${message.author}›** `;
+		const MESSAGES = [];
 
 		//Variables
 		let lastMessage = null;
@@ -41,8 +45,26 @@ module.exports = {
 				//TryCatch in case of error..
 				try {
 					//Setup Variables to send to function and then run function
-					const funcData = { ORIG_MESSAGE, AUTH_POST, Matches, message, bot, settings, lastMessage, originalMessage, loop };
+					const funcData = { ORIG_MESSAGE, AUTH_POST, Matches, message, bot, settings, lastMessage, originalMessage, loop, MESSAGES };
 					await sendTweets(funcData);
+
+					//Add a collector so users can delete accidental posts
+					await MESSAGES[0].react('🗑️');
+					const filter = (reaction, user) => ['🗑️'].includes(reaction.emoji.name) && message.author.id === user.id;
+					const collector = MESSAGES[0].createReactionCollector({ filter, time: 60 * 1000 });
+					collector.on('collect', async (reaction) => {
+						try {
+							await message.channel.bulkDelete(MESSAGES);
+						} catch (error) {
+							return;
+						}
+					});
+
+					collector.on('end', async (collected, reason) => {
+						if (reason === 'time') {
+							await MESSAGES[0]?.reactions?.cache?.first()?.users?.remove(bot.user.id);
+						}
+					});
 
 					//Delete Original Message
 					await message.delete();
@@ -95,7 +117,7 @@ module.exports = {
 
 async function sendTweets(funcData) {
 	//Declarations
-	let { ORIG_MESSAGE, AUTH_POST, Matches, message, bot, settings, lastMessage, originalMessage, loop } = funcData;
+	let { ORIG_MESSAGE, AUTH_POST, Matches, message, bot, settings, lastMessage, originalMessage, loop, MESSAGES } = funcData;
 
 	//Loop through Matches
 	for await (const Match of Matches) {
@@ -188,6 +210,7 @@ async function sendTweets(funcData) {
 		}
 
 		//Set Variables
+		MESSAGES.push(lastMessage);
 		lastMessage = lastMessage;
 		originalMessage = null;
 		loop = true;

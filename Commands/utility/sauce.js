@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { SauceNaoKey } = require('../../Storage/Config/Config.json');
 const SauceNAO = require('sagiri');
 const Sauce = SauceNAO(SauceNaoKey.toString());
@@ -6,18 +6,16 @@ const Sauce = SauceNAO(SauceNaoKey.toString());
 module.exports = {
 	name: 'sauce',
 	aliases: ['source', 'findimage', 'ris'],
-	description: 'Find an images "Sauce" (Source)',
+	description: 'Find an images "Sauce" (Source)\nCOULD RETURN NSFW RESULTS',
 	example: 'sauce <url>',
 	category: 'utility',
 	args: false,
 	cooldown: 30,
 	hidden: false,
-	nsfw: true,
 	ownerOnly: false,
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-
 		//Define Variables
 		let URL;
 		const Embeds = [];
@@ -80,22 +78,25 @@ module.exports = {
 
 		// Apply Reactions
 		try {
-			await embedList.react('◀');
-			await embedList.react('⏹');
-			await embedList.react('▶');
+			const Buttons = new MessageActionRow().addComponents(
+				new MessageButton().setLabel('Back').setStyle('SUCCESS').setCustomId('BACK'),
+				new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'),
+				new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT')
+			);
+			await embedList.edit({ components: [Buttons] });
 		} catch (error) {
 			console.error(error);
 		}
 
 		// Filter Reactions, setup Collector and try each reaction
-		const filter = (reaction, user) => ['◀', '⏹', '▶'].includes(reaction.emoji.name) && message.author.id === user.id;
-		const collector = embedList.createReactionCollector(filter, { time: 300 * 1000 });
-		collector.on('collect', async (reaction) => {
+		const filter = (interaction) => message.author.id === interaction.user.id;
+		const collector = embedList.createMessageComponentCollector({ filter, time: 300 * 1000 });
+		collector.on('collect', async (interaction) => {
+			await interaction.deferUpdate();
 			// Switch Case
-			switch (reaction.emoji.name) {
+			switch (interaction.customId) {
 				// Backwards
-				case '◀': {
-					await reaction.users.remove(message.author.id);
+				case 'BACK': {
 					if (currentPage !== 0) {
 						currentPage--;
 						embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
@@ -104,16 +105,14 @@ module.exports = {
 				}
 
 				// Stop
-				case '⏹': {
+				case 'STOP': {
 					collector.stop();
-					reaction.message.reactions.removeAll();
-					embedList.edit({ content: '**«Collection Stopped»**', embeds: [Embeds[currentPage]] });
+					embedList.edit({ content: '**«Collection Stopped»**', embeds: [Embeds[currentPage]], components: [] });
 					break;
 				}
 
 				// Forwards
-				case '▶': {
-					await reaction.users.remove(message.author.id);
+				case 'NEXT': {
 					if (currentPage < Embeds.length - 1) {
 						currentPage++;
 						embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
@@ -121,6 +120,12 @@ module.exports = {
 					break;
 				}
 			}
+		});
+
+		//Tell users the collection ended when it has.
+		collector.on('end', async () => {
+			const msg = await message.channel.messages.fetch(embedList.id);
+			await msg.edit({ content: '**«Collection Stopped»**', components: [] });
 		});
 	},
 };
