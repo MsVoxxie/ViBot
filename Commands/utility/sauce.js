@@ -91,7 +91,7 @@ module.exports = {
 		}
 
 		// Filter Reactions, setup Collector and try each reaction
-		const filter = (interaction) => message.author.id === interaction.user.id;
+		const filter = (interaction) => message.requester ? message.requester.username : message.member.user.username === interaction.user.id;
 		const collector = embedList.createMessageComponentCollector({ filter, time: 300 * 1000 });
 		collector.on('collect', async (interaction) => {
 			await interaction.deferUpdate();
