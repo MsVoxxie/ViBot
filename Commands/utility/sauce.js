@@ -52,9 +52,9 @@ module.exports = {
 		//Make sure results has results
 		if (!Results.length) return message.reply('Sorry, No relevant results found!');
 
-		// Results.sort(function (a, b) {
-		// 	return (a.authorName === null) - (b.authorName === null) || +(a.authorName > b.authorName) || -(a.authorName < b.authorNameb);
-		// });
+		Results.sort(function (a, b) {
+			return (a.authorName === null) - (b.authorName === null) || +(a.authorName > b.authorName) || -(a.authorName < b.authorNameb);
+		});
 
 		//Setup Embeds
 		Results.forEach((Res) => {
