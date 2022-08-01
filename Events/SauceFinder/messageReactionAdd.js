@@ -27,6 +27,7 @@ module.exports = {
 		// Otherwise.. check for content
 		if (!(msg.message.attachments.size > 0)) {
 			const Match = msg.message.content.match(REGEX);
+			if (!Match) return;
 			if (Match[0]) {
 				await bot.commands.get('sauce').execute(bot, msg.message, [], settings);
 			}
