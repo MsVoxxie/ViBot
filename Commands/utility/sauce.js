@@ -30,6 +30,7 @@ module.exports = {
 		// Otherwise.. check for content
 		if (!(message.attachments.size > 0)) {
 			const Match = message.content.match(REGEX);
+			if(!Match) return message.channel.send('Please provide an image to search for.');
 			if (Match[0]) {
 				URL = Match[0];
 			}
@@ -51,9 +52,10 @@ module.exports = {
 		//Make sure results has results
 		if (!Results.length) return message.reply('Sorry, No relevant results found!');
 
-		Results.sort(function (a, b) {
-			return (a.authorName === null) - (b.authorName === null) || +(a.authorName > b.authorName) || -(a.authorName < b.authorNameb);
-		});
+		// Sort by valid authors
+		// Results.sort(function (a, b) {
+		// 	return (a.authorName === null) - (b.authorName === null) || +(a.authorName > b.authorName) || -(a.authorName < b.authorNameb);
+		// });
 
 		//Setup Embeds
 		Results.forEach((Res) => {
