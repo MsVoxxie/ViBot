@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
-const extractUrls = require('extract-urls');
+const { SauceNaoKey } = require('../../Storage/Config/Config.json');
 const SauceNAO = require('sagiri');
-const Sauce = SauceNAO('568d0178b5e81295715624f193433dbefa480846');
+const Sauce = SauceNAO(SauceNaoKey.toString());
 
 module.exports = {
 	name: 'sauce',
@@ -17,6 +17,7 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
+
 		//Define Variables
 		let URL;
 		const Embeds = [];
