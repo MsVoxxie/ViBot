@@ -11,4 +11,5 @@ module.exports = {
 	Verification: require('./verification'),
 	Warning: require('./warnings'),
 	Invite: require('./invites'),
+	Twitter: require('./twitter'),
 };

@@ -127,11 +127,6 @@ const guildSchema = mongoose.Schema({
 		unique: true,
 		default: [],
 	},
-	twitterwatch: {
-		type: Array,
-		unique: true,
-		default: [],
-	},
 	nsfwblacklist: {
 		type: Array,
 		unique: true,

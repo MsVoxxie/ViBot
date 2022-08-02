@@ -1,6 +1,7 @@
-const { twit_api, twit_api_secret, twit_access_token, twit_access_token_secret, twit_bearer_token } = require('../Config/Config.json');
-const { ETwitterStreamEvent, TweetStream, TwitterApi, ETwitterApiError } = require('twitter-api-v2');
+const { twit_api, twit_api_secret, twit_access_token, twit_access_token_secret } = require('../Config/Config.json');
+const { ETwitterStreamEvent, TwitterApi } = require('twitter-api-v2');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { Twitter } = require('../Database/models/');
 const got = require('got');
 const MAX_FILE_SIZE = 8_388_119;
 
@@ -91,23 +92,40 @@ module.exports = async (bot) => {
 		});
 
 		stream.on(ETwitterStreamEvent.Data, async (tweet) => {
+			//Only fire if its an original tweet
+			if (isReply(tweet)) return;
+
 			// Check guilds for tweet id_str
 			const guilds = bot.guilds.cache;
 			for await (const g of guilds) {
 				const guild = g[1];
 				const settings = await bot.getGuild(guild);
-				if (settings.twitterwatch.length) {
-					if (tweet.user && settings.twitterwatch.some((id) => tweet.user.id_str === id)) {
-						// This is a tweet from a watched user in guild
-						// Check for tweet channel
+				const guildWatchList = await Twitter.find({ guildid: guild.id, twitterid: tweet.user.id_str }).lean();
+				if (guildWatchList.length) {
+					if (tweet.user) {
 						const twitterchannel = await guild.channels.cache.get(settings.twitterchannel);
 						if (!twitterchannel) continue;
 
-						// Send the tweet
-						if (!isReply(tweet)) {
-							const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
-							tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
-							await twitterchannel.send(tweetEmbed);
+						switch (guildWatchList[0].type) {
+							case 0: // All Tweets
+								const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
+								tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
+								await twitterchannel.send(tweetEmbed);
+								break;
+							case 1: // Text Only
+								if (tweet.text.length > 0 && !tweet.extended_entities) {
+									const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
+									tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
+									await twitterchannel.send(tweetEmbed);
+								}
+								break;
+							case 2: // Media Only
+								if (tweet.extended_entities) {
+									const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
+									tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
+									await twitterchannel.send(tweetEmbed);
+								}
+								break;
 						}
 					}
 				}
@@ -159,7 +177,7 @@ module.exports = async (bot) => {
 			//Text Only
 			if (tweetData.tweet.description && !tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
 				const embed = new MessageEmbed()
-					.setAuthor({ name: `@${tweetData.user.screen_name}` })
+					.setAuthor({ name: `@${tweetData.user.screen_name}`, url: `https://twitter.com/${tweetData.user.screen_name}` })
 					.setTitle(tweetData.user.name)
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
@@ -209,7 +227,8 @@ function isReply(tweet) {
 		tweet.in_reply_to_status_id_str ||
 		tweet.in_reply_to_user_id ||
 		tweet.in_reply_to_user_id_str ||
-		tweet.in_reply_to_screen_name
+		tweet.in_reply_to_screen_name ||
+		tweet.delete
 	)
 		return true;
 }
