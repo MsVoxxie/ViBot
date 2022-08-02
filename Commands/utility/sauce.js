@@ -36,16 +36,6 @@ module.exports = {
 			}
 		}
 
-		//Setup Arguments / First Image
-		// if (!args.length || message.attachments.size > 0) {
-		// 	await message.channel.messages.fetch().then(async (messages) => {
-		// 		const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
-		// 		URL = lastMessage.attachments.first().url;
-		// 	});
-		// } else {
-		// 	URL = await (message.attachments.size > 0 ? message.attachments.first().url : args.join(''));
-		// }
-
 		//Get Source
 		try {
 			const Results = await Sauce(URL, { results: 10 });
@@ -53,20 +43,14 @@ module.exports = {
 			//Make sure results has results
 			if (!Results.length) return message.reply('Sorry, No relevant results found!');
 
-			// Sort by valid authors
-			// Results.sort(function (a, b) {
-			// 	return (a.authorName === null) - (b.authorName === null) || +(a.authorName > b.authorName) || -(a.authorName < b.authorNameb);
-			// });
-
 			//Setup Embeds
 			Results.forEach((Res) => {
 				const embed = new MessageEmbed()
-					.setThumbnail(Res.thumbnail)
-					.setColor(settings.guildcolor)
-					.addField('Author›', `${Res.authorName ? Res.authorName : 'Unknown'}${Res.authorUrl ? ` (${Res.authorUrl})` : ''}`, false)
-					.addField('Post URL›', `[Click Here](${Res.url})`, false)
-					.addField('Likelihood›', `${Res.similarity}%`, false)
+					.setAuthor({ name: `${Res.authorName ? Res.authorName : 'Unknown'}`, url: Res.authorUrl ? Res.authorUrl : Res.url })
+					.setDescription(`**Site›** ${Res.site}\n**Post URL›** [Click Here](${Res.url})\n**Similarity›** ${Res.similarity}%`)
+					.setThumbnail(`${Res.thumbnail}`)
 					.setFooter({ text: `${message.requester ? message.requester.username : message.member.user.username}` })
+					.setColor(settings.guildcolor)
 					.setTimestamp();
 
 				Embeds.push(embed);
@@ -92,7 +76,7 @@ module.exports = {
 			}
 
 			// Filter Reactions, setup Collector and try each reaction
-			const filter = (interaction) => (message.requester ? message.requester.username : message.member.user.username === interaction.user.id);
+			const filter = (interaction) => (message.requester ? message.requester.id : message.member.user.id === interaction.user.id);
 			const collector = embedList.createMessageComponentCollector({ filter, time: 300 * 1000 });
 			collector.on('collect', async (interaction) => {
 				await interaction.deferUpdate();
@@ -131,6 +115,7 @@ module.exports = {
 				await msg.edit({ content: '**«Collection Stopped»**', components: [] });
 			});
 		} catch (error) {
+			console.error(error);
 			return message.reply('Sorry, An error occured while searching. Please try again later.');
 		}
 	},
