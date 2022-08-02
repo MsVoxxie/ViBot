@@ -67,6 +67,7 @@ module.exports = {
 					});
 
 					//Delete Original Message
+					message.denyDeleteEvent = true;
 					await message.delete();
 				} catch (err) {
 					console.error(err);
@@ -97,6 +98,7 @@ module.exports = {
 						await sendTweets(funcData);
 
 						//Delete Original Message
+						message.denyDeleteEvent = true;
 						await message.delete();
 					} catch (err) {
 						console.error(err);
