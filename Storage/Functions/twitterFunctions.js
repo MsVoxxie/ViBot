@@ -74,7 +74,7 @@ module.exports = async (bot) => {
 		const guilds = bot.guilds.cache;
 		for await (const g of guilds) {
 			const guild = g[1];
-			const unsortedGuildStreams = await Twitter.find({ guildid: guild.id })
+			const unsortedGuildStreams = await Twitter.find({ guildid: guild.id });
 			if (unsortedGuildStreams.length) {
 				for await (const data of unsortedGuildStreams) {
 					unsortedStreams.push(data.twitterid);
