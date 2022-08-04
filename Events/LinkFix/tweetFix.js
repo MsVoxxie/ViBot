@@ -19,7 +19,8 @@ module.exports = {
 		const Matches = [...message.content.matchAll(RegEx)]
 			.map((x) => x[0])
 			.filter((x) => !x.endsWith('>'))
-			.filter((x) => !x.endsWith('||')); // Respect commenting and null blocking urls
+			.filter((x) => !x.endsWith('||')) // Respect commenting and null blocking urls
+			.filter((x) => !x.endsWith('#')); // Override
 		const settings = await bot.getGuild(message.guild);
 
 		//Statics
