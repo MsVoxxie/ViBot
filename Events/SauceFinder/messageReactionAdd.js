@@ -19,6 +19,8 @@ module.exports = {
 		//Check for valid reaction
 		if (msg.emoji.name.toString() !== SAUCE_REACTION) return;
 
+		await msg?.message?.reactions?.removeAll();
+
 		//Check for attachments
 		if (msg.message.attachments.size > 0) {
 			await bot.commands.get('sauce').execute(bot, msg.message, [], settings);
