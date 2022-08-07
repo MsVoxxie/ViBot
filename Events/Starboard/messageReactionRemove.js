@@ -13,7 +13,7 @@ module.exports = {
 		//Defininitions
 		const message = await reaction.message;
 		const settings = await bot.getGuild(message.guild);
-		let attachment;
+		const StarColor = '#eba834';
 		let embeds = [];
 		let StarData;
 		let type;
@@ -80,7 +80,7 @@ module.exports = {
 				if (!mediaData.tweetData.tweet.video_url) {
 					for await (const photo of mediaData.tweetData.tweet.media_urls) {
 						const embed = new MessageEmbed()
-							.setColor('#c2b04e')
+							.setColor(StarColor)
 							.setURL(message.url)
 							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
@@ -105,7 +105,7 @@ module.exports = {
 			//Video
 			case 'Video': {
 				const embed = new MessageEmbed()
-					.setColor('#c2b04e')
+					.setColor(StarColor)
 					.setURL(message.url)
 					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
@@ -121,7 +121,7 @@ module.exports = {
 			case 'Image': {
 				for await (const media of mediaData.images) {
 					const embed = new MessageEmbed()
-						.setColor('#c2b04e')
+						.setColor(StarColor)
 						.setURL(message.url)
 						.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
@@ -135,7 +135,7 @@ module.exports = {
 			//Text
 			default: {
 				const embed = new MessageEmbed()
-					.setColor('#c2b04e')
+					.setColor(StarColor)
 					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 					.setFooter({ text: `MessageID: ${message.id}` });
