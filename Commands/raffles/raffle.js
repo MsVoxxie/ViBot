@@ -72,7 +72,7 @@ module.exports = {
 			message,
 			EmbedID,
 			'All Done!',
-			`Creating your raffle!\n**Channel›** ${Channel.name}\n**Run Time›** ${ms(Time, { long: true })}\n**Number of Winners›** ${WinnerCount}\n**Prize›** ${Prize}`,
+			`Creating your raffle!\n**Channel»** ${Channel.name}\n**Run Time»** ${ms(Time, { long: true })}\n**Number of Winners»** ${WinnerCount}\n**Prize»** ${Prize}`,
 			true
 		);
 		await bot.RaffleManager.start(Channel, {

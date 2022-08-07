@@ -41,8 +41,8 @@ module.exports = {
 					.setAuthor({ name: `${member.displayName}'s Global Rank` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-					.setDescription(`**Global Rank›** #${me.rank}\n**Current Guild Level›** ${me.level}`)
-					.setFooter({ text: `• Next Level› ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
+					.setDescription(`**Global Rank»** #${me.rank}\n**Current Guild Level»** ${me.level}`)
+					.setFooter({ text: `• Next Level» ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
 				await message.channel.send({ embeds: [embed] });
 				break;
 			}
@@ -65,7 +65,7 @@ module.exports = {
 					.setAuthor({ name: `${message.guild.name}'s Top 10 Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
-					.addField('Guild Member', guildTop.map((m) => `<@${m.userid}> | Level› ${m.level}`).join('\n'), true)
+					.addField('Guild Member', guildTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), true)
 					.addField('Guild Rank', guildTop.map((m) => `# ${m.rank}`).join('\n'), true);
 				await message.channel.send({ embeds: [embed] });
 				break;
@@ -94,8 +94,8 @@ module.exports = {
 					.setAuthor({ name: `${member.displayName}'s Current Rank` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-					.setDescription(`**Guild Rank›** #${me.rank}\n**Current Level›** ${me.level}`)
-					.setFooter({ text: `• Next Level› ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
+					.setDescription(`**Guild Rank»** #${me.rank}\n**Current Level»** ${me.level}`)
+					.setFooter({ text: `• Next Level» ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
 				await message.channel.send({ embeds: [embed] });
 			}
 		}

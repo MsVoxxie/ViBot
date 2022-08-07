@@ -1,5 +1,3 @@
-const extractUrls = require('extract-urls');
-
 module.exports = {
 	name: 'messageReactionAdd',
 	disabled: false,

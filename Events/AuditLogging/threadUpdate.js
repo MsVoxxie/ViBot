@@ -17,8 +17,8 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor(settings.guildcolor)
 			.setTitle(`Thread Archived`)
-			.setDescription(`**Thread Parent›** ${oldThread.parent.name}\n**Thread Name›** ${newThread.name}`)
-			.setFooter({ text: `Archived› ${bot.Timestamp(newThread.archivedAt)}` });
+			.setDescription(`**Thread Parent»** ${oldThread.parent.name}\n**Thread Name»** ${newThread.name}`)
+			.setFooter({ text: `Archived» ${bot.Timestamp(newThread.archivedAt)}` });
 
 		logChannel.send({ embeds: [embed] });
 	},

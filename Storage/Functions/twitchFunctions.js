@@ -93,9 +93,9 @@ module.exports = (bot) => {
 			// .setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
 			.setThumbnail((await stream.getUser()).profilePictureUrl)
 			.setImage(stream.thumbnailUrl.replace('{width}', 960).replace('{height}', 540))
-			.addField('Playing›', `${(await stream.getGame()).name}`, true)
-			.addField('Current Viewers›', `${bot.toThousands(stream.viewers)}`, true)
-			.addField('Live Since›', `${bot.relativeTimestamp(stream.startDate)}`);
+			.addField('Playing»', `${(await stream.getGame()).name}`, true)
+			.addField('Current Viewers»', `${bot.toThousands(stream.viewers)}`, true)
+			.addField('Live Since»', `${bot.relativeTimestamp(stream.startDate)}`);
 		return embed;
 	}
 
@@ -106,7 +106,7 @@ module.exports = (bot) => {
 			.setTitle(`${chan.channelname}'s stream has ended.`)
 			.setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
 			.setThumbnail('https://cdn.iconscout.com/icon/free/png-256/social-190-96705.png');
-		//.setFooter({ text: `As of› ${bot.Timestamp(Date.now())}` });
+		//.setFooter({ text: `As of» ${bot.Timestamp(Date.now())}` });
 		return offembed;
 	}
 };

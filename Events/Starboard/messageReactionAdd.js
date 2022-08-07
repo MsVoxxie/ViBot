@@ -88,7 +88,7 @@ module.exports = {
 						const embed = new MessageEmbed()
 							.setColor('#c2b04e')
 							.setURL(message.url)
-							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 							.setImage(photo)
 							.setFooter({ text: `MessageID: ${message.id}` });
@@ -100,7 +100,7 @@ module.exports = {
 						.setTitle(mediaData.tweetData.user.name)
 						.setURL(mediaData.tweetData.tweet.url)
 						.setThumbnail(mediaData.tweetData.user.profile_image_url)
-						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 						.setColor(settings.guildcolor);
 					attachment = new MessageAttachment(mediaData.tweetData.tweet.video_url, `media.mp4`);
 					embeds.push(embed);
@@ -113,7 +113,7 @@ module.exports = {
 				const embed = new MessageEmbed()
 					.setColor('#c2b04e')
 					.setURL(message.url)
-					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 					.setFooter({ text: `MessageID: ${message.id}` });
 				embeds.push(embed);
@@ -129,7 +129,7 @@ module.exports = {
 					const embed = new MessageEmbed()
 						.setColor('#c2b04e')
 						.setURL(message.url)
-						.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+						.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 						.setImage(media)
 						.setFooter({ text: `MessageID: ${message.id}` });
@@ -142,7 +142,7 @@ module.exports = {
 			default: {
 				const embed = new MessageEmbed()
 					.setColor('#c2b04e')
-					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred› ${bot.relativeTimestamp(Date.now())}`)
+					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 					.setFooter({ text: `MessageID: ${message.id}` });
 				embeds.push(embed);

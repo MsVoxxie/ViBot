@@ -29,19 +29,19 @@ module.exports = {
 			try {
 				await member.roles.add(Role);
 				if(uData?.receivedm === false) return;
-					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['ADDED']} **»** You have been assigned the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['ADDED']} **»** You have been assigned the role ***${Role.name}***`, footer: `Guild» ${msg.message.guild.name}` })] });
 				
 			} catch (e) {
-				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['INFO']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['INFO']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild» ${msg.message.guild.name}` })] });
 			}
 		} else {
 			try {
 				await member.roles.remove(Role);
 				if(uData?.receivedm === false) return;
-					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['REMOVED']} **»** You have been removed from the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+					await member.send({ embeds: [bot.replyEmbed({ color: '#42f560', text: `${Vimotes['REMOVED']} **»** You have been removed from the role ***${Role.name}***`, footer: `Guild» ${msg.message.guild.name}` })] });
 				
 			} catch (e) {
-				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['INFO']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild› ${msg.message.guild.name}` })] });
+				member.send({ embeds: [bot.replyEmbed({ color: '#f54242', text: `${Vimotes['INFO']} **»** I was unable to assign the role ***${Role.name}***`, footer: `Guild» ${msg.message.guild.name}` })] });
 			}
 		}
 

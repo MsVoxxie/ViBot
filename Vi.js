@@ -67,23 +67,14 @@ bot.guildDefaults = require('./Storage/Database/models/guildDefaults');
 bot.birthdayDefaults = require('./Storage/Database/models/birthdayDefaults');
 bot.twitchwatchDefaults = require('./Storage/Database/models/twitchwatchDefaults');
 
-// Load Functions
-require('./Storage/Functions/dbFunctions')(bot);
-require('./Storage/Functions/utilFunctions')(bot);
-require('./Storage/Functions/embedFunctions')(bot);
-require('./Storage/Functions/twitterFunctions')(bot);
-require('./Storage/Functions/giveawayDatabase')(bot);
-require('./Storage/Functions/dateFunctions')(bot);
-require('./Storage/Functions/twitchFunctions')(bot);
-require('./Storage/Functions/canvasFunctions')(bot);
-
 // Declare myself as Owner of bot.
 bot.Owners = ['101789503634554880', '101790332437405696'];
 
 // Init Loaders
-require('./Storage/Core/Command Loader')(bot);
-require('./Storage/Core/Slash Loader.js')(bot);
 require('./Storage/Core/Context Loader.js')(bot);
+require('./Storage/Core/Slash Loader.js')(bot);
+require('./Storage/Core/Function Loader')(bot);
+require('./Storage/Core/Command Loader')(bot);
 require('./Storage/Core/Event Loader')(bot);
 
 //Music

@@ -21,7 +21,7 @@ module.exports = {
         const embed = new MessageEmbed()
             .setAuthor({ name: `${role.name}'s Information`, iconURL: role.iconURL({ dynamic: true }) })
             .setColor(settings.guildcolor)
-            .setDescription(`ID› \`${role.id}\`\nHex Code› \`${role.hexColor !== '#000000' ? role.hexColor : 'Transparent'}\`\nMentionable› \`${role.mentionable ? 'Yes' : 'No'}\`\nManaged› \`${role.managed ? 'Yes' : 'No'}\`\nMembers› \`${role.members.size.toString()}\`\nCreated› ${bot.relativeTimestamp(role.createdAt)}`)
+            .setDescription(`ID» \`${role.id}\`\nHex Code» \`${role.hexColor !== '#000000' ? role.hexColor : 'Transparent'}\`\nMentionable» \`${role.mentionable ? 'Yes' : 'No'}\`\nManaged» \`${role.managed ? 'Yes' : 'No'}\`\nMembers» \`${role.members.size.toString()}\`\nCreated» ${bot.relativeTimestamp(role.createdAt)}`)
 			.setThumbnail('attachment://col.png')
 		await interaction.reply({ files: [colorImage.attachment], embeds: [embed] });
 	},

@@ -30,7 +30,7 @@ module.exports = {
 		//Create Embed
 		const embed = new MessageEmbed()
 			.setTitle('Reaction Role Deleted')
-			.setDescription(`Reaction ID› ${reaction.roleidentifier} has been deleted.`)
+			.setDescription(`Reaction ID» ${reaction.roleidentifier} has been deleted.`)
 			.setColor(settings.guildcolor);
 
 		await interaction.reply({ embeds: [embed] });

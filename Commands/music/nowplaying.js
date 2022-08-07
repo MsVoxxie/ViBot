@@ -34,15 +34,15 @@ module.exports = {
 			.setURL(track.url)
 			.setColor(settings.guildcolor)
 			.setDescription(
-				`**Channel›** ${track.author}\n**Views›** \`${bot.toThousands(track.views)}\`\n**Duration›** \`${
+				`**Channel»** ${track.author}\n**Views»** \`${bot.toThousands(track.views)}\`\n**Duration»** \`${
 					track.durationMS > 10 ? track.duration : 'Live Stream'
-				}\`\n**Requested By›** \`${track.requestedBy.username}\`\n**Repeated›** \`${queue.repeatMode ? 'Yes' : 'No'}\`\n**Paused›** \`${
+				}\`\n**Requested By»** \`${track.requestedBy.username}\`\n**Repeated»** \`${queue.repeatMode ? 'Yes' : 'No'}\`\n**Paused»** \`${
 					queue.setPaused() ? 'Yes' : 'No'
 				}\``
 			)
 			.setThumbnail(track.thumbnail);
 		if (track.durationMS > 10) {
-			embed.setFooter({ text: `Progress›\n${queue.createProgressBar({ timecodes: true })}` });
+			embed.setFooter({ text: `Progress»\n${queue.createProgressBar({ timecodes: true })}` });
 		}
 
 		message.channel.send({ embeds: [embed] }).then((s) => {

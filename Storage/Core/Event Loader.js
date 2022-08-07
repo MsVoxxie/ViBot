@@ -19,11 +19,11 @@ module.exports = (bot) => {
 						eventTable.addRow(`${dir} | ${file}`, '✔ » Loaded', '«  Once  »');
 					} else {
 						bot.on(pull.name, (...args) => pull.execute(...args, bot, Vimotes));
-						eventTable.addRow(`${dir} | ${file}`, '✔» Loaded', '«Infinite»');
+						eventTable.addRow(`${dir} | ${file}`, '✔ » Loaded', '«Infinite»');
 					}
 				}
 			} else {
-				eventTable.addRow(`${dir} | ${file}`, '❌» Failed to Load!');
+				eventTable.addRow(`${dir} | ${file}`, '✕ » Errored');
 				continue;
 			}
 		}
@@ -39,7 +39,7 @@ module.exports = (bot) => {
 			musicTable.addRow(`${file.split('.')[0]}`, '✔ » Loaded');
 		} catch (error) {
 			console.error(error);
-			musicTable.addRow(`${file.split('.')[0]}`, '❌ » Failed to Load!');
+			musicTable.addRow(`${file.split('.')[0]}`, '✕ » Errored');
 		}
 	}
 	console.log(eventTable.toString());

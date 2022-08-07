@@ -24,7 +24,7 @@ module.exports = {
 		const firstColor = await createColoredSquare();
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`\`\`\`Hex Code› ${firstColor.color}\`\`\``)
+			.setDescription(`\`\`\`Hex Code» ${firstColor.color}\`\`\``)
 			.setImage('attachment://col.png')
 			.setColor(settings.guildcolor);
 		const embedMsg = await message.reply({ embeds: [embed], files: [firstColor.attachment], components: [Button] });
@@ -41,7 +41,7 @@ module.exports = {
 					const newColor = await createColoredSquare();
 					const embed = new MessageEmbed()
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-						.setDescription(`\`\`\`Hex Code› ${newColor.color}\`\`\``)
+						.setDescription(`\`\`\`Hex Code» ${newColor.color}\`\`\``)
 						.setImage('attachment://col.png')
 						.setColor(settings.guildcolor);
 					await embedMsg.edit({ embeds: [embed], files: [newColor.attachment] });

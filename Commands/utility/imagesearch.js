@@ -48,7 +48,7 @@ module.exports = {
 
 			// Send pagination
 			const embedList = await loading.edit({
-				content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+				content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 				embeds: [embeds[currentPage]],
 			});
 
@@ -76,7 +76,7 @@ module.exports = {
 						if (currentPage !== 0) {
 							currentPage--;
 							embedList.edit({
-								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 								embeds: [embeds[currentPage]],
 							});
 						}
@@ -95,7 +95,7 @@ module.exports = {
 						if (currentPage < embeds.length - 1) {
 							currentPage++;
 							embedList.edit({
-								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 								embeds: [embeds[currentPage]],
 							});
 						}

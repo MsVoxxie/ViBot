@@ -16,14 +16,14 @@ module.exports = {
 		const trim = (str, max) => (str.length > max ? `${str.slice(0, max - 3)}...` : str);
 
 		//Filter messages
-		const filteredMessages = messages.map((m) => { return `${m.author.username}› ${m.emeds ? 'Embeded Message' : m.content.replace(/`/g, "'")}`; });
+		const filteredMessages = messages.map((m) => { return `${m.author.username}» ${m.emeds ? 'Embeded Message' : m.content.replace(/`/g, "'")}`; });
 
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Messages Bulk Deleted')
-			.setDescription(`**Channel›** **<#${firstMessage.channel.id}> | ${firstMessage.channel.name}**\n**Deleted Messages›**\n\`\`\`${trim(filteredMessages.join('\n'),3500)}\`\`\``)
+			.setDescription(`**Channel»** **<#${firstMessage.channel.id}> | ${firstMessage.channel.name}**\n**Deleted Messages»**\n\`\`\`${trim(filteredMessages.join('\n'),3500)}\`\`\``)
 			.setColor(settings.guildcolor)
-			.setFooter({ text: `Executed › ${bot.Timestamp(Date.now())}` });
+			.setFooter({ text: `Executed » ${bot.Timestamp(Date.now())}` });
 
 		logChannel.send({ embeds: [embed] });
 	},

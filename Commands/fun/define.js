@@ -28,7 +28,7 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setColor(settings.guildcolor)
 				.addFields({ name: 'Word', value: bot.trim(answer.word, 1024) }, { name: 'Category', value: bot.trim(answer.category, 1024) }, { name: 'Definition', value: bot.trim(answer.definition, 1024) })
-				.setFooter({ text: `Searched by › ${message.member.displayName}` });
+				.setFooter({ text: `Searched by » ${message.member.displayName}` });
 
 			await loading.edit({ content: null, embeds: [embed] });
 		});

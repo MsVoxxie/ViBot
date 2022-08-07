@@ -28,7 +28,7 @@ module.exports = {
 		const embed = new MessageEmbed()
         .setTitle('Emoji Deleted')
         .setThumbnail(emoji.url)
-        .setDescription(`**${emoji.name}** was Deleted.\n**Emoji ID›** \`${emoji.id}\`\n**Deleted** <t:${Math.round(Date.now() / 1000)}:R>\n**Deleted by›** ${EmojiData ? `<@${EmojiData.executor.id}>` : 'Unknown'}`)
+        .setDescription(`**${emoji.name}** was Deleted.\n**Emoji ID»** \`${emoji.id}\`\n**Deleted** <t:${Math.round(Date.now() / 1000)}:R>\n**Deleted by»** ${EmojiData ? `<@${EmojiData.executor.id}>` : 'Unknown'}`)
         .setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });

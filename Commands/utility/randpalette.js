@@ -26,9 +26,9 @@ module.exports = {
 		const firstColor = await createColorPalette();
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`\`\`\`Hex Codes›\n${firstColor.colors.map((col) => col).join(' | ')}\`\`\``)
+			.setDescription(`\`\`\`Hex Codes»\n${firstColor.colors.map((col) => col).join(' | ')}\`\`\``)
 			.setImage('attachment://col.png')
-			.setFooter({ text: `Endpoint› ${bot.titleCase(firstColor.endpoint)}` })
+			.setFooter({ text: `Endpoint» ${bot.titleCase(firstColor.endpoint)}` })
 			.setColor(settings.guildcolor);
 		const embedMsg = await message.reply({ embeds: [embed], files: [firstColor.attachment], components: [Button] });
 
@@ -44,9 +44,9 @@ module.exports = {
 					const newColor = await createColorPalette();
 					const embed = new MessageEmbed()
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
-						.setDescription(`\`\`\`Hex Codes›\n${newColor.colors.map((col) => col).join(' | ')}\`\`\``)
+						.setDescription(`\`\`\`Hex Codes»\n${newColor.colors.map((col) => col).join(' | ')}\`\`\``)
 						.setImage('attachment://col.png')
-						.setFooter({ text: `Endpoint› ${bot.titleCase(newColor.endpoint)}` })
+						.setFooter({ text: `Endpoint» ${bot.titleCase(newColor.endpoint)}` })
 						.setColor(settings.guildcolor);
 					await embedMsg.edit({ embeds: [embed], files: [newColor.attachment] });
 					break;

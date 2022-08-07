@@ -29,8 +29,8 @@ module.exports = {
 		const settings = await bot.getGuild(message.guild);
 
 		//Statics
-		const ORIG_MESSAGE = '**Originally Posted By›** ';
-		const AUTH_POST = `**${message.author}›** `;
+		const ORIG_MESSAGE = '**Originally Posted By»** ';
+		const AUTH_POST = `**${message.author}»** `;
 		const MEDIA_PATH = path.join(__dirname, '../../Storage/Media/Temp/');
 		const REACTION = '📡';
 

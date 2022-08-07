@@ -32,7 +32,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Role Deleted')
-        .setDescription(`**${role.name}** was Deleted.\n**Role ID›** \`${role.id}\`\n**Role Color›** \`${role.hexColor}\`\n**Deleted by›** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
+        .setDescription(`**${role.name}** was Deleted.\n**Role ID»** \`${role.id}\`\n**Role Color»** \`${role.hexColor}\`\n**Deleted by»** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}`)
         .setThumbnail('attachment://col.png')
 		.setColor(settings.guildcolor)
 

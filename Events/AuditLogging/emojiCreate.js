@@ -28,7 +28,7 @@ module.exports = {
 		const embed = new MessageEmbed()
         .setTitle('Emoji Created')
         .setThumbnail(emoji.url)
-        .setDescription(`**${emoji.name}** was Created.\n**Emoji ID›** \`${emoji.id}\`\n**Created›** <t:${Math.round(Date.now() / 1000)}:R>\n**Created by›** ${EmojiData ? `<@${EmojiData.executor.id}>` : 'Unknown'}`)
+        .setDescription(`**${emoji.name}** was Created.\n**Emoji ID»** \`${emoji.id}\`\n**Created»** <t:${Math.round(Date.now() / 1000)}:R>\n**Created by»** ${EmojiData ? `<@${EmojiData.executor.id}>` : 'Unknown'}`)
         .setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });

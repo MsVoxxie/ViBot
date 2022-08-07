@@ -54,7 +54,7 @@ module.exports = {
 			embeds: [
 				bot.replyEmbed({
 					color: bot.colors.success,
-					text: `${Vimotes['CHECK']} I will remind you›\n\`\`\`${message}\`\`\`\n${bot.relativeTimestamp(fromNow)}`,
+					text: `${Vimotes['CHECK']} I will remind you»\n\`\`\`${message}\`\`\`\n${bot.relativeTimestamp(fromNow)}`,
 				}),
 			],
 			ephemeral: true,

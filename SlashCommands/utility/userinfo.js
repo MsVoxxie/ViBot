@@ -26,13 +26,13 @@ module.exports = {
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 			.addField('Nickname', member.nickname ? member.nickname : 'None', true)
 			.addField('Online State', bot.titleCase(member?.presence?.status ? member.presence.status : 'Offline'), true)
-			.setFooter({ text: `User ID› ${member.id}` });
+			.setFooter({ text: `User ID» ${member.id}` });
 
 		//Specifics
 		if (member.id !== intGuild.me.id) {
 			try {
 				//Get the users games and badges
-				const currentGames = member.presence?.activities?.filter((a) => a.type === 'PLAYING').map((a) => {return `+ ${a.name}${a.details ? `\n› ${a.details}` : ''}${a.state ? `\n› ${a.state}` : ''}${a.party?.size ? `${a.party.size[0] == 1 ? `\n› Playing Solo` : `\n› In Party (${a.party?.size[0]}/${a.party?.size[1]})`}` : ''}${a.timestamps?.start ? `\n- (${bot.getDuration(a.timestamps.start, Date.now()).join(' ')})` : ''}`;}).join('\n\n');
+				const currentGames = member.presence?.activities?.filter((a) => a.type === 'PLAYING').map((a) => {return `+ ${a.name}${a.details ? `\n» ${a.details}` : ''}${a.state ? `\n» ${a.state}` : ''}${a.party?.size ? `${a.party.size[0] == 1 ? `\n» Playing Solo` : `\n» In Party (${a.party?.size[0]}/${a.party?.size[1]})`}` : ''}${a.timestamps?.start ? `\n- (${bot.getDuration(a.timestamps.start, Date.now()).join(' ')})` : ''}`;}).join('\n\n');
 				const userBadges = member.user.flags.toArray().length ? member.user.flags.toArray().map((flag) => `${Vimotes[`${flag}`]}`).join(' ') : 'None!';
 
 				//Add details to the embed

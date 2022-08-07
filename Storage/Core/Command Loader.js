@@ -12,7 +12,7 @@ module.exports = async (bot) => {
 				await bot.commands.set(pull.name, pull);
 				await table.addRow(`${dir} | ${file}`, '✔ » Loaded');
 			} else {
-				await table.addRow(`${dir} | ${file}`, '❌ » Failed to Load!');
+				await table.addRow(`${dir} | ${file}`, '✕ » Errored');
 				continue;
 			}
 			if (pull.aliases) {

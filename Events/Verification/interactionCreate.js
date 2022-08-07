@@ -56,14 +56,14 @@ module.exports = {
 			case 'app_': {
 				//Update Embed
 				//Why is this being updated twice?? Commenting out for now...
-				// Embed.setDescription(`**User Approved›** ${user} | ${user.user.tag}\n**Approved by›** ${clicker} | ${clicker.user.tag}`);
+				// Embed.setDescription(`**User Approved»** ${user} | ${user.user.tag}\n**Approved by»** ${clicker} | ${clicker.user.tag}`);
 				if (authorhasStaffRole) return message.delete();
 				if (hasVerifiedRole) return message.delete();
 
 				try {
 
 					//Update Embed
-					Embed.setDescription(`**User Approved›** ${user} | ${user.user.tag}\n**Approved by›** ${clicker} | ${clicker.user.tag}`);
+					Embed.setDescription(`**User Approved»** ${user} | ${user.user.tag}\n**Approved by»** ${clicker} | ${clicker.user.tag}`);
 					
 					//Add verified role
 					const verifiedRole = await guild.roles.fetch(settings.verifiedrole);
@@ -92,7 +92,7 @@ module.exports = {
 				try {
 
 					//Update Embed
-					Embed.setDescription(`**User Denied** ${user} | ${user.user.tag}\n**Denied by›** ${clicker} | ${clicker.user.tag}`);
+					Embed.setDescription(`**User Denied** ${user} | ${user.user.tag}\n**Denied by»** ${clicker} | ${clicker.user.tag}`);
 
 					if (settings.kickondeny) {
 						//Inform the user

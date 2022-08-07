@@ -64,7 +64,7 @@ module.exports = {
 		if (settings.audit) {
 			const embed = new MessageEmbed()
 				.setAuthor({ name: `${getMember.nickname ? `${getMember.nickname} | ${getMember.user.tag}` : getMember.user.tag}`, iconURL: getMember.user.displayAvatarURL({ dynamic: true }), })
-				.setDescription( `${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round( Date.now() / 1000 )}:R>**.\n**Account Created›** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used›** ${ invite ? invite.code : 'Unknown!' }\n**Invite Creator›** ${inviter ? inviter : 'Unknown!'}` )
+				.setDescription( `${Vimotes['JOIN_ARROW']} **<@${getMember.id}> | ${getMember.user.tag}** Joined the server **<t:${Math.round( Date.now() / 1000 )}:R>**.\n**Account Created»** <t:${Math.round(getMember.user.createdTimestamp / 1000)}:R>\n**Invite Used»** ${ invite ? invite.code : 'Unknown!' }\n**Invite Creator»** ${inviter ? inviter : 'Unknown!'}` )
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -120,7 +120,7 @@ module.exports = {
 			//Create Embed
 			const qembed = new MessageEmbed()
 				.setThumbnail(getMember.guild.iconURL({ dynamic: true }))
-				.setDescription(`Welcome back to ***${getMember.guild.name}***\n${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned›\n${addedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable›\n${failedRoles.map((r) => `› ${r.name}`).join('\n')}\`\`\``)
+				.setDescription(`Welcome back to ***${getMember.guild.name}***\n${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned»\n${addedRoles.map((r) => `» ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable»\n${failedRoles.map((r) => `» ${r.name}`).join('\n')}\`\`\``)
 				.setColor(settings.guildcolor);
 
 			//Send Message

@@ -37,7 +37,7 @@ module.exports = {
 
 		// Generate Embed Message
 		const queueEmbed = await message.channel.send({
-			content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+			content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 			embeds: [embeds[currentPage]],
 		});
 
@@ -61,7 +61,7 @@ module.exports = {
 					await reaction.users.remove(message.author.id);
 					if (currentPage < embeds.length - 1) {
 						currentPage++;
-						queueEmbed.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
+						queueEmbed.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`, embeds: [embeds[currentPage]] });
 					}
 					break;
 
@@ -77,7 +77,7 @@ module.exports = {
 					await reaction.users.remove(message.author.id);
 					if (currentPage !== 0) {
 						currentPage--;
-						queueEmbed.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`, embeds: [embeds[currentPage]] });
+						queueEmbed.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`, embeds: [embeds[currentPage]] });
 					}
 					break;
 			}
@@ -101,7 +101,7 @@ function generateQueueEmbed(message, queue, settings, totalTime) {
 			.setThumbnail(message.guild.iconURL({ dynamic: true }))
 			.setColor(settings.guildcolor)
 			.setDescription(`**Current Song - [${queue[0].title}](${queue[0].url})**\n\n${info}`)
-			.setFooter({ text: `Playlist Duration› ${totalTime}` });
+			.setFooter({ text: `Playlist Duration» ${totalTime}` });
 		embeds.push(embed);
 	}
 

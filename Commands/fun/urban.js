@@ -34,7 +34,7 @@ module.exports = {
 				{ name: 'Example', value: bot.trim(answer.example, 1024) },
 				{ name: 'Rating', value: `👍 ${answer.thumbs_up} | 👎 ${answer.thumbs_down}` }
 			)
-			.setFooter({ text: `Searched by › ${message.member.displayName}` });
+			.setFooter({ text: `Searched by » ${message.member.displayName}` });
 
 		await loading.edit({ content: null, embeds: [embed] });
 	},

@@ -27,7 +27,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
         .setTitle('Channel Created')
-        .setDescription(`<#${channel.id}> was Created.\n**Parent›** ${channel.parent ? channel.parent.name : 'None'}\n**Channel ID›** \`${channel.id}\`\n**Created›** <t:${Math.round(Date.now() / 1000)}:R>\n**Created by›** ${ChannelData ? `<@${ChannelData.executor.id}>` : 'Unknown'}`)
+        .setDescription(`<#${channel.id}> was Created.\n**Parent»** ${channel.parent ? channel.parent.name : 'None'}\n**Channel ID»** \`${channel.id}\`\n**Created»** <t:${Math.round(Date.now() / 1000)}:R>\n**Created by»** ${ChannelData ? `<@${ChannelData.executor.id}>` : 'Unknown'}`)
         .setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });

@@ -46,14 +46,14 @@ module.exports = {
 				.setAuthor({ name: `${bot.user.username}'s Command Sheet`, iconURL: bot.user.displayAvatarURL({ dynamic: true }) })
 				.setThumbnail(message.guild.iconURL({ dynamic: true }))
 				.setDescription(
-					`Command Prefix› ${settings.prefix}\nFor more details use› \`${settings.prefix}help <command>\`\n${Vimotes['ERROR']} Represents a Disabled Module.\n🔒 Represents a Locked Command.\n${Vimotes['CHANGED']} Represents a command converted into Slash (/).\n\n**${Cap}**`
+					`Command Prefix» ${settings.prefix}\nFor more details use» \`${settings.prefix}help <command>\`\n${Vimotes['ERROR']} Represents a Disabled Module.\n🔒 Represents a Locked Command.\n${Vimotes['CHANGED']} Represents a command converted into Slash (/).\n\n**${Cap}**`
 				)
 				.addField(
-					`${settings.disabledModules.includes(Cat) ? `${Vimotes['ERROR']}${Cap}` : Cap} [${dir.size}] ›`,
+					`${settings.disabledModules.includes(Cat) ? `${Vimotes['ERROR']}${Cap}` : Cap} [${dir.size}] »`,
 					dir
 						.map(
 							(command) =>
-								`${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** › ${
+								`${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** » ${
 									command.description ? command.description : ''
 								}`
 						)
@@ -88,23 +88,23 @@ module.exports = {
 
 			// If Valid, Generate information sheet
 			helpEmbed.setDescription(
-				`**This guilds prefix is›** ${settings.prefix}\n${command.name ? `**Command›**  ${command.name}\n` : ''}${
-					command.aliases.length ? `**Aliases›** ${command.aliases.join(' | ')}\n` : ''
-				}${command.example ? `**Example›** ${settings.prefix}${command.example}\n` : ''}${
+				`**This guilds prefix is»** ${settings.prefix}\n${command.name ? `**Command»**  ${command.name}\n` : ''}${
+					command.aliases.length ? `**Aliases»** ${command.aliases.join(' | ')}\n` : ''
+				}${command.example ? `**Example»** ${settings.prefix}${command.example}\n` : ''}${
 					settings.disabledModules.includes(command.category)
-						? `**Status›** ${Vimotes['ERROR']}Disabled.\n`
-						: `**Status›** ${Vimotes['AUTHORIZED']}Enabled\n`
-				}${command.cooldown ? `**Cooldown›** ${command.cooldown}\n` : ''}${
-					command.description ? `**Description›** ${command.description}\n` : ''
+						? `**Status»** ${Vimotes['ERROR']}Disabled.\n`
+						: `**Status»** ${Vimotes['AUTHORIZED']}Enabled\n`
+				}${command.cooldown ? `**Cooldown»** ${command.cooldown}\n` : ''}${
+					command.description ? `**Description»** ${command.description}\n` : ''
 				}${
-					command.userPerms.length ? `**Required User Permissions›** ${command.userPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''
-				}${command.botPerms.length ? `**Required Bot Permissions›** ${command.botPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''}`
+					command.userPerms.length ? `**Required User Permissions»** ${command.userPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''
+				}${command.botPerms.length ? `**Required Bot Permissions»** ${command.botPerms.map((perm) => permissions[perm]).join(' | ')}\n` : ''}`
 			);
 			await message.reply({ embeds: [helpEmbed] });
 		} else {
 			// Send pagination
 			const embedList = await message.reply({
-				content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+				content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 				embeds: [embeds[currentPage]],
 			});
 
@@ -131,7 +131,7 @@ module.exports = {
 						if (currentPage !== 0) {
 							currentPage--;
 							embedList.edit({
-								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 								embeds: [embeds[currentPage]],
 							});
 						}
@@ -150,7 +150,7 @@ module.exports = {
 						if (currentPage < embeds.length - 1) {
 							currentPage++;
 							embedList.edit({
-								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}›**`,
+								content: `**«Current Page» ‹${currentPage + 1} / ${embeds.length}»**`,
 								embeds: [embeds[currentPage]],
 							});
 						}

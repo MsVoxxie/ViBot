@@ -30,7 +30,7 @@ module.exports = {
 						.setColor(settings.guildcolor)
 						.setTitle(`Backup Created`)
 						.setDescription(
-							`**Backup created for ${message.guild.name}!**\n**Backup ID›** ${data.id}\n**To Use›** Invite me into a fresh server and run \`?load-backup ${data.id}\``
+							`**Backup created for ${message.guild.name}!**\n**Backup ID»** ${data.id}\n**To Use»** Invite me into a fresh server and run \`?load-backup ${data.id}\``
 						);
 
 					try {

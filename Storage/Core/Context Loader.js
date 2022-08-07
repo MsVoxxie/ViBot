@@ -19,7 +19,7 @@ module.exports = async (bot) => {
 				table.addRow(`${dir} | ${file}`, '✔ » Loaded');
 			} else {
 				//If the command has no name, log it.
-				table.addRow(`${dir} | ${file}`, '❌ » Failed to Load!');
+				table.addRow(`${dir} | ${file}`, '✕ » Errored');
 				continue;
 			}
 		}

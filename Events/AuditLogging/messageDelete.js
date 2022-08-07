@@ -34,13 +34,13 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setTitle('Message Deleted')
 			.setDescription(
-				`**Author›** **<@${message.author.id}> | ${message.author.tag}**\n**Deleted By›** **${
+				`**Author»** **<@${message.author.id}> | ${message.author.tag}**\n**Deleted By»** **${
 					MessageData ? `<@${MessageData.executor.id}> | ${MessageData.executor.tag}` : `<@${message.author.id}> | ${message.author.tag}`
-				}**\n**Channel›** <#${message.channel.id}> | **${message.channel.name}**\n**Deleted›** **<t:${Math.round(Date.now() / 1000)}:R>**\n${
-					message.content.length > 0 ? `\n**Deleted Message›**\n${message.content}` : ''
+				}**\n**Channel»** <#${message.channel.id}> | **${message.channel.name}**\n**Deleted»** **<t:${Math.round(Date.now() / 1000)}:R>**\n${
+					message.content.length > 0 ? `\n**Deleted Message»**\n${message.content}` : ''
 				}\n${
 					message.attachments.size > 0
-						? `**Attachment URL› ${message.channel.nsfw ? '🔞' : ''} **[Image Link](${message.attachments.map((a) => a.proxyURL)})`
+						? `**Attachment URL» ${message.channel.nsfw ? '🔞' : ''} **[Image Link](${message.attachments.map((a) => a.proxyURL)})`
 						: ''
 				}`
 			)

@@ -47,7 +47,7 @@ module.exports = {
 			Results.forEach((Res) => {
 				const embed = new MessageEmbed()
 					.setAuthor({ name: `${Res.authorName ? Res.authorName : 'Unknown'}`, url: Res.authorUrl ? Res.authorUrl : Res.url })
-					.setDescription(`**Site›** ${Res.site}\n**Post URL›** [Click Here](${Res.url})\n**Similarity›** ${Res.similarity}%`)
+					.setDescription(`**Site»** ${Res.site}\n**Post URL»** [Click Here](${Res.url})\n**Similarity»** ${Res.similarity}%`)
 					.setThumbnail(`${Res.thumbnail}`)
 					.setFooter({ text: `${message.requester ? message.requester.username : message.member.user.username}` })
 					.setColor(settings.guildcolor)
@@ -59,7 +59,7 @@ module.exports = {
 
 			// Send pagination
 			const embedList = await message.reply({
-				content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`,
+				content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}»**`,
 				embeds: [Embeds[currentPage]],
 			});
 
@@ -86,7 +86,7 @@ module.exports = {
 					case 'BACK': {
 						if (currentPage !== 0) {
 							currentPage--;
-							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
+							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}»**`, embeds: [Embeds[currentPage]] });
 						}
 						break;
 					}
@@ -102,7 +102,7 @@ module.exports = {
 					case 'NEXT': {
 						if (currentPage < Embeds.length - 1) {
 							currentPage++;
-							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}›**`, embeds: [Embeds[currentPage]] });
+							embedList.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Embeds.length}»**`, embeds: [Embeds[currentPage]] });
 						}
 						break;
 					}

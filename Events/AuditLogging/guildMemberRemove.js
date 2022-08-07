@@ -35,7 +35,7 @@ module.exports = {
 
 		const embed = new MessageEmbed()
 			.setAuthor({ name: `${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`${Vimotes['LEAVE_ARROW']} **<@${member.id}> | ${member.user.tag}** Left the server **<t:${Math.round(Date.now() / 1000)}:R>**.${LeaveData ? `\n**Kicked by›** <@${LeaveData.executor.id}>` : ''}${LeaveData ? `\n**Reason›** ${LeaveData.reason}` : ''}`)
+			.setDescription(`${Vimotes['LEAVE_ARROW']} **<@${member.id}> | ${member.user.tag}** Left the server **<t:${Math.round(Date.now() / 1000)}:R>**.${LeaveData ? `\n**Kicked by»** <@${LeaveData.executor.id}>` : ''}${LeaveData ? `\n**Reason»** ${LeaveData.reason}` : ''}`)
 			.setColor(settings.guildcolor)
 			.setFooter({ text: bot.Timestamp(new Date()) });
 		logChannel.send({ embeds: [embed] });

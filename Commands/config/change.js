@@ -28,7 +28,7 @@ module.exports = {
 					});
 				try {
 					await bot.updateGuild(guild, { prefix: newSetting });
-					return message.reply(`**Guild Prefix Updated›** \`${newSetting}\``).then((s) => {
+					return message.reply(`**Guild Prefix Updated»** \`${newSetting}\``).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -42,7 +42,7 @@ module.exports = {
 			// Guildcolor
 			case 'guildcolor': {
 				if (!newSetting)
-					return message.reply(`**Guild Color is currently›** \`${settings.guildcolor}\`**`).then((s) => {
+					return message.reply(`**Guild Color is currently»** \`${settings.guildcolor}\`**`).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				if (!bot.isHex(newSetting))
@@ -54,7 +54,7 @@ module.exports = {
 				}
 				try {
 					await bot.updateGuild(guild, { guildcolor: newSetting });
-					return message.reply(`**Guild Color Updated›** \`${newSetting}\``).then((s) => {
+					return message.reply(`**Guild Color Updated»** \`${newSetting}\``).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -73,7 +73,7 @@ module.exports = {
 					});
 				try {
 					await bot.updateGuild(guild, { prune: newSetting });
-					return message.reply(`**Prune Updated›** \`${newSetting}\``).then((s) => {
+					return message.reply(`**Prune Updated»** \`${newSetting}\``).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -92,7 +92,7 @@ module.exports = {
 					});
 				try {
 					await bot.updateGuild(guild, { audit: newSetting });
-					return message.reply(`**Audit Updated›** \`${newSetting}\``).then((s) => {
+					return message.reply(`**Audit Updated»** \`${newSetting}\``).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -112,7 +112,7 @@ module.exports = {
 				try {
 					const chan = await message.mentions.channels.first();
 					await bot.updateGuild(guild, { auditchannel: chan });
-					return message.reply(`**AuditChannel Updated›** ${chan}`).then((s) => {
+					return message.reply(`**AuditChannel Updated»** ${chan}`).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -131,7 +131,7 @@ module.exports = {
 					});
 				try {
 					await bot.updateGuild(guild, { welcome: newSetting });
-					return message.reply(`**Welcome Update›** \`${settings.newSetting}\``).then((s) => {
+					return message.reply(`**Welcome Update»** \`${settings.newSetting}\``).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -151,7 +151,7 @@ module.exports = {
 				try {
 					const chan = await message.mentions.channels.first();
 					await bot.updateGuild(guild, { welcomechannel: chan });
-					return message.reply(`**WelcomeChannel Updated›** ${chan}`).then((s) => {
+					return message.reply(`**WelcomeChannel Updated»** ${chan}`).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -171,7 +171,7 @@ module.exports = {
 				try {
 					const chan = await message.mentions.channels.first();
 					await bot.updateGuild(guild, { ruleschannel: chan });
-					return message.reply(`**RulesChannel Updated›** ${chan}`).then((s) => {
+					return message.reply(`**RulesChannel Updated»** ${chan}`).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -191,7 +191,7 @@ module.exports = {
 				try {
 					const role = await message.mentions.roles.first();
 					await bot.updateGuild(guild, { modrole: role });
-					return message.reply(`**ModRole Update›** ${role}`).then((s) => {
+					return message.reply(`**ModRole Update»** ${role}`).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -211,7 +211,7 @@ module.exports = {
 				try {
 					const role = await message.mentions.roles.first();
 					await bot.updateGuild(guild, { adminrole: role });
-					return message.reply(`**AdminRole Update›** ${role}`).then((s) => {
+					return message.reply(`**AdminRole Update»** ${role}`).then((s) => {
 						if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 					});
 				} catch (error) {
@@ -228,7 +228,7 @@ module.exports = {
 					const embed = new MessageEmbed()
 						.setTitle(`${guild.name}'s Configurations`)
 						.setDescription(
-							`**prefix›** \`${settings.prefix}\`\n*What prefix should be used for my commands?*\n\n**guildcolor›** \`${settings.guildcolor}\`\n*What HEX color should I use for my various embeds?*\n\n**prune›** \`${settings.prune}\`\n*Should I clean up after myself? (Delete Messages I Create) [true / false]*\n\n**audit›** \`${settings.audit}\`\n*Should I log events? (Message deletions, Updates, etc.) [true / false]*\n\n**auditchannel›** \`${settings.auditchannel}\`\n*What channel should I send audit logs into? (#channelname to update)*\n\n**welcome›** \`${settings.welcome}\`\n*Should I Welcome users into the channel? [true / false]*\n\n**welcomechannel›** \`${settings.welcomechannel}\`\n*What channel should I send welcomes in? (#channelname to update)*\n\n**ruleschannel›** \`${settings.welcomechannel}\`\n*If provided, I will mention to read the rules when welcoming users. (#channelname to update)*\n\n**Alternatively›** [Use My Dashboard](https://bot.voxxie.me/)\n\n`
+							`**prefix»** \`${settings.prefix}\`\n*What prefix should be used for my commands?*\n\n**guildcolor»** \`${settings.guildcolor}\`\n*What HEX color should I use for my various embeds?*\n\n**prune»** \`${settings.prune}\`\n*Should I clean up after myself? (Delete Messages I Create) [true / false]*\n\n**audit»** \`${settings.audit}\`\n*Should I log events? (Message deletions, Updates, etc.) [true / false]*\n\n**auditchannel»** \`${settings.auditchannel}\`\n*What channel should I send audit logs into? (#channelname to update)*\n\n**welcome»** \`${settings.welcome}\`\n*Should I Welcome users into the channel? [true / false]*\n\n**welcomechannel»** \`${settings.welcomechannel}\`\n*What channel should I send welcomes in? (#channelname to update)*\n\n**ruleschannel»** \`${settings.welcomechannel}\`\n*If provided, I will mention to read the rules when welcoming users. (#channelname to update)*\n\n**Alternatively»** [Use My Dashboard](https://bot.voxxie.me/)\n\n`
 						)
 						.setColor(settings.guildcolor)
 						.setFooter({ text: `To update a setting - ${settings.prefix}change <setting> <desired setting>` });

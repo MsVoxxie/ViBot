@@ -27,7 +27,7 @@ module.exports = {
 		//Create Embed
 		const embed = new MessageEmbed()
 			.setTitle('Level Role Deleted')
-			.setDescription(`Level Role ID› ${LevelRole.roleidentifier} has been deleted.`)
+			.setDescription(`Level Role ID» ${LevelRole.roleidentifier} has been deleted.`)
 			.setColor(settings.guildcolor);
 
 		await interaction.reply({ embeds: [embed] });

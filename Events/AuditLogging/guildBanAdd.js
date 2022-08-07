@@ -18,7 +18,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setAuthor({ name: `${member.nickname ? `${member.nickname} | ${member.user.tag}` : member.user.tag}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
-			.setDescription(`${Vimotes['BAN_HAMMER']} **<@${member.id}> | ${member.user.tag}** was Banned **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Reason›** ${ban.reason ? ban.reason : 'No Reason Given'}`)
+			.setDescription(`${Vimotes['BAN_HAMMER']} **<@${member.id}> | ${member.user.tag}** was Banned **<t:${Math.round(Date.now() / 1000)}:R>**.\n**Reason»** ${ban.reason ? ban.reason : 'No Reason Given'}`)
 			.setColor(settings.guildcolor)
 			.setFooter({ text: bot.Timestamp(member.joinedAt) });
 

@@ -32,7 +32,7 @@ module.exports = {
 					.setColor(settings.guildcolor)
 					.setImage(Emoji)
 					.setAuthor({ name: message.member.displayName, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-					.setFooter({ text: `Emoji Enlarged› ${args.join(' ')}` });
+					.setFooter({ text: `Emoji Enlarged» ${args.join(' ')}` });
 				message.channel.send({ embeds: [embed] });
 			} catch (e) {
 				console.log(e);

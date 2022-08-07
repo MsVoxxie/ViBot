@@ -23,7 +23,7 @@ module.exports = {
 		// Setup Embed
 		const embed = new MessageEmbed()
 			.setTitle('Message Updated')
-			.setDescription(`**Author›** **<@${newMessage.author.id}> | ${newMessage.author.tag}**\n**Channel›** <#${newMessage.channel.id}> | **${newMessage.channel.name}**\n**Updated›** **<t:${Math.round(Date.now()/1000)}:R>**\n**Message Link›** [Jump To Message](${newMessage.url})\n\n**Original Message›**\n${oldMessage.content}\n\n**Updated Message›**\n${newMessage.content}`)
+			.setDescription(`**Author»** **<@${newMessage.author.id}> | ${newMessage.author.tag}**\n**Channel»** <#${newMessage.channel.id}> | **${newMessage.channel.name}**\n**Updated»** **<t:${Math.round(Date.now()/1000)}:R>**\n**Message Link»** [Jump To Message](${newMessage.url})\n\n**Original Message»**\n${oldMessage.content}\n\n**Updated Message»**\n${newMessage.content}`)
 			.setColor(settings.guildcolor);
 
 		logChannel.send({ embeds: [embed] });

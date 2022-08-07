@@ -37,11 +37,11 @@ module.exports = {
 
 		//Check for changes
 		const roleChanges = [
-			{changed : oldRole.name === newRole.name ? false : true, data: `${oldRole.name !== newRole.name ? `\n› Role Name\n- ${oldRole.name}\n+ ${newRole.name}\n` : ''}`},
-			{changed : oldRole.color !== newRole.color ? true : false, data: `${oldRole.color !== newRole.color ? `\n› Role Color\n- #${oldRole.color}\n+ #${newRole.color}\n` : ''}`},
-			{changed : oldRole.hoist !== newRole.hoist ? true : false, data: `${oldRole.hoist !== newRole.hoist ? `\n› Role Hoist\n- #${oldRole.hoist}\n+ #${newRole.hoist}\n` : ''}`},
-			{changed : oldRole.mentionable !== newRole.mentionable ? true : false, data: `${oldRole.mentionable !== newRole.mentionable ? `\n› Role Mentionable\n- ${oldRole.mentionable}\n+ ${newRole.mentionable}\n` : ''}`},
-			{changed : oldRole.position !== newRole.position ? true : false, data: `${oldRole.position !== newRole.position ? `\n› Role Position\n- ${oldRole.position}\n+ ${newRole.position}\n` : ''}`},
+			{changed : oldRole.name === newRole.name ? false : true, data: `${oldRole.name !== newRole.name ? `\n» Role Name\n- ${oldRole.name}\n+ ${newRole.name}\n` : ''}`},
+			{changed : oldRole.color !== newRole.color ? true : false, data: `${oldRole.color !== newRole.color ? `\n» Role Color\n- #${oldRole.color}\n+ #${newRole.color}\n` : ''}`},
+			{changed : oldRole.hoist !== newRole.hoist ? true : false, data: `${oldRole.hoist !== newRole.hoist ? `\n» Role Hoist\n- #${oldRole.hoist}\n+ #${newRole.hoist}\n` : ''}`},
+			{changed : oldRole.mentionable !== newRole.mentionable ? true : false, data: `${oldRole.mentionable !== newRole.mentionable ? `\n» Role Mentionable\n- ${oldRole.mentionable}\n+ ${newRole.mentionable}\n` : ''}`},
+			{changed : oldRole.position !== newRole.position ? true : false, data: `${oldRole.position !== newRole.position ? `\n» Role Position\n- ${oldRole.position}\n+ ${newRole.position}\n` : ''}`},
 		]
 
 		const changedText = roleChanges.filter(x => x.changed === true).map(x => x.data).join('');
@@ -55,8 +55,8 @@ module.exports = {
 			.setTitle('Role Updated')
 			.setColor(settings.guildcolor)
 			.setThumbnail('attachment://col.png')
-			.setFooter({ text: `Role ID› ${oldRole.id}` })
-			.setDescription(`**Updated›** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}${!allFalse ? `\`\`\`diff\n${changedText}\`\`\`` : ''}`);
+			.setFooter({ text: `Role ID» ${oldRole.id}` })
+			.setDescription(`**Updated»** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}${!allFalse ? `\`\`\`diff\n${changedText}\`\`\`` : ''}`);
 			if(permissionsAdded.length) embed.addField('Permissions Added', `\`\`\`diff\n${permissionsAdded.map(perm => `+ ${permissions[perm]}`).join('\n')}\`\`\``);
 			if(permissionsRemoved.length) embed.addField('Permissions Removed', `\`\`\`diff\n${permissionsRemoved.map(perm => `- ${permissions[perm]}`).join('\n')}\`\`\``)
 

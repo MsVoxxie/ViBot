@@ -31,7 +31,7 @@ module.exports = {
 
 		await embMessage.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] }).then(async (col) => {
 			Title = col.first().cleanContent;
-			embed.addField('**Title›**', Title, true);
+			embed.addField('**Title»**', Title, true);
 			await embMessage.edit({ embeds: [embed] });
 			MsgsToDelete.push(col.first());
 		});
@@ -46,7 +46,7 @@ module.exports = {
 				MsgsToDelete.push(msg);
 			} else {
 				Options.push(msg.cleanContent);
-				embed.addField('**Options›**', msg.cleanContent, false);
+				embed.addField('**Options»**', msg.cleanContent, false);
 				await embMessage.edit({ embeds: [embed] });
 				MsgsToDelete.push(msg);
 			}
@@ -84,7 +84,7 @@ module.exports = {
 				.setTitle('Poll Created!')
 				.setAuthor({ name: `${message.member.nickname ? `${message.member.nickname} | ${message.member.user.tag}` : message.member.user.tag}`, iconURL: message.member.user.displayAvatarURL({ dynamic: true })})
 				.setThumbnail('https://strawpoll.com/images/strawpoll/strawpoll.png')
-				.setDescription(`The poll can be found at this link› https://strawpoll.com/${content_id}`);
+				.setDescription(`The poll can be found at this link» https://strawpoll.com/${content_id}`);
 
 			if (settings.audit) {
 				await message.channel.bulkDelete(MsgsToDelete);

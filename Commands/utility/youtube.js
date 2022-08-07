@@ -35,7 +35,7 @@ module.exports = {
 		);
 
 		const Message = await message.reply({
-			content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}›**\n${Videos[0]}`,
+			content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}»**\n${Videos[0]}`,
 			components: [Buttons],
 		});
 
@@ -50,7 +50,7 @@ module.exports = {
 				case 'BACK': {
 					if (currentPage !== 0) {
 						currentPage--;
-						Message.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}›**\n${Videos[currentPage]}`, components: [Buttons] });
+						Message.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}»**\n${Videos[currentPage]}`, components: [Buttons] });
 					}
 					break;
 				}
@@ -66,7 +66,7 @@ module.exports = {
 				case 'NEXT': {
 					if (currentPage < Videos.length - 1) {
 						currentPage++;
-						Message.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}›**\n${Videos[currentPage]}`, components: [Buttons] });
+						Message.edit({ content: `**«Current Page» ‹${currentPage + 1} / ${Videos.length}»**\n${Videos[currentPage]}`, components: [Buttons] });
 					}
 					break;
 				}

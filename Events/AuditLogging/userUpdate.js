@@ -27,9 +27,9 @@ module.exports = {
 						const usernameEmbed = new MessageEmbed()
 							.setTitle('User Changed Username')
 							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
-							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-							.addField('**Old Username›**', `${oldUser.username}#${oldUser.discriminator}`, false)
-							.addField('**New Username›**', `${newUser.username}#${newUser.discriminator}`, false)
+							.setDescription(`**Updated»** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+							.addField('**Old Username»**', `${oldUser.username}#${oldUser.discriminator}`, false)
+							.addField('**New Username»**', `${newUser.username}#${newUser.discriminator}`, false)
 							.setColor(settings.guildcolor);
 						logChannel.send({ embeds: [usernameEmbed] });
 					}
@@ -41,9 +41,9 @@ module.exports = {
 						const discriminatorEmbed = new MessageEmbed()
 							.setTitle('User Changed Discriminator')
 							.setAuthor({ name: `${newUser.tag}`, iconURL: newUser.displayAvatarURL({ dynamic: true }) })
-							.setDescription(`**Updated›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-							.addField('**New Discriminator›**', `${newUser.discriminator ? newUser.discriminator : 'Unknown' }`, false)
-							.addField('**Old Discriminator›**', `${oldUser.discriminator ? oldUser.discriminator : 'Unknown' }`, false)
+							.setDescription(`**Updated»** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+							.addField('**New Discriminator»**', `${newUser.discriminator ? newUser.discriminator : 'Unknown' }`, false)
+							.addField('**Old Discriminator»**', `${oldUser.discriminator ? oldUser.discriminator : 'Unknown' }`, false)
 							.setColor(settings.guildcolor);
 						logChannel.send({ embeds: [discriminatorEmbed] });
 					}

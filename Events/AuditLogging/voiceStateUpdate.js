@@ -50,8 +50,8 @@ module.exports = {
 			embed = new MessageEmbed()
 				.setTitle('User Joined Voice Channel')
 				.setThumbnail(author.displayAvatarURL({ dynamic: true }))
-				.setDescription(`**User›** <@${author.id}>\n**UserID›** \`${author.id}\`\n**ChannelID›** \`${newchannelid}\`\n**Connected›** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-				.addField('**Voice Channel›**', `<#${newchannelid}>`, true)
+				.setDescription(`**User»** <@${author.id}>\n**UserID»** \`${author.id}\`\n**ChannelID»** \`${newchannelid}\`\n**Connected»** **<t:${Math.round(Date.now() / 1000)}:R>**`)
+				.addField('**Voice Channel»**', `<#${newchannelid}>`, true)
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -79,8 +79,8 @@ module.exports = {
 			embed = new MessageEmbed()
 				.setTitle('User Left Voice Channel')
 				.setThumbnail(author.displayAvatarURL({ dynamic: true }))
-				.setDescription(`**User›** <@${author.id}>\n**UserID›** \`${author.id}\`\n**ChannelID›** \`${oldchannelid}\`\n**Duration›** \`${bot.getDuration(newData.lastvoice.jointime, newData.lastvoice.leavetime).join(' ')}\`\n**Disconnected›** <t:${Math.round(Date.now() / 1000)}:R>`)
-				.addField('**Voice Channel›**', `<#${oldchannelid}>`, true)
+				.setDescription(`**User»** <@${author.id}>\n**UserID»** \`${author.id}\`\n**ChannelID»** \`${oldchannelid}\`\n**Duration»** \`${bot.getDuration(newData.lastvoice.jointime, newData.lastvoice.leavetime).join(' ')}\`\n**Disconnected»** <t:${Math.round(Date.now() / 1000)}:R>`)
+				.addField('**Voice Channel»**', `<#${oldchannelid}>`, true)
 				.setColor(settings.guildcolor);
 			logChannel.send({ embeds: [embed] });
 		}
@@ -110,9 +110,9 @@ module.exports = {
 				embed = new MessageEmbed()
 					.setTitle('User Switched Voice Channels')
 					.setThumbnail(author.displayAvatarURL({ dynamic: true }))
-					.setDescription(`**User›** <@${author.id}>\n**UserID›** \`${author.id}\`\n**OldChannelID›** \`${oldchannelid}\`\n**NewChannelID›** \`${newchannelid}\`\n**Duration›** \`${bot.getDuration(oldVoice.jointime, Date.now()).join(' ')}\`\n**Switched›** <t:${Math.round(Date.now() / 1000)}:R>`)
-					.addField('**Left Channel›**', `<#${oldchannelid}>`, true)
-					.addField('**Joined Channel›**', `<#${newchannelid}>`, true)
+					.setDescription(`**User»** <@${author.id}>\n**UserID»** \`${author.id}\`\n**OldChannelID»** \`${oldchannelid}\`\n**NewChannelID»** \`${newchannelid}\`\n**Duration»** \`${bot.getDuration(oldVoice.jointime, Date.now()).join(' ')}\`\n**Switched»** <t:${Math.round(Date.now() / 1000)}:R>`)
+					.addField('**Left Channel»**', `<#${oldchannelid}>`, true)
+					.addField('**Joined Channel»**', `<#${newchannelid}>`, true)
 					.setColor(settings.guildcolor);
 				logChannel.send({ embeds: [embed] });
 			}

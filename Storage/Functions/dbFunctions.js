@@ -166,8 +166,8 @@ module.exports = (bot) => {
 					.setTitle('Level Up!')
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${RoleCheck.addedRoles.length ? `\nAwarded Role${RoleCheck.addedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${RoleCheck.addedRoles.map((r) => r).join(' | ')}${RoleCheck.removedRoles.length ? `\nRevoked Role${RoleCheck.removedRoles.length >= 1 ? 's›\n' : '›\n'}` : ''}${RoleCheck.removedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
-					.setFooter({ text: `• Next Level› ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
+					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${RoleCheck.addedRoles.length ? `\nAwarded Role${RoleCheck.addedRoles.length >= 1 ? 's»\n' : '»\n'}` : ''}${RoleCheck.addedRoles.map((r) => r).join(' | ')}${RoleCheck.removedRoles.length ? `\nRevoked Role${RoleCheck.removedRoles.length >= 1 ? 's»\n' : '»\n'}` : ''}${RoleCheck.removedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
+					.setFooter({ text: `• Next Level» ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
 
 				levelChannel.send({ embeds: [embed] });
 			}
