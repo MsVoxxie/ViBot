@@ -1,5 +1,5 @@
 const { Starboard } = require('../../Storage/Database/models/');
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { MessageEmbed, MessageAttachment, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
 	name: 'messageReactionAdd',
@@ -13,8 +13,9 @@ module.exports = {
 		//Defininitions
 		const message = await reaction.message;
 		const settings = await bot.getGuild(message.guild);
-		let attachment;
+		const Buttons = new MessageActionRow();
 		let embeds = [];
+		let attachment;
 		let StarData;
 		let Message;
 		let type;
@@ -22,19 +23,16 @@ module.exports = {
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		// if (message.author.id === user.id) {
-		// 	await message.reactions.cache.first().users.remove(user.id);
-		// 	return message.reply('You cannot star your own messages!').then((s) => {
-		// 		if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
-		// 	});
-		// }
+		if (message.author.id === user.id) {
+			// await message.reactions.cache.first().users.remove(user.id);
+		}
 
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 5;
+		const ReactLimit = 3;
 		const starCount = await message.reactions.cache.get('⭐').count;
 
 		//get starchannel
@@ -71,11 +69,15 @@ module.exports = {
 		} else if (mediaData.tweetData) {
 			type = 'Tweet';
 		}
+
 		// Check if the messages is empty.
 		if (!mediaData && message.content.length < 1)
 			return message.reply(`You cannot star an empty message.`).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
 			});
+
+		//Add Button
+		Buttons.addComponents(new MessageButton().setLabel('Original Message').setStyle("LINK").setURL(message.url));
 
 		//Embeds
 		switch (type) {
@@ -91,6 +93,7 @@ module.exports = {
 							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 							.setImage(photo)
+							.setTimestamp()
 							.setFooter({ text: `MessageID: ${message.id}` });
 						embeds.push(embed);
 					}
@@ -101,10 +104,12 @@ module.exports = {
 						.setURL(mediaData.tweetData.tweet.url)
 						.setThumbnail(mediaData.tweetData.user.profile_image_url)
 						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+						.setTimestamp()
 						.setColor(settings.guildcolor);
 					attachment = new MessageAttachment(mediaData.tweetData.tweet.video_url, `media.mp4`);
 					embeds.push(embed);
 				}
+				Buttons.addComponents(new MessageButton().setLabel('Tweet').setStyle("LINK").setURL(mediaData.tweetData.tweet.url));
 				break;
 			}
 
@@ -113,12 +118,14 @@ module.exports = {
 				const embed = new MessageEmbed()
 					.setColor('#c2b04e')
 					.setURL(message.url)
-					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+					.setDescription(`${message.content}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+					.setTimestamp()
 					.setFooter({ text: `MessageID: ${message.id}` });
 				embeds.push(embed);
 				if (mediaData.videos.length > 0) {
 					attachment = new MessageAttachment(mediaData.videos[0], `media.mp4`);
+					Buttons.addComponents(new MessageButton().setLabel('Media').setStyle("LINK").setURL(mediaData.videos[0]));
 				}
 				break;
 			}
@@ -129,9 +136,10 @@ module.exports = {
 					const embed = new MessageEmbed()
 						.setColor('#c2b04e')
 						.setURL(message.url)
-						.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+						.setDescription(`${message.content}`)
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 						.setImage(media)
+						.setTimestamp()
 						.setFooter({ text: `MessageID: ${message.id}` });
 					embeds.push(embed);
 				}
@@ -142,7 +150,7 @@ module.exports = {
 			default: {
 				const embed = new MessageEmbed()
 					.setColor('#c2b04e')
-					.setDescription(`${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+					.setDescription(`${message.content}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 					.setFooter({ text: `MessageID: ${message.id}` });
 				embeds.push(embed);
@@ -157,11 +165,13 @@ module.exports = {
 						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
 						embeds: embeds.map((e) => e),
 						files: attachment ? [attachment] : null,
+						components: [Buttons],
 					});
 				} else {
 					sm = await starChannel.send({
 						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
 						embeds: embeds.map((e) => e),
+						components: [Buttons],
 					});
 				}
 				StarData = await Starboard.findOneAndUpdate(
@@ -181,13 +191,10 @@ module.exports = {
 				if (attachment) {
 					await Message.edit({
 						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
-						embeds: embeds.map((e) => e),
-						files: [attachment],
 					});
 				} else {
 					await Message.edit({
 						content: `${randStar} ${StarData.starcount} | <#${message.channel.id}>`,
-						embeds: embeds.map((e) => e),
 					});
 				}
 			}

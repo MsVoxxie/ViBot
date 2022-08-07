@@ -22,10 +22,6 @@ module.exports = {
 		// Is the message valid?
 		if (!message) return;
 
-		if (message.type === 'REPLY') {
-			console.log(message)
-		}
-
 		// Get Guild Settings
 		const settings = await bot.getGuild(message.guild);
 
