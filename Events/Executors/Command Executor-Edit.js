@@ -30,7 +30,7 @@ module.exports = {
 
 		//Increase messages sent.
 		await userData.findOneAndUpdate(
-			{ guildid: message.guild.id, userid: oldMessage.author.id },
+			{ guildid: message.guild.id, userid: message.author.id },
 			{ $inc: { totalmessages: 1 } },
 			{ upsert: true, new: true }
 		);
