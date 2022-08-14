@@ -6,7 +6,7 @@ module.exports = {
 	once: false,
 	async execute(oldMessage, newMessage, bot) {
 		// If Partial, Fetch
-		if (oldMessage.partial) {
+		if (oldMessage && oldMessage.partial) {
 			await newMessage.fetch();
 		}
 

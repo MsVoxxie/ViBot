@@ -10,7 +10,7 @@ module.exports = {
 	example: 'sauce <url>',
 	category: 'utility',
 	args: false,
-	cooldown: 30,
+	cooldown: 15,
 	hidden: false,
 	ownerOnly: false,
 	userPerms: [],
@@ -27,14 +27,24 @@ module.exports = {
 			URL = message.attachments.first().url;
 		}
 
-		// Otherwise.. check for content
+		// Check urls in the message
 		if (!(message.attachments.size > 0)) {
 			const Match = message.content.match(REGEX);
-			if (!Match) return message.channel.send('Please provide an image to search for.');
-			if (Match[0]) {
+			if (Match) {
 				URL = Match[0];
 			}
 		}
+
+		// ...Check for the last few messages having attachments
+		if (!args.length && !(message.attachments.size > 0)) {
+			await message.channel.messages.fetch().then((messages) => {
+				const filteredMessages = messages.filter((m) => m.attachments.size > 0);
+				URL = filteredMessages?.first()?.attachments.first()?.url;
+			});
+		}
+
+		// Still no results, Error out.
+		if (!URL) return message.channel.send('Please provide an image to search for.\nIf the image was already posted, react to it with 🍝.');
 
 		//Get Source
 		try {
