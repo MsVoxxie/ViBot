@@ -15,7 +15,7 @@ module.exports = {
 	requiredRoles: [],
 	userPerms: [],
 	botPerms: ['MANAGE_MESSAGES'],
-	async execute(bot, message, args, settings) {
+	async execute(bot, message, args, settings, Vimotes) {
 		function clean(text) {
 			if (typeof text === 'string') {
 				return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
@@ -47,6 +47,7 @@ module.exports = {
 				message,
 				args,
 				settings,
+				Vimotes,
 				console,
 			});
 

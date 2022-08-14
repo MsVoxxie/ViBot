@@ -182,6 +182,7 @@ module.exports = async (bot) => {
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
 					.setDescription(`${tweetData.tweet.description}`) // Do this later \n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setTimestamp()
 					.setColor(settings.guildcolor);
 				embeds.push(embed);
 				resolve({ embeds: embeds.map((e) => e) });
@@ -197,6 +198,7 @@ module.exports = async (bot) => {
 						.setThumbnail(tweetData.user.profile_image_url)
 						.setImage(tweetData.tweet.video_url ? null : photo)
 						.setDescription(`${tweetData.tweet.description}`) // Do this later \n${wrapLines}\n${intData}\n${wrapLines}`)
+						.setTimestamp()
 						.setColor(settings.guildcolor);
 					embeds.push(embed);
 				}
@@ -211,6 +213,7 @@ module.exports = async (bot) => {
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
 					.setDescription(`${tweetData.tweet.description}`) // Do this later \n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setTimestamp()
 					.setColor(settings.guildcolor);
 				const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
 				resolve({ embeds: [embed], files: [attachment] });

@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { userData } = require('../../Storage/Database/models/');
 
 module.exports = {
 	name: 'messageCreate',
@@ -14,29 +15,31 @@ module.exports = {
 		if (message.author.bot) return;
 
 		//Declarations
-		const Mode = 'Automatic'; // 'Automatic' or 'Manual'
 		const RegEx = /((https?):\/\/)?(www.)?(|sx|ayy|vx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
 		const Matches = [...message.content.matchAll(RegEx)]
 			.map((x) => x[0])
 			.filter((x) => !x.endsWith('>'))
 			.filter((x) => !x.endsWith('||')) // Respect commenting and null blocking urls
 			.filter((x) => !x.endsWith('#')); // Override
+
+		//Check if Message is a Tweet
+		if (!Matches.length) return;
+
+		//Variables
 		const settings = await bot.getGuild(message.guild);
+		let lastMessage = null;
+		let loop = false;
 
 		//Statics
 		const ORIG_MESSAGE = '**Originally Posted By»** ';
 		const AUTH_POST = `**${message.author}»** `;
 		const MESSAGES = [];
+		const USERDATA = await userData.findOne({ guildid: message.guild.id, userid: message.author.id }).lean();
+		const USER_CHOICE = USERDATA.autoembed !== undefined ? USERDATA.autoembed: true;
 
-		//Variables
-		let lastMessage = null;
-		let loop = false;
-
-		//Check if Message is a Tweet
-		if (!Matches.length) return;
-
-		switch (Mode) {
-			case 'Automatic':
+		switch (USER_CHOICE) {
+			// Automatic Mode
+			case true:
 				//Get original message without links
 				let originalMessage = message.content;
 				Matches.forEach((match) => {
@@ -76,7 +79,8 @@ module.exports = {
 				}
 				break;
 
-			case 'Manual':
+			// Manual Mode
+			case false:
 				// Add Reaction
 				await message.react('🐦');
 
@@ -95,7 +99,7 @@ module.exports = {
 					//TryCatch in case of error..
 					try {
 						//Setup Variables to send to function and then run function
-						const funcData = { ORIG_MESSAGE, AUTH_POST, Matches, message, bot, settings, lastMessage, originalMessage, loop };
+						const funcData = { ORIG_MESSAGE, AUTH_POST, Matches, message, bot, settings, lastMessage, originalMessage, loop, MESSAGES };
 						await sendTweets(funcData);
 
 						//Delete Original Message
@@ -151,6 +155,8 @@ async function sendTweets(funcData) {
 				.setURL(tweetData.tweet.url)
 				.setThumbnail(tweetData.user.profile_image_url)
 				.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+				.setFooter({ text: message.member.displayName, iconURL: message.member.avatarURL() })
+				.setTimestamp()
 				.setColor(settings.guildcolor);
 			embeds.push(embed);
 
@@ -175,6 +181,8 @@ async function sendTweets(funcData) {
 					.setThumbnail(tweetData.user.profile_image_url)
 					.setImage(tweetData.tweet.video_url ? null : photo)
 					.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+					.setFooter({ text: message.member.displayName, iconURL: message.member.avatarURL() })
+					.setTimestamp()
 					.setColor(settings.guildcolor);
 				embeds.push(embed);
 			}
@@ -198,6 +206,8 @@ async function sendTweets(funcData) {
 				.setURL(tweetData.tweet.url)
 				.setThumbnail(tweetData.user.profile_image_url)
 				.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
+				.setFooter({ text: message.member.displayName, iconURL: message.member.avatarURL() })
+				.setTimestamp()
 				.setColor(settings.guildcolor);
 			const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
 

@@ -20,10 +20,6 @@ const userDataSchema = new mongoose.Schema({
 		type: String,
 		default: '',
 	},
-	receivedm: {
-		type: Boolean,
-		default: true,
-	},
 	xp: {
 		type: Number,
 		default: 0,
@@ -59,6 +55,16 @@ const userDataSchema = new mongoose.Schema({
 	reminders: {
 		type: Array,
 		default: [],
+	},
+
+	// User Choice
+	receivedm: {
+		type: Boolean,
+		default: true,
+	},
+	autoembed: {
+		type: Boolean,
+		default: true,
 	},
 
 	// Voice Data
