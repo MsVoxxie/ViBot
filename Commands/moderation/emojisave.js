@@ -11,7 +11,7 @@ module.exports = {
 	example: '',
 	category: 'moderation',
 	args: false,
-	cooldown: 0,
+	cooldown: 120,
 	hidden: false,
 	ownerOnly: false,
 	userPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
