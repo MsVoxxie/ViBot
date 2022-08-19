@@ -1,38 +1,44 @@
-const { MessageAttachment } = require('discord.js');
+const { Util, MessageAttachment } = require('discord.js');
 const axios = require('axios');
 const JSZip = require('jszip');
 const path = require('path');
 const fs = require('fs');
 
 module.exports = {
-    name: 'emojisave',
-    aliases: ['esave'],
-    description: 'Save the guilds emojis to a zip file',
-    example: '',
-    category: 'moderation',
-    args: false,
-    cooldown: 120,
-    hidden: false,
-    ownerOnly: false,
-    userPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
-    botPerms: ['SEND_MESSAGES', 'ATTACH_FILES'],
+	name: 'emojisave',
+	aliases: ['esave'],
+	description: 'Save the guilds emojis to a zip file',
+	example: '',
+	category: 'moderation',
+	args: false,
+	cooldown: 120,
+	hidden: false,
+	ownerOnly: false,
+	userPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
+	botPerms: ['SEND_MESSAGES', 'ATTACH_FILES'],
 	async execute(bot, message, args, settings, Vimotes) {
 		//Statics
-		const guildEmojis = await message.guild.emojis?.cache;
-		const guildStickers = await message.guild.stickers?.cache;
+		const EMOJI_REGEX = /<?(a)?:?(\w{2,32}):(\d{17,19})>?/g;
 		const MEDIA_PATH = path.join(__dirname, '../../Storage/Media/Temp/');
-		const USER_PATH = path.join(MEDIA_PATH, `${message.author.id}/`);
+		const USER_PATH = path.join(MEDIA_PATH, `${message.author.id}`);
+		const guildStickers = await message.guild.stickers?.cache;
+		const guildEmojis = await message.guild.emojis?.cache;
+		let userEmojis = new Set();
+		[...args.join(' ').matchAll(EMOJI_REGEX)].map((e) => userEmojis.add(e[0]));
+
+		//Save Name
+		const SAVE_NAME = userEmojis ? `Hand_Picked_Emojis.zip` : `${message.guild.name}_Emojis_and_Stickers.zip`;
 
 		//Variables
 		const startedAt = Date.now();
-		const totalEmoji = guildEmojis.size;
+		const totalEmoji = userEmojis ? userEmojis.size : guildEmojis.size;
 		const totalSticker = guildStickers.size;
 		let savedEmoji = 0;
 		let savedSticker = 0;
 		let endedAt;
 
 		//Are there any emoji or stickers
-		if (totalEmoji < 1 && totalSticker < 1) return;
+		if (totalEmoji < 1 && totalSticker < 1 && !userEmojis) return message.reply('There are no emoji or stickers to save.');
 
 		//Let the user know we are starting
 		await message.react(Vimotes['A_LOADING']);
@@ -41,15 +47,28 @@ module.exports = {
 		try {
 			if (!fs.existsSync(USER_PATH)) {
 				fs.mkdirSync(USER_PATH, { recursive: true });
-				fs.mkdirSync(`${USER_PATH}/Emojis/`, { recursive: true });
-				fs.mkdirSync(`${USER_PATH}/Stickers/`, { recursive: true });
 			}
 		} catch (error) {
 			console.log(error);
 		}
 
+		// Get user input and save to disk
+		if (userEmojis) {
+			fs.mkdirSync(`${USER_PATH}/CustomEmojis/`, { recursive: true });
+			for (const emoji of userEmojis) {
+				const emojiData = Util.parseEmoji(emoji);
+				const emojiName = emojiData.name;
+				const emojiId = emojiData.id;
+				const emojiExt = emojiData.animated ? 'gif' : 'png';
+				const emojiUri = `https://cdn.discordapp.com/emojis/${emojiId}.${emojiExt}`;
+				await download(emojiUri, `${USER_PATH}/CustomEmojis/`, emojiName, emojiExt);
+				savedEmoji++;
+			}
+		}
+
 		// Get the guilds emojis and save to disk
-		if (guildEmojis) {
+		if (guildEmojis && !userEmojis) {
+			fs.mkdirSync(`${USER_PATH}/Emojis/`, { recursive: true });
 			for await (const emoticon of guildEmojis) {
 				const emoji = emoticon[1];
 				const ext = emoji.url.split('.').pop();
@@ -59,7 +78,8 @@ module.exports = {
 		}
 
 		//Get the guilds stickers and save to disk
-		if (guildStickers) {
+		if (guildStickers && !userEmojis) {
+			fs.mkdirSync(`${USER_PATH}/Stickers/`, { recursive: true });
 			for await (const stick of guildStickers) {
 				const sticker = stick[1];
 				const ext = sticker.url.split('.').pop();
@@ -70,52 +90,74 @@ module.exports = {
 
 		//Read newly saved files
 		const zip = new JSZip();
-		const savedEmojis = fs.readdirSync(`${USER_PATH}/Emojis/`);
-		const savedStickers = fs.readdirSync(`${USER_PATH}/Stickers/`);
-		const Emojifolder = zip.folder(`${message.guild.name}'s Emojis`);
-		const Stickerfolder = zip.folder(`${message.guild.name}'s Stickers`);
 
-		//Add Emojis to zip
-		for await (const Emoji of savedEmojis) {
-			try {
-				const emojiData = fs.readFileSync(`${USER_PATH}/Emojis/${Emoji}`);
-				Emojifolder.file(Emoji, emojiData);
-			} catch (error) {
-				console.error(error);
+		//Add user emojis to zip
+		if (userEmojis) {
+			const savedUserEmojis = fs.readdirSync(`${USER_PATH}/CustomEmojis/`);
+			const UserEmojifolder = zip.folder(`Hand Picked Emojis`);
+			for (const Emoji of savedUserEmojis) {
+				try {
+					const file = fs.readFileSync(`${USER_PATH}/CustomEmojis/${Emoji}`);
+					UserEmojifolder.file(Emoji, file);
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		}
 
-		//Add Stickers to zip
-		for await (const Sticker of savedStickers) {
-			try {
-				const stickerData = fs.readFileSync(`${USER_PATH}/Stickers/${Sticker}`);
-				Stickerfolder.file(Sticker, stickerData);
-			} catch (error) {
-				console.error(error);
+		//Add Guild Emojis to zip
+		if (guildEmojis && !userEmojis) {
+			const savedEmojis = fs.readdirSync(`${USER_PATH}/Emojis/`);
+			const Emojifolder = zip.folder(`${message.guild.name}'s Emojis`);
+			for await (const Emoji of savedEmojis) {
+				try {
+					const emojiData = fs.readFileSync(`${USER_PATH}/Emojis/${Emoji}`);
+					Emojifolder.file(Emoji, emojiData);
+				} catch (error) {
+					console.error(error);
+				}
+			}
+		}
+
+		//Add Guild Stickers to zip
+		if (guildStickers && !userEmojis) {
+			const savedStickers = fs.readdirSync(`${USER_PATH}/Stickers/`);
+			const Stickerfolder = zip.folder(`${message.guild.name}'s Stickers`);
+			for await (const Sticker of savedStickers) {
+				try {
+					const stickerData = fs.readFileSync(`${USER_PATH}/Stickers/${Sticker}`);
+					Stickerfolder.file(Sticker, stickerData);
+				} catch (error) {
+					console.error(error);
+				}
 			}
 		}
 
 		//Save the zip
 		zip
 			.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
-			.pipe(fs.createWriteStream(`${USER_PATH}/${message.guild.name}_Emojis_and_Stickers.zip`))
+			.pipe(fs.createWriteStream(`${USER_PATH}/${SAVE_NAME}`))
 			.on('finish', async () => {
 				endedAt = Date.now();
 				const difference = endedAt - startedAt;
 				//Send the zip
-				const attachment = new MessageAttachment(`${USER_PATH}/${message.guild.name}_Emojis_and_Stickers.zip`);
+				const attachment = new MessageAttachment(`${USER_PATH}/${SAVE_NAME}`);
 				await message?.reactions?.removeAll();
 				await message.reply({
 					embeds: [
 						bot.replyEmbed({
 							color: bot.colors.success,
-							text: `${Vimotes['CHECK']} Saved\n***\`${savedEmoji}/${totalEmoji}\`*** ${totalEmoji > 1 ? 'Emojis' : 'Emoji'}\n***\`${savedSticker}/${totalSticker}\`*** ${totalSticker > 1 ? 'Stickers' : 'Sticker'}\nIn ***\`${Math.round( difference / 1000 )}\`*** seconds.`,
+							text: `${Vimotes['CHECK']} Saved\n***\`${savedEmoji}/${totalEmoji}\`*** ${
+								totalEmoji > 1 ? 'Emojis' : 'Emoji'
+							}\n***\`${savedSticker}/${totalSticker}\`*** ${totalSticker > 1 ? 'Stickers' : 'Sticker'}\nIn ***\`${Math.round(
+								difference / 1000
+							)}\`*** seconds.`,
 						}),
 					],
 					files: [attachment],
 				});
 				//Delete the zip
-				fs.rmSync(`${USER_PATH}/${message.guild.name}_Emojis_and_Stickers.zip`);
+				fs.rmSync(`${USER_PATH}/${SAVE_NAME}`);
 				//Delete the temp folder
 				fs.rmSync(USER_PATH, { recursive: true });
 			});
@@ -130,7 +172,7 @@ async function download(uri, filepath, filename, extension) {
 
 		//Check if the file exists
 		if (!fs.existsSync(filepath)) return;
-		if(fs.existsSync(`${filepath}/${filename}.${extension}`)) {
+		if (fs.existsSync(`${filepath}/${filename}.${extension}`)) {
 			exists = true;
 			i++;
 		}
@@ -141,7 +183,7 @@ async function download(uri, filepath, filename, extension) {
 		file.on('finish', () => {
 			file.close();
 		});
-	} catch(e) {
+	} catch (e) {
 		console.error(e);
 	}
 }

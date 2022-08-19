@@ -35,13 +35,13 @@ module.exports = {
 			}
 		}
 
-		// ...Check for the last few messages having attachments
-		if (!args.length && !(message.attachments.size > 0)) {
-			await message.channel.messages.fetch().then((messages) => {
-				const filteredMessages = messages.filter((m) => m.attachments.size > 0);
-				URL = filteredMessages?.first()?.attachments.first()?.url;
-			});
-		}
+		// // ...Check for the last few messages having attachments
+		// if (!args.length && !(message.attachments.size > 0)) {
+		// 	await message.channel.messages.fetch().then((messages) => {
+		// 		const filteredMessages = messages.filter((m) => m.attachments.size > 0);
+		// 		URL = filteredMessages?.first()?.attachments?.first()?.url;
+		// 	});
+		// }
 
 		// Still no results, Error out.
 		if (!URL) return message.channel.send('Please provide an image to search for.\nIf the image was already posted, react to it with 🍝.');
