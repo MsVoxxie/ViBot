@@ -11,7 +11,7 @@ module.exports = {
 	example: '',
 	category: 'moderation',
 	args: false,
-	cooldown: 120,
+	cooldown: 0,
 	hidden: false,
 	ownerOnly: false,
 	userPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
@@ -26,19 +26,20 @@ module.exports = {
 		let userEmojis = new Set();
 		[...args.join(' ').matchAll(EMOJI_REGEX)].map((e) => userEmojis.add(e[0]));
 
-		//Save Name
-		const SAVE_NAME = userEmojis ? `Hand_Picked_Emojis.zip` : `${message.guild.name}_Emojis_and_Stickers.zip`;
-
 		//Variables
 		const startedAt = Date.now();
-		const totalEmoji = userEmojis ? userEmojis.size : guildEmojis.size;
+		const totalUser = userEmojis.size;
+		const totalEmoji = userEmojis.size ? userEmojis.size : guildEmojis.size;
 		const totalSticker = guildStickers.size;
 		let savedEmoji = 0;
 		let savedSticker = 0;
 		let endedAt;
 
+		//Save Name
+		const SAVE_NAME = totalUser > 0 ? `Hand_Picked_Emojis.zip` : `${message.guild.name}_Emojis.zip`;
+
 		//Are there any emoji or stickers
-		if (totalEmoji < 1 && totalSticker < 1 && !userEmojis) return message.reply('There are no emoji or stickers to save.');
+		if (totalEmoji > 0 && totalSticker > 0 && totalUser > 0) return message.reply('There are no emoji or stickers to save.');
 
 		//Let the user know we are starting
 		await message.react(Vimotes['A_LOADING']);
@@ -53,7 +54,7 @@ module.exports = {
 		}
 
 		// Get user input and save to disk
-		if (userEmojis) {
+		if (totalUser > 0) {
 			fs.mkdirSync(`${USER_PATH}/CustomEmojis/`, { recursive: true });
 			for (const emoji of userEmojis) {
 				const emojiData = Util.parseEmoji(emoji);
@@ -67,7 +68,7 @@ module.exports = {
 		}
 
 		// Get the guilds emojis and save to disk
-		if (guildEmojis && !userEmojis) {
+		if (guildEmojis && !totalUser > 0) {
 			fs.mkdirSync(`${USER_PATH}/Emojis/`, { recursive: true });
 			for await (const emoticon of guildEmojis) {
 				const emoji = emoticon[1];
@@ -78,7 +79,7 @@ module.exports = {
 		}
 
 		//Get the guilds stickers and save to disk
-		if (guildStickers && !userEmojis) {
+		if (guildStickers && totalSticker > 0 && !totalUser > 0) {
 			fs.mkdirSync(`${USER_PATH}/Stickers/`, { recursive: true });
 			for await (const stick of guildStickers) {
 				const sticker = stick[1];
@@ -92,7 +93,7 @@ module.exports = {
 		const zip = new JSZip();
 
 		//Add user emojis to zip
-		if (userEmojis) {
+		if (totalUser > 0) {
 			const savedUserEmojis = fs.readdirSync(`${USER_PATH}/CustomEmojis/`);
 			const UserEmojifolder = zip.folder(`Hand Picked Emojis`);
 			for (const Emoji of savedUserEmojis) {
@@ -106,7 +107,7 @@ module.exports = {
 		}
 
 		//Add Guild Emojis to zip
-		if (guildEmojis && !userEmojis) {
+		if (guildEmojis && !totalUser > 0) {
 			const savedEmojis = fs.readdirSync(`${USER_PATH}/Emojis/`);
 			const Emojifolder = zip.folder(`${message.guild.name}'s Emojis`);
 			for await (const Emoji of savedEmojis) {
@@ -120,7 +121,7 @@ module.exports = {
 		}
 
 		//Add Guild Stickers to zip
-		if (guildStickers && !userEmojis) {
+		if (guildStickers && totalSticker > 0 && !totalUser > 0) {
 			const savedStickers = fs.readdirSync(`${USER_PATH}/Stickers/`);
 			const Stickerfolder = zip.folder(`${message.guild.name}'s Stickers`);
 			for await (const Sticker of savedStickers) {
@@ -143,19 +144,7 @@ module.exports = {
 				//Send the zip
 				const attachment = new MessageAttachment(`${USER_PATH}/${SAVE_NAME}`);
 				await message?.reactions?.removeAll();
-				await message.reply({
-					embeds: [
-						bot.replyEmbed({
-							color: bot.colors.success,
-							text: `${Vimotes['CHECK']} Saved\n***\`${savedEmoji}/${totalEmoji}\`*** ${
-								totalEmoji > 1 ? 'Emojis' : 'Emoji'
-							}\n***\`${savedSticker}/${totalSticker}\`*** ${totalSticker > 1 ? 'Stickers' : 'Sticker'}\nIn ***\`${Math.round(
-								difference / 1000
-							)}\`*** seconds.`,
-						}),
-					],
-					files: [attachment],
-				});
+				await message.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Saved\n***\`${savedEmoji}/${totalEmoji}\`*** ${ totalEmoji > 1 ? 'Emojis' : 'Emoji' }\n***\`${savedSticker}/${totalSticker}\`*** ${totalSticker > 1 ? 'Stickers' : 'Sticker'}\nIn ***\`${Math.round( difference / 1000 )}\`*** seconds.`, }), ], files: [attachment], });
 				//Delete the zip
 				fs.rmSync(`${USER_PATH}/${SAVE_NAME}`);
 				//Delete the temp folder
