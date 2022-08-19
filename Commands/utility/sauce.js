@@ -78,6 +78,7 @@ module.exports = {
 				const Buttons = new MessageActionRow().addComponents(
 					new MessageButton().setLabel('Back').setStyle('SUCCESS').setCustomId('BACK'),
 					new MessageButton().setLabel('Stop').setStyle('DANGER').setCustomId('STOP'),
+					new MessageButton().setLabel('Cancel').setStyle('DANGER').setCustomId('CANCEL'),
 					new MessageButton().setLabel('Next').setStyle('SUCCESS').setCustomId('NEXT')
 				);
 				await embedList.edit({ components: [Buttons] });
@@ -103,8 +104,15 @@ module.exports = {
 
 					// Stop
 					case 'STOP': {
-						collector.stop();
 						embedList.edit({ content: '**«Collection Stopped»**', embeds: [Embeds[currentPage]], components: [] });
+						collector.stop();
+						break;
+					}
+
+					// Cancel
+					case 'CANCEL': {
+						await embedList.delete();
+						collector.stop();
 						break;
 					}
 
@@ -121,8 +129,10 @@ module.exports = {
 
 			//Tell users the collection ended when it has.
 			collector.on('end', async () => {
-				const msg = await message.channel.messages.fetch(embedList.id);
-				await msg.edit({ content: '**«Collection Stopped»**', components: [] });
+				if (embedList.length) {
+					await embedList.edit({ content: '**«Collection Stopped»**', components: [] });
+				}
+				message?.delete();
 			});
 		} catch (error) {
 			console.error(error);

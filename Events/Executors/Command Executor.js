@@ -188,6 +188,7 @@ module.exports = {
 				{ $inc: { commandsused: 1 } },
 				{ upsert: true, new: true }
 			);
+			message.denyDeleteEvent = true;
 			await command.execute(bot, message, args, settings, Vimotes);
 		} catch (e) {
 			console.error(e);
