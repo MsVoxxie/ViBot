@@ -39,7 +39,7 @@ module.exports = {
 		const SAVE_NAME = totalUser > 0 ? `Hand_Picked_Emojis.zip` : `${message.guild.name}_Emojis.zip`;
 
 		//Are there any emoji or stickers
-		if (totalEmoji > 0 && totalSticker > 0 && totalUser > 0) return message.reply('There are no emoji or stickers to save.');
+		if (totalEmoji == 0 && totalSticker == 0 && totalUser == 0) return message.reply('There are no emoji or stickers to save.');
 
 		//Let the user know we are starting
 		await message.react(Vimotes['A_LOADING']);
@@ -144,7 +144,7 @@ module.exports = {
 				//Send the zip
 				const attachment = new MessageAttachment(`${USER_PATH}/${SAVE_NAME}`);
 				await message?.reactions?.removeAll();
-				await message.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Saved\n***\`${savedEmoji}/${totalEmoji}\`*** ${ totalEmoji > 1 ? 'Emojis' : 'Emoji' }\n***\`${savedSticker}/${totalSticker}\`*** ${totalSticker > 1 ? 'Stickers' : 'Sticker'}\nIn ***\`${Math.round( difference / 1000 )}\`*** seconds.`, }), ], files: [attachment], });
+				await message.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Saved\n ${totalEmoji != 0 ? `***\`${savedEmoji}/${totalEmoji}\`*** ${totalEmoji > 1 ? 'Emojis' : 'Emoji'}\n` : ''} ${totalSticker != 0 && !totalUser > 0 ? `***\`${savedSticker}/${totalSticker}\`*** ${totalSticker > 1 ? 'Stickers' : 'Sticker'}\n` : ''} In ***\`${Math.round(difference / 1000)}\`*** seconds.`, }), ], files: [attachment], });
 				//Delete the zip
 				fs.rmSync(`${USER_PATH}/${SAVE_NAME}`);
 				//Delete the temp folder
