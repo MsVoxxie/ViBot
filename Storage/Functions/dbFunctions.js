@@ -111,7 +111,7 @@ module.exports = (bot) => {
 	bot.checkLevelRoles = async (guild, member, level) => {
 		return new Promise(async (resolve, reject) => {
 			//Check for level role, add it if it exists
-			const levelRoles = await Levelroles.find({ guildid: guild.id, level: { $lte: level } });
+			const levelRoles = await Levelroles.find({ guildid: guild.id, level: level }); // Redo this later
 			let addedRoles = [];
 			let removedRoles = [];
 			if (levelRoles) {
@@ -159,7 +159,7 @@ module.exports = (bot) => {
 				++level;
 				xp -= needed;
 
-				const RoleCheck = await bot.checkLevelRoles(guild, member, result.level);
+				const RoleCheck = await bot.checkLevelRoles(guild, member, ( result.level + 1 ));
 
 				//Generate Embed
 				const embed = new MessageEmbed()
