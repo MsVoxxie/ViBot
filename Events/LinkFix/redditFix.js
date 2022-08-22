@@ -10,7 +10,7 @@ const { log } = require('console');
 
 module.exports = {
 	name: 'messageCreate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(message, bot) {
 		// If Partial, Fetch
