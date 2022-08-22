@@ -11,7 +11,7 @@ module.exports = {
 		const avatarURL = intTarget.displayAvatarURL({ format: 'png' });
 
 		//Generate PetPet
-		const petpet = await generatePetPet(avatarURL, { resolution: 128, delay: 20, backgroundColor: null });
+		const petpet = await generatePetPet(avatarURL, { resolution: 128, delay: 25, backgroundColor: null });
 
 		//Send it!
 		await interaction.reply({ files: [{ name: 'petpet.gif', attachment: petpet }] });

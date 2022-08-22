@@ -15,7 +15,8 @@ module.exports = {
 		if (message.author.bot) return;
 
 		//Declarations
-		const RegEx = /((https?):\/\/)?(www.)?(|sx|ayy|vx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi;
+		// const RegEx = /((https?):\/\/)?(www.)?(|mobile.|sx|ayy|vx|fx)tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi; <-- original regex
+		const RegEx = /((https?):\/\/)?(www.)?[A-z0-9_.]{0,7}tw(i|x)tter\.com(\/@?(\w){1,15})\/status\/[0-9]{19}\S{0,30}/gi; // <-- new regex
 		const Matches = [...message.content.matchAll(RegEx)]
 			.map((x) => x[0])
 			.filter((x) => !x.endsWith('>'))
