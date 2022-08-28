@@ -156,7 +156,7 @@ async function sendTweets(funcData) {
 				.setURL(tweetData.tweet.url)
 				.setThumbnail(tweetData.user.profile_image_url)
 				.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
-				.setFooter({ text: message.member.displayName, iconURL: message.member.avatarURL() })
+				.setFooter({ text: message.member.displayName, iconURL: message.member.displayAvatarURL() })
 				.setTimestamp()
 				.setColor(settings.guildcolor);
 			embeds.push(embed);
@@ -182,7 +182,7 @@ async function sendTweets(funcData) {
 					.setThumbnail(tweetData.user.profile_image_url)
 					.setImage(tweetData.tweet.video_url ? null : photo)
 					.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
-					.setFooter({ text: message.member.displayName, iconURL: message.member.avatarURL() })
+					.setFooter({ text: message.member.displayName, iconURL: message.member.displayAvatarURL() })
 					.setTimestamp()
 					.setColor(settings.guildcolor);
 				embeds.push(embed);
@@ -207,7 +207,7 @@ async function sendTweets(funcData) {
 				.setURL(tweetData.tweet.url)
 				.setThumbnail(tweetData.user.profile_image_url)
 				.setDescription(`${tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}`)
-				.setFooter({ text: message.member.displayName, iconURL: message.member.avatarURL() })
+				.setFooter({ text: message.member.displayName, iconURL: message.member.displayAvatarURL() })
 				.setTimestamp()
 				.setColor(settings.guildcolor);
 			const attachment = new MessageAttachment(tweetData.tweet.video_url, `media.mp4`);
