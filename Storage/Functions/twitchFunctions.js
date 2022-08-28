@@ -93,9 +93,10 @@ module.exports = (bot) => {
 			// .setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
 			.setThumbnail((await stream.getUser()).profilePictureUrl)
 			.setImage(stream.thumbnailUrl.replace('{width}', 960).replace('{height}', 540))
-			.addField('Playing»', `${(await stream.getGame()).name}`, true)
-			.addField('Current Viewers»', `${bot.toThousands(stream.viewers)}`, true)
-			.addField('Live Since»', `${bot.relativeTimestamp(stream.startDate)}`);
+			.addFields(
+			{ name: 'Playing»', value: `${(await stream.getGame()).name}`, inline: true },
+			{ name: 'Current Viewers»', value: `${bot.toThousands(stream.viewers)}`, inline: true },
+			{ name: 'Live Since»', value: `${bot.relativeTimestamp(stream.startDate)}`, inline: false });
 		return embed;
 	}
 

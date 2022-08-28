@@ -15,18 +15,18 @@ module.exports = {
             .setColor(settings.guildcolor)
             .setAuthor({ name: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
 			.setThumbnail(guild.iconURL({ dynamic: true }))
-            .addField('Guild Owner', `<@${guild.ownerId}>`, true)
-			.addField('Boost Level', guild.premiumTier !== 'NONE' ? `${Vimotes[`${guild.premiumTier}`]} ${bot.titleCase(guild.premiumTier.replace("_", " "))}` : 'None... Yet?', true)
-            .addField('Total Categories', guild.channels.cache.filter(ch => ch.type === 'GUILD_CATEGORY').size.toString(), true)
-            .addField('Total Text Channels', guild.channels.cache.filter(ch => ch.type === 'GUILD_TEXT').size.toString(), true)
-            .addField('Total Voice Channels', guild.channels.cache.filter(ch => ch.type === 'GUILD_VOICE').size.toString(), true)
-            .addField('Total Members', guild.members.cache.size.toString(), true)
-            .addField('Total Humans', guild.members.cache.filter(mem => !mem.user.bot).size.toString(), true)
-            .addField('Total Bots', guild.members.cache.filter(mem => mem.user.bot).size.toString(), true)
-            .addField('Total Roles', guild.roles.cache.size.toString(), true)
-			.addField('Total Emojis', guild.emojis.cache.size.toString(), true)
-			.addField('Total Stickers', guild.stickers.cache.size.toString(), true)
-			.addField('Created', bot.relativeTimestamp(guild.createdAt), true)
+            .addFields({ name: 'Guild Owner', value: `<@${guild.ownerId}>`, inline: true },
+			{ name: 'Boost Level', value: guild.premiumTier !== 'NONE' ? `${Vimotes[`${guild.premiumTier}`]} ${bot.titleCase(guild.premiumTier.replace("_", " "))}` : 'None... Yet?', inline: true },
+            { name: 'Total Categories', value: guild.channels.cache.filter(ch => ch.type === 'GUILD_CATEGORY').size.toString(), inline: true },
+            { name: 'Total Text Channels', value: guild.channels.cache.filter(ch => ch.type === 'GUILD_TEXT').size.toString(), inline: true },
+            { name: 'Total Voice Channels', value: guild.channels.cache.filter(ch => ch.type === 'GUILD_VOICE').size.toString(), inline: true },
+            { name: 'Total Members', value: guild.members.cache.size.toString(), inline: true },
+            { name: 'Total Humans', value: guild.members.cache.filter(mem => !mem.user.bot).size.toString(), inline: true },
+            { name: 'Total Bots', value: guild.members.cache.filter(mem => mem.user.bot).size.toString(), inline: true },
+            { name: 'Total Roles', value: guild.roles.cache.size.toString(), inline: true },
+			{ name: 'Total Emojis', value: guild.emojis.cache.size.toString(), inline: true },
+			{ name: 'Total Stickers', value: guild.stickers.cache.size.toString(), inline: true },
+			{ name: 'Created', value: bot.relativeTimestamp(guild.createdAt), inline: true })
             await interaction.reply({ embeds: [embed] });
 	},
 };

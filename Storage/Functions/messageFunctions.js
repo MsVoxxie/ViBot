@@ -23,7 +23,7 @@ module.exports = (bot) => {
 				}
 			}
 		}
-		console.log({ images, videos, tweetData });
+		// console.log({ images, videos, tweetData });
 		return { images: images, videos: videos, tweetData: tweetData };
 	};
 };

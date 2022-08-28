@@ -151,7 +151,7 @@ async function sendTweets(funcData) {
 		//Text Only
 		if (tweetData.tweet.description && !tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
 			const embed = new MessageEmbed()
-				.setAuthor({ name: `@${tweetData.user.screen_name}` })
+				.setAuthor({ name: `@${tweetData.user.screen_name}`, url: `https://twitter.com/${tweetData.user.screen_name}` })
 				.setTitle(tweetData.user.name)
 				.setURL(tweetData.tweet.url)
 				.setThumbnail(tweetData.user.profile_image_url)
@@ -176,7 +176,7 @@ async function sendTweets(funcData) {
 		if (tweetData.tweet.media_urls && !tweetData.tweet.video_url) {
 			for await (const photo of tweetData.tweet.media_urls) {
 				const embed = new MessageEmbed()
-					.setAuthor({ name: `@${tweetData.user.screen_name}` })
+					.setAuthor({ name: `@${tweetData.user.screen_name}`, url: `https://twitter.com/${tweetData.user.screen_name}` })
 					.setTitle(tweetData.user.name)
 					.setURL(tweetData.tweet.url)
 					.setThumbnail(tweetData.user.profile_image_url)
@@ -202,7 +202,7 @@ async function sendTweets(funcData) {
 		//Video Only
 		if (tweetData.tweet.video_url) {
 			const embed = new MessageEmbed()
-				.setAuthor({ name: `@${tweetData.user.screen_name}` })
+				.setAuthor({ name: `@${tweetData.user.screen_name}`, url: `https://twitter.com/${tweetData.user.screen_name}` })
 				.setTitle(tweetData.user.name)
 				.setURL(tweetData.tweet.url)
 				.setThumbnail(tweetData.user.profile_image_url)

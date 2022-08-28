@@ -3,3 +3,5 @@ Storage/Config/Config.json
 Storage/Media/Temp
 Storage/Logs
 node_modules
+Commands/owner only/vi.js
+Commands/fun/greentext.js

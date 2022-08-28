@@ -65,8 +65,9 @@ module.exports = {
 					.setAuthor({ name: `${message.guild.name}'s Top 10 Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
-					.addField('Guild Member', guildTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), true)
-					.addField('Guild Rank', guildTop.map((m) => `# ${m.rank}`).join('\n'), true);
+					.addFields(
+						{ name: 'Guild Member', value: guildTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), inline: true },
+						{ name: 'Guild Rank', value: guildTop.map((m) => `# ${m.rank}`).join('\n'), inline: true });
 				await message.channel.send({ embeds: [embed] });
 				break;
 			}

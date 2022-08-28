@@ -57,8 +57,8 @@ module.exports = {
 			.setThumbnail('attachment://col.png')
 			.setFooter({ text: `Role ID» ${oldRole.id}` })
 			.setDescription(`**Updated»** <t:${Math.round(Date.now() / 1000)}:R>\n**Update by** ${RoleData ? `<@${RoleData.executor.id}>` : 'Unknown'}${!allFalse ? `\`\`\`diff\n${changedText}\`\`\`` : ''}`);
-			if(permissionsAdded.length) embed.addField('Permissions Added', `\`\`\`diff\n${permissionsAdded.map(perm => `+ ${permissions[perm]}`).join('\n')}\`\`\``);
-			if(permissionsRemoved.length) embed.addField('Permissions Removed', `\`\`\`diff\n${permissionsRemoved.map(perm => `- ${permissions[perm]}`).join('\n')}\`\`\``)
+			if(permissionsAdded.length) embed.addFields({ name: 'Permissions Added', value: `\`\`\`diff\n${permissionsAdded.map(perm => `+ ${permissions[perm]}`).join('\n')}\`\`\`` });
+			if(permissionsRemoved.length) embed.addFields({ name: 'Permissions Removed', value: `\`\`\`diff\n${permissionsRemoved.map(perm => `- ${permissions[perm]}`).join('\n')}\`\`\`` })
 
 		logChannel.send({ files: [colorImage.attachment], embeds: [embed] });
 	},

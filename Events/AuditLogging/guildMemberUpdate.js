@@ -44,8 +44,8 @@ module.exports = {
 				.setAuthor({ name: newMember.user.tag, icon_url: newMember.displayAvatarURL({ dynamic: true }) })
 				.setColor(settings.guildcolor)
 				.setDescription(`**Updated»** **<t:${Math.round(Date.now() / 1000)}:R>**\n${updatedBy.executor.id !== newMember.id ? `**Updated By:** <@${updatedBy.executor.id}>` : ''}`)
-				.addField(`**Old Nickname»**`, `${oldMember.nickname ? `${oldMember.nickname}#${oldMember.user.discriminator}` : `${oldMember.displayName}#${oldMember.user.discriminator}`}`, false)
-				.addField('**New Nickname»**', `${newMember.nickname ? `${newMember.nickname}#${newMember.user.discriminator}` : `${newMember.displayName}#${newMember.user.discriminator}`}`, false);
+				.addFields({ name: `**Old Nickname»**`, value: `${oldMember.nickname ? `${oldMember.nickname}#${oldMember.user.discriminator}` : `${oldMember.displayName}#${oldMember.user.discriminator}`}`, inline: false },
+				{ name: '**New Nickname»**', value: `${newMember.nickname ? `${newMember.nickname}#${newMember.user.discriminator}` : `${newMember.displayName}#${newMember.user.discriminator}`}`, inline: false });
 			await logChannel.send({ embeds: [embed] });
 
 			//Update nickname
@@ -77,7 +77,7 @@ module.exports = {
 				.setTitle('Role Changed')
 				.setColor(settings.guildcolor)
 				.setDescription(`**Member»** <@${newMember.user.id}> | **${newMember.user.tag}**\n**Member ID»** \`${newMember.id}\`\n**Updated By»** <@${updatedBy.executor.id}>\n**Updated»** **<t:${Math.round(Date.now() / 1000)}:R>**`)
-				.addField('**Roles»**', `${roleAdded.length ? `\`\`\`css\n#ADDED\n${roleAdded.map((r) => r.name).join('\n')}\`\`\`` : `\`\`\`css\n#REMOVED\n${roleRemoved.map((r) => r.name).join('\n')}\`\`\``}`);
+				.addFields({ name: '**Roles»**', value: `${roleAdded.length ? `\`\`\`css\n#ADDED\n${roleAdded.map((r) => r.name).join('\n')}\`\`\`` : `\`\`\`css\n#REMOVED\n${roleRemoved.map((r) => r.name).join('\n')}\`\`\``}` });
 			logChannel.send({ embeds: [embed] });
 
 			// Update UserData

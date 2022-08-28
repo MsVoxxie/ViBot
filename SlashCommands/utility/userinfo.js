@@ -24,8 +24,8 @@ module.exports = {
 			.setColor(settings.guildcolor)
 			.setAuthor({ name: `${member.user.tag}${member.user.bot ? ' - Bot' : ''}${member.id === bot.Owners[0] ? ' - Creator of Vi!' : ''}` })
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-			.addField('Nickname', member.nickname ? member.nickname : 'None', true)
-			.addField('Online State', bot.titleCase(member?.presence?.status ? member.presence.status : 'Offline'), true)
+			.addFields({ name: 'Nickname', value: member.nickname ? member.nickname : 'None', inline: true },
+			{ name: 'Online State', value: bot.titleCase(member?.presence?.status ? member.presence.status : 'Offline'), inline: true })
 			.setFooter({ text: `User ID» ${member.id}` });
 
 		//Specifics
@@ -37,19 +37,20 @@ module.exports = {
 
 				//Add details to the embed
 				embed
-					.addField('Birthday', dbMember.birthday ? moment(Number(dbMember.birthday)).format('MMMM Do') : 'Not Set!', true)
-					.addField('Commands Used', dbMember?.commandsused ? bot.toThousands(dbMember?.commandsused.toString()) : 'None, Yet!', true)
-					.addField('Total Messages', dbMember?.totalmessages ? bot.toThousands(dbMember?.totalmessages.toString()) : 'None, Yet!', true)
-					.addField('Current Level', `${dbMember?.level ? `Level ${dbMember?.level.toString()}` : 'Leveling Disabled'}`, true)
-					.addField('Joined Server', bot.relativeTimestamp(member.joinedAt), true)
-					.addField('Account Created', bot.relativeTimestamp(member.user.createdAt), true)
-					.addField('Account Badges', userBadges, true)
-					.addField('Roles',dbMember.userroles.length? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None', false);
+					.addFields(
+					{ name: 'Birthday', value: dbMember.birthday ? moment(Number(dbMember.birthday)).format('MMMM Do') : 'Not Set!', inline: true },
+					{ name: 'Commands Used', value: dbMember?.commandsused ? bot.toThousands(dbMember?.commandsused.toString()) : 'None, Yet!', inline: true },
+					{ name: 'Total Messages', value: dbMember?.totalmessages ? bot.toThousands(dbMember?.totalmessages.toString()) : 'None, Yet!', inline: true },
+					{ name: 'Current Level', value: `${dbMember?.level ? `Level ${dbMember?.level.toString()}` : 'Leveling Disabled'}`, inline: true },
+					{ name: 'Joined Server', value: bot.relativeTimestamp(member.joinedAt), inline: true },
+					{ name: 'Account Created', value: bot.relativeTimestamp(member.user.createdAt), inline: true },
+					{ name: 'Account Badges', value: userBadges, inline: false },
+					{ name: 'Roles', value: dbMember.userroles.length? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None',  inline: false })
 				if (currentGames?.length > 0) {
-					embed.addField('Currently Playing - ',currentGames.length > 0 ? `\`\`\`diff\n${currentGames}\`\`\`` : '```Not playing anything```',false);
+					embed.addFields({ name: 'Currently Playing - ', value: currentGames.length > 0 ? `\`\`\`diff\n${currentGames}\`\`\`` : '```Not playing anything```', inline: false })
 				}
 				if (member.presence?.activities.find((a) => a.type === 'CUSTOM')) {
-					embed.addField('Custom Status',member.presence.activities.find((a) => a.type === 'CUSTOM') ? `\`\`\`fix\n${member.presence.activities.find((a) => a.type === 'CUSTOM').state}\`\`\`` : '```No custom status set```', false);
+					embed.addFields({ name: 'Custom Status', value: member.presence.activities.find((a) => a.type === 'CUSTOM') ? `\`\`\`fix\n${member.presence.activities.find((a) => a.type === 'CUSTOM').state}\`\`\`` : '```No custom status set```',  inline: false })
 				}
 			} catch (error) {
 				console.log(error);
@@ -61,11 +62,12 @@ module.exports = {
 
 				//Add details to the embed
 				embed
-					.addField('Commands Executed', dbMember?.totalmessages ? bot.toThousands(dbMember?.totalmessages.toString()) : 'None, Yet!', true)
-					.addField('I was Created', bot.relativeTimestamp(member.user.createdAt), true)
-					.addField('Joined Server', bot.relativeTimestamp(member.joinedAt), true)
-					.addField('Thanks, Vi!', `💕 ${viData.totalthanks}`, true)
-					.addField('Roles',dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None', false);
+					.addFields(
+					{ name: 'Commands Executed', value: dbMember?.totalmessages ? bot.toThousands(dbMember?.totalmessages.toString()) : 'None, Yet!', inline: true },
+					{ name: 'I was Created', value: bot.relativeTimestamp(member.user.createdAt), inline: true },
+					{ name: 'Joined Server', value: bot.relativeTimestamp(member.joinedAt), inline: true },
+					{ name: 'Thanks, Vi!', value: `💕 ${viData.totalthanks}`, inline: true },
+					{ name: 'Roles', value: dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None', finline: true })
 			} catch (error) {
 				console.log(error);
 			}

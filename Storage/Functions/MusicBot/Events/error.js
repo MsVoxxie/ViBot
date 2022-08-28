@@ -42,7 +42,7 @@ module.exports = async (bot, queue, error, message, ...args) => {
 			embed
 				.setTitle('__**Error!**__')
 				.setColor('#a83232')
-				.addField('⚠️ Error»', `\`\`\`Javascript\n${error}\`\`\``, false)
+				.addFields({ name: '⚠️ Error»', value: `\`\`\`Javascript\n${error}\`\`\``, inline: false })
 				.setFooter({ text: bot.Timestamp(Date.now()) });
 			msg.channel.send({ embeds: [embed] }).then((s) => {
 				if (settings.prune) setTimeout(() => s.delete(), 60 * 1000);

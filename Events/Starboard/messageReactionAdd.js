@@ -36,10 +36,16 @@ module.exports = {
 		const ReactLimit = 3;
 		const starCount = await message.reactions.cache.get('⭐').count;
 
-		//get starchannel
+		//Get starchannel
 		const starChannelID = await settings.starchannel;
 		const starChannel = await message.guild.channels.cache.get(starChannelID);
+
+		//If star channel is not valid, return
 		if (!starChannel) return;
+
+		//If the channels have differing nsfw ratings, return.
+		if(starChannel.nsfw !== message.channel.nsfw) return;
+
 
 		//Check if message is already starred
 		const ExistingStar = await Starboard.findOne({ guildid: message.guild.id, messageid: message.id });

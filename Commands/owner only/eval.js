@@ -55,8 +55,7 @@ module.exports = {
 				.setAuthor({ name: message.member.displayName })
 				.setTitle('__**Success!**__')
 				.setColor('#32a852')
-				.addField('📥 Input:', `\`\`\`Javascript\n${code}\`\`\`\n`, false)
-				.addField('📤 Output:', `\`\`\`Javascript\n${clean(evaled)}\`\`\``, false)
+				.addFields({ name: '📥 Input:', value: `\`\`\`Javascript\n${code}\`\`\`\n`, inline: false }, { name: '📤 Output:', value: `\`\`\`Javascript\n${clean(evaled)}\`\`\``, inline: false})
 				// .addField('Async', `\`\`\`Javascript\n${wrapLines}\n${awaitString}\n${wrapLines}\`\`\``, false) // This feels a bit overkill.
 				.setFooter({ text: `Async: ${wasAsync} • Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms` });
 			message.channel.send({ embeds: [codeEmbed] });
@@ -66,8 +65,7 @@ module.exports = {
 				.setAuthor({ name: message.member.displayName })
 				.setTitle('__**Failed!**__')
 				.setColor('#a83232')
-				.addField('📥 Input:', `\`\`\`Javascript\n${code}\`\`\`\n`, false)
-				.addField('📤 Output:', `\`\`\`Javascript\n${clean(err)}\`\`\``, false)
+				.addFields({ name: '📥 Input:', value: `\`\`\`Javascript\n${code}\`\`\`\n`, inline: false }, { name: '📤 Output:', value: `\`\`\`Javascript\n${clean(evaled)}\`\`\``, inline: false})
 				.setFooter({ text: `Async: ${wasAsync} • Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s` : ''}${hrDiff[1] / 1000000}ms` });
 			message.channel.send({ embeds: [failedEmbed] });
 		}

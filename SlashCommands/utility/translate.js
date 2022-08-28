@@ -91,8 +91,8 @@ module.exports = {
 					name: `Translated by DeepL`,
 					iconURL: 'https://is3-ssl.mzstatic.com/image/thumb/Purple115/v4/97/e4/99/97e49907-7fdf-57c9-ee01-3b20d055a875/source/512x512bb.jpg',
 				})
-				.addField(`📥 Input» ${response.detected_source_language}`, `\`\`\`\n${text}\`\`\`\n`, false)
-				.addField(`📤 Output» ${lang}`, `\`\`\`\n${response.text}\`\`\``, false);
+				.addFields({ name: `📥 Input» ${response.detected_source_language}`, value: `\`\`\`\n${text}\`\`\`\n`, inline: false },
+				{ name: `📤 Output» ${lang}`, value: `\`\`\`\n${response.text}\`\`\``, inline: false });
 			interaction.reply({ embeds: [embed] });
 		});
 	},

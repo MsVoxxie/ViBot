@@ -48,17 +48,7 @@ module.exports = {
 				.setDescription(
 					`Command Prefix» ${settings.prefix}\nFor more details use» \`${settings.prefix}help <command>\`\n${Vimotes['ERROR']} Represents a Disabled Module.\n🔒 Represents a Locked Command.\n${Vimotes['CHANGED']} Represents a command converted into Slash (/).\n\n**${Cap}**`
 				)
-				.addField(
-					`${settings.disabledModules.includes(Cat) ? `${Vimotes['ERROR']}${Cap}` : Cap} [${dir.size}] »`,
-					dir
-						.map(
-							(command) =>
-								`${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** » ${
-									command.description ? command.description : ''
-								}`
-						)
-						.join('\n')
-				)
+				.addFields({ name: `${settings.disabledModules.includes(Cat) ? `${Vimotes['ERROR']}${Cap}` : Cap} [${dir.size}] »`, value: dir.map((command) =>`${command.ownerOnly ? '🔒' : ''}${command.converted ? `${Vimotes['CHANGED']}` : ''}**${command.name}** » ${command.description ? command.description : ''}`).join('\n') })
 				.setColor(settings.guildcolor);
 
 			embeds.push(embed);

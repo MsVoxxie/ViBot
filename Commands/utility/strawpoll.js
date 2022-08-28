@@ -31,7 +31,7 @@ module.exports = {
 
 		await embMessage.channel.awaitMessages(filter, { max: 1, time: 360 * 1000, errors: ['time'] }).then(async (col) => {
 			Title = col.first().cleanContent;
-			embed.addField('**Title»**', Title, true);
+			embed.addFields({ name: '**Title»**', value: Title, inline: true });
 			await embMessage.edit({ embeds: [embed] });
 			MsgsToDelete.push(col.first());
 		});
@@ -46,7 +46,7 @@ module.exports = {
 				MsgsToDelete.push(msg);
 			} else {
 				Options.push(msg.cleanContent);
-				embed.addField('**Options»**', msg.cleanContent, false);
+				embed.addFields({ name: '**Options»**', value: msg.cleanContent, inline: false });
 				await embMessage.edit({ embeds: [embed] });
 				MsgsToDelete.push(msg);
 			}

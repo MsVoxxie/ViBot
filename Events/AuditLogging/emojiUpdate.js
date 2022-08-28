@@ -30,8 +30,7 @@ module.exports = {
         .setTitle('Emoji Updated')
         .setThumbnail(newEmoji.url)
         .setDescription(`**Updated»** <t:${Math.round(Date.now() / 1000)}:R>\n**Updated by»** ${EmojiData ? `<@${EmojiData.executor.id}>` : 'Unknown'}`)
-        .addField('Old Emoji', `**Old Name»** ${oldEmoji.name}`)
-        .addField('Updated Emoji', `**New Name»** ${newEmoji.name}`)
+        .addFields({ name: 'Old Emoji', value: `**Old Name»** ${oldEmoji.name}` }, { name: 'Updated Emoji', value: `**New Name»** ${newEmoji.name}` })
         .setFooter({ text: `Emoji ID» ${oldEmoji.id}` })
         .setColor(settings.guildcolor);
 

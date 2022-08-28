@@ -69,8 +69,7 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setTitle(response.name)
 				.setURL(`${wiki_url}${item_name}`)
-				.addField('Quantity / Price', Data.map((i) => i.price).join('\n'), true)
-				.addField('Total Price', Data.map((i) => i.total).join('\n'), true)
+				.addFields({ name: 'Quantity / Price', value: Data.map((i) => i.price).join('\n'), inline: true }, { name: 'Total Price',  value: Data.map((i) => i.total).join('\n'), inline: true })
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
 				.setFooter({ text: `• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']} •` });

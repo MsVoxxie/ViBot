@@ -36,7 +36,7 @@ module.exports = {
 				//Get the moderator who warned the user
 				const moderator = await message.guild.members.fetch(warning.moderator);
 				//Add Fields
-				listEmbed.addField(`${counter} | Moderator: ${moderator.user.tag}`,`**Nickname:** ${warning.usernick}\n**Reason:** ${warning.reason}\n**Date:** ${bot.Timestamp(warning.date)}\n**Warning ID:** ${warning.warningid}`);
+				listEmbed.addFields({ name: `${counter} | Moderator: ${moderator.user.tag}`, value: `**Nickname:** ${warning.usernick}\n**Reason:** ${warning.reason}\n**Date:** ${bot.Timestamp(warning.date)}\n**Warning ID:** ${warning.warningid}` });
 			}
 
 			//Send Embed
@@ -56,7 +56,7 @@ module.exports = {
 			//Setup Embed
 			const singleEmbed = new MessageEmbed().setColor(settings.guildcolor)
             .setAuthor({ name: `Warning for ${member.user.tag}`, iconURL: member.displayAvatarURL({ dynamic: true }) })
-            .addField(`Moderator: ${moderator.user.tag}`,`**Nickname:** ${userWarning[0].usernick}\n**Reason:** ${userWarning[0].reason}\n**Date:** ${bot.Timestamp(userWarning[0].date)}\n**Warning ID:** ${userWarning[0].warningid}`);
+            .addFields( { name: `Moderator: ${moderator.user.tag}`, value: `**Nickname:** ${userWarning[0].usernick}\n**Reason:** ${userWarning[0].reason}\n**Date:** ${bot.Timestamp(userWarning[0].date)}\n**Warning ID:** ${userWarning[0].warningid}` });
 
 			//Send Embed
 			await message.channel.send({ embeds: [singleEmbed] });
