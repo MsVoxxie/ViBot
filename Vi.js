@@ -86,7 +86,7 @@ bot.Music.on('error', (queue, error) => {
 bot.Debug = false;
 bot.login(Token);
 
-//Birthday Check
+//Every 8 Hours
 cron.schedule('0 8 * * *', () => {
 	bot.checkBirthdays();
 });

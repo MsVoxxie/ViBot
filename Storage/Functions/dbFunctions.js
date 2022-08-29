@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 require('moment-duration-format');
 const { MessageEmbed } = require('discord.js');
-const { BotData, Guild, Levelroles, TwitchWatch, userData } = require('../Database/models');
+const { BotData, Guild, Levelroles, TwitchWatch, userData, Starboard } = require('../Database/models');
 
 module.exports = (bot) => {
 	// Get Guild Settings
@@ -227,4 +227,9 @@ module.exports = (bot) => {
 			}
 		);
 	};
+
+	//Clear Failed Stars
+	bot.pruneStarboard = async () => {
+		await Starboard.deleteMany({ starred: false }).then(() => console.log('Starboard Pruned.'))
+	}
 };
