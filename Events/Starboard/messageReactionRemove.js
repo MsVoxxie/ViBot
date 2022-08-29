@@ -14,13 +14,14 @@ module.exports = {
 		const message = await reaction.message;
 		const settings = await bot.getGuild(message.guild);
 		const StarColor = '#eba834';
+		const ReactLimit = 3;
 		let embeds = [];
 		let StarData;
 		let type;
 
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		// if (message.author.id === user.id) return;
+		if (message.author.id === user.id) return;
 		if (message.author.bot) return;
 
 		//Random Star!
@@ -28,7 +29,6 @@ module.exports = {
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 3;
 		const starCount = await message.reactions.cache.get('⭐')?.count || 0;
 
 		//get starchannel

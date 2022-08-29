@@ -15,6 +15,7 @@ module.exports = {
 		const settings = await bot.getGuild(message.guild);
 		const Buttons = new MessageActionRow();
 		const StarColor = '#eba834';
+		const ReactLimit = 3;
 		let embeds = [];
 		let attachment;
 		let StarData;
@@ -25,15 +26,16 @@ module.exports = {
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
 		if (message.author.id === user.id) {
-			// await message.reactions.cache.first().users.remove(user.id);
+			await message.reactions.cache.first().users.remove(user.id);
 		}
+
+		console.log('star')
 
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const ReactLimit = 3;
 		const starCount = await message.reactions.cache.get('⭐').count;
 
 		//Get starchannel
@@ -97,7 +99,7 @@ module.exports = {
 						const embed = new MessageEmbed()
 							.setColor(StarColor)
 							.setURL(message.url)
-							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 							.setImage(photo)
 							.setTimestamp()
@@ -110,7 +112,7 @@ module.exports = {
 						.setTitle(mediaData.tweetData.user.name)
 						.setURL(mediaData.tweetData.tweet.url)
 						.setThumbnail(mediaData.tweetData.user.profile_image_url)
-						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\nStarred» ${bot.relativeTimestamp(Date.now())}`)
 						.setTimestamp()
 						.setColor(settings.guildcolor);
 					attachment = new MessageAttachment(mediaData.tweetData.tweet.video_url, `media.mp4`);
@@ -125,7 +127,7 @@ module.exports = {
 				const embed = new MessageEmbed()
 					.setColor(StarColor)
 					.setURL(message.url)
-					.setDescription(`${message.content}`)
+					.setDescription(`${message.content}${mediaData.embeds.length ? `\n\n${mediaData.embeds?.[0].description}` : ''}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 					.setTimestamp()
 					.setFooter({ text: `MessageID: ${message.id}` });
@@ -143,7 +145,7 @@ module.exports = {
 					const embed = new MessageEmbed()
 						.setColor(StarColor)
 						.setURL(message.url)
-						.setDescription(`${message.content}`)
+						.setDescription(`${message.content}${mediaData.embeds.length ? `\n\n${mediaData.embeds?.[0].description}` : ''}`)
 						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 						.setImage(media)
 						.setTimestamp()
@@ -157,8 +159,9 @@ module.exports = {
 			default: {
 				const embed = new MessageEmbed()
 					.setColor(StarColor)
-					.setDescription(`${message.content}`)
+					.setDescription(`${message.content}${mediaData.embeds.length ? `\n\n${mediaData.embeds?.[0].description}` : ''}`)
 					.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+					.setTimestamp()
 					.setFooter({ text: `MessageID: ${message.id}` });
 				embeds.push(embed);
 				break;

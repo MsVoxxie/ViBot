@@ -29,11 +29,13 @@ module.exports = {
 		const member = await message.member;
 
 		//Increase messages sent.
-		await userData.findOneAndUpdate(
-			{ guildid: message.guild.id, userid: message.author.id },
-			{ $inc: { totalmessages: 1 } },
-			{ upsert: true, new: true }
-		);
+		if (message.guild && message.author) {
+			await userData.findOneAndUpdate(
+				{ guildid: message.guild.id, userid: message.author.id },
+				{ $inc: { totalmessages: 1 } },
+				{ upsert: true, new: true }
+			);
+		}
 
 		//Bots cant execute commands.
 		if (message.author.bot) return;
