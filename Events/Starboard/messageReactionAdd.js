@@ -29,8 +29,6 @@ module.exports = {
 			await message.reactions.cache.first().users.remove(user.id);
 		}
 
-		console.log('star')
-
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
@@ -46,8 +44,7 @@ module.exports = {
 		if (!starChannel) return;
 
 		//If the channels have differing nsfw ratings, return.
-		if(starChannel.nsfw !== message.channel.nsfw) return;
-
+		if (message.channel.nsfw && !starChannel.nsfw) return;
 
 		//Check if message is already starred
 		const ExistingStar = await Starboard.findOne({ guildid: message.guild.id, messageid: message.id });
