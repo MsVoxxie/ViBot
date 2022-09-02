@@ -139,7 +139,12 @@ async function sendTweets(funcData) {
 		const tweetData = await bot.getTweet(Match);
 
 		//Send Method
-		const sendMethod = (data) => (lastMessage !== null ? lastMessage.reply(data) : message.channel.send(data));
+		const sendMethod = async (data) => {
+			const msgRef = await bot.getReference(message);
+			if (lastMessage !== null) return lastMessage.reply(data);
+			if (msgRef) return msgRef.reply(data);
+			if (!msgRef) return message.channel.send(data);
+		}
 
 		//Make the lines pretty :)
 		const intData = `♥️ [${bot.toThousands(tweetData.tweet.likes)}] 🔃 [${bot.toThousands(tweetData.tweet.retweets)}]`;

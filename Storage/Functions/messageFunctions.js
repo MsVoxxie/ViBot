@@ -1,4 +1,10 @@
 module.exports = (bot) => {
+	bot.getReference = async (message) => {
+		if (!message || !message.reference) return false;
+		const reference = await message.channel.messages.fetch(message.reference.messageId);
+		return reference;
+	};
+
 	//Check for Media
 	bot.hasMedia = async (message) => {
 		let images = [];
@@ -39,19 +45,18 @@ module.exports = (bot) => {
 					message.embeds.map((emb) => {
 						console.log(emb);
 						// Embed description
-						if(emb.description) {
+						if (emb.description) {
 							embeds.push({ description: emb.description });
 						}
 
 						// Embed Image
-						if(emb.image) {
+						if (emb.image) {
 							images.push(emb.image.url);
 						}
-					})
+					});
 				}
 			}
 		}
-		console.log({ images, videos, embeds, tweetData });
 		return { images: images, videos: videos, embeds: embeds, tweetData: tweetData };
 	};
 };

@@ -61,13 +61,13 @@
 		"node-cron": "^3.0.0",
 		"node-fetch": "^2.6.6",
 		"openai": "^3.0.0",
-		"play-dl": "^1.2.5",
+		"play-dl": "^1.9.5",
 		"querystring": "^0.2.1",
 		"request": "^2.88.2",
 		"sagiri": "^3.1.1",
 		"twit": "^2.2.4",
 		"twitter-api-v2": "^1.12.3",
 		"word-definition": "^2.1.6",
-		"ytdl-core": "^4.11.0"
+		"ytdl-core": "^4.11.1"
 	}
 }
