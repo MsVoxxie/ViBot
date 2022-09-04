@@ -17,7 +17,7 @@ module.exports = {
 		//Calculate needed xp
 		const getNeededXP = (level) => level * level * 50;
 
-		switch (args[0]) {
+		switch (args.join(' ')) {
 			case 'global': {
 				//GetMember
 				let Getmember = (await message.mentions.members.first()) || (await message.member);
@@ -49,7 +49,7 @@ module.exports = {
 
 			case 'top': {
 				//Get users of guild
-				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(10).lean();
+				const users = await userData.find({}).sort({ level: -1, xp: -1 }).limit(10).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -59,15 +59,41 @@ module.exports = {
 				}
 
 				//Get top 5 of guild
-				const guildTop = users.sort((a, b) => b.level - a.level).slice(0, 10);
+				const globalTop = users.sort((a, b) => b.level - a.level).slice(0, 10);
 
 				const embed = new MessageEmbed()
 					.setAuthor({ name: `${message.guild.name}'s Top 10 Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
 					.addFields(
-						{ name: 'Guild Member', value: guildTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), inline: true },
-						{ name: 'Guild Rank', value: guildTop.map((m) => `# ${m.rank}`).join('\n'), inline: true });
+						{ name: 'Guild Member', value: globalTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), inline: true },
+						{ name: 'Guild Rank', value: globalTop.map((m) => `# ${m.rank}`).join('\n'), inline: true }
+					);
+				await message.channel.send({ embeds: [embed] });
+				break;
+			}
+
+			case 'global top': {
+				//Get users of guild
+				const users = await userData.find({}).sort({ level: -1, xp: -1 }).limit(10).lean();
+				if (!users) return;
+
+				let i = 0;
+				for await (const user of users) {
+					i++;
+					user.rank = i;
+				}
+
+				//Get top 5 of guild
+				const globalTop = users.sort((a, b) => b.level - a.level).slice(0, 10);
+
+				const embed = new MessageEmbed()
+					.setAuthor({ name: `Top 10 Global Members` })
+					.setColor(settings.guildcolor)
+					.addFields(
+						{ name: 'Guild Member', value: globalTop.map((m) => `${m.guildid === message.guild.id ? `<@${m.userid}>` : 'Not in Guild'} | Level» ${m.level}`).join('\n'), inline: true },
+						{ name: 'Guild Rank', value: globalTop.map((m) => `# ${m.rank}`).join('\n'), inline: true }
+					);
 				await message.channel.send({ embeds: [embed] });
 				break;
 			}
