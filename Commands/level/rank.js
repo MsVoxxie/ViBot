@@ -49,7 +49,7 @@ module.exports = {
 
 			case 'top': {
 				//Get users of guild
-				const users = await userData.find({}).sort({ level: -1, xp: -1 }).limit(10).lean();
+				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(10).lean();
 				if (!users) return;
 
 				let i = 0;
