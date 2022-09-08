@@ -1,4 +1,4 @@
-const { Starboard } = require('../../Storage/Database/models/');
+const { Starboard, userData } = require('../../Storage/Database/models/');
 const { MessageEmbed, MessageAttachment, MessageButton, MessageActionRow } = require('discord.js');
 
 module.exports = {
@@ -23,9 +23,13 @@ module.exports = {
 		let type;
 		let sm;
 
+		//Get User
+		const starringUser = await userData.findOne({ guildid: message.guild.id, userid: user.id });
+
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
-		if (message.author.id === user.id) {
+		if (message.author.bot) return;
+		if (message.author.id === user.id && starringUser.level < 10) {
 			await message.reactions.cache.first().users.remove(user.id);
 		}
 
