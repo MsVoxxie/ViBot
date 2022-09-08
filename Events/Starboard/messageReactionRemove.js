@@ -1,4 +1,4 @@
-const { Starboard } = require('../../Storage/Database/models/');
+const { Starboard, userData } = require('../../Storage/Database/models/');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 
 module.exports = {
@@ -25,9 +25,7 @@ module.exports = {
 		//Checks
 		if (reaction.emoji.name !== '⭐') return;
 		if (message.author.bot) return;
-		if (message.author.id === user.id && starringUser.level < 10) {
-			await message.reactions.cache.first().users.remove(user.id);
-		}
+		if (message.author.id === user.id && starringUser.level < 10) return;
 
 		//Random Star!
 		const starEmojis = ['💫', '⭐', '🌟', '✨'];
