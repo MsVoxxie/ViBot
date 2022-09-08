@@ -73,6 +73,24 @@ module.exports = {
 				break;
 			}
 
+			case 'average': {
+				//get users of guild
+				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).lean();
+				if(!users) return;
+
+				//Get average
+				const levels = users.map((u) => u.level).filter((i) => i != null);
+				const average = await bot.getAverage(levels);
+
+				const embed = new MessageEmbed()
+					.setAuthor({ name: `${message.guild.name}'s Average Level` })
+					.setColor(settings.guildcolor)
+					.setThumbnail(message.guild.iconURL({ dynamic: true }))
+					.setDescription(`**Guild Average»** ${Math.floor(average)}`)
+				await message.channel.send({ embeds: [embed] });
+				break;
+			}
+
 			case 'global top': {
 				//Get users of guild
 				const users = await userData.find({}).sort({ level: -1, xp: -1 }).limit(10).lean();

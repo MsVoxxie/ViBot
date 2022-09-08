@@ -11,6 +11,8 @@ module.exports = (bot) => {
 		});
 	};
 
+	bot.getAverage = (array) => array.reduce((a, b) => a + b) / array.length;
+
 	//BottomText
 	bot.isBottomText = (message) => {
 		if (deJunk.isJunk(message.content) && !message.mentions.members.size && !message.mentions.channels.size && !message.mentions.roles.size)
