@@ -132,7 +132,6 @@ module.exports = {
 				if (embedList.length) {
 					await embedList.edit({ content: '**«Collection Stopped»**', components: [] });
 				}
-				message?.delete();
 			});
 		} catch (error) {
 			console.error(error);
