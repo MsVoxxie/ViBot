@@ -43,7 +43,6 @@ module.exports = (bot) => {
 				// Check for Embeds
 				if (message.embeds.length > 0) {
 					message.embeds.map((emb) => {
-						console.log(emb);
 						// Embed description
 						if (emb.description) {
 							embeds.push({ description: emb.description });
