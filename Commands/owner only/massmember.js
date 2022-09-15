@@ -17,8 +17,6 @@ module.exports = {
 			const guild = g[1];
 			const members = await guild.members.fetch();
 			for await (const m of members) {
-				const member = m[1];
-				//Do Stuff
 			}
 		}
 	},

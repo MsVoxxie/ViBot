@@ -16,6 +16,7 @@ module.exports = {
 	async execute(bot, message, args, settings) {
 		//Calculate needed xp
 		const getNeededXP = (level) => level * level * 50;
+		const TOPCOUNT = 10;
 
 		switch (args.join(' ')) {
 			case 'global': {
@@ -49,7 +50,7 @@ module.exports = {
 
 			case 'top': {
 				//Get users of guild
-				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(10).lean();
+				const users = await userData.find({ guildid: message.guild.id }).sort({ level: -1, xp: -1 }).limit(TOPCOUNT).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -59,15 +60,15 @@ module.exports = {
 				}
 
 				//Get top 5 of guild
-				const globalTop = users.sort((a, b) => b.level - a.level).slice(0, 10);
+				const guildTop = users.sort((a, b) => b.level - a.level).slice(0, TOPCOUNT);
 
 				const embed = new MessageEmbed()
-					.setAuthor({ name: `${message.guild.name}'s Top 10 Members` })
+					.setAuthor({ name: `${message.guild.name}'s Top ${TOPCOUNT} Members` })
 					.setColor(settings.guildcolor)
 					.setThumbnail(message.guild.iconURL({ dynamic: true }))
 					.addFields(
-						{ name: 'Guild Member', value: globalTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), inline: true },
-						{ name: 'Guild Rank', value: globalTop.map((m) => `# ${m.rank}`).join('\n'), inline: true }
+						{ name: 'Guild Member', value: guildTop.map((m) => `<@${m.userid}> | Level» ${m.level}`).join('\n'), inline: true },
+						{ name: 'Guild Rank', value: guildTop.map((m) => `# ${m.rank}`).join('\n'), inline: true }
 					);
 				await message.channel.send({ embeds: [embed] });
 				break;
@@ -93,7 +94,7 @@ module.exports = {
 
 			case 'global top': {
 				//Get users of guild
-				const users = await userData.find({}).sort({ level: -1, xp: -1 }).limit(10).lean();
+				const users = await userData.find({}).sort({ level: -1, xp: -1 }).limit(TOPCOUNT).lean();
 				if (!users) return;
 
 				let i = 0;
@@ -103,10 +104,10 @@ module.exports = {
 				}
 
 				//Get top 5 of guild
-				const globalTop = users.sort((a, b) => b.level - a.level).slice(0, 10);
+				const globalTop = users.sort((a, b) => b.level - a.level).slice(0, TOPCOUNT);
 
 				const embed = new MessageEmbed()
-					.setAuthor({ name: `Top 10 Global Members` })
+					.setAuthor({ name: `Top ${TOPCOUNT} Global Members` })
 					.setColor(settings.guildcolor)
 					.addFields(
 						{ name: 'Guild Member', value: globalTop.map((m) => `${m.guildid === message.guild.id ? `<@${m.userid}>` : 'Not in Guild'} | Level» ${m.level}`).join('\n'), inline: true },
@@ -140,7 +141,7 @@ module.exports = {
 					.setColor(settings.guildcolor)
 					.setThumbnail(member.displayAvatarURL({ dynamic: true }))
 					.setDescription(`**Guild Rank»** #${me.rank}\n**Current Level»** ${me.level}`)
-					.setFooter({ text: `• Next Level» ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
+					.setFooter({ text: `• Next Level» ${Math.round(bot.percentage(me.xp, getNeededXP(me.level)))}% | ${bot.toThousands(me.xp)}/${bot.toThousands(getNeededXP(me.level))} •` });
 				await message.channel.send({ embeds: [embed] });
 			}
 		}

@@ -86,11 +86,12 @@ module.exports = {
 				userid: getMember.id,
 				joinedat: getMember.joinedAt,
 				receivedm: true,
+				userpresent: true,
 				bottomcount: 0,
 				userroles: [],
 			});
 		} else {
-			const oldUser = await userData.findOneAndUpdate({ guildid: getMember.guild.id, userid: getMember.id }, { joinedat: Date.now() });
+			const oldUser = await userData.findOneAndUpdate({ guildid: getMember.guild.id, userid: getMember.id }, { joinedat: Date.now(), userpresent: true });
 			const userRoles = oldUser.userroles;
 			if (!userRoles.length) return;
 
@@ -120,7 +121,7 @@ module.exports = {
 			//Create Embed
 			const qembed = new MessageEmbed()
 				.setThumbnail(getMember.guild.iconURL({ dynamic: true }))
-				.setDescription(`Welcome back to ***${getMember.guild.name}***\n${getMember}!\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned»\n${addedRoles.map((r) => `» ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable»\n${failedRoles.map((r) => `» ${r.name}`).join('\n')}\`\`\``)
+				.setDescription(`Welcome back to ***${getMember.guild.name}***\nYou had some roles before, I have reassigned them for you.\n\`\`\`diff\n+ Assigned»\n${addedRoles.map((r) => `» ${r.name}`).join('\n')}\`\`\`\n\`\`\`diff\n- Unassignable»\n${failedRoles.map((r) => `» ${r.name}`).join('\n')}\`\`\``)
 				.setColor(settings.guildcolor);
 
 			//Send Message

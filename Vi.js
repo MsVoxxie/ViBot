@@ -68,7 +68,7 @@ bot.birthdayDefaults = require('./Storage/Database/models/birthdayDefaults');
 bot.twitchwatchDefaults = require('./Storage/Database/models/twitchwatchDefaults');
 
 // Declare myself as Owner of bot.
-bot.Owners = ['101789503634554880', '101790332437405696'];
+bot.Owners = ['101789503634554880', '101790332437405696', '145325597910892544'];
 
 // Init Loaders
 require('./Storage/Core/Context Loader.js')(bot);

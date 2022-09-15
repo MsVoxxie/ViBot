@@ -6,6 +6,11 @@ const userDataSchema = new mongoose.Schema({
 		required: true,
 		unique: true,
 	},
+	userpresent: {
+		type: Boolean,
+		default: true,
+		required: true,
+	},
 	userid: {
 		type: String,
 		required: true,

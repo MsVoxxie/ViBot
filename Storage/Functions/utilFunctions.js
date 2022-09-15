@@ -11,7 +11,13 @@ module.exports = (bot) => {
 		});
 	};
 
+	//Get average of array
 	bot.getAverage = (array) => array.reduce((a, b) => a + b) / array.length;
+
+	//Get Percentage
+	bot.percentage = (a, b) => {
+		return (a / b) * 100;
+	};
 
 	//BottomText
 	bot.isBottomText = (message) => {
