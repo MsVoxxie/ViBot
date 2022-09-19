@@ -16,6 +16,10 @@ const twitterSchema = new mongoose.Schema({
 		required: false,
 		unique: true,
 	},
+	redirect: {
+		type: String,
+		required: false,
+	},
 	type: {
 		type: Number,
 		required: true,

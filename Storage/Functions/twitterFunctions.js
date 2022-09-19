@@ -101,29 +101,32 @@ module.exports = async (bot) => {
 				const guild = g[1];
 				const settings = await bot.getGuild(guild);
 				const guildWatchList = await Twitter.find({ guildid: guild.id, twitterid: tweet.user.id_str }).lean();
+				
 				if (guildWatchList.length) {
 					if (tweet.user) {
 						const twitterchannel = await guild.channels.cache.get(settings.twitterchannel);
-						if (!twitterchannel) continue;
+						const redirectchannel = await guild.channels.cache.get(guildWatchList[0]?.redirect);
+						if (!twitterchannel && !redirectchannel) continue;
+						const channelToSend = redirectchannel ? redirectchannel : twitterchannel;
 
 						switch (guildWatchList[0].type) {
 							case 0: // All Tweets
 								const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
 								tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
-								await twitterchannel.send(tweetEmbed);
+								await channelToSend.send(tweetEmbed);
 								break;
 							case 1: // Text Only
 								if (tweet.text.length > 0 && !tweet.extended_entities) {
 									const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
 									tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
-									await twitterchannel.send(tweetEmbed);
+									await channelToSend.send(tweetEmbed);
 								}
 								break;
 							case 2: // Media Only
 								if (tweet.extended_entities) {
 									const tweetEmbed = await bot.embedTweet(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`, settings);
 									tweetEmbed.content = `**${tweet.user.screen_name}** Posted a new Tweet!`;
-									await twitterchannel.send(tweetEmbed);
+									await channelToSend.send(tweetEmbed);
 								}
 								break;
 						}

@@ -14,7 +14,8 @@ module.exports = {
 		.setName('addtwitter')
 		.setDescription('Add a Twitter account to the watchlist.')
 		.addStringOption((option) => option.setName('twitter_handle').setDescription('The Twitter handle to add').setRequired(true))
-		.addStringOption((option) => option.setName('type').setDescription('Type of tweets to watch for').addChoices({ name: 'All Tweets', value: '0' }).addChoices({ name: 'Text Only', value: '1' }).addChoices({ name: 'Media Only', value: '2' }).setRequired(true)),
+		.addStringOption((option) => option.setName('type').setDescription('Type of tweets to watch for').addChoices({ name: 'All Tweets', value: '0' }).addChoices({ name: 'Text Only', value: '1' }).addChoices({ name: 'Media Only', value: '2' }).setRequired(true))
+		.addChannelOption((option) => option.setName('redirect').setDescription('Optional channel to direct this account to. Leave blank to default to guild defined channel.').addChannelTypes(0).addChannelTypes(11).setRequired(false)),
 	options: {
 		ownerOnly: false,
 		userPerms: ['MANAGE_MESSAGES'],
@@ -24,6 +25,7 @@ module.exports = {
 		// Get Options
 		const twitter_handle = interaction.options.getString('twitter_handle');
 		const type = interaction.options.getString('type');
+		const redirect = interaction.options?.getChannel('redirect');
 
 		// Lookup the requested user
 		const User = await TwitterClient.v2.userByUsername(twitter_handle);
@@ -42,7 +44,7 @@ module.exports = {
 
 		// User Doesn't Exist, Create them
 		if (!existCheck) {
-			await Twitter.create({ guildid: intGuild.id, twitterid: User.data.id, type: Number(type) });
+			await Twitter.create({ guildid: intGuild.id, twitterid: User.data.id, type: Number(type), redirect: redirect?.id });
 			await bot.twitterStream();
 			return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Added \`${User.data.name}\` to the watchlist!`, }), ], ephemeral: true, });
 		}
