@@ -39,14 +39,14 @@ module.exports = {
 
 		//User Exists, Delete them
 		if (existCheck) {
-			return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} The user \`${User.data.name}\` is already on the watchlist!`, }), ], ephemeral: true, });
+			return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} The user \`${User.data.username}\` is already on the watchlist!`, }), ], ephemeral: true, });
 		}
 
 		// User Doesn't Exist, Create them
 		if (!existCheck) {
-			await Twitter.create({ guildid: intGuild.id, twitterid: User.data.id, type: Number(type), redirect: redirect?.id });
+			await Twitter.create({ guildid: intGuild.id, twittername: User.data.username, twitterid: User.data.id, type: Number(type), redirect: redirect?.id });
 			await bot.twitterStream();
-			return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Added \`${User.data.name}\` to the watchlist!`, }), ], ephemeral: true, });
+			return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Added \`${User.data.username}\` to the watchlist!`, }), ], ephemeral: true, });
 		}
 	},
 };

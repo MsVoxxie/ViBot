@@ -6,6 +6,10 @@ const twitterSchema = new mongoose.Schema({
 		required: true,
 		unique: true,
 	},
+	twittername: {
+		type: String,
+		required: true,
+	},
 	twitterid: {
 		type: String,
 		required: true,
