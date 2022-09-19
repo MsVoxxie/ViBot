@@ -31,8 +31,7 @@ module.exports = {
 			const redirectchannel = await intGuild.channels.cache.get(User.redirect);
 			if (!twitterchannel && !redirectchannel) continue;
 
-			let userName = User.twittername ? `[${User.twittername}](https://twitter.com/${User.twittername})` : await TwitterClient.v2.user(User.twitterid);
-			userName = typeof userName === 'string' || userName?.data ? `[${userName.data.username}](https://twitter.com/${userName.data.username})` : 'Suspended Account';
+			let userName = User.twittername ? `[${User.twittername}](https://twitter.com/${User.twittername})` : 'Unknown';
 			const Type = twitterTypes[User.type];
 			const Channel = redirectchannel ? redirectchannel : twitterchannel;
 
