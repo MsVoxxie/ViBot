@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Youtube } = require('../../Storage/Database/models');
+const { YoutubeLive } = require('../../Storage/Database/models');
 
 
 module.exports = {
@@ -8,7 +8,7 @@ data: new SlashCommandBuilder()
     .setDescription('Add a youtube channel to my watch list')
     .addStringOption((option) => option.setName('channel_url').setDescription('The full channel url eg; youtube.com/c/(or /channel/).').setRequired(true))
     .addStringOption((option) => option.setName('channel_name').setDescription('What should I call this channel? (This is Vanity)').setRequired(true))
-    .addChannelOption((option) => option.setName('redirect').setDescription('Optional channel to direct this account to. Leave blank to default to guild defined channel.').addChannelTypes(0).addChannelTypes(5).addChannelTypes(11).setRequired(false)),
+    .addChannelOption((option) => option.setName('redirect').setDescription('Optional channel to direct this channel to. Leave blank to default to guild defined channel.').addChannelTypes(0).addChannelTypes(5).addChannelTypes(11).setRequired(false)),
 
 options: {
     ownerOnly: false,
@@ -33,12 +33,12 @@ options: {
             channel_url = channel_url[channel_url.length - 1];
 
             // Check of they exist
-            const existCheck = await Youtube.exists({ guildid: intGuild.id, channelid: channel_url });
+            const existCheck = await YoutubeLive.exists({ guildid: intGuild.id, channelid: channel_url });
 
             // Channal exists, return
             if (existCheck) return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} The channel \`${vanity_name}\` is already on the watchlist!`, }), ], ephemeral: true, });
         
-            await Youtube.create({
+            await YoutubeLive.create({
                 guildid: intGuild.id,
                 channelid: channel_url,
                 channelname: vanity_name,

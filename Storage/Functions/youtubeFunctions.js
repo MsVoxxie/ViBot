@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
-const { Youtube } = require('../Database/models/');
+const { YoutubeLive } = require('../Database/models/');
 const { parse } = require('node-html-parser');
 const fetch = require('node-fetch');
 
@@ -11,7 +11,7 @@ module.exports = async (bot) => {
 		for await (const g of guilds) {
 			const guild = g[1];
 			const settings = await bot.getGuild(guild);
-			const watchedChannels = await Youtube.find({ guildid: guild.id });
+			const watchedChannels = await YoutubeLive.find({ guildid: guild.id });
 			if (!watchedChannels) continue;
 
 			// Loop watched channels
@@ -38,7 +38,7 @@ module.exports = async (bot) => {
                     const last = await channelToSend.send({ content: `${settings.twitchmention ? `${mentionMsg}\n${channelData.streamURL}` : `${streamMsg}\n${channelData.streamURL}`}`});
 				
                     // Update db
-					await Youtube.findOneAndUpdate(
+					await YoutubeLive.findOneAndUpdate(
 						{ guildid: guild.id, channelid: channel.channelid },
 						{ lastpost: Date.now(), lastmsg: last, live: true, },
                         { upsert: true, new: true});
@@ -49,7 +49,7 @@ module.exports = async (bot) => {
                     await lastPost.edit({content: `${channel.channelname} is now offline.`})
 
                     // Update db
-					await Youtube.findOneAndUpdate(
+					await YoutubeLive.findOneAndUpdate(
 						{ guildid: guild.id, channelid: channel.channelid },
 						{ lastpost: Date.now(), live: false, },
                         { upsert: true, new: true});

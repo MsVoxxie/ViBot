@@ -93,11 +93,11 @@ cron.schedule('0 8 * * *', () => {
 
 //Minute Interval
 setInterval(async () => {
-	//Twitch Check
-	await bot.twitchWatch();
-
 	//YoutubeLive
-	bot.youtubeLiveCheck();
+	await bot.youtubeLiveCheck();
+
+	//Twitch Check
+	await bot.twitchLiveCheck();
 
 	//Bot Data
 	await bot.updateBotData(bot);

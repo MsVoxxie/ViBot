@@ -8,6 +8,7 @@ module.exports = {
 	category: 'twitch',
 	args: true,
 	cooldown: 2,
+	converted: true,
 	hidden: false,
 	ownerOnly: true,
 	userPerms: [],

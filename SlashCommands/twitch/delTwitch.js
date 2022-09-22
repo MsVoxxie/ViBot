@@ -1,40 +1,40 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { YoutubeLive } = require('../../Storage/Database/models');
+const { TwitchLive } = require('../../Storage/Database/models');
 
 
 module.exports = {
-data: new SlashCommandBuilder()
-    .setName('delyoutube')
-    .setDescription('Remove a youtube channel from my watch list')
-    .addStringOption((option) => option.setName('channel_url').setDescription('The full channel url eg; youtube.com/c/(or /channel/).').setRequired(true)),
-options: {
-    ownerOnly: false,
-    userPerms: ['MANAGE_MESSAGES'],
-	botPerms: ['SEND_MESSAGES'],
-},
+    data: new SlashCommandBuilder()
+        .setName('deltwitch')
+        .setDescription('Remove a twitch channel from my watch list')
+        .addStringOption((option) => option.setName('twitch_url').setDescription('The full channel url eg; twitch.tv/namehere.').setRequired(true)),    
+    options: {
+        ownerOnly: false,
+        userPerms: ['MANAGE_MESSAGES'],
+        botPerms: ['SEND_MESSAGES'],
+    },
     async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
             // Get Options
-            let channel_url = interaction.options.getString('channel_url');
+            let twitch_url = interaction.options.getString('twitch_url');
 
             // Constants
-            const REGEX = /^https?:\/\/(www\.)?youtube\.com\/(channel\/UC[\w-]{21}[AQgw]|(c\/|user\/)?[\w-]+)$/;
+            const REGEX = /^(?:https?:\/\/)?(?:www\.|go\.)?twitch\.tv\/([a-z0-9_]+)($|\?)/i;
 
             // Check for valid url
-            const Match = channel_url.match(REGEX);
+            const Match = twitch_url.match(REGEX);
             if (!Match) return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} Invalid channel url.`, }), ], ephemeral: true, });
 
             // Channel URL Regex crap
-            channel_url = Match[0].split('/');
-            channel_url = channel_url[channel_url.length - 1];
+            twitch_url = Match[0].split('/');
+            twitch_url = twitch_url[twitch_url.length - 1];
 
             // Check of they exist
-            const existCheck = await YoutubeLive.exists({ guildid: intGuild.id, channelid: channel_url });
+            const existCheck = await TwitchLive.exists({ guildid: intGuild.id, twitchid: twitch_url });
 
             // Channal exists, return
             if (existCheck) {
-                await YoutubeLive.findOneAndDelete({
+                await TwitchLive.findOneAndDelete({
                     guildid: intGuild.id,
-                    channelid: channel_url,
+                    twitchid: twitch_url,
                 })
                 return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Removed channel from my watchlist!`, }), ], ephemeral: true, });
             }

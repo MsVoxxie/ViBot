@@ -1,4 +1,4 @@
-const { TwitchWatch } = require('../Database/models');
+const { TwitchLive } = require('../Database/models');
 const { TwitchClientID, TwitchAccessToken } = require('../Config/Config.json');
 const { MessageEmbed } = require('discord.js');
 const { ApiClient } = require('@twurple/api');
@@ -17,86 +17,84 @@ const randomNotif = [
 ];
 
 module.exports = (bot) => {
-	bot.twitchWatch = async () => {
-		await bot.guilds.cache.map(async (guild) => {
+	// Check Streams
+	bot.twitchLiveCheck = async () => {
+		// Get Every guilds watch list
+		const guilds = bot.guilds.cache;
+		for await (const g of guilds) {
+			const guild = g[1];
 			const settings = await bot.getGuild(guild);
-			const data = await TwitchWatch.findOne({ guildid: guild.id });
-			if (!data) return;
-			const TwitchChannels = data.twitchchannels;
-			const streamChannel = await guild.channels.cache.get(settings.twitchchannel);
-			if (!streamChannel) return;
-			if (!TwitchChannels) return;
+			const watchedChannels = await TwitchLive.find({ guildid: guild.id });
+			if (!watchedChannels) continue;
 
-			// Check if the channel is live
-			for await (const channel of TwitchChannels) {
-				const Update = TwitchChannels.find((ch) => ch.channelname === channel.channelname);
-				const randmsg = await randomNotif[Math.floor(Math.random() * randomNotif.length)];
-				const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.channelname);
-				const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.channelname);
-				let postMsg;
-				const Stream = await TwitchClient.streams.getStreamByUserName(channel.channelname);
+			// Loop watched channels
+			for await (const channel of watchedChannels) {
+				// Where should this be sent?
+				const steamchannel = await guild.channels.cache.get(settings.twitchchannel);
+				const redirectchannel = await guild.channels.cache.get(channel.redirect);
+				if (!steamchannel && !redirectchannel) continue;
+				const channelToSend = redirectchannel ? redirectchannel : steamchannel;
+
+				// Get Channel Data
+				const Stream = await TwitchClient.streams.getStreamByUserName(channel.twitchid);
+
 				if (Stream) {
-					try {
-						if (channel.postmessage) {
-							const checkMsg = await streamChannel.messages.fetch(channel.postmessage);
-							const streamMsg = await checkMsg.fetch(channel.postmessage);
-							if (streamMsg) {
-								await setEmbed(Stream, channel);
-								streamMsg.edit({ embeds: [embed] });
-							}
-						} else {
-							await setEmbed(Stream, channel);
-							postMsg = await streamChannel.send({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
+					// Configure Random Message
+					const randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
+					const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.twitchid);
+					const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.twitchid);
 
-							Update.postmessage = postMsg.id;
-							Update.lastpost = Date.now();
-							if (channel.offline === true) {
-								Update.offline = false;
-							}
+					if (!channel.live) {
+						console.log('0');
+						await setEmbed(Stream, channel);
+						const last = await channelToSend.send({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
 
-							await data.markModified('twitchchannels');
-							await data.save();
-						}
-					} catch (e) {
-						console.log(e);
-					}
-				} else {
-					try {
-						if (channel.offline === false) {
-							const checkMsg = await streamChannel.messages.fetch({ limit: 100 });
-							const streamMsg = await checkMsg.get(channel.postmessage);
-							setEmbedOffline(Stream, channel);
-							if (streamMsg) {
-								streamMsg.edit({ content: null, embeds: [offembed] }).then((s) => {
-									if (settings.prune) setTimeout(() => s.delete(), 60 * 60 * 1000);
-								});
-							}
-							Update.offline = true;
-						}
-						Update.postmessage = '';
-
-						await data.markModified('twitchchannels');
-						await data.save();
-					} catch (error) {
-						console.log(error);
+						// Update db
+						await TwitchLive.findOneAndUpdate(
+							{ guildid: guild.id, twitchid: channel.twitchid },
+							{ lastpost: Date.now(), lastmsg: last, live: true },
+							{ upsert: true, new: true }
+						);
+					} else {
+						console.log('1');
+						const lastPost = await channelToSend.messages.fetch(channel.lastmsg);
+						await setEmbed(Stream, channel);
+						await lastPost.edit({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] }).then((t) => {
+							console.log('Edited');
+						});
 					}
 				}
+
+				if (!Stream && channel.live) {
+					const lastPost = await channelToSend.messages.fetch(channel.lastmsg);
+					setEmbedOffline(Stream, channel);
+					await lastPost.edit({ content: null, embeds: [offembed] });
+
+					// Update db
+					await TwitchLive.findOneAndUpdate(
+						{ guildid: guild.id, twitchid: channel.twitchid },
+						{ lastpost: Date.now(), live: false },
+						{ upsert: true, new: true }
+					);
+				}
 			}
-		});
+		}
 	};
+
 	let embed;
 	async function setEmbed(stream, chan) {
 		embed = new MessageEmbed()
 			.setColor('#6441a4')
 			.setTitle(`${(await stream.getUser()).displayName}`)
-			.setURL(`https://www.twitch.tv/${chan.channelname}`)
-			// .setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
+			.setURL(`https://www.twitch.tv/${chan.twitchid}`)
+			// .setDescription(`[https://www.twitch.tv/${chan.twitchid}](https://www.twitch.tv/${chan.twitchid})`)
 			.setThumbnail((await stream.getUser()).profilePictureUrl)
 			.setImage(stream.thumbnailUrl.replace('{width}', 960).replace('{height}', 540))
 			.addFields(
-			{ name: 'Playing»', value: `${(await stream.getGame()).name}`, inline: true },
-			{ name: 'Current Viewers»', value: `${bot.toThousands(stream.viewers)}`, inline: true },
-			{ name: 'Live Since»', value: `${bot.relativeTimestamp(stream.startDate)}`, inline: false });
+				{ name: 'Playing»', value: `${(await stream.getGame()).name}`, inline: true },
+				{ name: 'Current Viewers»', value: `${bot.toThousands(stream.viewers)}`, inline: true },
+				{ name: 'Live Since»', value: `${bot.relativeTimestamp(stream.startDate)}`, inline: false }
+			);
 		return embed;
 	}
 
@@ -104,8 +102,8 @@ module.exports = (bot) => {
 	async function setEmbedOffline(stream, chan) {
 		offembed = new MessageEmbed()
 			.setColor('#303c42')
-			.setTitle(`${chan.channelname}'s stream has ended.`)
-			.setDescription(`[https://www.twitch.tv/${chan.channelname}](https://www.twitch.tv/${chan.channelname})`)
+			.setTitle(`${chan.twitchid}'s stream has ended.`)
+			.setDescription(`[https://www.twitch.tv/${chan.twitchid}](https://www.twitch.tv/${chan.twitchid})`)
 			.setThumbnail('https://cdn.iconscout.com/icon/free/png-256/social-190-96705.png');
 		//.setFooter({ text: `As of» ${bot.Timestamp(Date.now())}` });
 		return offembed;
