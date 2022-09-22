@@ -8,7 +8,7 @@ data: new SlashCommandBuilder()
     .setDescription('Add a youtube channel to my watch list')
     .addStringOption((option) => option.setName('channel_url').setDescription('The full channel url eg; youtube.com/c/(or /channel/).').setRequired(true))
     .addStringOption((option) => option.setName('channel_name').setDescription('What should I call this channel? (This is Vanity)').setRequired(true))
-    .addChannelOption((option) => option.setName('redirect').setDescription('Optional channel to direct this account to. Leave blank to default to guild defined channel.').addChannelTypes(0).addChannelTypes(11).setRequired(false)),
+    .addChannelOption((option) => option.setName('redirect').setDescription('Optional channel to direct this account to. Leave blank to default to guild defined channel.').addChannelTypes(0).addChannelTypes(5).addChannelTypes(11).setRequired(false)),
 
 options: {
     ownerOnly: false,
