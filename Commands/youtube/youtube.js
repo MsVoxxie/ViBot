@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['yt'],
 	description: 'Seach youtube for something!',
 	example: 'youtube Pizza Pasta',
-	category: 'utility',
+	category: 'youtube',
 	args: true,
 	cooldown: 25,
 	hidden: false,

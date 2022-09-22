@@ -96,6 +96,9 @@ setInterval(async () => {
 	//Twitch Check
 	await bot.twitchWatch();
 
+	//YoutubeLive
+	bot.youtubeLiveCheck();
+
 	//Bot Data
 	await bot.updateBotData(bot);
 

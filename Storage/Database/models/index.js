@@ -12,4 +12,5 @@ module.exports = {
 	Warning: require('./warnings'),
 	Invite: require('./invites'),
 	Twitter: require('./twitter'),
+	Youtube: require('./youtubelive'),
 };

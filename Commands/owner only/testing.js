@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { MessageEmbed, MessageAttachment, MessageActionRow, MessageSelectMenu } = require('discord.js');
 
 module.exports = {
 	name: 'test',
@@ -24,7 +24,68 @@ module.exports = {
 		// 	files: [attachment1, attachment2],
 		// 	embeds: [embed],
 		// });
-		const ref = await bot.getReference(message);
-		console.log(ref, ref.content);
+		const Choices = [];
+		const Aether = {
+			'[Aether] Adamantoise': 'Adamantoise',
+			'[Aether] Cactuar': 'Cactuar',
+			'[Aether] Faerie': 'Faerie',
+			'[Aether] Gilgamesh': 'Gilgamesh',
+			'[Aether] Jenova': 'Jenova',
+			'[Aether] Midgarsormr': 'Midgarsormr',
+			'[Aether] Sargatanas': 'Sargatanas',
+			'[Aether] Siren': 'Siren',
+		};
+		const Crystal = {
+			'[Crystal] Balmung': 'Balmung',
+			'[Crystal] Brynhildr': 'Brynhildr',
+			'[Crystal] Coeurl': 'Coeurl',
+			'[Crystal] Diabolos': 'Diabolos',
+			'[Crystal] Goblin': 'Goblin',
+			'[Crystal] Malboro': 'Malboro',
+			'[Crystal] Mateus': 'Mateus',
+			'[Crystal] Zalera': 'Zalera',
+		};
+		const Primal = {
+			'[Primal] Behemoth': 'Behemoth',
+			'[Primal] Excalibur': 'Excalibur',
+			'[Primal] Exodus': 'Exodus',
+			'[Primal] Famfrit': 'Famfrit',
+			'[Primal] Hyperion': 'Hyperion',
+			'[Primal] Lamia': 'Lamia',
+			'[Primal] Leviathan': 'Leviathan',
+			'[Primal] Ultros': 'Ultros',
+		};
+
+		let Selection;
+		const input = args.join(' ');
+		switch (input.toLowerCase()) {
+			case 'pether':
+				Selection = Aether;
+				break;
+			case 'crystal':
+				Selection = Crystal;
+				break;
+			case 'primal':
+				Selection = Primal;
+				break;
+			default:
+				Selection = Crystal;
+				break;
+		}
+
+		for await (const [k, v] of Object.entries(Selection)) {
+			Choices.push([
+				{
+					label: k,
+					value: v,
+				},
+			]);
+		}
+
+		const row = new MessageActionRow().addComponents(
+			new MessageSelectMenu().setCustomId('selector').setPlaceholder('Select your Location').addOptions(Choices)
+		);
+
+		await message.channel.send({ content: 'Test', components: [row] });
 	},
 };
