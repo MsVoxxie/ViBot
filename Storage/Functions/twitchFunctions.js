@@ -39,27 +39,27 @@ module.exports = (bot) => {
 				try {
 					const Stream = await TwitchClient.streams.getStreamByUserName(channel.twitchid);
 
-					if (Stream) {
-						// Configure Random Message
-						const randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
-						const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.twitchid);
-						const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.twitchid);
+					// Configure Random Message
+					const randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
+					const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.twitchid);
+					const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.twitchid);
 
-						if (!channel.live) {
-							await setEmbed(Stream, channel);
-							const last = await channelToSend.send({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
+					if (Stream && !channel.live) {
+						await setEmbed(Stream, channel);
+						const last = await channelToSend.send({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
 
-							// Update db
-							await TwitchLive.findOneAndUpdate(
-								{ guildid: guild.id, twitchid: channel.twitchid },
-								{ lastpost: Date.now(), lastmsg: last, live: true },
-								{ upsert: true, new: true }
-							);
-						} else {
-							const lastPost = await channelToSend.messages.fetch(channel.lastmsg);
-							await setEmbed(Stream, channel);
-							await lastPost.edit({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
-						}
+						// Update db
+						await TwitchLive.findOneAndUpdate(
+							{ guildid: guild.id, twitchid: channel.twitchid },
+							{ lastpost: Date.now(), lastmsg: last, live: true },
+							{ upsert: true, new: true }
+						);
+					}
+
+					if (Stream && channel.live) {
+						const lastPost = await channelToSend.messages.fetch(channel.lastmsg);
+						await setEmbed(Stream, channel);
+						await lastPost.edit({ content: `${settings.twitchmention ? mentionMsg : streamMsg}`, embeds: [embed] });
 					}
 
 					if (!Stream && channel.live) {
