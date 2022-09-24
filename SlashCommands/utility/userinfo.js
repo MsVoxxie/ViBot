@@ -67,7 +67,7 @@ module.exports = {
 					{ name: 'I was Created', value: bot.relativeTimestamp(member.user.createdAt), inline: true },
 					{ name: 'Joined Server', value: bot.relativeTimestamp(member.joinedAt), inline: true },
 					{ name: 'Thanks, Vi!', value: `💕 ${viData.totalthanks}`, inline: true },
-					{ name: 'Roles', value: dbMember.userroles.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None', finline: true })
+					{ name: 'Roles', value: dbMember?.userroles?.length ? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None', finline: true })
 			} catch (error) {
 				console.log(error);
 			}

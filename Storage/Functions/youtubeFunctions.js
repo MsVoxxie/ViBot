@@ -70,9 +70,9 @@ module.exports = async (bot) => {
 					text = await response.text();
 				}
 				const html = parse(text);
-				const canonicalURLTag = html.querySelector('link[rel=canonical]');
-				const canonicalURL = canonicalURLTag.getAttribute('href');
-				const isStreaming = canonicalURL.includes('/watch?v=');
+				const canonicalURLTag = html?.querySelector('link[rel=canonical]');
+				const canonicalURL = canonicalURLTag?.getAttribute('href');
+				const isStreaming = canonicalURL?.includes('/watch?v=');
 
 				resolve({
 					streamURL: canonicalURL,
