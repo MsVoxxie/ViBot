@@ -24,6 +24,14 @@ module.exports = async (bot) => {
 
                 // Get Channel Data
 				const channelData = await getLiveStatus(channel.channelid);
+
+				// If failed continue
+				if (channelData.failed) continue;
+
+				// If stream is live and channel live, continue
+				if (channelData.isStreaming && channel.live) continue;
+
+				// Stream Send
 				if (channelData.isStreaming && !channel.live) {
 
                     const randomNotif = [
@@ -79,7 +87,10 @@ module.exports = async (bot) => {
 					isStreaming,
 				});
 			} catch (error) {
-				reject(error);
+				reject({
+					err: error,
+					failed: true,
+				});
 			}
 		});
 	}
