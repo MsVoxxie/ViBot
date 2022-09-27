@@ -19,7 +19,7 @@ const bot = new Client({
 	partials: ['MESSAGE', 'REACTION'],
 	allowedMentions: {
 		repliedUser: false,
-		parse: ['roles', 'users', 'everyone'],
+		parse: ['roles', 'users'],
 	},
 });
 
