@@ -248,13 +248,21 @@ module.exports = (bot) => {
 	bot.updateMessageStatistics = async (message) => {
 		let baseWords = message.content.toLowerCase();
 		const AsciiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
-		const DiscordRegex = /(<a?)?:\w+:(\d{0,100}>)?/gi;
+		const URLRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+		const DiscordEmojiRegex = /(<a?)?:\w+:(\d{0,100}>)?/gi;
+		const DiscordRegex = /<(?:@[!&]?|#)\d+>/gi;
 
 		// Trim down any white spaces and clean string
-		baseWords = await baseWords.replace(DiscordRegex, '').replace(AsciiRegex, '');
+		baseWords = await baseWords
+			.replace(DiscordRegex, '')
+			.replace(DiscordEmojiRegex, '')
+			.replace(AsciiRegex, '')
+			.replace(URLRegex, '')
 		let splitWords = baseWords.split(/ +/);
 		splitWords.map((w) => w.trim());
 		splitWords = splitWords.filter((item) => item);
+
+		if (!splitWords.length) return;
 
 		console.log(splitWords);
 
