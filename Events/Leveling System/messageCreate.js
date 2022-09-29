@@ -25,8 +25,13 @@ module.exports = {
 		const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 		const xpadd = clamp(Math.round(Math.random() * message.content.length), 1, 100);
 		
-		//Check
+		// If its a command ignore it
 		if (bot.isCmdorAlias(message) === true) return;
+
+		// Message Stats
+		await bot.updateMessageStatistics(message);
+		
+		//Check for level channel
 		const levelChannel = await guild.channels.cache.get(settings.levelchannel);
 		if (!levelChannel) return;
 

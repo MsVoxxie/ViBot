@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { Statistics } = require('../../Storage/Database/models');
 
 module.exports = {
 	name: 'test',
@@ -13,79 +13,52 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-		// const URL = 'https://discord.com/assets/9f6f9cd156ce35e2d94c0e62e3eff462.png';
-		// const attachment1 = new MessageAttachment(URL, `media.mp4`);
-		// const attachment2 = new MessageAttachment(URL, `logo.png`);
+		let baseWords = message.content.toLowerCase();
+		const AsciiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+		const DiscordRegex = /(<a?)?:\w+:(\d{18}>)?/gi;
 
-		// const embed = new MessageEmbed().setImage(URL).setThumbnail(URL);
+		// Trim down any white spaces and clean string
+		baseWords = baseWords.replace(DiscordRegex, '').replace(AsciiRegex, '');
+		let splitWords = baseWords.split(/ +/);
+		splitWords.map((w) => w.trim());
+		splitWords = splitWords.filter(item => item);
+		console.log(splitWords);
 
-		// const msg = await message.channel.send({
-		// 	content: URL,
-		// 	files: [attachment1, attachment2],
-		// 	embeds: [embed],
-		// });
-		const Choices = [];
-		const Aether = {
-			'[Aether] Adamantoise': 'Adamantoise',
-			'[Aether] Cactuar': 'Cactuar',
-			'[Aether] Faerie': 'Faerie',
-			'[Aether] Gilgamesh': 'Gilgamesh',
-			'[Aether] Jenova': 'Jenova',
-			'[Aether] Midgarsormr': 'Midgarsormr',
-			'[Aether] Sargatanas': 'Sargatanas',
-			'[Aether] Siren': 'Siren',
-		};
-		const Crystal = {
-			'[Crystal] Balmung': 'Balmung',
-			'[Crystal] Brynhildr': 'Brynhildr',
-			'[Crystal] Coeurl': 'Coeurl',
-			'[Crystal] Diabolos': 'Diabolos',
-			'[Crystal] Goblin': 'Goblin',
-			'[Crystal] Malboro': 'Malboro',
-			'[Crystal] Mateus': 'Mateus',
-			'[Crystal] Zalera': 'Zalera',
-		};
-		const Primal = {
-			'[Primal] Behemoth': 'Behemoth',
-			'[Primal] Excalibur': 'Excalibur',
-			'[Primal] Exodus': 'Exodus',
-			'[Primal] Famfrit': 'Famfrit',
-			'[Primal] Hyperion': 'Hyperion',
-			'[Primal] Lamia': 'Lamia',
-			'[Primal] Leviathan': 'Leviathan',
-			'[Primal] Ultros': 'Ultros',
-		};
-
-		let Selection;
-		const input = args.join(' ');
-		switch (input.toLowerCase()) {
-			case 'pether':
-				Selection = Aether;
-				break;
-			case 'crystal':
-				Selection = Crystal;
-				break;
-			case 'primal':
-				Selection = Primal;
-				break;
-			default:
-				Selection = Crystal;
-				break;
+		return;
+		for await (const uWord of splitWords) {
+			let hasDoc = await Statistics.countDocuments({ guildid: message.guild.id, words: { $elemMatch: { word: uWord } } });
+			console.log(hasDoc);
+			if (hasDoc > 0) {
+				await Statistics.updateOne(
+					{ guildid: message.guild.id, words: { $elemMatch: { word: uWord } } },
+					{
+						guildid: message.guild.id,
+						$inc: { 'words.$.count': 1 },
+					}
+				);
+			} else {
+				hasDoc = await Statistics.countDocuments({ guildid: message.guild.id, words: [] });
+				if (hasDoc > 0) {
+					await Statistics.create({ guildid: message.guild.id, words: [] });
+				} else {
+					await Statistics.findOneAndUpdate(
+						{ guildid: message.guild.id },
+						{ $push: { words: { word: uWord, count: 1 } } },
+						{ upsert: true }
+					).then(() => {
+						console.log(`Saved: ${uWord}`);
+					});
+				}
+			}
+			// if (hasDoc > 0) {
+			// 	await Statistics.updateOne({ guildid: message.guild.id, uWord }, { $inc: { words: [{ count: 1 }] } });
+			// } else {
+			// 	await Statistics.findOneAndUpdate(
+			// 		{ guildid: message.guild.id, words: [{ word: uWord }] },
+			// 		{ $push: { words: [{ word: uWord, count: 1 }] } },
+			// 		{ upsert: true }
+			// 	);
+			// }
 		}
-
-		for await (const [k, v] of Object.entries(Selection)) {
-			Choices.push([
-				{
-					label: k,
-					value: v,
-				},
-			]);
-		}
-
-		const row = new MessageActionRow().addComponents(
-			new MessageSelectMenu().setCustomId('selector').setPlaceholder('Select your Location').addOptions(Choices)
-		);
-
-		await message.channel.send({ content: 'Test', components: [row] });
 	},
 };

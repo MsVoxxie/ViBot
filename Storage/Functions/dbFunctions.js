@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 require('moment-duration-format');
 const { MessageEmbed } = require('discord.js');
-const { BotData, Guild, Levelroles, TwitchWatch, userData, Starboard } = require('../Database/models');
+const { Statistics, BotData, Guild, Levelroles, TwitchWatch, userData, Starboard } = require('../Database/models');
 
 module.exports = (bot) => {
 	// Get Guild Settings
@@ -144,14 +144,18 @@ module.exports = (bot) => {
 					}
 				}
 			}
-		resolve({ addedRoles, removedRoles });
+			resolve({ addedRoles, removedRoles });
 		});
-	}
+	};
 
 	//Add XP to Member
 	bot.addXP = async (guild, member, xpToAdd, bot, settings, levelChannel, message, check) => {
 		try {
-			const result = await userData.findOneAndUpdate( { guildid: guild.id, userid: member.id }, { guildid: guild.id, userid: member.id, $inc: { xp: xpToAdd, xpinterval: 1 }, }, { upsert: true, new: true, } );
+			const result = await userData.findOneAndUpdate(
+				{ guildid: guild.id, userid: member.id },
+				{ guildid: guild.id, userid: member.id, $inc: { xp: xpToAdd, xpinterval: 1 } },
+				{ upsert: true, new: true }
+			);
 
 			let { xp, level, xpinterval } = result;
 			const needed = getNeededXP(level);
@@ -159,22 +163,33 @@ module.exports = (bot) => {
 				++level;
 				xp -= needed;
 
-				const RoleCheck = await bot.checkLevelRoles(guild, member, ( result.level + 1 ));
+				const RoleCheck = await bot.checkLevelRoles(guild, member, result.level + 1);
 
 				//Generate Embed
 				const embed = new MessageEmbed()
 					.setTitle('Level Up!')
 					.setColor(settings.guildcolor)
 					.setThumbnail(`${member.displayAvatarURL({ dynamic: true })}`)
-					.setDescription(`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${RoleCheck.addedRoles.length ? `\nAwarded Role${RoleCheck.addedRoles.length >= 1 ? 's»\n' : '»\n'}` : ''}${RoleCheck.addedRoles.map((r) => r).join(' | ')}${RoleCheck.removedRoles.length ? `\nRevoked Role${RoleCheck.removedRoles.length >= 1 ? 's»\n' : '»\n'}` : ''}${RoleCheck.removedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`)
-					.setFooter({ text: `• Next Level» ${Math.round(bot.percentage(xp, getNeededXP(level)))}% | ${bot.toThousands(xp)}/${bot.toThousands(getNeededXP(level))} •` });
-
+					.setDescription(
+						`<:hypesquad:753802620342108161> Congratulations ${member.displayName}!\nYou are now level ${level}!${
+							RoleCheck.addedRoles.length ? `\nAwarded Role${RoleCheck.addedRoles.length >= 1 ? 's»\n' : '»\n'}` : ''
+						}${RoleCheck.addedRoles.map((r) => r).join(' | ')}${
+							RoleCheck.removedRoles.length ? `\nRevoked Role${RoleCheck.removedRoles.length >= 1 ? 's»\n' : '»\n'}` : ''
+						}${RoleCheck.removedRoles.map((r) => r).join(' | ')}${message ? `\n[Jump to Level Message](${message.url})` : ''}`
+					)
+					.setFooter({
+						text: `• Next Level» ${Math.round(bot.percentage(xp, getNeededXP(level)))}% | ${bot.toThousands(xp)}/${bot.toThousands(
+							getNeededXP(level)
+						)} •`,
+					});
 
 				levelChannel.send({ embeds: [embed] });
 			}
 
-			await userData.updateOne({ guildid: guild.id, userid: member.id }, { level, xp, xpinterval: result.xpinterval >= 10 ? 0 : result.xpinterval });
-
+			await userData.updateOne(
+				{ guildid: guild.id, userid: member.id },
+				{ level, xp, xpinterval: result.xpinterval >= 10 ? 0 : result.xpinterval }
+			);
 		} catch (e) {
 			console.error(e);
 		}
@@ -229,8 +244,40 @@ module.exports = (bot) => {
 		);
 	};
 
+	// Message Statistics
+	bot.updateMessageStatistics = async (message) => {
+		let baseWords = message.content.toLowerCase();
+		const AsciiRegex = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+		const DiscordRegex = /(<a?)?:\w+:(\d{0,100}>)?/gi;
+
+		// Trim down any white spaces and clean string
+		baseWords = await baseWords.replace(DiscordRegex, '').replace(AsciiRegex, '');
+		let splitWords = baseWords.split(/ +/);
+		splitWords.map((w) => w.trim());
+		splitWords = splitWords.filter((item) => item);
+
+		console.log(splitWords);
+
+		for await (const uWord of splitWords) {
+			let hasDoc = await Statistics.countDocuments({ guildid: message.guild.id, words: { $elemMatch: { word: uWord } } });
+			if (hasDoc > 0) {
+				await Statistics.updateOne(
+					{ guildid: message.guild.id, words: { $elemMatch: { word: uWord } } },
+					{ guildid: message.guild.id, $inc: { 'words.$.count': 1 } }
+				);
+			} else {
+				hasDoc = await Statistics.countDocuments({ guildid: message.guild.id, words: [] });
+				if (hasDoc > 0) {
+					await Statistics.create({ guildid: message.guild.id, words: [] });
+				} else {
+					await Statistics.findOneAndUpdate({ guildid: message.guild.id }, { $push: { words: { word: uWord, count: 1 } } }, { upsert: true });
+				}
+			}
+		}
+	};
+
 	//Clear Failed Stars
 	bot.pruneStarboard = async () => {
-		await Starboard.deleteMany({ starred: false }).then(() => console.log('Starboard Pruned.'))
-	}
+		await Starboard.deleteMany({ starred: false }).then(() => console.log('Starboard Pruned.'));
+	};
 };

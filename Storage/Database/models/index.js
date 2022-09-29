@@ -14,4 +14,5 @@ module.exports = {
 	Twitter: require('./twitter'),
 	YoutubeLive: require('./youtubelive'),
 	TwitchLive: require('./twitchlive'),
+	Statistics: require('./statistics'),
 };
