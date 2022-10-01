@@ -45,7 +45,7 @@ module.exports = {
 					{ name: 'Joined Server', value: bot.relativeTimestamp(member.joinedAt), inline: true },
 					{ name: 'Account Created', value: bot.relativeTimestamp(member.user.createdAt), inline: true },
 					{ name: 'Account Badges', value: userBadges, inline: false },
-					{ name: 'Roles', value: dbMember.userroles.length? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None',  inline: false })
+					{ name: 'Roles', value: dbMember?.userroles.length? dbMember.userroles.map((r) => { return `<@&${r.id}>`; }).filter((x) => x !== undefined).join(' **|** ') : 'None',  inline: false })
 				if (currentGames?.length > 0) {
 					embed.addFields({ name: 'Currently Playing - ', value: currentGames.length > 0 ? `\`\`\`diff\n${currentGames}\`\`\`` : '```Not playing anything```', inline: false })
 				}

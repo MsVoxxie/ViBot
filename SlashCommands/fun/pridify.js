@@ -1,6 +1,8 @@
-const { MessageAttachment } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const maskPath = '../../Storage/Media/Masks/mask.png';
+const { MessageAttachment } = require('discord.js');
 const jimp = require('jimp');
+const path = require('path');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -117,13 +119,18 @@ module.exports = {
 		// createAvatar
 		async function createPrideAvatar(avatarImage, flags) {
 			const avatar = await jimp.read(avatarImage);
+			const mask = await jimp.read(path.join(__dirname, maskPath));
+
+			// Resize and mask
+			mask.resize(avatar.bitmap.width, avatar.bitmap.height, jimp.RESIZE_BEZIER);
+			avatar.mask(mask, 0, 0);
+
 			const texture = await createBackgroundTexture(avatar.bitmap.width, flags);
 
 			const borderOffset = avatar.bitmap.width * borderSize;
 			const targetAvatarSize = avatar.bitmap.width * (1 - borderSize * 2);
 
-			avatar.resize(targetAvatarSize, targetAvatarSize);
-			avatar.circle();
+			avatar.resize(targetAvatarSize, targetAvatarSize, jimp.RESIZE_BEZIER);
 
 			texture.blit(avatar, borderOffset, borderOffset);
 			return texture;

@@ -30,18 +30,18 @@ module.exports = (bot) => {
 	});
 
 	// Load Music Bot Triggers
-	const player = readdirSync(path.join(__dirname, '../Functions/MusicBot/Events/')).filter((file) => file.endsWith('.js'));
+	// const player = readdirSync(path.join(__dirname, '../Functions/MusicBot/Events/')).filter((file) => file.endsWith('.js'));
 
-	for (const file of player) {
-		try {
-			const play = require(path.join(__dirname, '../Functions/MusicBot/Events/', file));
-			bot.Music.on(file.split('.')[0], play.bind(null, bot));
-			musicTable.addRow(`${file.split('.')[0]}`, '✔ » Loaded');
-		} catch (error) {
-			console.error(error);
-			musicTable.addRow(`${file.split('.')[0]}`, '✕ » Errored');
-		}
-	}
+	// for (const file of player) {
+	// 	try {
+	// 		const play = require(path.join(__dirname, '../Functions/MusicBot/Events/', file));
+	// 		bot.Music.on(file.split('.')[0], play.bind(null, bot));
+	// 		musicTable.addRow(`${file.split('.')[0]}`, '✔ » Loaded');
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 		musicTable.addRow(`${file.split('.')[0]}`, '✕ » Errored');
+	// 	}
+	// }
 	console.log(eventTable.toString());
-	console.log(musicTable.toString());
+	// console.log(musicTable.toString());
 };

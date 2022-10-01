@@ -1,6 +1,6 @@
 const { Client, Intents, Collection } = require('discord.js');
 const { Token } = require('./Storage/Config/Config.json');
-const { Player } = require('discord-player');
+// const { Player } = require('discord-player');
 const cron = require('node-cron');
 const fs = require('fs');
 
@@ -34,22 +34,22 @@ bot.colors = {
 bot.undesirables = new Map();
 
 //Setup MusicPlayer
-const Music = new Player(bot, {
-	leaveOnEnd: true,
-	leaveOnEndCooldown: 90 * 1000,
-	leaveOnStopCooldown: 90 * 1000,
-	leaveOnEmptyCooldown: 30 * 1000,
-	autoSelfDeaf: true,
-	fetchBeforeQueued: true,
-	enableLive: true,
-	ytdlOptions: {
-		quality: 'highestaudio',
-		highWaterMark: 1 << 25,
-	},
-});
+// const Music = new Player(bot, {
+// 	leaveOnEnd: true,
+// 	leaveOnEndCooldown: 90 * 1000,
+// 	leaveOnStopCooldown: 90 * 1000,
+// 	leaveOnEmptyCooldown: 30 * 1000,
+// 	autoSelfDeaf: true,
+// 	fetchBeforeQueued: true,
+// 	enableLive: true,
+// 	ytdlOptions: {
+// 		quality: 'highestaudio',
+// 		highWaterMark: 1 << 25,
+// 	},
+// });
 
 // Music Setup
-bot.Music = Music;
+// bot.Music = Music;
 
 // Command Info
 bot.commands = new Collection();
@@ -78,9 +78,9 @@ require('./Storage/Core/Command Loader')(bot);
 require('./Storage/Core/Event Loader')(bot);
 
 //Music
-bot.Music.on('error', (queue, error) => {
-	console.log(error);
-});
+// bot.Music.on('error', (queue, error) => {
+// 	console.log(error);
+// });
 
 // Init Bot / Database
 bot.Debug = false;

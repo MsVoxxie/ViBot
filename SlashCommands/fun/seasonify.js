@@ -1,6 +1,8 @@
-const { MessageAttachment } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const maskPath = '../../Storage/Media/Masks/mask.png';
+const { MessageAttachment } = require('discord.js');
 const jimp = require('jimp');
+const path = require('path');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,7 +16,7 @@ module.exports = {
 				.addChoices({ name: 'Autumn', value: 'autumn' })
 				.addChoices({ name: 'Easter', value: 'easter' })
 				.addChoices({ name: 'Valentines Day', value: 'valentines' })
-				.addChoices({ name: 'St. Patrick\'s Day', value: 'pattiesday' })
+				.addChoices({ name: "St. Patrick's Day", value: 'pattiesday' })
 				.addChoices({ name: 'Christmas', value: 'christmas' })
 				.addChoices({ name: 'Halloween', value: 'halloween' })
 				.addChoices({ name: 'Hanukkah', value: 'hanukkah' })
@@ -30,7 +32,7 @@ module.exports = {
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Definitions
 		const season = await interaction.options.getString('season');
-		const borderSize = 0.04;
+		const borderSize = 0.04;	
 
 		// Define flags
 		const seasonalFlags = {
@@ -95,13 +97,18 @@ module.exports = {
 		// createAvatar
 		async function createPrideAvatar(avatarImage, flags) {
 			const avatar = await jimp.read(avatarImage);
+			const mask = await jimp.read(path.join(__dirname, maskPath));
+
+			// Resize and mask
+			mask.resize(avatar.bitmap.width, avatar.bitmap.height, jimp.RESIZE_BEZIER);
+			avatar.mask(mask, 0, 0);
+
 			const texture = await createBackgroundTexture(avatar.bitmap.width, flags);
 
 			const borderOffset = avatar.bitmap.width * borderSize;
 			const targetAvatarSize = avatar.bitmap.width * (1 - borderSize * 2);
 
-			avatar.resize(targetAvatarSize, targetAvatarSize);
-			avatar.circle();
+			avatar.resize(targetAvatarSize, targetAvatarSize, jimp.RESIZE_BEZIER);
 
 			texture.blit(avatar, borderOffset, borderOffset);
 			return texture;

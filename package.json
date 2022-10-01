@@ -50,7 +50,7 @@
 		"g-i-s": "^2.1.6",
 		"gifencoder": "^2.0.1",
 		"got": "^11.8.3",
-		"jimp": "^0.16.0",
+		"jimp": "^0.16.2",
 		"jpeg-js": "^0.4.4",
 		"jszip": "^3.10.0",
 		"minecraft-server-util": "^3.6.0",
