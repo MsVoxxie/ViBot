@@ -41,18 +41,22 @@ module.exports = {
 				.addChoices({ name: 'Polyamorous', value: 'polyamorous' })
 				.addChoices({ name: 'Transexual', value: 'transexual' })
 				.setRequired(false)
+		)
+		.addIntegerOption((option) =>
+			option.setName('size').setDescription('The size of your border ring. [Default 3] (0-9)').setMinValue(0).setMaxValue(9).setRequired(false)
 		),
 	options: {
 		cooldown: 10,
 		ownerOnly: false,
 		userPerms: [],
-		botPerms: ["SEND_MESSAGES"],
+		botPerms: ['SEND_MESSAGES'],
 	},
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Definitions
 		const flagOne = await interaction.options.getString('first_flag');
 		const flagTwo = await interaction.options.getString('second_flag');
-		const borderSize = 0.04;
+		const size = await interaction?.options?.getInteger('size');
+		const borderSize = `${size ? `0.0${size}5` : 0.03}`;
 
 		// Define flags
 		const prideFlags = {

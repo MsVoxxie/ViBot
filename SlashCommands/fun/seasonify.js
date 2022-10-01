@@ -22,6 +22,9 @@ module.exports = {
 				.addChoices({ name: 'Hanukkah', value: 'hanukkah' })
 				.addChoices({ name: 'Kwanzaa', value: 'kwanzaa' })
 				.setRequired(true)
+		)
+		.addIntegerOption((option) =>
+			option.setName('size').setDescription('The size of your border ring. [Default 3] (0-9)').setMinValue(0).setMaxValue(9).setRequired(false)
 		),
 	options: {
 		cooldown: 10,
@@ -32,7 +35,10 @@ module.exports = {
 	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Definitions
 		const season = await interaction.options.getString('season');
-		const borderSize = 0.04;	
+		const size = await interaction?.options?.getInteger('size');
+		const borderSize = `${size ? `0.0${size}5` : 0.03}`;
+
+		console.log(borderSize);
 
 		// Define flags
 		const seasonalFlags = {
