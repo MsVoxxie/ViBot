@@ -6,6 +6,9 @@ const fetch = require('node-fetch');
 module.exports = async (bot) => {
 	// Check Streams
 	bot.youtubeLiveCheck = async () => {
+		// Constants
+		const LIMIT = 5;
+
 		// Get Every guilds watch list
 		const guilds = bot.guilds.cache;
 		for await (const g of guilds) {
@@ -22,47 +25,66 @@ module.exports = async (bot) => {
 				if (!steamchannel && !redirectchannel) continue;
 				const channelToSend = redirectchannel ? redirectchannel : steamchannel;
 
-                // Get Channel Data
+				// Get Channel Data
 				const channelData = await getLiveStatus(channel.channelid);
 
 				// If failed continue
 				if (channelData.failed) continue;
 
 				// If stream is live and channel live, continue
-				if (channelData.isStreaming && channel.live) continue;
+				if (channelData.isStreaming && channel.live) {
+					// Update db
+					await YoutubeLive.findOneAndUpdate({ guildid: guild.id, channelid: channel.channelid }, { counter: 0 }, { upsert: true, new: true });
+					continue;
+				}
 
 				// Stream Send
 				if (channelData.isStreaming && !channel.live) {
+					const randomNotif = [
+						'Hey {everyone}! {twname} is now live!',
+						'Heads up {everyone}, {twname} is going live!',
+						'{twname} is live {everyone}!',
+						"It's that time again {everyone}, Time to watch {twname}!",
+					];
+					const randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
+					const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.channelname);
+					const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.channelname);
+					const last = await channelToSend.send({
+						content: `${settings.twitchmention ? `${mentionMsg}\n${channelData.streamURL}` : `${streamMsg}\n${channelData.streamURL}`}`,
+					});
 
-                    const randomNotif = [
-                        'Hey {everyone}! {twname} is now live!',
-                        'Heads up {everyone}, {twname} is going live!',
-                        '{twname} is live {everyone}!',
-                        "It's that time again {everyone}, Time to watch {twname}!",
-                    ];
-                    const randmsg = randomNotif[Math.floor(Math.random() * randomNotif.length)];
-				    const mentionMsg = randmsg.replace('{everyone}', '@everyone').replace('{twname}', channel.channelname);
-				    const streamMsg = randmsg.replace('{everyone}', 'everyone').replace('{twname}', channel.channelname);
-                    const last = await channelToSend.send({ content: `${settings.twitchmention ? `${mentionMsg}\n${channelData.streamURL}` : `${streamMsg}\n${channelData.streamURL}`}`});
-				
-                    // Update db
+					// Update db
 					await YoutubeLive.findOneAndUpdate(
 						{ guildid: guild.id, channelid: channel.channelid },
-						{ lastpost: Date.now(), lastmsg: last, live: true, },
-                        { upsert: true, new: true});
+						{ lastpost: Date.now(), lastmsg: last, counter: 0, live: true },
+						{ upsert: true, new: true }
+					);
+					continue;
 				}
 
-                if(!channelData.isStreaming && channel.live) {
-                    const lastPost = await channelToSend.messages.fetch(channel.lastmsg);
-                    await lastPost.edit({content: `${channel.channelname} is now offline.`})
+				// Channel is offline, and count is at limit
+				if (!channelData.isStreaming && channel.live && channel.counter >= LIMIT) {
+					const lastPost = await channelToSend.messages.fetch(channel.lastmsg);
+					await lastPost.edit({ content: `${channel.channelname} is now offline.` });
 
-                    // Update db
+					// Update db
 					await YoutubeLive.findOneAndUpdate(
 						{ guildid: guild.id, channelid: channel.channelid },
-						{ lastpost: Date.now(), live: false, },
-                        { upsert: true, new: true});
-                }
+						{ lastpost: Date.now(), live: false },
+						{ upsert: true, new: true }
+					);
+					continue;
+				}
 
+				// Offline counter increase
+				if (!channelData.isStreaming && channel.live && channel.counter < LIMIT) {
+					await YoutubeLive.findOneAndUpdate(
+						{ guildid: guild.id, channelid: channel.channelid },
+						{ $inc: { counter: 1 } },
+						{ upsert: true, new: true }
+					);
+					continue;
+				}
 			}
 		}
 	};

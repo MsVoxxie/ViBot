@@ -264,8 +264,6 @@ module.exports = (bot) => {
 
 		if (!splitWords.length) return;
 
-		console.log(splitWords);
-
 		for await (const uWord of splitWords) {
 			let hasDoc = await Statistics.countDocuments({ guildid: message.guild.id, words: { $elemMatch: { word: uWord } } });
 			if (hasDoc > 0) {

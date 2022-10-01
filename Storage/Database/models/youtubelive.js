@@ -27,6 +27,10 @@ const youtubeLiveSchema = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 	},
+	counter: {
+		type: Number,
+		required: true,
+	},
 });
 
 module.exports = mongoose.model('youtubeLive', youtubeLiveSchema);

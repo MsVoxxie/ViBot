@@ -43,6 +43,7 @@ options: {
                 channelid: channel_url,
                 channelname: vanity_name,
                 redirect: redirect?.id,
+                counter: 0,
                 live: false,
             })
 			return interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Added \`${vanity_name}\` to the watchlist!`, }), ], ephemeral: true, });
