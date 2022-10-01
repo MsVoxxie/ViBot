@@ -38,7 +38,7 @@ module.exports = {
 		}
 
 		//Bots cant execute commands.
-		if (message.author.bot) return;
+		if (message?.author?.bot) return;
 
 		//People were nice to me, show them a nice emoji.
 		const tyRegex = /(danke|thank you|thank u|thanks|ty) vi/gi;
