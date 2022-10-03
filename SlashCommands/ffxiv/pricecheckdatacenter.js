@@ -1,37 +1,44 @@
-const fetch = require('node-fetch');
+const { XIVAPIKEY, XIVCOL } = require('../../Storage/Config/Config.json');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const XIVAPI = require('@xivapi/js');
-const { XIVAPIKEY, XIVCOL } = require('../../Storage/Config/Config.json');
+const fetch = require('node-fetch');
 const xiv = new XIVAPI({
 	private_key: XIVAPIKEY,
 	language: 'en',
 	snake_case: true,
 });
+
 //URLS
 const wiki_url = 'https://ffxiv.gamerescape.com/wiki/';
 const price_url = 'https://universalis.app/api/';
 const api_url = 'https://XIVAPI.com';
 
 module.exports = {
-	name: 'pricecheck',
-	aliases: ['pc'],
-	description: "Search for an item's price in FFXIV",
-	example: 'pc Mateus shallows cod',
-	category: 'ffxiv',
-	args: true,
-	converted: true,
-	cooldown: 2,
-	hidden: false,
-	ownerOnly: false,
-	userPerms: [],
-	botPerms: [],
-	async execute(bot, message, args, settings, Vimotes) {
+	data: new SlashCommandBuilder()
+		.setName('ffxiv_price_check_datacenter')
+		.setDescription('[FFXIV] Check the price of a given item.')
+		.addStringOption((option) =>
+			option
+				.setName('source')
+				.addChoices({ name: '[Datacenter] Aether', value: 'Aether' })
+				.addChoices({ name: '[Datacenter] Crystal', value: 'Aether' })
+				.addChoices({ name: '[Datacenter] Primal', value: 'Aether' })
+				.setDescription('Where would you like to source your prices from?')
+				.setRequired(true)
+		)
+		.addStringOption((option) => option.setName('item').setDescription('The item to price check.').setRequired(true)),
+
+	options: {
+		ownerOnly: false,
+		userPerms: [],
+		botPerms: [],
+	},
+	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		try {
 			//Setup
-			const Props = args.join(' ');
-			const splitProps = Props.split(' ');
-			const Item = splitProps.slice(1).join(' ');
-			const World = bot.titleCase(splitProps[0]);
+			const Item = await interaction.options.getString('item');
+			const World = await interaction.options.getString('source');
 			const Data = [];
 
 			//Get Item Search
@@ -70,18 +77,22 @@ module.exports = {
 			const embed = new MessageEmbed()
 				.setTitle(response.name)
 				.setURL(`${wiki_url}${item_name}`)
-				.addFields({ name: 'World', value: Data.map((w) => `[${w.world}]`).join('\n'), inline: true }, { name: 'Price / Quantity', value: Data.map((i) => i.price).join('\n'), inline: true }, { name: 'Total Price',  value: Data.map((i) => i.total).join('\n'), inline: true })
+				.addFields(
+					{ name: 'World', value: Data.map((w) => `[${w.world}]`).join('\n'), inline: true },
+					{ name: 'Price / Quantity', value: Data.map((i) => i.price).join('\n'), inline: true },
+					{ name: 'Total Price', value: Data.map((i) => i.total).join('\n'), inline: true }
+				)
 				.setColor(XIVCOL)
 				.setThumbnail(`${api_url}${response.icon}`)
 				.setFooter({ text: `• ${item_data.ItemUICategory['Name']} • ${item_data.GamePatch['ExName']} • ${item_data.GamePatch['Name']} •` });
 
-			message.channel.send({ embeds: [embed] });
-			if (settings.prune) {
-				await message.delete();
-			}
+			interaction.reply({ embeds: [embed] });
 		} catch (error) {
-			return message.reply(`Unable to find item, Check usage and try again!`).then((s) => {
-				if (settings.prune) setTimeout(() => s.delete(), 30 * 1000);
+			return interaction.reply({
+				embeds: [
+					bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['WARNING']} Could not find this item, please check your spelling.` }),
+				],
+				ephemeral: true,
 			});
 		}
 	},

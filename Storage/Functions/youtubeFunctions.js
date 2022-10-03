@@ -35,6 +35,7 @@ module.exports = async (bot) => {
 				if (channelData.isStreaming && channel.live) {
 					// Update db
 					await YoutubeLive.findOneAndUpdate({ guildid: guild.id, channelid: channel.channelid }, { counter: 0 }, { upsert: true, new: true });
+					// console.log(`${channel.channelname} is still online, counter: ${channel.counter}`)
 					continue;
 				}
 
@@ -59,6 +60,7 @@ module.exports = async (bot) => {
 						{ lastpost: Date.now(), lastmsg: last, counter: 0, live: true },
 						{ upsert: true, new: true }
 					);
+					// console.log(`${channel.channelname} went live, counter: ${channel.counter}`)
 					continue;
 				}
 
@@ -73,6 +75,7 @@ module.exports = async (bot) => {
 						{ lastpost: Date.now(), live: false },
 						{ upsert: true, new: true }
 					);
+					// console.log(`${channel.channelname} is offline, counter: ${channel.counter}`)
 					continue;
 				}
 
@@ -83,6 +86,7 @@ module.exports = async (bot) => {
 						{ $inc: { counter: 1 } },
 						{ upsert: true, new: true }
 					);
+					// console.log(`${channel.channelname} might be offline, increasing counter: ${channel.counter}`)
 					continue;
 				}
 			}
