@@ -25,11 +25,18 @@ module.exports = {
 		let endedAt;
 
 		//Save Name
-		const SAVE_NAME = totalUser > 0 ? `Hand_Picked_Emojis.zip` : `${intGuild.name}_Emojis.zip`;
+		const TARGET_NAME = intTarget.author.username
+			.replaceAll(/[^\w\s]/gi, '')
+			.replaceAll(/ /gi, ' ')
+			.replaceAll(/ /gi, '_');
+		const SAVE_NAME = `${TARGET_NAME}_Emojis.zip`;
 
 		//Are there any emoji or stickers
-		if (totalUser == 0) return await interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} There are no emojis to save.`})], ephemeral: true });
-
+		if (totalUser == 0)
+			return await interaction.reply({
+				embeds: [bot.replyEmbed({ color: bot.colors.warning, text: `${Vimotes['ALERT']} There are no emojis to save.` })],
+				ephemeral: true,
+			});
 
 		//Create a temp folder for the user
 		try {
@@ -80,13 +87,29 @@ module.exports = {
 				const difference = endedAt - startedAt;
 				//Send the zip
 				const attachment = new MessageAttachment(`${USER_PATH}/${SAVE_NAME}`);
-                try {
-				    await intMember.send({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Saved\n${totalEmoji != 0 ? `***\`${savedEmoji}/${totalEmoji}\`*** ${totalEmoji > 1 ? 'Emojis' : 'Emoji'}\n` : ''}In ***\`${Math.round(difference / 1000)}\`*** seconds.`, }), ], files: [attachment], });
-				    await interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Sent to your DM's`})], ephemeral: true })
-                } catch(e) {
-				    await interaction.reply({ embeds: [ bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Failed to send to your DM's`})], ephemeral: true })
-                }
-                //Delete the zip
+				try {
+					await intMember.send({
+						embeds: [
+							bot.replyEmbed({
+								color: bot.colors.success,
+								text: `${Vimotes['CHECK']} Saved\n${
+									totalEmoji != 0 ? `***\`${savedEmoji}/${totalEmoji}\`*** ${totalEmoji > 1 ? 'Emojis' : 'Emoji'}\n` : ''
+								}In ***\`${Math.round(difference / 1000)}\`*** seconds.`,
+							}),
+						],
+						files: [attachment],
+					});
+					await interaction.reply({
+						embeds: [bot.replyEmbed({ color: bot.colors.success, text: `${Vimotes['CHECK']} Sent to your DM's` })],
+						ephemeral: true,
+					});
+				} catch (e) {
+					await interaction.reply({
+						embeds: [bot.replyEmbed({ color: bot.colors.error, text: `${Vimotes['XMARK']} Failed to send to your DM's` })],
+						ephemeral: true,
+					});
+				}
+				//Delete the zip
 				fs.rmSync(`${USER_PATH}/${SAVE_NAME}`);
 				//Delete the temp folder
 				fs.rmSync(USER_PATH, { recursive: true });
@@ -117,4 +140,3 @@ async function download(uri, filepath, filename, extension) {
 		console.error(e);
 	}
 }
-
