@@ -29,7 +29,7 @@ module.exports = {
 			.replaceAll(/[^\w\s]/gi, '')
 			.replaceAll(/ /gi, ' ')
 			.replaceAll(/ /gi, '_');
-		const SAVE_NAME = `${TARGET_NAME}_Emojis.zip`;
+		const SAVE_NAME = `${TARGET_NAME}s_Emojis.zip`;
 
 		//Are there any emoji or stickers
 		if (totalUser == 0)
