@@ -80,7 +80,7 @@ module.exports = {
 
 		//Save the zip
 		zip
-			.generateNodeStream({ type: 'nodebuffer', streamFiles: true })
+			.generateNodeStream({ type: 'nodebuffer', compression: 'DEFLATE', compressionOptions: { level: 9, }, streamFiles: true, })
 			.pipe(fs.createWriteStream(`${USER_PATH}/${SAVE_NAME}`))
 			.on('finish', async () => {
 				endedAt = Date.now();
