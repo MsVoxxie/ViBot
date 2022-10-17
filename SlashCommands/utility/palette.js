@@ -1,22 +1,17 @@
 const { MessageAttachment, MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { VIAPI } = require('../../Storage/Config/Config.json');
 const Canvas = require('canvas');
 const axios = require('axios');
 
 module.exports = {
-	name: 'randpalette',
-	aliases: [],
-	description: 'Generate a random color palette!',
-	example: '',
-	category: 'utility',
-	args: false,
-	converted: true,
-	cooldown: 10,
-	hidden: false,
-	ownerOnly: false,
-	userPerms: [],
-	botPerms: [],
-	async execute(bot, message, args, settings, Vimotes) {
+	data: new SlashCommandBuilder().setName('palette').setDescription('Generate a randomized color palette.'),
+	options: {
+		ownerOnly: false,
+		userPerms: [],
+		botPerms: [],
+	},
+	async execute(bot, interaction, intGuild, intMember, settings, Vimotes) {
 		//Setup button
 		const Button = new MessageActionRow().addComponents(
 			new MessageButton().setLabel('Generate New Palette').setStyle('PRIMARY').setCustomId('GENCOL'),
@@ -26,35 +21,35 @@ module.exports = {
 		//Setup Embed
 		const firstColor = await createColorPalette();
 		const embed = new MessageEmbed()
-			.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+			.setAuthor({ name: intMember.displayName, iconURL: intMember.displayAvatarURL({ dynamic: true }) })
 			.setDescription(`\`\`\`Hex Codes»\n${firstColor.colors.map((col) => col).join(' | ')}\`\`\``)
 			.setImage('attachment://col.png')
 			.setFooter({ text: `Endpoint» ${bot.titleCase(firstColor.endpoint)}` })
 			.setColor(settings.guildcolor);
-		const embedMsg = await message.reply({ embeds: [embed], files: [firstColor.attachment], components: [Button] });
+		const embedMsg = await interaction.reply({ embeds: [embed], files: [firstColor.attachment], components: [Button], fetchReply: true });
 
 		//Listen for Interactions
-		const filter = (interaction) => message.author.id === interaction.user.id;
+		const filter = (interaction) => interaction.user.id === intMember.id;
 		const collector = await embedMsg.createMessageComponentCollector({ filter, time: 300 * 1000 });
 		collector.on('collect', async (interaction) => {
-			interaction.deferUpdate();
+			// interaction.deferUpdate();
 			// Switch Case
 			switch (interaction.customId) {
 				// New Palette
 				case 'GENCOL': {
 					const newColor = await createColorPalette();
 					const embed = new MessageEmbed()
-						.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
+						.setAuthor({ name: intMember.displayName, iconURL: intMember.displayAvatarURL({ dynamic: true }) })
 						.setDescription(`\`\`\`Hex Codes»\n${newColor.colors.map((col) => col).join(' | ')}\`\`\``)
 						.setImage('attachment://col.png')
 						.setFooter({ text: `Endpoint» ${bot.titleCase(newColor.endpoint)}` })
 						.setColor(settings.guildcolor);
-					await embedMsg.edit({ embeds: [embed], files: [newColor.attachment] });
+					await interaction.update({ embeds: [embed], files: [newColor.attachment] });
 					break;
 				}
 				// Done
 				case 'DONE': {
-					await embedMsg.edit({ components: [] });
+					await interaction.update({ components: [] });
 					collector.stop();
 					break;
 				}
@@ -62,8 +57,8 @@ module.exports = {
 		});
 		//Tell users the collection ended when it has.
 		collector.on('end', async () => {
-			const msg = await message.channel.messages.fetch(embedMsg.id);
-			await msg.edit({ content: '**«Collection Stopped»**', components: [] });
+			const msg = await interaction.channel.messages.fetch(embedMsg.id);
+			await msg.update({ content: '**«Collection Stopped»**', components: [] });
 		});
 	},
 };

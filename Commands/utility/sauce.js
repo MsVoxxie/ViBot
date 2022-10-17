@@ -20,7 +20,7 @@ module.exports = {
 		let URL;
 		const Embeds = [];
 		let currentPage = 0;
-		const REGEX = /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|png))/i;
+		const REGEX = /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|png|gif|webp))/i;
 
 		//Check for attachments
 		if (message.attachments.size > 0) {

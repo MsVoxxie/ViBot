@@ -15,6 +15,13 @@ module.exports = {
 
 		//Send it!
 		await interaction.reply({ files: [{ name: 'petpet.gif', attachment: petpet }] });
+
+		// Was it vibot who got patted?
+		const randRep = ['Hey that tickles!', 'Myow!', 'Meow!', 'Mrah!', 'Hehe!', 'Aah stop that!'];
+		const randQuip = randRep[Math.floor(Math.random() * randRep.length)];
+		if (intTarget.id === intGuild.me.id) {
+			interaction.channel.send(randQuip);
+		}
 	},
 };
 
