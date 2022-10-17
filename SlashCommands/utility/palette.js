@@ -50,7 +50,7 @@ module.exports = {
 				// Done
 				case 'DONE': {
 					await interaction.update({ components: [] });
-					collector.stop();
+					await collector.stop();
 					break;
 				}
 			}
@@ -58,7 +58,7 @@ module.exports = {
 		//Tell users the collection ended when it has.
 		collector.on('end', async () => {
 			const msg = await interaction.channel.messages.fetch(embedMsg.id);
-			await msg.update({ content: '**«Collection Stopped»**', components: [] });
+			await msg.edit({ content: '**«Collection Stopped»**', components: [] });
 		});
 	},
 };
