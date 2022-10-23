@@ -11,7 +11,7 @@ const xiv = new XIVAPI({
 
 //URLS
 const wiki_url = 'https://ffxiv.gamerescape.com/wiki/';
-const price_url = 'https://universalis.app/api/';
+const price_url = 'https://universalis.app/api/v2/';
 const api_url = 'https://XIVAPI.com';
 
 module.exports = {
@@ -22,8 +22,8 @@ module.exports = {
 			option
 				.setName('source')
 				.addChoices({ name: '[Datacenter] Aether', value: 'Aether' })
-				.addChoices({ name: '[Datacenter] Crystal', value: 'Aether' })
-				.addChoices({ name: '[Datacenter] Primal', value: 'Aether' })
+				.addChoices({ name: '[Datacenter] Crystal', value: 'Crystal' })
+				.addChoices({ name: '[Datacenter] Primal', value: 'Primal' })
 				.setDescription('Where would you like to source your prices from?')
 				.setRequired(true)
 		)

@@ -11,7 +11,7 @@ const xiv = new XIVAPI({
 
 //URLS
 const wiki_url = 'https://ffxiv.gamerescape.com/wiki/';
-const price_url = 'https://universalis.app/api/';
+const price_url = 'https://universalis.app/api/v2/';
 const api_url = 'https://XIVAPI.com';
 
 module.exports = {
