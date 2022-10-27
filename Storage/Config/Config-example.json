@@ -1,0 +1,17 @@
+{
+    "DevMode": false,
+	"DeepL": "",
+	"Token": "",
+	"SRAPI_Key": "",
+	"Database": "",
+	"StrawPollAPI": "",
+	"twit_api": "",
+	"twit_api_secret": "",
+	"twit_access_token": "",
+	"twit_access_token_secret": "",
+	"SauceNaoKey": "",
+	"TwitchClientID": "",
+	"TwitchAccessToken": "",
+	"XIVAPIKEY": "",
+	"XIVCOL": "#b63333"
+}
