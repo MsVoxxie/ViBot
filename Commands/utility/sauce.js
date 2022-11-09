@@ -35,14 +35,6 @@ module.exports = {
 			}
 		}
 
-		// // ...Check for the last few messages having attachments
-		// if (!args.length && !(message.attachments.size > 0)) {
-		// 	await message.channel.messages.fetch().then((messages) => {
-		// 		const filteredMessages = messages.filter((m) => m.attachments.size > 0);
-		// 		URL = filteredMessages?.first()?.attachments?.first()?.url;
-		// 	});
-		// }
-
 		// Still no results, Error out.
 		if (!URL) return message.channel.send('Please provide an image to search for.\nIf the image was already posted, react to it with 🍝.');
 
@@ -134,8 +126,19 @@ module.exports = {
 				}
 			});
 		} catch (error) {
-			console.error(error);
-			return message.reply('Sorry, An error occured while searching. Please try again later.');
+			// Failed to find a sauce.
+			const randFail = [
+				"Sorry, I couldn't find the source!",
+				"Sorry, I couldn't find the sauce!",
+				'Uh oh, Nothing came up!',
+				'Aw man, No source found!',
+				'Aw man, No sauce found!',
+				'No results found!',
+				"I'm lost in the sauce and so is this image, No results!",
+				'https://i.kym-cdn.com/photos/images/facebook/000/025/761/4KQNGUFFJUMFPRFNLAH3QHFXANX6VWDO.jpeg', // Got no Sauce image.
+			];
+			const randQuip = randFail[Math.floor(Math.random() * randFail.length)];
+			return message.reply(randQuip);
 		}
 	},
 };
