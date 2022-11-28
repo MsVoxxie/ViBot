@@ -94,6 +94,10 @@ const guildSchema = mongoose.Schema({
 		type: String,
 		default: 'Not Set',
 	},
+	starlimit: {
+		type: Number,
+		default: 3,
+	},
 	twitterchannel: {
 		type: String,
 		default: 'Not Set',

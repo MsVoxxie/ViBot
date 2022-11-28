@@ -15,7 +15,7 @@ module.exports = {
 		const settings = await bot.getGuild(message.guild);
 		const Buttons = new MessageActionRow();
 		const StarColor = '#eba834';
-		const ReactLimit = 3;
+		const ReactLimit = settings.starlimit || 3;
 		let embeds = [];
 		let attachment;
 		let StarData;
@@ -87,7 +87,7 @@ module.exports = {
 			});
 
 		//Add Button
-		Buttons.addComponents(new MessageButton().setLabel('Original Message').setStyle("LINK").setURL(message.url));
+		Buttons.addComponents(new MessageButton().setLabel('Original Message').setStyle('LINK').setURL(message.url));
 
 		//Embeds
 		switch (type) {
@@ -100,7 +100,11 @@ module.exports = {
 						const embed = new MessageEmbed()
 							.setColor(StarColor)
 							.setURL(message.url)
-							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+							.setDescription(
+								`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${
+									message.content
+								}\nStarred» ${bot.relativeTimestamp(Date.now())}`
+							)
 							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 							.setImage(photo)
 							.setTimestamp()
@@ -113,13 +117,17 @@ module.exports = {
 						.setTitle(mediaData.tweetData.user.name)
 						.setURL(mediaData.tweetData.tweet.url)
 						.setThumbnail(mediaData.tweetData.user.profile_image_url)
-						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+						.setDescription(
+							`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${
+								message.content
+							}\nStarred» ${bot.relativeTimestamp(Date.now())}`
+						)
 						.setTimestamp()
 						.setColor(settings.guildcolor);
 					attachment = new MessageAttachment(mediaData.tweetData.tweet.video_url, `media.mp4`);
 					embeds.push(embed);
 				}
-				Buttons.addComponents(new MessageButton().setLabel('Tweet').setStyle("LINK").setURL(mediaData.tweetData.tweet.url));
+				Buttons.addComponents(new MessageButton().setLabel('Tweet').setStyle('LINK').setURL(mediaData.tweetData.tweet.url));
 				break;
 			}
 
@@ -135,7 +143,7 @@ module.exports = {
 				embeds.push(embed);
 				if (mediaData.videos.length > 0) {
 					attachment = new MessageAttachment(mediaData.videos[0], `media.mp4`);
-					Buttons.addComponents(new MessageButton().setLabel('Media').setStyle("LINK").setURL(mediaData.videos[0]));
+					Buttons.addComponents(new MessageButton().setLabel('Media').setStyle('LINK').setURL(mediaData.videos[0]));
 				}
 				break;
 			}

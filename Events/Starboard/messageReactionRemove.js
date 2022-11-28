@@ -14,7 +14,7 @@ module.exports = {
 		const message = await reaction.message;
 		const settings = await bot.getGuild(message.guild);
 		const StarColor = '#eba834';
-		const ReactLimit = 3;
+		const ReactLimit = settings.starlimit || 3;
 		let embeds = [];
 		let StarData;
 		let type;
@@ -32,12 +32,12 @@ module.exports = {
 		const randStar = starEmojis[Math.floor(Math.random() * starEmojis.length)];
 
 		//Get Counts
-		const starCount = await message.reactions.cache.get('⭐')?.count || 0;
+		const starCount = (await message.reactions.cache.get('⭐')?.count) || 0;
 
 		//get starchannel
 		const starChannelID = await settings.starchannel;
 		const starChannel = await message.guild.channels.cache.get(starChannelID);
-		
+
 		//If star channel is not valid, return
 		if (!starChannel) return;
 
@@ -90,7 +90,11 @@ module.exports = {
 						const embed = new MessageEmbed()
 							.setColor(StarColor)
 							.setURL(message.url)
-							.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${message.content}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+							.setDescription(
+								`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n${
+									message.content
+								}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`
+							)
 							.setAuthor({ name: message.member.displayName, iconURL: message.member.displayAvatarURL({ dynamic: true }) })
 							.setImage(photo)
 							.setFooter({ text: `MessageID: ${message.id}` });
@@ -102,7 +106,11 @@ module.exports = {
 						.setTitle(mediaData.tweetData.user.name)
 						.setURL(mediaData.tweetData.tweet.url)
 						.setThumbnail(mediaData.tweetData.user.profile_image_url)
-						.setDescription(`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${message.url})\nStarred» ${bot.relativeTimestamp(Date.now())}`)
+						.setDescription(
+							`${mediaData.tweetData.tweet.description}\n${wrapLines}\n${intData}\n${wrapLines}\n\n[Click to jump to message](${
+								message.url
+							})\nStarred» ${bot.relativeTimestamp(Date.now())}`
+						)
 						.setColor(settings.guildcolor);
 					attachment = new MessageAttachment(mediaData.tweetData.tweet.video_url, `media.mp4`);
 					embeds.push(embed);
