@@ -13,7 +13,7 @@ const TwitterClient = new TwitterApi({
 module.exports = {
 	data: new SlashCommandBuilder().setName('listtwitter').setDescription('List all currently watched twitter accounts.'),
 	options: {
-		ownerOnly: false,
+		ownerOnly: true,
 		userPerms: [],
 		botPerms: [],
 	},

@@ -17,7 +17,7 @@ module.exports = {
 		.addStringOption((option) => option.setName('type').setDescription('Type of tweets to watch for').addChoices({ name: 'All Tweets', value: '0' }).addChoices({ name: 'Text Only', value: '1' }).addChoices({ name: 'Media Only', value: '2' }).setRequired(true))
 		.addChannelOption((option) => option.setName('redirect').setDescription('Optional channel to direct this account to. Leave blank to default to guild defined channel.').addChannelTypes(0).addChannelTypes(5).addChannelTypes(11).setRequired(false)),
 	options: {
-		ownerOnly: false,
+		ownerOnly: true,
 		userPerms: ['MANAGE_MESSAGES'],
 		botPerms: ['SEND_MESSAGES'],
 	},

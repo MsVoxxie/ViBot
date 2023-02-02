@@ -15,7 +15,7 @@ module.exports = {
 		.setDescription('Remove a Twitter account from the watchlist.')
 		.addStringOption((option) => option.setName('twitter_handle').setDescription('The Twitter handle to add').setRequired(true)),
 	options: {
-		ownerOnly: false,
+		ownerOnly: true,
 		userPerms: ['MANAGE_MESSAGES'],
 		botPerms: ['SEND_MESSAGES'],
 	},
