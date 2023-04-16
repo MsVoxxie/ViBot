@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'ready',
-	disabled: true,
+	disabled: false,
 	once: false,
 	async execute(bot, Vimotes) {
 		await bot.twitterStream();

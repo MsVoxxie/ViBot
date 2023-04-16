@@ -12,6 +12,7 @@ module.exports = {
         // Declarations / Checks
 		if (oldChannel === newChannel) return;
 		if (newChannel.position !== oldChannel.position) return;
+		if (newChannel.parent !== oldChannel.parent) return;
 		const settings = await bot.getGuild(guild);
 		if (!settings) return;
 		if (settings.audit === false) return;
