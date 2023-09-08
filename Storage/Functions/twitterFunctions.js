@@ -1,16 +1,18 @@
-const { twit_api, twit_api_secret, twit_access_token, twit_access_token_secret } = require('../Config/Config.json');
+const { twit_api, twit_api_secret, twit_access_token, twit_access_token_secret, twit_bearer_token } = require('../Config/Config.json');
 const { ETwitterStreamEvent, TwitterApi } = require('twitter-api-v2');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const { Twitter } = require('../Database/models/');
 const got = require('got');
 const MAX_FILE_SIZE = 8_388_119;
 
-const TwitterClient = new TwitterApi({
-	appKey: twit_api,
-	appSecret: twit_api_secret,
-	accessToken: twit_access_token,
-	accessSecret: twit_access_token_secret,
-});
+// const TwitterClient = new TwitterApi({
+// 	appKey: twit_api,
+// 	appSecret: twit_api_secret,
+// 	accessToken: twit_access_token,
+// 	accessSecret: twit_access_token_secret,
+// });
+
+const TwitterClient = new TwitterApi(twit_bearer_token)
 
 module.exports = async (bot) => {
 	//Tweet Data v2
@@ -87,9 +89,12 @@ module.exports = async (bot) => {
 
 		// Start Stream
 		console.log('Starting Twitter Stream');
-		const stream = await TwitterClient.v1.stream.getStream('statuses/filter.json', {
-			follow: WatchList,
-		});
+		// const stream = await TwitterClient.v2.stream.getStream('statuses/filter.json', {
+		// 	follow: WatchList,
+		// });
+		const stream = await TwitterClient.v2.searchStream({
+			'tweet.fields': WatchList,
+		})
 
 		stream.on(ETwitterStreamEvent.Data, async (tweet) => {
 			//Only fire if its an original tweet

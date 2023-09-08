@@ -67,7 +67,7 @@
 		"request": "^2.88.2",
 		"sagiri": "^3.1.1",
 		"twit": "^2.2.4",
-		"twitter-api-v2": "^1.12.3",
+		"twitter-api-v2": "^1.14.2",
 		"word-definition": "^2.1.6",
 		"ytdl-core": "^4.11.1"
 	}

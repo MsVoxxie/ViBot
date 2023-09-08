@@ -1,4 +1,4 @@
-const { Statistics } = require('../../Storage/Database/models');
+const { userData, levelTransfer } = require('../../Storage/Database/models');
 
 module.exports = {
 	name: 'test',
@@ -13,12 +13,18 @@ module.exports = {
 	userPerms: [],
 	botPerms: [],
 	async execute(bot, message, args, settings, Vimotes) {
-		const WORDS = [];
-		const Docs = await Statistics.findOne({ guildid: message.guild.id }).lean();
-		for await (const word of Docs.words) { WORDS.push(word); }
+		const allUserData = await userData.find({});
 
-		WORDS.sort((a, b) => b.count - a.count);
-
-		console.log(WORDS);
+		for (const user of allUserData) {
+			const { guildid, userid, level } = user;
+			if (!guildid || !userid || !level) continue;
+			const newData = await levelTransfer.create({
+				guildId: guildid,
+				userId: userid,
+				level: level,
+				xp: 0,
+			});
+			console.log(newData);
+		}
 	},
 };

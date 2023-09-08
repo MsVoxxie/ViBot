@@ -15,4 +15,5 @@ module.exports = {
 	YoutubeLive: require('./youtubelive'),
 	TwitchLive: require('./twitchlive'),
 	Statistics: require('./statistics'),
+	levelTransfer: require('./levelTransfer'),
 };

@@ -3,7 +3,7 @@ const { userData } = require('../../Storage/Database/models/');
 
 module.exports = {
 	name: 'messageCreate',
-	disabled: false,
+	disabled: true,
 	once: false,
 	async execute(message, bot) {
 		// If Partial, Fetch
