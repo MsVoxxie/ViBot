@@ -41,7 +41,7 @@ module.exports = {
 
 		//Fetch request
 		const response = await fetch(
-			`https://some-random-api.ml/canvas/${overlay}?${new URLSearchParams({ avatar: member.displayAvatarURL({ format: 'png' }) }).toString()}`
+			`https://some-random-api.com/canvas/${overlay}?${new URLSearchParams({ avatar: member.displayAvatarURL({ format: 'png' }) }).toString()}`
 		);
 		
         //Send Result

@@ -71,7 +71,7 @@ bot.twitchwatchDefaults = require('./Storage/Database/models/twitchwatchDefaults
 bot.Owners = ['101789503634554880', '101790332437405696', '145325597910892544'];
 
 // Init Loaders
-require('./Storage/Core/Context Loader.js')(bot);
+// require('./Storage/Core/Context Loader.js')(bot);
 require('./Storage/Core/Slash Loader.js')(bot);
 require('./Storage/Core/Function Loader')(bot);
 require('./Storage/Core/Command Loader')(bot);
